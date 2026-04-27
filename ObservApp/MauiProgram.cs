@@ -11,7 +11,7 @@ public static class MauiProgram
 		// ── Licencia Syncfusion Community ────────────────────────────────────
 		// TODO: mover a variable de entorno o Secret antes de publicar
 		Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(
-			Environment.GetEnvironmentVariable("SYNCFUSION_LICENSE_KEY") ?? "YOUR_LICENSE_KEY");
+			Environment.GetEnvironmentVariable("SYNCFUSION_LICENSE_KEY") ?? "License Key AQUI");
 
 		var builder = MauiApp.CreateBuilder();
 

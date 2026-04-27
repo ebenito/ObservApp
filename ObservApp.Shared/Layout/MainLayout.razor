@@ -1,39 +1,121 @@
 @inherits LayoutComponentBase
+@using Syncfusion.Blazor.Navigations
+@inject NavigationManager NavManager
+@implements IDisposable
 
-<div class="obs-layout">
-    <div class="obs-appbar">
-        <span style="color:var(--obs-star);font-size:1.2rem;">★</span>
-        <span style="color:var(--obs-moon);font-weight:700;margin-left:8px;">ObservApp</span>
+<!-- AppBar -->
+<div class="obs-appbar">
+    <div class="obs-appbar-left">
+        <button class="obs-hamburger" @onclick="ToggleSidebar" aria-label="Menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="obs-brand">
+            <span class="obs-brand-star">★</span>
+            <span class="obs-brand-name">ObservApp</span>
+        </div>
     </div>
-
-    <main class="obs-main">
-        @Body
-    </main>
+    <div class="obs-appbar-right">
+        <span class="obs-version">v1.0 · .NET 10</span>
+    </div>
 </div>
 
-<style>
-    .obs-layout {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        background: var(--obs-midnight, #0d1b2a);
-        color: var(--obs-moon, #e2e8f0);
+<!-- Sidebar + contenido -->
+<div class="obs-shell">
+
+    <SfSidebar @ref="_sidebar"
+               @bind-IsOpen="_sidebarOpen"
+               Width="260px"
+               Type="SidebarType.Over"
+               ShowBackdrop="true"
+               ZIndex="1200"
+               CssClass="obs-sidebar">
+
+        <div class="obs-sidebar-header">
+            <span class="obs-brand-star" style="font-size:1.4rem;">★</span>
+            <span class="obs-brand-name" style="font-size:1rem;">ObservApp</span>
+            <button class="obs-sidebar-close" @onclick="CloseSidebar" aria-label="Cerrar">✕</button>
+        </div>
+
+        <nav class="obs-nav">
+
+            <div class="obs-nav-group-label">Principal</div>
+            <a class="obs-nav-link @IsActive("/")" href="/" @onclick="CloseSidebar">
+                <span class="obs-nav-icon">🏠</span> Inicio
+            </a>
+            <a class="obs-nav-link @IsActive("/mapa")" href="/mapa" @onclick="CloseSidebar">
+                <span class="obs-nav-icon">🗺️</span> Mapa
+            </a>
+
+            <div class="obs-nav-group-label">Planificación</div>
+            <a class="obs-nav-link @IsActive("/planificacion")" href="/planificacion" @onclick="CloseSidebar">
+                <span class="obs-nav-icon">📅</span> Nueva planificación
+            </a>
+            <a class="obs-nav-link @IsActive("/efemerides")" href="/efemerides" @onclick="CloseSidebar">
+                <span class="obs-nav-icon">🌙</span> Efemérides
+            </a>
+
+            <div class="obs-nav-group-label">Herramientas</div>
+            <a class="obs-nav-link @IsActive("/calculadora-eclipse")" href="/calculadora-eclipse" @onclick="CloseSidebar">
+                <span class="obs-nav-icon">📷</span> Calculadora eclipse
+            </a>
+
+            <div class="obs-nav-group-label">Personal</div>
+            <a class="obs-nav-link @IsActive("/historial")" href="/historial" @onclick="CloseSidebar">
+                <span class="obs-nav-icon">📜</span> Historial
+            </a>
+            <a class="obs-nav-link @IsActive("/configuracion")" href="/configuracion" @onclick="CloseSidebar">
+                <span class="obs-nav-icon">⚙️</span> Configuración
+            </a>
+            <a class="obs-nav-link @IsActive("/about")" href="/about" @onclick="CloseSidebar">
+                <span class="obs-nav-icon">ℹ️</span> Acerca de
+            </a>
+
+        </nav>
+
+        <div class="obs-sidebar-footer">
+            <span>ObservApp v1.0 · .NET 10 MAUI</span>
+        </div>
+
+    </SfSidebar>
+
+    <main class="obs-main">
+        <div class="obs-content">
+            @Body
+        </div>
+    </main>
+
+</div>
+
+@code {
+    private SfSidebar _sidebar = default!;
+    private bool _sidebarOpen = false;
+
+    protected override void OnInitialized()
+    {
+        NavManager.LocationChanged += OnLocationChanged;
     }
 
-    .obs-appbar {
-        display: flex;
-        align-items: center;
-        padding: 0 20px;
-        height: 56px;
-        background: var(--obs-midnight, #0d1b2a);
-        border-bottom: 1px solid var(--obs-border, #2e4057);
-        position: sticky;
-        top: 0;
-        z-index: 100;
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        _sidebarOpen = false;
+        InvokeAsync(StateHasChanged);
     }
 
-    .obs-main {
-        flex: 1;
-        padding: 16px;
+    private void ToggleSidebar() => _sidebarOpen = !_sidebarOpen;
+    private void CloseSidebar() => _sidebarOpen = false;
+
+    private string IsActive(string href)
+    {
+        var current = "/" + NavManager.ToBaseRelativePath(NavManager.Uri);
+        return href == "/"
+            ? current == "/" ? "active" : string.Empty
+            : current.StartsWith(href, StringComparison.OrdinalIgnoreCase) ? "active" : string.Empty;
     }
-</style>
+
+    public void Dispose()
+    {
+        NavManager.LocationChanged -= OnLocationChanged;
+    }
+}

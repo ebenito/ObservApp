@@ -1,20 +1,205 @@
-#blazor-error-ui {
-    color-scheme: light only;
-    background: lightyellow;
-    bottom: 0;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-    display: none;
-    left: 0;
-    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
-    position: fixed;
-    width: 100%;
-    z-index: 1000;
+/* ============================================================
+   APPBAR
+   ============================================================ */
+.obs-appbar {
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+    padding:         0 16px;
+    height:          56px;
+    background:      var(--obs-midnight);
+    border-bottom:   1px solid var(--obs-border);
+    position:        sticky;
+    top:             0;
+    z-index:         1100;
+    padding-top:     var(--safe-area-top, 0px);
+    flex-shrink:     0;
 }
 
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
+.obs-appbar-left {
+    display:     flex;
+    align-items: center;
+    gap:         12px;
+}
+
+.obs-appbar-right {
+    display:     flex;
+    align-items: center;
+    gap:         8px;
+}
+
+/* Botón hamburguesa */
+.obs-hamburger {
+    display:        flex;
+    flex-direction: column;
+    justify-content: center;
+    gap:            5px;
+    width:          36px;
+    height:         36px;
+    background:     transparent;
+    border:         none;
+    cursor:         pointer;
+    padding:        6px;
+    border-radius:  var(--radius-sm);
+    transition:     background var(--transition);
+}
+
+.obs-hamburger:hover {
+    background: rgba(244,196,48,.12);
+}
+
+.obs-hamburger span {
+    display:       block;
+    width:         100%;
+    height:        2px;
+    background:    var(--obs-moon);
+    border-radius: 2px;
+    transition:    all var(--transition);
+}
+
+/* Brand */
+.obs-brand {
+    display:     flex;
+    align-items: center;
+    gap:         8px;
+}
+
+.obs-brand-star {
+    color:       var(--obs-star);
+    font-size:   1.1rem;
+    line-height: 1;
+}
+
+.obs-brand-name {
+    color:          var(--obs-moon);
+    font-weight:    700;
+    font-size:      1rem;
+    letter-spacing: -.01em;
+}
+
+.obs-version {
+    font-size:      0.68rem;
+    color:          var(--obs-comet);
+    letter-spacing: .04em;
+    opacity:        .6;
+}
+
+/* ============================================================
+   SHELL — contenedor sidebar + main
+   ============================================================ */
+.obs-shell {
+    display:    flex;
+    flex:       1;
+    min-height: calc(100vh - 56px);
+    position:   relative;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.obs-sidebar.e-sidebar {
+    background:   var(--obs-navy) !important;
+    border-right: 1px solid var(--obs-border) !important;
+    box-shadow:   4px 0 24px rgba(0,0,0,.4) !important;
+}
+
+.obs-sidebar-header {
+    display:         flex;
+    align-items:     center;
+    gap:             10px;
+    padding:         20px 16px 16px;
+    border-bottom:   1px solid var(--obs-border);
+}
+
+.obs-sidebar-close {
+    margin-left:  auto;
+    background:   transparent;
+    border:       none;
+    color:        var(--obs-comet);
+    cursor:       pointer;
+    font-size:    1rem;
+    padding:      4px 8px;
+    border-radius: var(--radius-sm);
+    transition:   all var(--transition);
+}
+
+.obs-sidebar-close:hover {
+    background: rgba(231,111,81,.15);
+    color:      var(--obs-mars);
+}
+
+/* Navegación */
+.obs-nav {
+    padding:    8px 0;
+    flex:       1;
+    overflow-y: auto;
+}
+
+.obs-nav-group-label {
+    font-size:      0.65rem;
+    font-weight:    700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color:          var(--obs-comet);
+    opacity:        .6;
+    padding:        16px 20px 6px;
+}
+
+.obs-nav-link {
+    display:         flex;
+    align-items:     center;
+    gap:             10px;
+    padding:         10px 16px;
+    margin:          2px 8px;
+    border-radius:   var(--radius-md);
+    color:           var(--obs-comet);
+    text-decoration: none;
+    font-size:       0.875rem;
+    font-weight:     500;
+    transition:      all var(--transition);
+    cursor:          pointer;
+}
+
+.obs-nav-link:hover {
+    background: rgba(244,196,48,.08);
+    color:      var(--obs-moon);
+    transform:  translateX(3px);
+}
+
+.obs-nav-link.active {
+    background: rgba(244,196,48,.14);
+    color:      var(--obs-star);
+    font-weight: 600;
+}
+
+.obs-nav-icon {
+    font-size:  1rem;
+    flex-shrink: 0;
+    width:      22px;
+    text-align: center;
+}
+
+/* Pie del sidebar */
+.obs-sidebar-footer {
+    padding:     16px 20px;
+    border-top:  1px solid var(--obs-border);
+    font-size:   0.65rem;
+    color:       var(--obs-comet);
+    opacity:     .4;
+    letter-spacing: .04em;
+}
+
+/* ============================================================
+   CONTENIDO PRINCIPAL
+   ============================================================ */
+.obs-main {
+    flex:       1;
+    overflow-y: auto;
+    min-width:  0;
+}
+
+.obs-content {
+    padding:    16px;
+    max-width:  900px;
+    margin:     0 auto;
+}
