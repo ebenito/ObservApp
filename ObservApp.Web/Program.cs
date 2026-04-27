@@ -29,7 +29,7 @@ app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(
-        typeof(ObservApp.Shared._Imports).Assembly,
-        typeof(ObservApp.Web.Client._Imports).Assembly);
+		typeof(ObservApp.Shared.AssemblyReference).Assembly,
+		typeof(ObservApp.Web.Client._Imports).Assembly);
 
 app.Run();

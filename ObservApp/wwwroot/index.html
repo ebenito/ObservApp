@@ -1,24 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,
+                                   user-scalable=no, viewport-fit=cover" />
     <title>ObservApp</title>
     <base href="/" />
-    <link rel="stylesheet" href="_content/ObservApp.Shared/app.css" />
+
+    <!-- Syncfusion Material Dark theme -->
+    <link href="_content/Syncfusion.Blazor.Themes/material3-dark.css" rel="stylesheet" />
+
+    <!-- App styles -->
     <link rel="stylesheet" href="app.css" />
     <link rel="stylesheet" href="ObservApp.styles.css" />
+
     <link rel="icon" href="data:,">
+
+    <!-- Syncfusion scripts -->
+    <script src="_content/Syncfusion.Blazor.Core/scripts/syncfusion-blazor.min.js"
+            type="text/javascript"></script>
 </head>
 
 <body>
-
     <div class="status-bar-safe-area"></div>
+    <div id="app">
+        <div class="app-loading">
+            <div class="loading-spinner"></div>
+            <p>Cargando ObservApp…</p>
+        </div>
+    </div>
 
-    <div id="app">Loading...</div>
+    <div id="blazor-error-ui">
+        Ocurrió un error no controlado.
+        <a href="" class="reload">Recargar</a>
+        <a class="dismiss">🗙</a>
+    </div>
 
     <script src="_framework/blazor.webview.js" autostart="false"></script>
-
 </body>
-
 </html>

@@ -1,3 +1,59 @@
+/* ============================================================
+   OBSERVAPP — Design Tokens
+   Paleta oscura inspirada en el cielo nocturno
+   Nota: fuentes del sistema — sin dependencias externas en MAUI Hybrid
+   ============================================================ */
+:root {
+    /* Colores primarios */
+    --obs-midnight: #0d1b2a; /* fondo principal */
+    --obs-navy: #1b2a3b; /* superficie de cards */
+    --obs-deep: #243447; /* superficie elevada */
+    --obs-border: #2e4057; /* bordes sutiles */
+    /* Colores de acento */
+    --obs-star: #f4c430; /* amarillo estrella — acción principal */
+    --obs-star-dim: #c9992a; /* variante oscura del acento */
+    --obs-nebula: #7b5ea7; /* púrpura — planificaciones */
+    --obs-aurora: #2ec4b6; /* teal — datos en tiempo real */
+    --obs-mars: #e76f51; /* naranja — alertas / error */
+    --obs-moon: #e2e8f0; /* blanco luna — texto primario */
+    --obs-comet: #94a3b8; /* gris — texto secundario */
+    /* Tipografía */
+    --font-sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    /* Espaciado y radios */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    /* Sombras */
+    --shadow-card: 0 1px 3px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.3);
+    --shadow-card-hover: 0 4px 12px rgba(0,0,0,.5), 0 8px 32px rgba(244,196,48,.08);
+    /* Transición estándar */
+    --transition: 200ms cubic-bezier(.4,0,.2,1);
+    /* Safe area (Android) */
+    --safe-area-top: max(0px, env(safe-area-inset-top));
+    --safe-area-bottom: max(0px, env(safe-area-inset-bottom));
+    --safe-area-left: max(0px, env(safe-area-inset-left));
+    --safe-area-right: max(0px, env(safe-area-inset-right));
+    --appbar-height: 64px;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+html, body {
+    font-family: var(--font-sans);
+    background-color: var(--obs-midnight);
+    color: var(--obs-moon);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+}
+
+/* ============================================================
+   SAFE AREA (Android notch)
+   ============================================================ */
 .status-bar-safe-area {
     display: none;
 }
@@ -8,12 +64,227 @@
         position: sticky;
         top: 0;
         height: env(safe-area-inset-top);
-        background-color: #f7f7f7;
         width: 100%;
         z-index: 1;
     }
+}
 
-    .flex-column, .navbar-brand {
-        padding-left: env(safe-area-inset-left);
+/* ============================================================
+   LOADING INICIAL
+   ============================================================ */
+.app-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: 16px;
+    color: var(--obs-comet);
+    font-size: 0.875rem;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--obs-border);
+    border-top: 3px solid var(--obs-star);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
     }
 }
+
+/* ============================================================
+   SYNCFUSION OVERRIDES — adaptados a la paleta oscura
+   ============================================================ */
+
+/* AppBar */
+.obs-appbar {
+    background: var(--obs-midnight) !important;
+    border-bottom: 1px solid var(--obs-border) !important;
+    padding-top: var(--safe-area-top);
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1300;
+}
+
+/* Sidebar / Drawer */
+.e-sidebar {
+    background: var(--obs-navy) !important;
+    border-right: 1px solid var(--obs-border) !important;
+}
+
+/* Cards */
+.obs-card {
+    background: var(--obs-navy);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow var(--transition), transform var(--transition);
+    padding: 16px 20px;
+    margin-bottom: 16px;
+}
+
+    .obs-card:hover {
+        box-shadow: var(--shadow-card-hover);
+        transform: translateY(-1px);
+    }
+
+.obs-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--obs-border);
+}
+
+.obs-card-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--obs-comet);
+}
+
+.obs-card-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    background: rgba(244,196,48,.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+/* Filas de datos (hora, coordenadas, etc.) */
+.stat-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--obs-border);
+}
+
+    .stat-row:last-child {
+        border-bottom: none;
+    }
+
+.stat-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--obs-comet);
+    min-width: 110px;
+    flex-shrink: 0;
+}
+
+.stat-value {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--obs-moon);
+    flex: 1;
+}
+
+/* Badge / chip de estado */
+.obs-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+}
+
+.obs-badge-star {
+    background: rgba(244,196,48,.15);
+    color: var(--obs-star);
+    border: 1px solid rgba(244,196,48,.3);
+}
+
+.obs-badge-aurora {
+    background: rgba(46,196,182,.12);
+    color: var(--obs-aurora);
+    border: 1px solid rgba(46,196,182,.25);
+}
+
+.obs-badge-nebula {
+    background: rgba(123,94,167,.15);
+    color: #b39ddb;
+    border: 1px solid rgba(123,94,167,.3);
+}
+
+.obs-badge-mars {
+    background: rgba(231,111,81,.12);
+    color: var(--obs-mars);
+    border: 1px solid rgba(231,111,81,.25);
+}
+
+/* Mapa embebido */
+.map-container {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--obs-border);
+    margin-top: 14px;
+}
+
+/* Datos numéricos — fuente monoespaciada */
+.data-mono {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: .02em;
+}
+
+/* Coordenadas como enlace */
+.coord-link {
+    color: var(--obs-aurora);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-bottom: 1px dashed rgba(46,196,182,.4);
+    transition: all var(--transition);
+}
+
+    .coord-link:hover {
+        color: #5eead4;
+        border-color: #5eead4;
+    }
+
+/* ============================================================
+   BLAZOR ERROR UI
+   ============================================================ */
+#blazor-error-ui {
+    background: #fef2f2;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0,0,0,.1);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    font-size: 0.875rem;
+    color: #991b1b;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }

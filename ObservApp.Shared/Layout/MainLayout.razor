@@ -1,9 +1,39 @@
-﻿@inherits LayoutComponentBase
+@inherits LayoutComponentBase
 
-@Body
+<div class="obs-layout">
+    <div class="obs-appbar">
+        <span style="color:var(--obs-star);font-size:1.2rem;">★</span>
+        <span style="color:var(--obs-moon);font-weight:700;margin-left:8px;">ObservApp</span>
+    </div>
 
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
+    <main class="obs-main">
+        @Body
+    </main>
 </div>
+
+<style>
+    .obs-layout {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background: var(--obs-midnight, #0d1b2a);
+        color: var(--obs-moon, #e2e8f0);
+    }
+
+    .obs-appbar {
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        height: 56px;
+        background: var(--obs-midnight, #0d1b2a);
+        border-bottom: 1px solid var(--obs-border, #2e4057);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .obs-main {
+        flex: 1;
+        padding: 16px;
+    }
+</style>

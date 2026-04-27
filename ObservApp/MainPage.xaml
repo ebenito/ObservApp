@@ -2,9 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:ObservApp"
-             xmlns:shared="clr-namespace:ObservApp.Shared;assembly=ObservApp.Shared"
+             xmlns:shared="clr-namespace:ObservApp;assembly=ObservApp.Shared"
              x:Class="ObservApp.MainPage"
-             BackgroundColor="{DynamicResource PageBackgroundColor}">
+             BackgroundColor="#0d1b2a">
 
     <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
         <BlazorWebView.RootComponents>
