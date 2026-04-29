@@ -1,23 +1,25 @@
 @inherits LayoutComponentBase
 @using Syncfusion.Blazor.Navigations
+@using Microsoft.Extensions.Localization
 @inject NavigationManager NavManager
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
 @implements IDisposable
 
 <!-- AppBar -->
 <div class="obs-appbar">
     <div class="obs-appbar-left">
-        <button class="obs-hamburger" @onclick="ToggleSidebar" aria-label="Menú">
+        <button class="obs-hamburger" @onclick="ToggleSidebar" aria-label="@L["Nav_Home"]">
             <span></span>
             <span></span>
             <span></span>
         </button>
         <div class="obs-brand">
             <span class="obs-brand-star">★</span>
-            <span class="obs-brand-name">ObservApp</span>
+            <span class="obs-brand-name">@L["AppName"]</span>
         </div>
     </div>
     <div class="obs-appbar-right">
-        <span class="obs-version">v1.0 · .NET 10</span>
+        <span class="obs-version">@L["AppVersion"]</span>
     </div>
 </div>
 
@@ -34,48 +36,48 @@
 
         <div class="obs-sidebar-header">
             <span class="obs-brand-star" style="font-size:1.4rem;">★</span>
-            <span class="obs-brand-name" style="font-size:1rem;">ObservApp</span>
-            <button class="obs-sidebar-close" @onclick="CloseSidebar" aria-label="Cerrar">✕</button>
+            <span class="obs-brand-name" style="font-size:1rem;">@L["AppName"]</span>
+            <button class="obs-sidebar-close" @onclick="CloseSidebar" aria-label="@L["Action_Close"]">✕</button>
         </div>
 
         <nav class="obs-nav">
 
-            <div class="obs-nav-group-label">Principal</div>
+            <div class="obs-nav-group-label">@L["Nav_Section_Main"]</div>
             <a class="obs-nav-link @IsActive("/")" href="/" @onclick="CloseSidebar">
-                <span class="obs-nav-icon">🏠</span> Inicio
+                <span class="obs-nav-icon">🏠</span> @L["Nav_Home"]
             </a>
             <a class="obs-nav-link @IsActive("/mapa")" href="/mapa" @onclick="CloseSidebar">
-                <span class="obs-nav-icon">🗺️</span> Mapa
+                <span class="obs-nav-icon">🗺️</span> @L["Nav_Map"]
             </a>
 
-            <div class="obs-nav-group-label">Planificación</div>
+            <div class="obs-nav-group-label">@L["Nav_Section_Planning"]</div>
             <a class="obs-nav-link @IsActive("/planificacion")" href="/planificacion" @onclick="CloseSidebar">
-                <span class="obs-nav-icon">📅</span> Nueva planificación
+                <span class="obs-nav-icon">📅</span> @L["Nav_Planning"]
             </a>
             <a class="obs-nav-link @IsActive("/efemerides")" href="/efemerides" @onclick="CloseSidebar">
-                <span class="obs-nav-icon">🌙</span> Efemérides
+                <span class="obs-nav-icon">🌙</span> @L["Nav_Ephemeris"]
             </a>
 
-            <div class="obs-nav-group-label">Herramientas</div>
+            <div class="obs-nav-group-label">@L["Nav_Section_Tools"]</div>
             <a class="obs-nav-link @IsActive("/calculadora-eclipse")" href="/calculadora-eclipse" @onclick="CloseSidebar">
-                <span class="obs-nav-icon">📷</span> Calculadora eclipse
+                <span class="obs-nav-icon">📷</span> @L["Nav_EclipseCalc"]
             </a>
 
-            <div class="obs-nav-group-label">Personal</div>
+            <div class="obs-nav-group-label">@L["Nav_Section_Personal"]</div>
             <a class="obs-nav-link @IsActive("/historial")" href="/historial" @onclick="CloseSidebar">
-                <span class="obs-nav-icon">📜</span> Historial
+                <span class="obs-nav-icon">📜</span> @L["Nav_History"]
             </a>
             <a class="obs-nav-link @IsActive("/configuracion")" href="/configuracion" @onclick="CloseSidebar">
-                <span class="obs-nav-icon">⚙️</span> Configuración
+                <span class="obs-nav-icon">⚙️</span> @L["Nav_Settings"]
             </a>
             <a class="obs-nav-link @IsActive("/about")" href="/about" @onclick="CloseSidebar">
-                <span class="obs-nav-icon">ℹ️</span> Acerca de
+                <span class="obs-nav-icon">ℹ️</span> @L["Nav_About"]
             </a>
 
         </nav>
 
         <div class="obs-sidebar-footer">
-            <span>ObservApp v1.0 · .NET 10 MAUI</span>
+            <span>@L["AppName"] @L["AppVersion"] MAUI</span>
         </div>
 
     </SfSidebar>

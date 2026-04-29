@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- App general -->
+  <data name="AppName" xml:space="preserve">
+    <value>ObservApp</value>
+  </data>
+  <data name="AppVersion" xml:space="preserve">
+    <value>v1.0 · .NET 10</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading ObservApp…</value>
+  </data>
+  <data name="Error_Unhandled" xml:space="preserve">
+    <value>An unhandled error has occurred.</value>
+  </data>
+  <data name="Action_Reload" xml:space="preserve">
+    <value>Reload</value>
+  </data>
+
+  <!-- Navigation -->
+  <data name="Nav_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Nav_Map" xml:space="preserve">
+    <value>Map</value>
+  </data>
+  <data name="Nav_Planning" xml:space="preserve">
+    <value>New planning</value>
+  </data>
+  <data name="Nav_Ephemeris" xml:space="preserve">
+    <value>Ephemeris</value>
+  </data>
+  <data name="Nav_EclipseCalc" xml:space="preserve">
+    <value>Eclipse calculator</value>
+  </data>
+  <data name="Nav_History" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="Nav_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Nav_About" xml:space="preserve">
+    <value>About</value>
+  </data>
+
+  <!-- Menu sections -->
+  <data name="Nav_Section_Main" xml:space="preserve">
+    <value>Main</value>
+  </data>
+  <data name="Nav_Section_Planning" xml:space="preserve">
+    <value>Planning</value>
+  </data>
+  <data name="Nav_Section_Tools" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="Nav_Section_Personal" xml:space="preserve">
+    <value>Personal</value>
+  </data>
+
+  <!-- Not found page -->
+  <data name="NotFound_Title" xml:space="preserve">
+    <value>Page not found</value>
+  </data>
+  <data name="NotFound_Message" xml:space="preserve">
+    <value>The content you are looking for does not exist or has been moved.</value>
+  </data>
+  <data name="NotFound_Back" xml:space="preserve">
+    <value>← Back to home</value>
+  </data>
+
+  <!-- Home page -->
+  <data name="Home_Title" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Home_Welcome" xml:space="preserve">
+    <value>Welcome to ObservApp</value>
+  </data>
+
+  <!-- Common actions -->
+  <data name="Action_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Action_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Action_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Action_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Action_Share" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="Action_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Action_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Action_Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Action_Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+
+  <!-- Status messages -->
+  <data name="Status_Loading" xml:space="preserve">
+    <value>Loading…</value>
+  </data>
+  <data name="Status_Saving" xml:space="preserve">
+    <value>Saving…</value>
+  </data>
+  <data name="Status_Success" xml:space="preserve">
+    <value>Operation completed successfully.</value>
+  </data>
+  <data name="Status_Error" xml:space="preserve">
+    <value>An error occurred. Please try again.</value>
+  </data>
+  <data name="Status_NoData" xml:space="preserve">
+    <value>No data available.</value>
+  </data>
+
+</root>

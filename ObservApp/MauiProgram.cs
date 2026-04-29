@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using ObservApp.Services;
 using Syncfusion.Blazor;
 
 namespace ObservApp;
@@ -11,17 +12,17 @@ public static class MauiProgram
 	{
 		var builder = MauiApp.CreateBuilder();
 
-		// ── Leer User Secrets (solo en DEBUG) y variables de entorno ────────
+		// ── Configuración — User Secrets (local) y variables de entorno ─────
 #if DEBUG
 		builder.Configuration.AddUserSecrets<App>();
 #endif
 		builder.Configuration.AddEnvironmentVariables();
 
-		// ── Licencia Syncfusion Community ────────────────────────────────────
+		// ── Licencia Syncfusion ──────────────────────────────────────────────
 		var syncfusionKey =
 			builder.Configuration["SYNCFUSION_LICENSE_KEY"] ??
 			builder.Configuration["SyncfusionLicenseKey"] ??
-			"";
+			string.Empty;
 
 		if (!string.IsNullOrEmpty(syncfusionKey))
 			Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusionKey);
@@ -41,12 +42,16 @@ public static class MauiProgram
 		// ── Syncfusion ───────────────────────────────────────────────────────
 		builder.Services.AddSyncfusionBlazor();
 
+		// ── Localización ─────────────────────────────────────────────────────
+		builder.Services.AddLocalization();
+		builder.Services.AddSingleton<LocalizationService>();
+
 		// ── HttpClient ───────────────────────────────────────────────────────
 		builder.Services.AddHttpClient();
 
 #if DEBUG
-        builder.Services.AddBlazorWebViewDeveloperTools();
-        builder.Logging.AddDebug();
+		builder.Services.AddBlazorWebViewDeveloperTools();
+		builder.Logging.AddDebug();
 #endif
 
 		// TODO: registrar servicios a medida que se vayan creando:
@@ -56,7 +61,6 @@ public static class MauiProgram
 		// builder.Services.AddSingleton<AstronomyService>();
 		// builder.Services.AddSingleton<ThemeService>();
 		// builder.Services.AddSingleton<ISettingsService, MauiSettingsService>();
-		// builder.Services.AddPlatformServices();
 
 		return builder.Build();
 	}
