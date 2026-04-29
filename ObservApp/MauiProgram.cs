@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Blazor;
 
@@ -8,12 +9,22 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
-		// ── Licencia Syncfusion Community ────────────────────────────────────
-		// TODO: mover a variable de entorno o Secret antes de publicar
-		Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(
-			Environment.GetEnvironmentVariable("SYNCFUSION_LICENSE_KEY") ?? "License Key AQUI");
-
 		var builder = MauiApp.CreateBuilder();
+
+		// ── Leer User Secrets (solo en DEBUG) y variables de entorno ────────
+#if DEBUG
+		builder.Configuration.AddUserSecrets<App>();
+#endif
+		builder.Configuration.AddEnvironmentVariables();
+
+		// ── Licencia Syncfusion Community ────────────────────────────────────
+		var syncfusionKey =
+			builder.Configuration["SYNCFUSION_LICENSE_KEY"] ??
+			builder.Configuration["SyncfusionLicenseKey"] ??
+			"";
+
+		if (!string.IsNullOrEmpty(syncfusionKey))
+			Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusionKey);
 
 		builder
 			.UseMauiApp<App>()
