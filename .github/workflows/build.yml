@@ -32,21 +32,15 @@ jobs:
       - name: Restore Windows
         run: dotnet restore ObservApp/ObservApp.csproj -p:TargetFramework=net10.0-windows10.0.26100.0 -p:RuntimeIdentifier=win-x64
 
-      - name: Build Android
-        run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release
-
       - name: Publish Android
-        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release --no-build
-
-      - name: Build Windows
-        run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore
+        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release --no-restore
 
       - name: Publish Windows
         run: >
           dotnet publish ObservApp/ObservApp.csproj
           --framework net10.0-windows10.0.26100.0
           --configuration Release
-          --no-build
+          --no-restore
           -p:AppxPackageSigningEnabled=false
           -p:WindowsPackageType=MSIX
 
