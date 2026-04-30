@@ -26,11 +26,14 @@ jobs:
       - name: Install MAUI workload
         run: dotnet workload install maui
 
-      - name: Restore all platforms
-        run: dotnet restore ObservApp/ObservApp.csproj -p:RuntimeIdentifier=win-x64
+      - name: Restore Android
+        run: dotnet restore ObservApp/ObservApp.csproj -p:TargetFramework=net10.0-android
+
+      - name: Restore Windows
+        run: dotnet restore ObservApp/ObservApp.csproj -p:TargetFramework=net10.0-windows10.0.26100.0 -p:RuntimeIdentifier=win-x64
 
       - name: Build Android
-        run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release --no-restore
+        run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release
 
       - name: Build Windows
         run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore
