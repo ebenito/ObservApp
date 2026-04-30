@@ -2,13 +2,24 @@ using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
 using ObservApp.Web.Client.Services;
 using ObservApp.Web.Components;
+using Syncfusion.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// ── Licencia Syncfusion ─────────────────────────────────────────
+var syncfusionKey =
+    builder.Configuration["SYNCFUSION_LICENSE_KEY"] ??
+    builder.Configuration["SyncfusionLicenseKey"] ??
+    string.Empty;
+
+if (!string.IsNullOrEmpty(syncfusionKey))
+    Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusionKey);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
+builder.Services.AddSyncfusionBlazor();
 builder.Services.AddLocalization();
 builder.Services.AddSingleton<ILocalizationService, WebLocalizationService>();
 builder.Services.AddSingleton<ISettingsService, WebSettingsService>();

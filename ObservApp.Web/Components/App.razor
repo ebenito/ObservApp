@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="/" />
     <ResourcePreloader />
+    <!-- Syncfusion Material Dark theme -->
+    <link href="_content/Syncfusion.Blazor.Themes/material3-dark.css" rel="stylesheet" />
     <link rel="stylesheet" href="_content/ObservApp.Shared/app.css" />
     <link rel="stylesheet" href="ObservApp.Web.styles.css" />
     <ImportMap />
@@ -14,6 +16,9 @@
 
 <body>
     <Routes @rendermode="InteractiveWebAssembly" />
+    <script src="_content/Syncfusion.Blazor.Core/scripts/syncfusion-blazor.min.js"
+            type="text/javascript"></script>
+    <script src="_content/ObservApp.Shared/loading-texts.js"></script>
     <script src="@Assets["_framework/blazor.web.js"]"></script>
 </body>
 

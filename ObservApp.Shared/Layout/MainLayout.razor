@@ -118,8 +118,9 @@
     {
         var code = Localization.CurrentLanguageCode;
         var dir  = code == "ar" ? "rtl" : "ltr";
-        await JS.InvokeVoidAsync("eval",
-            $"document.documentElement.lang='{code}';document.documentElement.dir='{dir}'");
+        // Actualiza lang/dir del <html> y persiste en localStorage para que
+        // el spinner de index.html use el idioma correcto en la próxima carga.
+        await JS.InvokeVoidAsync("ObservApp.applyLang", code, dir);
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
