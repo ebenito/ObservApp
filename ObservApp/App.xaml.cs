@@ -37,11 +37,6 @@ public partial class App : Application
 		{
 			Debug.WriteLine($"[App.OnWindowDestroying] {ex.Message}");
 		}
-		finally
-		{
-			// Garantía de cierre si Exit() no termina el proceso
-			Environment.Exit(0);
-		}
 	}
 
 	private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)

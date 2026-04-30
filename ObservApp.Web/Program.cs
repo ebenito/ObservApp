@@ -1,3 +1,6 @@
+using ObservApp.Shared.Services;
+using ObservApp.Shared.State;
+using ObservApp.Web.Client.Services;
 using ObservApp.Web.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
+
+builder.Services.AddLocalization();
+builder.Services.AddSingleton<ILocalizationService, WebLocalizationService>();
+builder.Services.AddSingleton<ISettingsService, WebSettingsService>();
+builder.Services.AddSingleton<AppState>();
 
 var app = builder.Build();
 

@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ObservApp.Services;
+using ObservApp.Shared.Services;
+using ObservApp.Shared.State;
 using Syncfusion.Blazor;
 
 namespace ObservApp;
@@ -45,6 +47,10 @@ public static class MauiProgram
 		// ── Localización ─────────────────────────────────────────────────────
 		builder.Services.AddLocalization();
 		builder.Services.AddSingleton<LocalizationService>();
+		builder.Services.AddSingleton<ILocalizationService>(
+			sp => sp.GetRequiredService<LocalizationService>());
+		builder.Services.AddSingleton<ISettingsService, MauiSettingsService>();
+		builder.Services.AddSingleton<AppState>();
 
 		// ── HttpClient ───────────────────────────────────────────────────────
 		builder.Services.AddHttpClient();

@@ -1,6 +1,7 @@
 @using Microsoft.AspNetCore.Components.Routing
 
-<Router AppAssembly="@typeof(Routes).Assembly">
+<Router AppAssembly="@typeof(Routes).Assembly"
+        AdditionalAssemblies="@_additionalAssemblies">
     <Found Context="routeData">
         <RouteView RouteData="@routeData"
                    DefaultLayout="@typeof(Layout.MainLayout)" />
@@ -23,3 +24,11 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+    [Parameter]
+    public IEnumerable<System.Reflection.Assembly>? AdditionalAssemblies { get; set; }
+
+    private IEnumerable<System.Reflection.Assembly> _additionalAssemblies =>
+        AdditionalAssemblies ?? [];
+}

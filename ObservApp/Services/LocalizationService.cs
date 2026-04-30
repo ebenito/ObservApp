@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using Microsoft.Maui.Storage;
+using ObservApp.Shared.Services;
 
 namespace ObservApp.Services;
 
@@ -7,13 +8,15 @@ namespace ObservApp.Services;
 /// Servicio para gestionar el idioma de la aplicación en tiempo de ejecución.
 /// Vive en el proyecto MAUI porque usa Preferences (API nativa).
 /// </summary>
-public class LocalizationService
+public class LocalizationService : ILocalizationService
 {
-	public static readonly IReadOnlyList<LanguageOption> SupportedLanguages = new List<LanguageOption>
+	private static readonly IReadOnlyList<LanguageOption> _supportedLanguages = new List<LanguageOption>
 	{
 		new("es", "Español", "🇪🇸"),
 		new("en", "English", "🇬🇧"),
 	};
+
+	public IReadOnlyList<LanguageOption> SupportedLanguages => _supportedLanguages;
 
 	public event Action? OnLanguageChanged;
 
@@ -54,8 +57,6 @@ public class LocalizationService
 	private static string GetDefaultLanguageCode()
 	{
 		var systemLang = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-		return SupportedLanguages.Any(l => l.Code == systemLang) ? systemLang : "es";
+		return _supportedLanguages.Any(l => l.Code == systemLang) ? systemLang : "es";
 	}
 }
-
-public record LanguageOption(string Code, string Name, string Flag);
