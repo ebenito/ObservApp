@@ -13,7 +13,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 
-  <!-- App general -->
+  <!-- App général -->
   <data name="AppName" xml:space="preserve">
     <value>ObservApp</value>
   </data>
@@ -21,138 +21,138 @@
     <value>v1.0 · .NET 10</value>
   </data>
   <data name="Loading" xml:space="preserve">
-    <value>Cargando ObservApp…</value>
+    <value>Chargement d'ObservApp…</value>
   </data>
   <data name="Error_Unhandled" xml:space="preserve">
-    <value>Ocurrió un error no controlado.</value>
+    <value>Une erreur inattendue s'est produite.</value>
   </data>
   <data name="Action_Reload" xml:space="preserve">
-    <value>Recargar</value>
+    <value>Recharger</value>
   </data>
 
-  <!-- Navegación -->
+  <!-- Navigation -->
   <data name="Nav_Home" xml:space="preserve">
-    <value>Inicio</value>
+    <value>Accueil</value>
   </data>
   <data name="Nav_Map" xml:space="preserve">
-    <value>Mapa</value>
+    <value>Carte</value>
   </data>
   <data name="Nav_Planning" xml:space="preserve">
-    <value>Nueva planificación</value>
+    <value>Nouvelle planification</value>
   </data>
   <data name="Nav_Ephemeris" xml:space="preserve">
-    <value>Efemérides</value>
+    <value>Éphémérides</value>
   </data>
   <data name="Nav_EclipseCalc" xml:space="preserve">
-    <value>Calculadora eclipse</value>
+    <value>Calculateur d'éclipse</value>
   </data>
   <data name="Nav_History" xml:space="preserve">
-    <value>Historial</value>
+    <value>Historique</value>
   </data>
   <data name="Nav_Settings" xml:space="preserve">
-    <value>Configuración</value>
+    <value>Paramètres</value>
   </data>
   <data name="Nav_About" xml:space="preserve">
-    <value>Acerca de</value>
+    <value>À propos</value>
   </data>
 
-  <!-- Secciones del menú -->
+  <!-- Sections du menu -->
   <data name="Nav_Section_Main" xml:space="preserve">
     <value>Principal</value>
   </data>
   <data name="Nav_Section_Planning" xml:space="preserve">
-    <value>Planificación</value>
+    <value>Planification</value>
   </data>
   <data name="Nav_Section_Tools" xml:space="preserve">
-    <value>Herramientas</value>
+    <value>Outils</value>
   </data>
   <data name="Nav_Section_Personal" xml:space="preserve">
-    <value>Personal</value>
+    <value>Personnel</value>
   </data>
 
-  <!-- Página no encontrada -->
+  <!-- Page non trouvée -->
   <data name="NotFound_Title" xml:space="preserve">
-    <value>Página no encontrada</value>
+    <value>Page non trouvée</value>
   </data>
   <data name="NotFound_Message" xml:space="preserve">
-    <value>El contenido que buscas no existe o ha sido movido.</value>
+    <value>Le contenu recherché n'existe pas ou a été déplacé.</value>
   </data>
   <data name="NotFound_Back" xml:space="preserve">
-    <value>← Volver al inicio</value>
+    <value>← Retour à l'accueil</value>
   </data>
 
-  <!-- Página de inicio -->
+  <!-- Page d'accueil -->
   <data name="Home_Title" xml:space="preserve">
-    <value>Inicio</value>
+    <value>Accueil</value>
   </data>
   <data name="Home_Welcome" xml:space="preserve">
-    <value>Bienvenido a ObservApp</value>
+    <value>Bienvenue sur ObservApp</value>
   </data>
 
-  <!-- Acciones comunes -->
+  <!-- Actions communes -->
   <data name="Action_Save" xml:space="preserve">
-    <value>Guardar</value>
+    <value>Enregistrer</value>
   </data>
   <data name="Action_Cancel" xml:space="preserve">
-    <value>Cancelar</value>
+    <value>Annuler</value>
   </data>
   <data name="Action_Delete" xml:space="preserve">
-    <value>Eliminar</value>
+    <value>Supprimer</value>
   </data>
   <data name="Action_Edit" xml:space="preserve">
-    <value>Editar</value>
+    <value>Modifier</value>
   </data>
   <data name="Action_Share" xml:space="preserve">
-    <value>Compartir</value>
+    <value>Partager</value>
   </data>
   <data name="Action_Refresh" xml:space="preserve">
-    <value>Actualizar</value>
+    <value>Actualiser</value>
   </data>
   <data name="Action_Close" xml:space="preserve">
-    <value>Cerrar</value>
+    <value>Fermer</value>
   </data>
   <data name="Action_Back" xml:space="preserve">
-    <value>Volver</value>
+    <value>Retour</value>
   </data>
   <data name="Action_Add" xml:space="preserve">
-    <value>Añadir</value>
+    <value>Ajouter</value>
   </data>
 
-  <!-- Mensajes de estado -->
+  <!-- Messages d'état -->
   <data name="Status_Loading" xml:space="preserve">
-    <value>Cargando…</value>
+    <value>Chargement…</value>
   </data>
   <data name="Status_Saving" xml:space="preserve">
-    <value>Guardando…</value>
+    <value>Enregistrement…</value>
   </data>
   <data name="Status_Success" xml:space="preserve">
-    <value>Operación completada con éxito.</value>
+    <value>Opération réussie.</value>
   </data>
   <data name="Status_Error" xml:space="preserve">
-    <value>Ha ocurrido un error. Por favor, inténtalo de nuevo.</value>
+    <value>Une erreur s'est produite. Veuillez réessayer.</value>
   </data>
   <data name="Status_NoData" xml:space="preserve">
-    <value>No hay datos disponibles.</value>
+    <value>Aucune donnée disponible.</value>
   </data>
 
-  <!-- Configuración -->
+  <!-- Paramètres -->
   <data name="Settings_Title" xml:space="preserve">
-    <value>Configuración</value>
+    <value>Paramètres</value>
   </data>
   <data name="Settings_Section_Language" xml:space="preserve">
-    <value>Idioma</value>
+    <value>Langue</value>
   </data>
   <data name="Settings_Language_Label" xml:space="preserve">
-    <value>Idioma de la aplicación</value>
+    <value>Langue de l'application</value>
   </data>
   <data name="Settings_Language_Hint" xml:space="preserve">
-    <value>Selecciona el idioma en que quieres usar ObservApp. Por defecto se usa el idioma del dispositivo.</value>
+    <value>Choisissez la langue dans laquelle vous souhaitez utiliser ObservApp. Par défaut, la langue de l'appareil est utilisée.</value>
   </data>
   <data name="Settings_Language_Applied" xml:space="preserve">
-    <value>Idioma aplicado correctamente.</value>
+    <value>Langue appliquée avec succès.</value>
   </data>
   <data name="Settings_Action_Apply" xml:space="preserve">
-    <value>Aplicar</value>
+    <value>Appliquer</value>
   </data>
 
 </root>

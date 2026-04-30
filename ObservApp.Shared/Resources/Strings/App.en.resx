@@ -135,4 +135,24 @@
     <value>No data available.</value>
   </data>
 
+  <!-- Settings -->
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Settings_Section_Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Settings_Language_Label" xml:space="preserve">
+    <value>Application language</value>
+  </data>
+  <data name="Settings_Language_Hint" xml:space="preserve">
+    <value>Choose the language you want to use in ObservApp. By default the device language is used.</value>
+  </data>
+  <data name="Settings_Language_Applied" xml:space="preserve">
+    <value>Language applied successfully.</value>
+  </data>
+  <data name="Settings_Action_Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+
 </root>

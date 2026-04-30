@@ -7,8 +7,12 @@ public class WebLocalizationService : ILocalizationService
 {
     private static readonly IReadOnlyList<LanguageOption> _supportedLanguages = new List<LanguageOption>
     {
-        new("es", "Español", "🇪🇸"),
-        new("en", "English", "🇬🇧"),
+        new("es", "Español",  "🇪🇸"),
+        new("en", "English",  "🇬🇧"),
+        new("fr", "Français", "🇫🇷"),
+        new("de", "Deutsch",  "🇩🇪"),
+        new("it", "Italiano", "🇮🇹"),
+        new("ar", "العربية",  "🇸🇦"),
     };
 
     public IReadOnlyList<LanguageOption> SupportedLanguages => _supportedLanguages;

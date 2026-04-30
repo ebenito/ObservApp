@@ -3,6 +3,8 @@
 @using Microsoft.Extensions.Localization
 @inject NavigationManager NavManager
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+@inject ILocalizationService Localization
+@inject IJSRuntime JS
 @implements IDisposable
 
 <!-- AppBar -->
@@ -97,6 +99,27 @@
     protected override void OnInitialized()
     {
         NavManager.LocationChanged += OnLocationChanged;
+        Localization.OnLanguageChanged += OnLanguageChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await ApplyHtmlLangAsync();
+    }
+
+    private async void OnLanguageChanged()
+    {
+        await ApplyHtmlLangAsync();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task ApplyHtmlLangAsync()
+    {
+        var code = Localization.CurrentLanguageCode;
+        var dir  = code == "ar" ? "rtl" : "ltr";
+        await JS.InvokeVoidAsync("eval",
+            $"document.documentElement.lang='{code}';document.documentElement.dir='{dir}'");
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -119,5 +142,6 @@
     public void Dispose()
     {
         NavManager.LocationChanged -= OnLocationChanged;
+        Localization.OnLanguageChanged -= OnLanguageChanged;
     }
 }

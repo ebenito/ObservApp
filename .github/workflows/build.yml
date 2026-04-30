@@ -32,32 +32,28 @@ jobs:
       - name: Restore Windows
         run: dotnet restore ObservApp/ObservApp.csproj -p:TargetFramework=net10.0-windows10.0.26100.0 -p:RuntimeIdentifier=win-x64
 
+      - name: Build Android
+        run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release
+
       - name: Publish Android
-        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release --no-restore
+        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release --no-restore --output ObservApp/publish/android
+
+      - name: Build Windows
+        run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore
 
       - name: Publish Windows
-        run: >
-          dotnet publish ObservApp/ObservApp.csproj
-          --framework net10.0-windows10.0.26100.0
-          --configuration Release
-          --no-restore
-          -p:AppxPackageSigningEnabled=false
-          -p:WindowsPackageType=MSIX
+        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore --output ObservApp/publish/windows
 
-      - name: Upload Android artifacts
+      - name: Upload Android APK
         uses: actions/upload-artifact@v4
         with:
           name: ObservApp-Android
-          path: |
-            ObservApp/bin/Release/net10.0-android/**/*.apk
-            ObservApp/bin/Release/net10.0-android/**/*.aab
+          path: ObservApp/publish/android/*.apk
           if-no-files-found: warn
 
-      - name: Upload Windows artifacts
+      - name: Upload Windows MSIX
         uses: actions/upload-artifact@v4
         with:
           name: ObservApp-Windows
-          path: |
-            ObservApp/bin/Release/net10.0-windows10.0.26100.0/**/*.msix
-            ObservApp/bin/Release/net10.0-windows10.0.26100.0/**/*.msixbundle
+          path: ObservApp/publish/windows/*.msix
           if-no-files-found: warn

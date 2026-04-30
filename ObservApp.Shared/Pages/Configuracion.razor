@@ -1,0 +1,95 @@
+@page "/configuracion"
+@inject ILocalizationService Localization
+@inject ISettingsService Settings
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+@implements IDisposable
+
+<PageTitle>@L["Settings_Title"]</PageTitle>
+
+<div class="cfg-page">
+
+    <!-- Cabecera -->
+    <div class="cfg-header">
+        <span class="cfg-header-icon">⚙️</span>
+        <h1 class="cfg-header-title">@L["Settings_Title"]</h1>
+    </div>
+
+    <!-- Sección idioma -->
+    <section class="cfg-section">
+
+        <h2 class="cfg-section-title">
+            <span class="cfg-section-icon">🌐</span>
+            @L["Settings_Section_Language"]
+        </h2>
+
+        <p class="cfg-hint">@L["Settings_Language_Hint"]</p>
+
+        <div class="cfg-lang-grid">
+            @foreach (var lang in Localization.SupportedLanguages)
+            {
+                <button class="cfg-lang-card @(lang.Code == _selectedCode ? "selected" : string.Empty)"
+                        @onclick="() => SelectLanguage(lang.Code)"
+                        aria-pressed="@(lang.Code == _selectedCode)">
+                    <span class="cfg-lang-flag">@lang.Flag</span>
+                    <span class="cfg-lang-name">@lang.Name</span>
+                    @if (lang.Code == _selectedCode)
+                    {
+                        <span class="cfg-lang-check" aria-hidden="true">✓</span>
+                    }
+                </button>
+            }
+        </div>
+
+        <!-- Feedback -->
+        @if (_showConfirmation)
+        {
+            <div class="cfg-toast cfg-toast--ok" role="status">
+                ✅ @L["Settings_Language_Applied"]
+            </div>
+        }
+
+    </section>
+
+</div>
+
+@code {
+    private string _selectedCode = string.Empty;
+    private bool _showConfirmation;
+
+    protected override void OnInitialized()
+    {
+        _selectedCode = Localization.CurrentLanguageCode;
+        Localization.OnLanguageChanged += OnLanguageChanged;
+    }
+
+    private void SelectLanguage(string code)
+    {
+        if (code == Localization.CurrentLanguageCode)
+            return;
+
+        _selectedCode = code;
+        Settings.SetLanguage(code);
+        Localization.SetLanguage(code);
+
+        _showConfirmation = true;
+        StateHasChanged();
+
+        // Ocultar el feedback tras 2,5 s
+        _ = HideConfirmationAsync();
+    }
+
+    private async Task HideConfirmationAsync()
+    {
+        await Task.Delay(2500);
+        _showConfirmation = false;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void OnLanguageChanged()
+    {
+        _selectedCode = Localization.CurrentLanguageCode;
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose() => Localization.OnLanguageChanged -= OnLanguageChanged;
+}

@@ -2,6 +2,19 @@ h1:focus {
     outline: none;
 }
 
+/* ── RTL — árabe ───────────────────────────────────────────────────────────── */
+:lang(ar) {
+    direction:   rtl;
+    text-align:  right;
+}
+
+/* Invertir el sidebar y la AppBar en RTL */
+:lang(ar) .obs-appbar           { flex-direction: row-reverse; }
+:lang(ar) .obs-appbar-left      { flex-direction: row-reverse; }
+:lang(ar) .obs-nav-link         { flex-direction: row-reverse; }
+:lang(ar) .obs-sidebar-header   { flex-direction: row-reverse; }
+:lang(ar) .obs-sidebar-close    { margin-left: unset; margin-right: auto; }
+
 .valid.modified:not([type=checkbox]) {
     outline: 1px solid #26b050;
 }
