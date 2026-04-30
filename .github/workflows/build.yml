@@ -36,24 +36,34 @@ jobs:
         run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release
 
       - name: Publish Android
-        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release --no-restore --output ObservApp/publish/android
+        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release --no-build
 
       - name: Build Windows
         run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore
 
       - name: Publish Windows
-        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore --output ObservApp/publish/windows
+        run: >
+          dotnet publish ObservApp/ObservApp.csproj
+          --framework net10.0-windows10.0.26100.0
+          --configuration Release
+          --no-build
+          -p:AppxPackageSigningEnabled=false
+          -p:WindowsPackageType=MSIX
 
-      - name: Upload Android APK
+      - name: Upload Android artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ObservApp-Android
-          path: ObservApp/publish/android/*.apk
+          path: |
+            ObservApp/bin/Release/net10.0-android/**/*.apk
+            ObservApp/bin/Release/net10.0-android/**/*.aab
           if-no-files-found: warn
 
-      - name: Upload Windows MSIX
+      - name: Upload Windows artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ObservApp-Windows
-          path: ObservApp/publish/windows/*.msix
+          path: |
+            ObservApp/bin/Release/net10.0-windows10.0.26100.0/**/*.msix
+            ObservApp/bin/Release/net10.0-windows10.0.26100.0/**/*.msixbundle
           if-no-files-found: warn
