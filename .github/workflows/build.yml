@@ -26,11 +26,28 @@ jobs:
       - name: Install MAUI workload
         run: dotnet workload install maui
 
-      - name: Restore
-        run: dotnet restore ObservApp/ObservApp.csproj
+      - name: Restore Android
+        run: dotnet restore ObservApp/ObservApp.csproj -p:TargetFramework=net10.0-android
+
+      - name: Restore Windows
+        run: dotnet restore ObservApp/ObservApp.csproj -p:TargetFramework=net10.0-windows10.0.26100.0 -p:RuntimeIdentifier=win-x64
 
       - name: Build Android
         run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release --no-restore
 
       - name: Build Windows
         run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore
+
+      - name: Upload Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ObservApp-Android
+          path: ObservApp/bin/Release/net10.0-android/*.apk
+          if-no-files-found: warn
+
+      - name: Upload Windows MSIX
+        uses: actions/upload-artifact@v4
+        with:
+          name: ObservApp-Windows
+          path: ObservApp/bin/Release/net10.0-windows10.0.26100.0/win-x64/**/*.msix
+          if-no-files-found: warn
