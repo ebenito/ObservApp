@@ -6,6 +6,15 @@ using Syncfusion.Blazor;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
+// ── Licencia Syncfusion — debe registrarse también en el cliente WASM ────────
+var syncfusionKey =
+    builder.Configuration["SYNCFUSION_LICENSE_KEY"] ??
+    builder.Configuration["SyncfusionLicenseKey"] ??
+    string.Empty;
+
+if (!string.IsNullOrEmpty(syncfusionKey))
+    Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusionKey);
+
 builder.Services.AddSyncfusionBlazor();
 builder.Services.AddLocalization();
 builder.Services.AddSingleton<ILocalizationService, WebLocalizationService>();

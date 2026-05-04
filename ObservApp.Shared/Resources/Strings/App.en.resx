@@ -155,4 +155,91 @@
     <value>Apply</value>
   </data>
 
+<!-- Calculators hub -->
+  <data name="Calc_Hub_Title" xml:space="preserve">
+    <value>Calculators</value>
+  </data>
+  <data name="Calc_Hub_Subtitle" xml:space="preserve">
+    <value>Calculation tools for astrophotography and visual observation</value>
+  </data>
+  <data name="Calc_Badge_Available" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="Calc_Badge_Soon" xml:space="preserve">
+    <value>Coming soon</value>
+  </data>
+  <data name="Calc_Eclipse_Title" xml:space="preserve">
+    <value>Eclipse exposure</value>
+  </data>
+  <data name="Calc_Eclipse_Desc" xml:space="preserve">
+    <value>Calculate exposure times for each eclipse phase using the NASA Q formula</value>
+  </data>
+  <data name="Calc_FOV_Title" xml:space="preserve">
+    <value>Field of view (FOV)</value>
+  </data>
+  <data name="Calc_FOV_Desc" xml:space="preserve">
+    <value>Calculate true and apparent field of view for your telescope-eyepiece combinations</value>
+  </data>
+  <data name="Calc_Magnification_Title" xml:space="preserve">
+    <value>Magnification &amp; exit pupil</value>
+  </data>
+  <data name="Calc_Magnification_Desc" xml:space="preserve">
+    <value>Determine optimal magnification and exit pupil for your telescope and eyepiece</value>
+  </data>
+  <data name="Calc_Resolution_Title" xml:space="preserve">
+    <value>Resolution limit</value>
+  </data>
+  <data name="Calc_Resolution_Desc" xml:space="preserve">
+    <value>Calculate the theoretical resolution limit (Rayleigh and Dawes) of your telescope</value>
+  </data>
+  <data name="Calc_PlateScale_Title" xml:space="preserve">
+    <value>Plate scale</value>
+  </data>
+  <data name="Calc_PlateScale_Desc" xml:space="preserve">
+    <value>Get the plate scale in ''/px and total field of your astrophotography setup</value>
+  </data>
+
+  <!-- Eclipse calculator -->
+  <data name="Calc_Eclipse_Formula" xml:space="preserve">
+    <value>NASA formula: t = f² / (ISO · 2^Q)</value>
+  </data>
+  <data name="Calc_Eclipse_SafetyNote" xml:space="preserve">
+    <value>For partial and annular phases you need a certified solar filter. This calculator is a guide only; always bracket your exposures.</value>
+  </data>
+  <data name="Calc_Eclipse_Section_Input" xml:space="preserve">
+    <value>Equipment data</value>
+  </data>
+  <data name="Calc_Eclipse_Section_Results" xml:space="preserve">
+    <value>Suggested speeds</value>
+  </data>
+  <data name="Calc_Eclipse_Focal" xml:space="preserve">
+    <value>Focal length</value>
+  </data>
+  <data name="Calc_Eclipse_Aperture" xml:space="preserve">
+    <value>Aperture</value>
+  </data>
+  <data name="Calc_Eclipse_Sensor" xml:space="preserve">
+    <value>Sensor</value>
+  </data>
+  <data name="Calc_Eclipse_SolarDiam" xml:space="preserve">
+    <value>Sun diameter on sensor</value>
+  </data>
+  <data name="Calc_Eclipse_SensorCoverage" xml:space="preserve">
+    <value>% of sensor width</value>
+  </data>
+  <data name="Calc_Eclipse_Col_Phase" xml:space="preserve">
+    <value>Phenomenon</value>
+  </data>
+  <data name="Calc_Eclipse_Col_Exact" xml:space="preserve">
+    <value>Exact time</value>
+  </data>
+  <data name="Calc_Eclipse_Col_Suggested" xml:space="preserve">
+    <value>Suggested</value>
+  </data>
+  <data name="Calc_Eclipse_FillFields" xml:space="preserve">
+    <value>Enter your equipment data to see the suggested exposure times.</value>
+  </data>
+  <data name="Calc_Eclipse_BracketingNote" xml:space="preserve">
+    <value>Always bracket ±1 EV. Times are estimates only.</value>
+  </data>
 </root>

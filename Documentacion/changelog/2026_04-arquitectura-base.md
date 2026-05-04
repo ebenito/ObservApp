@@ -1,7 +1,7 @@
 # Arquitectura base — Capa de abstracción, estado global y mejoras
 
 > **Rama:** `master`
-> **Fecha:** 2025
+> **Fecha:** 2026-04-30
 > **Scope:** `ObservApp.Shared` · `ObservApp` · `ObservApp.Web` · `ObservApp.Web.Client`
 
 ---

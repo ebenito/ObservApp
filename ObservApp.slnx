@@ -4,7 +4,7 @@
     <File Path="Documentacion/readme.md" />
   </Folder>
   <Folder Name="/Elementos de la solución/changelog/">
-    <File Path="Documentacion/changelog/2025-arquitectura-base.md" />
+    <File Path="Documentacion/changelog/2026_04-arquitectura-base.md" />
   </Folder>
   <Project Path="ObservApp.Shared/ObservApp.Shared.csproj" />
   <Project Path="ObservApp.Web.Client/ObservApp.Web.Client.csproj" />

@@ -1,0 +1,166 @@
+﻿/* ============================================================
+   HUB DE CALCULADORAS
+   ============================================================ */
+
+.calchub-page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+}
+
+/* Cabecera */
+.calchub-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.calchub-header-icon {
+    font-size: 2.4rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+
+.calchub-header-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--obs-moon);
+    margin: 0 0 4px;
+}
+
+.calchub-header-subtitle {
+    font-size: 0.85rem;
+    color: var(--obs-comet);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Grid de tarjetas */
+.calchub-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Tarjeta base */
+.calchub-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    background: var(--obs-navy);
+    border: 2px solid var(--obs-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: border-color var(--transition), background var(--transition), box-shadow var(--transition), transform var(--transition);
+    cursor: default;
+}
+
+/* Tarjeta disponible — es un enlace, tiene hover */
+a.calchub-card--available {
+    cursor: pointer;
+}
+
+    a.calchub-card--available:hover {
+        border-color: var(--obs-star);
+        background: rgba(244, 196, 48, .06);
+        box-shadow: var(--shadow-card-hover);
+        transform: translateY(-2px);
+    }
+
+/* Tarjeta próximamente — aspecto atenuado */
+.calchub-card--soon {
+    opacity: .6;
+}
+
+/* Icono envuelto en círculo */
+.calchub-card-icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+}
+
+.calchub-card-icon-wrap--star {
+    background: rgba(244, 196, 48, .14);
+}
+
+.calchub-card-icon-wrap--aurora {
+    background: rgba(46, 196, 182, .12);
+}
+
+.calchub-card-icon-wrap--nebula {
+    background: rgba(123, 94, 167, .15);
+}
+
+.calchub-card-icon-wrap--mars {
+    background: rgba(231, 111, 81, .12);
+}
+
+.calchub-card-icon-wrap--comet {
+    background: rgba(148, 163, 184, .12);
+}
+
+/* Cuerpo de texto */
+.calchub-card-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.calchub-card-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--obs-moon);
+    margin: 4px 0 6px;
+}
+
+.calchub-card-desc {
+    font-size: 0.80rem;
+    color: var(--obs-comet);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Badge de estado */
+.calchub-card-badge {
+    display: inline-block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-bottom: 2px;
+}
+
+.calchub-card-badge--available {
+    background: rgba(244, 196, 48, .15);
+    color: var(--obs-star);
+    border: 1px solid rgba(244, 196, 48, .35);
+}
+
+.calchub-card-badge--soon {
+    background: rgba(148, 163, 184, .10);
+    color: var(--obs-comet);
+    border: 1px solid rgba(148, 163, 184, .20);
+}
+
+/* Flecha en tarjetas disponibles */
+.calchub-card-arrow {
+    font-size: 1.2rem;
+    color: var(--obs-star);
+    flex-shrink: 0;
+    opacity: .7;
+    transition: opacity var(--transition), transform var(--transition);
+}
+
+a.calchub-card--available:hover .calchub-card-arrow {
+    opacity: 1;
+    transform: translateX(4px);
+}

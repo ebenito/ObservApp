@@ -1,0 +1,328 @@
+﻿/* ============================================================
+   CALCULADORA DE EXPOSICIÓN PARA ECLIPSES
+   ============================================================ */
+
+.eclipse-page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px 16px 48px;
+}
+
+/* Navegación de vuelta */
+.eclipse-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--obs-aurora);
+    text-decoration: none;
+    margin-bottom: 16px;
+    opacity: .8;
+    transition: opacity var(--transition), transform var(--transition);
+}
+
+    .eclipse-back:hover {
+        opacity: 1;
+        transform: translateX(-3px);
+    }
+
+/* Cabecera */
+.eclipse-header-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.eclipse-header-icon {
+    font-size: 2rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 3px;
+}
+
+.eclipse-header-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--obs-moon);
+    margin: 0 0 4px;
+}
+
+.eclipse-header-subtitle {
+    font-size: 0.78rem;
+    font-family: var(--font-mono);
+    color: var(--obs-star);
+    margin: 0;
+    background: rgba(244,196,48,.08);
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    display: inline-block;
+}
+
+/* Aviso de seguridad */
+.eclipse-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: rgba(231,111,81,.10);
+    border: 1px solid rgba(231,111,81,.30);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    margin-bottom: 20px;
+    font-size: 0.82rem;
+    color: var(--obs-mars);
+    line-height: 1.5;
+}
+
+.eclipse-warning-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.eclipse-warning p {
+    margin: 0;
+}
+
+/* Secciones */
+.eclipse-section {
+    background: var(--obs-navy);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.eclipse-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--obs-comet);
+    margin: 0 0 18px;
+}
+
+/* Campos de entrada */
+.eclipse-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+}
+
+.eclipse-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.eclipse-field--full {
+    grid-column: 1 / -1;
+}
+
+.eclipse-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--obs-comet);
+}
+
+.eclipse-unit {
+    font-weight: 400;
+    text-transform: none;
+    color: var(--obs-comet);
+    opacity: .6;
+}
+
+.eclipse-input,
+.eclipse-select {
+    background: var(--obs-deep);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-sm);
+    color: var(--obs-moon);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color var(--transition);
+    appearance: none;
+}
+
+    .eclipse-input:focus,
+    .eclipse-select:focus {
+        outline: none;
+        border-color: var(--obs-star);
+        box-shadow: 0 0 0 2px rgba(244,196,48,.15);
+    }
+
+/* Grid de sensores */
+.eclipse-sensor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 8px;
+}
+
+.eclipse-sensor-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 10px 12px;
+    background: var(--obs-deep);
+    border: 2px solid var(--obs-border);
+    border-radius: var(--radius-md);
+    color: var(--obs-moon);
+    cursor: pointer;
+    transition: border-color var(--transition), background var(--transition);
+    text-align: left;
+}
+
+    .eclipse-sensor-btn:hover {
+        border-color: rgba(244,196,48,.4);
+        background: rgba(244,196,48,.05);
+    }
+
+    .eclipse-sensor-btn.selected {
+        border-color: var(--obs-star);
+        background: rgba(244,196,48,.10);
+        box-shadow: 0 0 0 1px var(--obs-star);
+    }
+
+.eclipse-sensor-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.eclipse-sensor-dim {
+    font-size: 0.70rem;
+    font-family: var(--font-mono);
+    color: var(--obs-comet);
+}
+
+/* Datos ópticos */
+.eclipse-optics {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: var(--obs-deep);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--obs-border);
+}
+
+.eclipse-optic-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.eclipse-optic-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--obs-comet);
+}
+
+.eclipse-optic-value {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--obs-aurora);
+}
+
+/* Tabla de resultados */
+.eclipse-table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--obs-border);
+}
+
+.eclipse-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+}
+
+    .eclipse-table thead tr {
+        background: var(--obs-deep);
+    }
+
+    .eclipse-table th {
+        padding: 10px 14px;
+        text-align: left;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: var(--obs-comet);
+        border-bottom: 1px solid var(--obs-border);
+        white-space: nowrap;
+    }
+
+    .eclipse-table td {
+        padding: 9px 14px;
+        border-bottom: 1px solid rgba(46,64,87,.5);
+        color: var(--obs-moon);
+    }
+
+    .eclipse-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+/* Filas de totalidad */
+.eclipse-row--totality td:first-child {
+    border-left: 3px solid var(--obs-aurora);
+}
+
+/* Filas parciales */
+.eclipse-row--partial td:first-child {
+    border-left: 3px solid var(--obs-comet);
+}
+
+.eclipse-table tbody tr:hover td {
+    background: rgba(244,196,48,.04);
+}
+
+/* Celda fase con dot de color */
+.eclipse-td-phase {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.eclipse-phase-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.eclipse-td-mono {
+    font-family: var(--font-mono);
+    color: var(--obs-comet);
+    text-align: right;
+}
+
+.eclipse-td-suggested {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--obs-star);
+    text-align: right;
+}
+
+/* Nota al pie */
+.eclipse-hint,
+.eclipse-footer-note {
+    font-size: 0.78rem;
+    color: var(--obs-comet);
+    text-align: center;
+    margin-top: 14px;
+    font-style: italic;
+}

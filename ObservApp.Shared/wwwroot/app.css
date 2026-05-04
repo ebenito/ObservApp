@@ -1,5 +1,42 @@
-h1:focus {
-    outline: none;
+/* ============================================================
+   OBSERVAPP — Design Tokens
+   ============================================================ */
+:root {
+    --obs-midnight: #0d1b2a;
+    --obs-navy: #1b2a3b;
+    --obs-deep: #243447;
+    --obs-border: #2e4057;
+    --obs-star: #f4c430;
+    --obs-star-dim: #c9992a;
+    --obs-nebula: #7b5ea7;
+    --obs-aurora: #2ec4b6;
+    --obs-mars: #e76f51;
+    --obs-moon: #e2e8f0;
+    --obs-comet: #94a3b8;
+    --font-sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --shadow-card: 0 1px 3px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.3);
+    --shadow-card-hover: 0 4px 12px rgba(0,0,0,.5), 0 8px 32px rgba(244,196,48,.08);
+    --transition: 200ms cubic-bezier(.4,0,.2,1);
+    --safe-area-top: max(0px, env(safe-area-inset-top));
+    --safe-area-bottom: max(0px, env(safe-area-inset-bottom));
+    --safe-area-left: max(0px, env(safe-area-inset-left));
+    --safe-area-right: max(0px, env(safe-area-inset-right));
+}
+
+/* Base */
+html, body {
+    font-family: var(--font-sans);
+    background-color: var(--obs-midnight);
+    color: var(--obs-moon);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
 }
 
 /* ── RTL — árabe ───────────────────────────────────────────────────────────── */

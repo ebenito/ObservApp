@@ -1,0 +1,80 @@
+﻿@page "/calculadoras"
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+
+<PageTitle>@L["Calc_Hub_Title"]</PageTitle>
+
+<div class="calchub-page">
+
+    <div class="calchub-header">
+        <span class="calchub-header-icon">🔭</span>
+        <div>
+            <h1 class="calchub-header-title">@L["Calc_Hub_Title"]</h1>
+            <p class="calchub-header-subtitle">@L["Calc_Hub_Subtitle"]</p>
+        </div>
+    </div>
+
+    <div class="calchub-grid">
+
+        <!-- ① Calculadora de exposición para eclipses — DISPONIBLE -->
+        <a class="calchub-card calchub-card--available" href="/calculadoras/eclipse">
+            <div class="calchub-card-icon-wrap calchub-card-icon-wrap--star">
+                <span class="calchub-card-icon">📷</span>
+            </div>
+            <div class="calchub-card-body">
+                <span class="calchub-card-badge calchub-card-badge--available">@L["Calc_Badge_Available"]</span>
+                <h2 class="calchub-card-title">@L["Calc_Eclipse_Title"]</h2>
+                <p class="calchub-card-desc">@L["Calc_Eclipse_Desc"]</p>
+            </div>
+            <span class="calchub-card-arrow">→</span>
+        </a>
+
+        <!-- ② Calculadora de campo visual (FOV) — PRÓXIMAMENTE -->
+        <div class="calchub-card calchub-card--soon">
+            <div class="calchub-card-icon-wrap calchub-card-icon-wrap--aurora">
+                <span class="calchub-card-icon">🌌</span>
+            </div>
+            <div class="calchub-card-body">
+                <span class="calchub-card-badge calchub-card-badge--soon">@L["Calc_Badge_Soon"]</span>
+                <h2 class="calchub-card-title">@L["Calc_FOV_Title"]</h2>
+                <p class="calchub-card-desc">@L["Calc_FOV_Desc"]</p>
+            </div>
+        </div>
+
+        <!-- ③ Calculadora de aumento y salida de pupila — PRÓXIMAMENTE -->
+        <div class="calchub-card calchub-card--soon">
+            <div class="calchub-card-icon-wrap calchub-card-icon-wrap--nebula">
+                <span class="calchub-card-icon">🔬</span>
+            </div>
+            <div class="calchub-card-body">
+                <span class="calchub-card-badge calchub-card-badge--soon">@L["Calc_Badge_Soon"]</span>
+                <h2 class="calchub-card-title">@L["Calc_Magnification_Title"]</h2>
+                <p class="calchub-card-desc">@L["Calc_Magnification_Desc"]</p>
+            </div>
+        </div>
+
+        <!-- ④ Calculadora de límite de resolución — PRÓXIMAMENTE -->
+        <div class="calchub-card calchub-card--soon">
+            <div class="calchub-card-icon-wrap calchub-card-icon-wrap--mars">
+                <span class="calchub-card-icon">⚡</span>
+            </div>
+            <div class="calchub-card-body">
+                <span class="calchub-card-badge calchub-card-badge--soon">@L["Calc_Badge_Soon"]</span>
+                <h2 class="calchub-card-title">@L["Calc_Resolution_Title"]</h2>
+                <p class="calchub-card-desc">@L["Calc_Resolution_Desc"]</p>
+            </div>
+        </div>
+
+        <!-- ⑤ Calculadora de escala de placa — PRÓXIMAMENTE -->
+        <div class="calchub-card calchub-card--soon">
+            <div class="calchub-card-icon-wrap calchub-card-icon-wrap--comet">
+                <span class="calchub-card-icon">📐</span>
+            </div>
+            <div class="calchub-card-body">
+                <span class="calchub-card-badge calchub-card-badge--soon">@L["Calc_Badge_Soon"]</span>
+                <h2 class="calchub-card-title">@L["Calc_PlateScale_Title"]</h2>
+                <p class="calchub-card-desc">@L["Calc_PlateScale_Desc"]</p>
+            </div>
+        </div>
+
+    </div>
+</div>

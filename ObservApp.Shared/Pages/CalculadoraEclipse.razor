@@ -1,0 +1,244 @@
+﻿@page "/calculadoras/eclipse"
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+
+<PageTitle>@L["Calc_Eclipse_Title"]</PageTitle>
+
+<div class="eclipse-page">
+
+    <!-- Cabecera con back -->
+    <div class="eclipse-header">
+        <a class="eclipse-back" href="/calculadoras">← @L["Action_Back"]</a>
+        <div class="eclipse-header-main">
+            <span class="eclipse-header-icon">📷</span>
+            <div>
+                <h1 class="eclipse-header-title">@L["Calc_Eclipse_Title"]</h1>
+                <p class="eclipse-header-subtitle">@L["Calc_Eclipse_Formula"]</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aviso de seguridad -->
+    <div class="eclipse-warning">
+        <span class="eclipse-warning-icon">⚠️</span>
+        <p>@L["Calc_Eclipse_SafetyNote"]</p>
+    </div>
+
+    <!-- ── Sección de entrada ─────────────────────────────── -->
+    <section class="eclipse-section">
+        <h2 class="eclipse-section-title">
+            <span>⚙️</span> @L["Calc_Eclipse_Section_Input"]
+        </h2>
+
+        <div class="eclipse-fields">
+
+            <!-- Focal -->
+            <div class="eclipse-field">
+                <label class="eclipse-label">@L["Calc_Eclipse_Focal"] <span class="eclipse-unit">mm</span></label>
+                <input class="eclipse-input" type="number" min="50" max="5000" step="1"
+                       value="@_focal"
+                       @oninput="e => { _focal = double.TryParse(e.Value?.ToString(), out var v) ? v : _focal; Calculate(); }" />
+            </div>
+
+            <!-- Apertura -->
+            <div class="eclipse-field">
+                <label class="eclipse-label">@L["Calc_Eclipse_Aperture"] <span class="eclipse-unit">f/…</span></label>
+                <input class="eclipse-input" type="number" min="1.4" max="32" step="0.1"
+                       value="@_aperture"
+                       @oninput="e => { _aperture = double.TryParse(e.Value?.ToString(), out var v) ? v : _aperture; Calculate(); }" />
+            </div>
+
+            <!-- ISO -->
+            <div class="eclipse-field">
+                <label class="eclipse-label">ISO</label>
+                <select class="eclipse-select"
+                        @onchange="e => { _iso = int.TryParse(e.Value?.ToString(), out var v) ? v : _iso; Calculate(); }">
+                    @foreach (var iso in _isoValues)
+                    {
+                        <option value="@iso" selected="@(_iso == iso)">@iso</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Sensor -->
+            <div class="eclipse-field eclipse-field--full">
+                <label class="eclipse-label">@L["Calc_Eclipse_Sensor"]</label>
+                <div class="eclipse-sensor-grid">
+                    @foreach (var s in _sensors)
+                    {
+                        <button class="eclipse-sensor-btn @(_selectedSensor == s.Key ? "selected" : "")"
+                                @onclick="() => SelectSensor(s.Key)">
+                            <span class="eclipse-sensor-name">@s.Value.Name</span>
+                            <span class="eclipse-sensor-dim">@s.Value.Display</span>
+                        </button>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ── Resultados ─────────────────────────────────────── -->
+    <section class="eclipse-section">
+        <h2 class="eclipse-section-title">
+            <span>📊</span> @L["Calc_Eclipse_Section_Results"]
+        </h2>
+
+        @if (_results.Count == 0)
+        {
+            <p class="eclipse-hint">@L["Calc_Eclipse_FillFields"]</p>
+        }
+        else
+        {
+            <!-- Datos ópticos -->
+            <div class="eclipse-optics">
+                <div class="eclipse-optic-item">
+                    <span class="eclipse-optic-label">@L["Calc_Eclipse_SolarDiam"]</span>
+                    <span class="eclipse-optic-value">@_solarDiamMm.ToString("F2") mm</span>
+                </div>
+                <div class="eclipse-optic-item">
+                    <span class="eclipse-optic-label">@L["Calc_Eclipse_SensorCoverage"]</span>
+                    <span class="eclipse-optic-value">@_solarPercent.ToString("F1")%</span>
+                </div>
+                <div class="eclipse-optic-item">
+                    <span class="eclipse-optic-label">FOV</span>
+                    <span class="eclipse-optic-value">@_fovDeg.ToString("F2")°</span>
+                </div>
+            </div>
+
+            <!-- Tabla de velocidades -->
+            <div class="eclipse-table-wrap">
+                <table class="eclipse-table">
+                    <thead>
+                        <tr>
+                            <th>@L["Calc_Eclipse_Col_Phase"]</th>
+                            <th>Q</th>
+                            <th>@L["Calc_Eclipse_Col_Exact"]</th>
+                            <th>@L["Calc_Eclipse_Col_Suggested"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var r in _results)
+                        {
+                            <tr class="@(r.IsTotality ? "eclipse-row--totality" : r.IsPartial ? "eclipse-row--partial" : "")">
+                                <td class="eclipse-td-phase">
+                                    <span class="eclipse-phase-dot" style="background:@r.Color"></span>
+                                    @r.Phase
+                                </td>
+                                <td class="eclipse-td-mono">@r.Q</td>
+                                <td class="eclipse-td-mono">@r.ExactTime</td>
+                                <td class="eclipse-td-suggested">@r.SuggestedTime</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="eclipse-footer-note">@L["Calc_Eclipse_BracketingNote"]</p>
+        }
+    </section>
+
+</div>
+
+@code {
+    // ── Entradas ─────────────────────────────────────────────
+    private double _focal     = 500;
+    private double _aperture  = 8;
+    private int    _iso       = 100;
+    private string _selectedSensor = "FF";
+
+    private readonly int[] _isoValues = { 100, 200, 400, 800, 1600, 3200 };
+
+    private record SensorDef(string Name, string Display, double WidthMm, double HeightMm);
+
+    private readonly Dictionary<string, SensorDef> _sensors = new()
+    {
+        ["FF"]   = new("Full Frame",  "36 × 24 mm",    36.0,  24.0),
+        ["APSC"] = new("APS-C",       "23.6 × 15.7 mm", 23.6, 15.7),
+        ["APSC_C"] = new("APS-C Canon","22.3 × 14.9 mm", 22.3, 14.9),
+        ["MFT"]  = new("Micro 4/3",   "17.3 × 13.0 mm", 17.3, 13.0),
+    };
+
+    // ── Fases del eclipse (NASA Q values) ────────────────────
+    private record PhaseEntry(string Phase, int Q, bool IsTotality, bool IsPartial, string Color);
+
+    private static readonly List<PhaseEntry> Phases = new()
+    {
+        new("OD 5.0 (parcial)",         -6,  false, true,  "var(--obs-comet)"),
+        new("OD 4.0 (parcial)",         -4,  false, true,  "var(--obs-comet)"),
+        new("Baily's Beads",             2,  false, false, "var(--obs-star)"),
+        new("Cromosfera",                3,  true,  false, "var(--obs-mars)"),
+        new("Protuberancias",            4,  true,  false, "var(--obs-mars)"),
+        new("Corona (0.1R☉)",           5,  true,  false, "var(--obs-aurora)"),
+        new("Corona (0.5R☉)",           6,  true,  false, "var(--obs-aurora)"),
+        new("Corona (1.0R☉)",           7,  true,  false, "var(--obs-aurora)"),
+        new("Corona (2.0R☉)",           8,  true,  false, "var(--obs-aurora)"),
+        new("Corona (4.0R☉)",           9,  true,  false, "var(--obs-aurora)"),
+        new("Tierra iluminada",         10,  true,  false, "var(--obs-nebula)"),
+    };
+
+    // ── Velocidades estándar (en segundos) ────────────────────
+    private static readonly double[] StandardSpeeds =
+    {
+        1.0/8000, 1.0/4000, 1.0/2000, 1.0/1000, 1.0/500,
+        1.0/250, 1.0/125, 1.0/60, 1.0/30, 1.0/15,
+        1.0/8, 1.0/4, 1.0/2, 1.0, 2.0
+    };
+
+    // ── Salida calculada ──────────────────────────────────────
+    private record ResultRow(
+        string Phase, int Q, string ExactTime, string SuggestedTime,
+        bool IsTotality, bool IsPartial, string Color);
+
+    private List<ResultRow> _results       = new();
+    private double          _solarDiamMm   = 0;
+    private double          _solarPercent  = 0;
+    private double          _fovDeg        = 0;
+
+    protected override void OnInitialized() => Calculate();
+
+    private void SelectSensor(string key)
+    {
+        _selectedSensor = key;
+        Calculate();
+    }
+
+    private void Calculate()
+    {
+        if (_focal <= 0 || _aperture <= 0 || _iso <= 0)
+        {
+            _results = new();
+            return;
+        }
+
+        var sensor = _sensors[_selectedSensor];
+
+        // Diámetro del Sol en el plano focal
+        _solarDiamMm  = _focal / 109.0;
+        _solarPercent = (_solarDiamMm / sensor.WidthMm) * 100.0;
+
+        // FOV diagonal (grados)
+        double diagMm = Math.Sqrt(sensor.WidthMm * sensor.WidthMm + sensor.HeightMm * sensor.HeightMm);
+        _fovDeg = 2.0 * Math.Atan(diagMm / (2.0 * _focal)) * (180.0 / Math.PI);
+
+        // Calcular t = f² / (ISO · 2^Q)
+        _results = Phases.Select(p =>
+        {
+            double t = (_aperture * _aperture) / (_iso * Math.Pow(2.0, p.Q));
+
+            string exactStr = t >= 1.0
+                ? $"{t:F2} s"
+                : t >= 0.001
+                    ? $"1/{(int)Math.Round(1.0 / t)} s"
+                    : $"1/{(int)Math.Round(1.0 / t)} s";
+
+            // Velocidad estándar más cercana (logarítmica)
+            double suggested = StandardSpeeds.MinBy(s => Math.Abs(Math.Log(s) - Math.Log(t)));
+            string suggestedStr = suggested >= 1.0
+                ? $"{suggested:F0} s"
+                : $"1/{(int)Math.Round(1.0 / suggested)} s";
+
+            return new ResultRow(p.Phase, p.Q, exactStr, suggestedStr,
+                                 p.IsTotality, p.IsPartial, p.Color);
+        }).ToList();
+    }
+}
