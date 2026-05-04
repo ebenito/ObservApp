@@ -154,5 +154,96 @@
   <data name="Settings_Action_Apply" xml:space="preserve">
     <value>Anwenden</value>
   </data>
+  <data name="Settings_Language_Applying" xml:space="preserve">
+    <value>Sprache wird angewendet…</value>
+  </data>
+
+  <!-- Rechner-Hub -->
+  <data name="Calc_Hub_Title" xml:space="preserve">
+    <value>Rechner</value>
+  </data>
+  <data name="Calc_Hub_Subtitle" xml:space="preserve">
+    <value>Berechnungswerkzeuge für Astrofotografie und visuelle Beobachtung</value>
+  </data>
+  <data name="Calc_Badge_Available" xml:space="preserve">
+    <value>Verfügbar</value>
+  </data>
+  <data name="Calc_Badge_Soon" xml:space="preserve">
+    <value>Demnächst</value>
+  </data>
+  <data name="Calc_Eclipse_Title" xml:space="preserve">
+    <value>Belichtung für Finsternisse</value>
+  </data>
+  <data name="Calc_Eclipse_Desc" xml:space="preserve">
+    <value>Berechnet Belichtungszeiten für jede Phase der Finsternis mithilfe der NASA-Q-Formel</value>
+  </data>
+  <data name="Calc_FOV_Title" xml:space="preserve">
+    <value>Gesichtsfeld (FOV)</value>
+  </data>
+  <data name="Calc_FOV_Desc" xml:space="preserve">
+    <value>Berechnet das echte und scheinbare Gesichtsfeld deiner Teleskop-Okular-Kombinationen</value>
+  </data>
+  <data name="Calc_Magnification_Title" xml:space="preserve">
+    <value>Vergrößerung und Austrittspupille</value>
+  </data>
+  <data name="Calc_Magnification_Desc" xml:space="preserve">
+    <value>Bestimmt die optimale Vergrößerung und Austrittspupille gemäß deinem Teleskop und Okular</value>
+  </data>
+  <data name="Calc_Resolution_Title" xml:space="preserve">
+    <value>Auflösungsgrenze</value>
+  </data>
+  <data name="Calc_Resolution_Desc" xml:space="preserve">
+    <value>Berechnet die theoretische Auflösungsgrenze (Rayleigh und Dawes) deines Teleskops</value>
+  </data>
+  <data name="Calc_PlateScale_Title" xml:space="preserve">
+    <value>Bildmaßstab</value>
+  </data>
+  <data name="Calc_PlateScale_Desc" xml:space="preserve">
+    <value>Erhalte den Bildmaßstab in ''/px und das Gesamtfeld deines Astrofotografie-Setups</value>
+  </data>
+
+  <!-- Finsternisrechner -->
+  <data name="Calc_Eclipse_Formula" xml:space="preserve">
+    <value>NASA-Formel: t = f² / (ISO · 2^Q)</value>
+  </data>
+  <data name="Calc_Eclipse_SafetyNote" xml:space="preserve">
+    <value>Für partielle und ringförmige Phasen ist ein zertifizierter Sonnenfilter erforderlich. Dieser Rechner ist als Richtwert gedacht; führe immer ein Bracketing durch.</value>
+  </data>
+  <data name="Calc_Eclipse_Section_Input" xml:space="preserve">
+    <value>Gerätedaten</value>
+  </data>
+  <data name="Calc_Eclipse_Section_Results" xml:space="preserve">
+    <value>Vorgeschlagene Verschlusszeiten</value>
+  </data>
+  <data name="Calc_Eclipse_Focal" xml:space="preserve">
+    <value>Brennweite</value>
+  </data>
+  <data name="Calc_Eclipse_Aperture" xml:space="preserve">
+    <value>Öffnung</value>
+  </data>
+  <data name="Calc_Eclipse_Sensor" xml:space="preserve">
+    <value>Sensor</value>
+  </data>
+  <data name="Calc_Eclipse_SolarDiam" xml:space="preserve">
+    <value>Sonnendurchmesser auf dem Sensor</value>
+  </data>
+  <data name="Calc_Eclipse_SensorCoverage" xml:space="preserve">
+    <value>% der Sensorbreite</value>
+  </data>
+  <data name="Calc_Eclipse_Col_Phase" xml:space="preserve">
+    <value>Phänomen</value>
+  </data>
+  <data name="Calc_Eclipse_Col_Exact" xml:space="preserve">
+    <value>Exakte Zeit</value>
+  </data>
+  <data name="Calc_Eclipse_Col_Suggested" xml:space="preserve">
+    <value>Vorschlag</value>
+  </data>
+  <data name="Calc_Eclipse_FillFields" xml:space="preserve">
+    <value>Gib die Gerätedaten ein, um die vorgeschlagenen Zeiten zu sehen.</value>
+  </data>
+  <data name="Calc_Eclipse_BracketingNote" xml:space="preserve">
+    <value>Führe immer ein Bracketing von ±1 EV durch. Die Zeiten sind Richtwerte.</value>
+  </data>
 
 </root>

@@ -154,6 +154,9 @@
   <data name="Settings_Action_Apply" xml:space="preserve">
     <value>Aplicar</value>
   </data>
+  <data name="Settings_Language_Applying" xml:space="preserve">
+	<value>Aplicando idioma…</value>
+  </data>
   
   <!-- Hub de calculadoras -->
   <data name="Calc_Hub_Title" xml:space="preserve">

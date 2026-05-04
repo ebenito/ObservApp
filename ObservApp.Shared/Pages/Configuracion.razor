@@ -41,7 +41,13 @@
         </div>
 
         <!-- Feedback -->
-        @if (_showConfirmation)
+        @if (_isReloading)
+        {
+            <div class="cfg-toast cfg-toast--ok" role="status">
+                ⏳ @L["Settings_Language_Applying"]
+            </div>
+        }
+        else if (_showConfirmation)
         {
             <div class="cfg-toast cfg-toast--ok" role="status">
                 ✅ @L["Settings_Language_Applied"]
@@ -55,6 +61,7 @@
 @code {
     private string _selectedCode = string.Empty;
     private bool _showConfirmation;
+    private bool _isReloading;
 
     protected override void OnInitialized()
     {
@@ -68,14 +75,11 @@
             return;
 
         _selectedCode = code;
-        Settings.SetLanguage(code);
-        Localization.SetLanguage(code);
-
-        _showConfirmation = true;
+        _isReloading = true;          // ← mostrar feedback antes de recargar
         StateHasChanged();
 
-        // Ocultar el feedback tras 2,5 s
-        _ = HideConfirmationAsync();
+        Settings.SetLanguage(code);
+        Localization.SetLanguage(code); // en web esto recarga la página
     }
 
     private async Task HideConfirmationAsync()

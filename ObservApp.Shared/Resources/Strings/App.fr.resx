@@ -154,5 +154,96 @@
   <data name="Settings_Action_Apply" xml:space="preserve">
     <value>Appliquer</value>
   </data>
+  <data name="Settings_Language_Applying" xml:space="preserve">
+    <value>Application de la langue…</value>
+  </data>
+
+  <!-- Hub des calculateurs -->
+  <data name="Calc_Hub_Title" xml:space="preserve">
+    <value>Calculateurs</value>
+  </data>
+  <data name="Calc_Hub_Subtitle" xml:space="preserve">
+    <value>Outils de calcul pour l'astrophotographie et l'observation visuelle</value>
+  </data>
+  <data name="Calc_Badge_Available" xml:space="preserve">
+    <value>Disponible</value>
+  </data>
+  <data name="Calc_Badge_Soon" xml:space="preserve">
+    <value>Prochainement</value>
+  </data>
+  <data name="Calc_Eclipse_Title" xml:space="preserve">
+    <value>Exposition pour éclipses</value>
+  </data>
+  <data name="Calc_Eclipse_Desc" xml:space="preserve">
+    <value>Calcule les temps d'exposition pour chaque phase de l'éclipse en utilisant la formule NASA Q</value>
+  </data>
+  <data name="Calc_FOV_Title" xml:space="preserve">
+    <value>Champ de vision (FOV)</value>
+  </data>
+  <data name="Calc_FOV_Desc" xml:space="preserve">
+    <value>Calcule le champ de vision réel et apparent de vos combinaisons télescope-oculaire</value>
+  </data>
+  <data name="Calc_Magnification_Title" xml:space="preserve">
+    <value>Grossissement et pupille de sortie</value>
+  </data>
+  <data name="Calc_Magnification_Desc" xml:space="preserve">
+    <value>Détermine le grossissement optimal et la pupille de sortie selon votre télescope et oculaire</value>
+  </data>
+  <data name="Calc_Resolution_Title" xml:space="preserve">
+    <value>Limite de résolution</value>
+  </data>
+  <data name="Calc_Resolution_Desc" xml:space="preserve">
+    <value>Calcule la limite de résolution théorique (Rayleigh et Dawes) de votre télescope</value>
+  </data>
+  <data name="Calc_PlateScale_Title" xml:space="preserve">
+    <value>Échelle de plaque</value>
+  </data>
+  <data name="Calc_PlateScale_Desc" xml:space="preserve">
+    <value>Obtenez l'échelle de plaque en ''/px et le champ total de votre configuration d'astrophotographie</value>
+  </data>
+
+  <!-- Calculateur d'éclipses -->
+  <data name="Calc_Eclipse_Formula" xml:space="preserve">
+    <value>Formule NASA : t = f² / (ISO · 2^Q)</value>
+  </data>
+  <data name="Calc_Eclipse_SafetyNote" xml:space="preserve">
+    <value>Pour les phases partielles et annulaires, un filtre solaire certifié est nécessaire. Ce calculateur est indicatif ; effectuez toujours un bracketing.</value>
+  </data>
+  <data name="Calc_Eclipse_Section_Input" xml:space="preserve">
+    <value>Données du matériel</value>
+  </data>
+  <data name="Calc_Eclipse_Section_Results" xml:space="preserve">
+    <value>Vitesses suggérées</value>
+  </data>
+  <data name="Calc_Eclipse_Focal" xml:space="preserve">
+    <value>Focale</value>
+  </data>
+  <data name="Calc_Eclipse_Aperture" xml:space="preserve">
+    <value>Ouverture</value>
+  </data>
+  <data name="Calc_Eclipse_Sensor" xml:space="preserve">
+    <value>Capteur</value>
+  </data>
+  <data name="Calc_Eclipse_SolarDiam" xml:space="preserve">
+    <value>Diamètre du Soleil sur le capteur</value>
+  </data>
+  <data name="Calc_Eclipse_SensorCoverage" xml:space="preserve">
+    <value>% de la largeur du capteur</value>
+  </data>
+  <data name="Calc_Eclipse_Col_Phase" xml:space="preserve">
+    <value>Phénomène</value>
+  </data>
+  <data name="Calc_Eclipse_Col_Exact" xml:space="preserve">
+    <value>Temps exact</value>
+  </data>
+  <data name="Calc_Eclipse_Col_Suggested" xml:space="preserve">
+    <value>Suggéré</value>
+  </data>
+  <data name="Calc_Eclipse_FillFields" xml:space="preserve">
+    <value>Saisissez les données du matériel pour voir les temps suggérés.</value>
+  </data>
+  <data name="Calc_Eclipse_BracketingNote" xml:space="preserve">
+    <value>Effectuez toujours un bracketing de ±1 EV. Les temps sont indicatifs.</value>
+  </data>
 
 </root>
