@@ -15,4 +15,12 @@ window.ObservApp.applyLang = function (code, dir) {
     document.documentElement.lang = code;
     document.documentElement.dir  = dir;
     try { localStorage.setItem("app_language", code); } catch (e) { }
+    // Sin recarga — solo actualiza atributos del DOM y persiste la preferencia
+};
+
+window.ObservApp.setLangAndReload = function (code, dir) {
+    document.documentElement.lang = code;
+    document.documentElement.dir  = dir;
+    try { localStorage.setItem("app_language", code); } catch (e) { }
+    location.reload();
 };

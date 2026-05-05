@@ -45,3 +45,4 @@ app.MapRazorComponents<App>()
         typeof(ObservApp.Web.Client._Imports).Assembly);
 
 app.Run();
+

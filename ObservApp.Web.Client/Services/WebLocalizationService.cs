@@ -49,12 +49,9 @@ public class WebLocalizationService : ILocalizationService
 
     private async Task SetLanguageAndReloadAsync(string languageCode)
     {
-        // Persiste en localStorage (clave compatible con loading-texts.js)
-        await _js.InvokeVoidAsync("ObservApp.applyLang",
+        // Persiste en localStorage y recarga la página desde JS con su contexto nativo
+        await _js.InvokeVoidAsync("ObservApp.setLangAndReload",
             languageCode,
             languageCode == "ar" ? "rtl" : "ltr");
-
-        // Recarga la página — Blazor WASM leerá la cultura en Program.cs
-        await _js.InvokeVoidAsync("location.reload");
     }
 }

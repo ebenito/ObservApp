@@ -4,7 +4,9 @@
     <File Path="Documentacion/readme.md" />
   </Folder>
   <Folder Name="/Elementos de la solución/changelog/">
+    <File Path=".github/workflows/build.yml" />
     <File Path="Documentacion/changelog/2026_04-arquitectura-base.md" />
+    <File Path="Documentacion/changelog/2026_05-fix-cambio-idioma-sidebar.md" />
   </Folder>
   <Project Path="ObservApp.Shared/ObservApp.Shared.csproj" />
   <Project Path="ObservApp.Web.Client/ObservApp.Web.Client.csproj" />
