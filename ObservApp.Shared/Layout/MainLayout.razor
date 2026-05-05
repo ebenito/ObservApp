@@ -33,6 +33,7 @@
                Width="260px"
                Type="SidebarType.Over"
                ShowBackdrop="true"
+               CloseOnDocumentClick="true"
                ZIndex="1200"
                CssClass="obs-sidebar">
 
@@ -62,7 +63,7 @@
 
             <div class="obs-nav-group-label">@L["Nav_Section_Tools"]</div>
             <a class="obs-nav-link @IsActive("/calculadoras")" href="/calculadoras" @onclick="CloseSidebar">
-                <span class="obs-nav-icon">📷</span> @L["Nav_EclipseCalc"]
+                <span class="obs-nav-icon">🧮</span> @L["Nav_Calculators"]
             </a>
 
             <div class="obs-nav-group-label">@L["Nav_Section_Personal"]</div>
@@ -118,8 +119,6 @@
     {
         var code = Localization.CurrentLanguageCode;
         var dir  = code == "ar" ? "rtl" : "ltr";
-        // Actualiza lang/dir del <html> y persiste en localStorage para que
-        // el spinner de index.html use el idioma correcto en la próxima carga.
         await JS.InvokeVoidAsync("ObservApp.applyLang", code, dir);
     }
 
@@ -130,7 +129,7 @@
     }
 
     private void ToggleSidebar() => _sidebarOpen = !_sidebarOpen;
-    private void CloseSidebar() => _sidebarOpen = false;
+    private void CloseSidebar()  => _sidebarOpen = false;
 
     private string IsActive(string href)
     {
