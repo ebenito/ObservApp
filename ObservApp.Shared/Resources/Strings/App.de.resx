@@ -333,4 +333,113 @@
   <data name="Nav_Calculators" xml:space="preserve">
     <value>Rechner</value>
   </data>
+
+<data name="Calc_FOV_Title" xml:space="preserve">
+  <value>Sichtfeld (FOV)</value>
+</data>
+<data name="Calc_FOV_Desc" xml:space="preserve">
+  <value>Berechnen Sie das reale und scheinbare Sichtfeld Ihrer Teleskop-Okular-Kombination</value>
+</data>
+<data name="FOV_Title" xml:space="preserve">
+  <value>Sichtfeld (FOV)</value>
+</data>
+<data name="FOV_Subtitle" xml:space="preserve">
+  <value>Berechnen Sie das reale und scheinbare Sichtfeld Ihrer Teleskop-Okular-Kombination</value>
+</data>
+<data name="FOV_TelescopeSection" xml:space="preserve">
+  <value>Teleskop</value>
+</data>
+<data name="FOV_EyepieceSection" xml:space="preserve">
+  <value>Okular</value>
+</data>
+<data name="FOV_FocalLength" xml:space="preserve">
+  <value>Brennweite (mm)</value>
+</data>
+<data name="FOV_Aperture" xml:space="preserve">
+  <value>Öffnung (mm)</value>
+</data>
+<data name="FOV_EyepieceFocal" xml:space="preserve">
+  <value>Okular-Brennweite (mm)</value>
+</data>
+<data name="FOV_AFOV" xml:space="preserve">
+  <value>Scheinbares Sichtfeld des Okulars (AFOV °)</value>
+</data>
+<data name="FOV_Calculate" xml:space="preserve">
+  <value>Berechnen</value>
+</data>
+<data name="FOV_Reset" xml:space="preserve">
+  <value>Zurücksetzen</value>
+</data>
+<data name="FOV_Results" xml:space="preserve">
+  <value>Ergebnisse</value>
+</data>
+<data name="FOV_Magnification" xml:space="preserve">
+  <value>Vergrößerung</value>
+</data>
+<data name="FOV_TFOV" xml:space="preserve">
+  <value>Reales Sichtfeld (TFOV)</value>
+</data>
+<data name="FOV_ExitPupil" xml:space="preserve">
+  <value>Austrittspupille</value>
+</data>
+<data name="FOV_FocalRatio" xml:space="preserve">
+  <value>Öffnungsverhältnis (f/)</value>
+</data>
+<data name="FOV_Degrees" xml:space="preserve">
+  <value>Grad</value>
+</data>
+<data name="FOV_Millimeters" xml:space="preserve">
+  <value>mm</value>
+</data>
+<data name="FOV_Times" xml:space="preserve">
+  <value>x</value>
+</data>
+<data name="FOV_SimulatorTitle" xml:space="preserve">
+  <value>Sichtfeld-Simulation</value>
+</data>
+<data name="FOV_MoonLabel" xml:space="preserve">
+  <value>Vollmond: 0,5°</value>
+</data>
+<data name="FOV_PleiadesFOV" xml:space="preserve">
+  <value>Plejaden: ~2°</value>
+</data>
+<data name="FOV_FormulasTitle" xml:space="preserve">
+  <value>Formeln und Referenzen</value>
+</data>
+<data name="FOV_FormulaMAG" xml:space="preserve">
+  <value>Vergrößerung = Teleskop-Brennweite ÷ Okular-Brennweite</value>
+</data>
+<data name="FOV_FormulaTFOV" xml:space="preserve">
+  <value>Reales Sichtfeld (TFOV) = AFOV ÷ Vergrößerung</value>
+</data>
+<data name="FOV_FormulaEP" xml:space="preserve">
+  <value>Austrittspupille = Öffnung ÷ Vergrößerung</value>
+</data>
+<data name="FOV_FormulaFR" xml:space="preserve">
+  <value>Öffnungsverhältnis = Brennweite ÷ Öffnung</value>
+</data>
+<data name="FOV_ReferencesTitle" xml:space="preserve">
+  <value>Astronomische Referenzen</value>
+</data>
+<data name="FOV_Tip_ExitPupil" xml:space="preserve">
+  <value>Ideale Austrittspupille: 5-7mm für dunklen Himmel, 2-4mm für Planetenbeobachtung.</value>
+</data>
+<data name="FOV_Tip_Magnification" xml:space="preserve">
+  <value>Die maximale nutzbare Vergrößerung beträgt ca. 50x pro Zoll Öffnung (2x pro mm).</value>
+</data>
+<data name="FOV_MaxMagWarning" xml:space="preserve">
+  <value>⚠ Nahe der maximalen nutzbaren Vergrößerung für diese Öffnung</value>
+</data>
+<data name="FOV_GoodExitPupil" xml:space="preserve">
+  <value>✓ Optimale Austrittspupille für Deep-Sky-Beobachtung</value>
+</data>
+<data name="FOV_PlanetaryExitPupil" xml:space="preserve">
+  <value>✓ Geeignete Austrittspupille für Planetenbeobachtung</value>
+</data>
+<data name="FOV_NarrowExitPupil" xml:space="preserve">
+  <value>⚠ Sehr kleine Austrittspupille — sehr dunkles Bild</value>
+</data>
+<data name="Nav_CalculadoraFOV" xml:space="preserve">
+  <value>Sichtfeld (FOV)</value>
+</data>
 </root>

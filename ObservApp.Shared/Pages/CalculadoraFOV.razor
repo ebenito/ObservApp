@@ -1,0 +1,551 @@
+﻿@page "/calculadora-fov"
+@inject IStringLocalizer<App> L
+
+<PageTitle>@L["FOV_Title"] — ObservApp</PageTitle>
+
+<div class="fov-page">
+
+    <!-- Cabecera con back -->
+    <div class="fov-header-back">
+        <a class="fov-back" href="/calculadoras">← @L["Action_Back"]</a>
+    </div>
+
+    <!-- HEADER -->
+    <div class="fov-header">
+        <div class="fov-header-icon">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="30" stroke="var(--obs-star)" stroke-width="2" stroke-dasharray="4 3" opacity="0.4" />
+                <circle cx="32" cy="32" r="20" stroke="var(--obs-aurora)" stroke-width="1.5" opacity="0.6" />
+                <circle cx="32" cy="32" r="10" stroke="var(--obs-star)" stroke-width="1.5" />
+                <circle cx="32" cy="32" r="3" fill="var(--obs-star)" />
+                <line x1="32" y1="2" x2="32" y2="12" stroke="var(--obs-star)" stroke-width="1.5" opacity="0.5" />
+                <line x1="32" y1="52" x2="32" y2="62" stroke="var(--obs-star)" stroke-width="1.5" opacity="0.5" />
+                <line x1="2" y1="32" x2="12" y2="32" stroke="var(--obs-star)" stroke-width="1.5" opacity="0.5" />
+                <line x1="52" y1="32" x2="62" y2="32" stroke="var(--obs-star)" stroke-width="1.5" opacity="0.5" />
+            </svg>
+        </div>
+        <div>
+            <h1 class="fov-title">@L["FOV_Title"]</h1>
+            <p class="fov-subtitle">@L["FOV_Subtitle"]</p>
+        </div>
+    </div>
+
+    <!-- GRID PRINCIPAL -->
+    <div class="fov-main-grid">
+
+        <!-- PANEL IZQUIERDO: INPUTS -->
+        <div class="fov-inputs-panel">
+
+            <!-- TELESCOPIO -->
+            <div class="fov-card">
+                <div class="fov-card-header telescope">                    
+                    <span class="fov-card-icon">🔭</span>
+                    <span class="fov-card-label">@L["FOV_TelescopeSection"]</span>
+                </div>
+                <div class="fov-card-body">
+                    <div class="fov-field">
+                        <label class="fov-label">@L["FOV_FocalLength"]</label>
+                        <div class="fov-input-row">
+                            <SfNumericTextBox TValue="double?"
+                                              @bind-Value="TelescopeFocal"
+                                              Min="1" Max="20000"
+                                              Decimals="0"
+                                              Format="N0"
+                                              Placeholder="ej. 900"
+                                              CssClass="fov-numeric" />
+                            <span class="fov-unit">mm</span>
+                        </div>
+                        <!-- Slider focal telescopio -->
+                        <input type="range" class="fov-slider telescope-slider"
+                               min="300" max="3000" step="50"
+                               value="@(TelescopeFocal ?? 900)"
+                               @oninput="@((Microsoft.AspNetCore.Components.ChangeEventArgs e) => OnTelescopeFocalSlider(e))" />
+
+                        <div class="fov-slider-range">
+                            <span>300</span><span>3 000 mm</span>
+                        </div>
+                    </div>
+                    <div class="fov-field">
+                        <label class="fov-label">@L["FOV_Aperture"]</label>
+                        <div class="fov-input-row">
+                            <SfNumericTextBox TValue="double?"
+                                              @bind-Value="TelescopeAperture"
+                                              Min="1" Max="2000"
+                                              Decimals="0"
+                                              Format="N0"
+                                              Placeholder="ej. 130"
+                                              CssClass="fov-numeric" />
+                            <span class="fov-unit">mm</span>
+                        </div>
+                        <input type="range" class="fov-slider telescope-slider"
+                               min="50" max="500" step="5"
+                               value="@(TelescopeAperture ?? 130)"
+                               @oninput="@((Microsoft.AspNetCore.Components.ChangeEventArgs e) => OnTelescopeApertureSlider(e))" />
+
+                        <div class="fov-slider-range">
+                            <span>50</span><span>500 mm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OCULAR -->
+            <div class="fov-card">
+                <div class="fov-card-header eyepiece">
+                    <span class="fov-card-icon">🔬</span>
+                    <span class="fov-card-label">@L["FOV_EyepieceSection"]</span>
+                </div>
+                <div class="fov-card-body">
+                    <div class="fov-field">
+                        <label class="fov-label">@L["FOV_EyepieceFocal"]</label>
+                        <div class="fov-input-row">
+                            <SfNumericTextBox TValue="double?"
+                                              @bind-Value="EyepieceFocal"
+                                              Min="1" Max="100"
+                                              Decimals="1"
+                                              Format="N1"
+                                              Placeholder="ej. 25"
+                                              CssClass="fov-numeric" />
+                            <span class="fov-unit">mm</span>
+                        </div>
+                        <input type="range" class="fov-slider eyepiece-slider"
+                               min="2" max="55" step="1"
+                               value="@(EyepieceFocal ?? 25)"
+                               @oninput="@((Microsoft.AspNetCore.Components.ChangeEventArgs e) => OnEyepieceFocalSlider(e))" />
+                        <div class="fov-slider-range">
+                            <span>2</span><span>55 mm</span>
+                        </div>
+                    </div>
+                    <div class="fov-field">
+                        <label class="fov-label">@L["FOV_AFOV"]</label>
+                        <div class="fov-input-row">
+                            <SfNumericTextBox TValue="double?"
+                                              @bind-Value="EyepieceAFOV"
+                                              Min="20" Max="120"
+                                              Decimals="0"
+                                              Format="N0"
+                                              Placeholder="ej. 52"
+                                              CssClass="fov-numeric" />
+                            <span class="fov-unit">°</span>
+                        </div>
+                        <!-- AFOV presets -->
+                        <div class="fov-presets">
+                            @foreach (var preset in AfovPresets)
+                            {
+                                <button class="fov-preset-btn @(EyepieceAFOV == preset.Value ? "active" : "")"
+                                        @onclick="() => SetAfov(preset.Value)"
+                                        title="@preset.Name">
+                                    @preset.Value°
+                                    <span class="preset-name">@preset.Name</span>
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTONES -->
+            <div class="fov-actions">
+                <SfButton CssClass="e-primary fov-btn-calc" @onclick="Calculate">
+                    @L["FOV_Calculate"]
+                </SfButton>
+                <SfButton CssClass="fov-btn-reset" @onclick="Reset">
+                    @L["FOV_Reset"]
+                </SfButton>
+            </div>
+        </div>
+
+        <!-- PANEL DERECHO: RESULTADOS + SIMULADOR -->
+        <div class="fov-results-panel">
+
+            @if (HasResults)
+            {
+                <!-- TARJETAS DE RESULTADO -->
+                <div class="fov-result-cards">
+                    <div class="fov-result-card primary">
+                        <div class="result-card-top">
+                            <span class="result-icon">🔍</span>
+                            <span class="result-label">@L["FOV_Magnification"]</span>
+                        </div>
+                        <div class="result-value">@Magnification.ToString("F1")<span class="result-unit">@L["FOV_Times"]</span></div>
+                        @if (IsNearMaxMagnification)
+                        {
+                            <div class="result-warning">@L["FOV_MaxMagWarning"]</div>
+                        }
+                    </div>
+
+                    <div class="fov-result-card highlight">
+                        <div class="result-card-top">
+                            <span class="result-icon">🌌</span>
+                            <span class="result-label">@L["FOV_TFOV"]</span>
+                        </div>
+                        <div class="result-value">@TFOV.ToString("F2")<span class="result-unit">°</span></div>
+                        <div class="result-sub">@TFOVMinutes.ToString("F0")' (@TFOVComparison)</div>
+                    </div>
+
+                    <div class="fov-result-card secondary">
+                        <div class="result-card-top">
+                            <span class="result-icon">👁️</span>
+                            <span class="result-label">@L["FOV_ExitPupil"]</span>
+                        </div>
+                        <div class="result-value">@ExitPupil.ToString("F2")<span class="result-unit">mm</span></div>
+                        <div class="result-sub @ExitPupilClass">@ExitPupilTip</div>
+                    </div>
+
+                    <div class="fov-result-card tertiary">
+                        <div class="result-card-top">
+                            <span class="result-icon">⚡</span>
+                            <span class="result-label">@L["FOV_FocalRatio"]</span>
+                        </div>
+                        <div class="result-value">f/<span>@FocalRatio.ToString("F1")</span></div>
+                    </div>
+                </div>
+
+                <!-- SIMULADOR VISUAL -->
+                <div class="fov-card fov-simulator-card">
+                    <div class="fov-card-header simulator">
+                        <span class="fov-card-icon">🌠</span>
+                        <span class="fov-card-label">@L["FOV_SimulatorTitle"]</span>
+                    </div>
+                    <div class="fov-card-body simulator-body">
+                        <div class="fov-sky-container">
+                            <svg class="fov-sky-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Fondo -->
+                                <defs>
+                                    <clipPath id="circleClip">
+                                        <circle cx="200" cy="200" r="196"/>
+                                    </clipPath>
+                                </defs>
+                                <circle cx="200" cy="200" r="198" fill="#050d1a"/>
+    
+                                <!-- Estrellas y objetos precalculados -->
+                                @((MarkupString)_skyMarkup)
+
+                                <!-- Círculo borde exterior (AFOV) -->
+                                <circle cx="200" cy="200" r="190"
+                                        fill="none"
+                                        stroke="var(--obs-aurora)"
+                                        stroke-width="2"
+                                        stroke-dasharray="6 4"
+                                        opacity="0.5"/>
+
+                                <!-- Área TFOV -->
+                                @{
+                                    var ic = CultureInfo.InvariantCulture;
+                                    double scaledRadius = HasResults ? Math.Min(188.0, (TFOV / MaxSkyDegrees) * 188.0) : 0;
+                                    var labelY = (200 - scaledRadius - 10).ToString("F0", ic);
+                                    var radiusStr = scaledRadius.ToString("F1", ic);
+                                }
+                                @if (HasResults && scaledRadius > 0)
+                                {
+                                    <circle cx="200" cy="200"
+                                            r="@radiusStr"
+                                            fill="rgba(244,196,48,0.06)"
+                                            stroke="#f4c430"
+                                            stroke-width="2.5" />
+                             
+                                    double moonR = Math.Max(3, (0.5 / MaxSkyDegrees) * 188.0);
+									
+                                    <circle cx="200" cy="200"
+                                            r="@moonR.ToString("F1", ic)"
+                                            fill="rgba(226,232,240,0.15)"
+                                            stroke="rgba(226,232,240,0.9)"
+                                            stroke-width="1.5"
+                                            stroke-dasharray="3 2" />
+
+                                    <rect x="140" y="@((200 - scaledRadius - 22).ToString("F0", ic))"
+                                          width="120" height="18" rx="4"
+                                          fill="rgba(13,27,42,0.8)" />
+                                    <g>
+                                        <text x="200" y="@labelY"
+                                              text-anchor="middle"
+                                              fill="#f4c430"
+                                              font-size="11"
+                                              font-family="system-ui, sans-serif"
+                                              font-weight="600">
+                                            TFOV @TFOV.ToString("F2", ic)°
+                                        </text>
+                                    </g>
+                                }
+
+
+                                <!-- Cruz central siempre visible -->
+                                <line x1="193" y1="200" x2="207" y2="200" stroke="#f4c430" stroke-width="1.5" opacity="0.8"/>
+                                <line x1="200" y1="193" x2="200" y2="207" stroke="#f4c430" stroke-width="1.5" opacity="0.8"/>
+
+                                <!-- Borde del círculo -->
+                                <circle cx="200" cy="200" r="197" fill="none" stroke="#2e4057" stroke-width="2"/>
+                            </svg>
+                            <div class="fov-sky-legend">
+                                <span class="legend-item tfov"><span class="legend-dot tfov-dot"></span>TFOV @TFOV.ToString("F2")°</span>
+                                <span class="legend-item afov"><span class="legend-dot afov-dot"></span>AFOV @EyepieceAFOV°</span>
+                                <span class="legend-item moon"><span class="legend-dot moon-dot"></span>@L["FOV_MoonLabel"]</span>
+                            </div>
+                        </div>
+
+                        <!-- Barra de comparación -->
+                        <div class="fov-comparison-bar">
+                            <div class="comparison-label">TFOV vs. objetos de referencia</div>
+                            <div class="comparison-track">
+                                <div class="comparison-fill" style="width: @Math.Min(100, (TFOV / 4.0) * 100).ToString("F1")%"></div>
+                                <div class="comparison-moon" style="left: @((0.5 / 4.0) * 100).ToString(" F1")%"></div>
+                                <div class="comparison-pleiades" style="left: @((2.0 / 4.0) * 100).ToString(" F1")%"></div>
+                            </div>
+                            <div class="comparison-labels-row">
+                                <span>0°</span>
+                                <span class="ref-moon">🌕 0,5°</span>
+                                <span class="ref-pleiades">✨ 2°</span>
+                                <span>4°</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <!-- ESTADO VACÍO -->
+                <div class="fov-empty-state">
+                    <div class="fov-empty-icon">
+                        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="60" cy="60" r="55" stroke="var(--obs-border)" stroke-width="2" stroke-dasharray="6 4" />
+                            <circle cx="60" cy="60" r="35" stroke="var(--obs-border)" stroke-width="1.5" opacity="0.6" />
+                            <circle cx="60" cy="60" r="15" stroke="var(--obs-star)" stroke-width="1.5" opacity="0.5" />
+                            <circle cx="60" cy="60" r="3" fill="var(--obs-star)" opacity="0.7" />
+                        </svg>
+                    </div>
+                    <p class="fov-empty-text">Introduce los datos de tu telescopio y ocular para ver los resultados y la simulación visual</p>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- FÓRMULAS Y REFERENCIAS -->
+    <div class="fov-card fov-formulas-card">
+        <div class="fov-card-header formulas">
+            <span class="fov-card-icon">📐</span>
+            <span class="fov-card-label">@L["FOV_FormulasTitle"]</span>
+        </div>
+        <div class="fov-card-body formulas-body">
+            <div class="formulas-grid">
+                <div class="formula-item">
+                    <div class="formula-name">@L["FOV_FormulaMAG"]</div>
+                    <div class="formula-math">M = F<sub>t</sub> / F<sub>e</sub></div>
+                </div>
+                <div class="formula-item">
+                    <div class="formula-name">@L["FOV_FormulaTFOV"]</div>
+                    <div class="formula-math">TFOV = AFOV / M</div>
+                </div>
+                <div class="formula-item">
+                    <div class="formula-name">@L["FOV_FormulaEP"]</div>
+                    <div class="formula-math">EP = D / M</div>
+                </div>
+                <div class="formula-item">
+                    <div class="formula-name">@L["FOV_FormulaFR"]</div>
+                    <div class="formula-math">f/ = F<sub>t</sub> / D</div>
+                </div>
+            </div>
+
+            <div class="tips-grid">
+                <div class="tip-item">
+                    <span class="tip-icon">💡</span>
+                    <span>@L["FOV_Tip_ExitPupil"]</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">💡</span>
+                    <span>@L["FOV_Tip_Magnification"]</span>
+                </div>
+            </div>
+
+            <!-- REFERENCIAS EXTERNAS -->
+            <div class="fov-references">
+                <div class="references-title">@L["FOV_ReferencesTitle"]</div>
+                <div class="references-grid">
+                    <a class="ref-link" href="https://www.nasa.gov/subject/3402/telescopes" target="_blank" rel="noopener">
+                        <span class="ref-source nasa">NASA</span>
+                        <span class="ref-desc">Telescopes — NASA Science</span>
+                    </a>
+                    <a class="ref-link" href="https://spacemath.gsfc.nasa.gov/weekly/10Page34.pdf" target="_blank" rel="noopener">
+                        <span class="ref-source nasa">NASA GSFC</span>
+                        <span class="ref-desc">Space Math — Eyepiece & FOV calculations</span>
+                    </a>
+                    <a class="ref-link" href="https://www.esa.int/Science_Exploration/Space_Science/Herschel/How_do_I_find_my_way_around_the_sky" target="_blank" rel="noopener">
+                        <span class="ref-source esa">ESA</span>
+                        <span class="ref-desc">Finding your way around the sky — ESA</span>
+                    </a>
+                    <a class="ref-link" href="https://skyandtelescope.org/astronomy-equipment/how-to-choose-a-telescope/" target="_blank" rel="noopener">
+                        <span class="ref-source sky">Sky & Telescope</span>
+                        <span class="ref-desc">Telescope Basics — Magnification & FOV</span>
+                    </a>
+                    <a class="ref-link" href="https://www.astronomy.com/observing/eyepieces-the-astronomical-telescope/" target="_blank" rel="noopener">
+                        <span class="ref-source ast">Astronomy Mag</span>
+                        <span class="ref-desc">Eyepieces and the Astronomical Telescope</span>
+                    </a>
+                    <a class="ref-link" href="https://www.cloudynights.com/page/articles/cat/articles/telescope-equations-r2596" target="_blank" rel="noopener">
+                        <span class="ref-source cn">Cloudy Nights</span>
+                        <span class="ref-desc">Telescope Equations — FOV, Magnification, EP</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@code {
+
+    @using System.Globalization
+
+    // ── INPUTS ──────────────────────────────────────────────────────────────
+    private double? TelescopeFocal = 900;
+    private double? TelescopeAperture = 130;
+    private double? EyepieceFocal = 25;
+    private double? EyepieceAFOV = 52;
+
+    // ── RESULTADOS ──────────────────────────────────────────────────────────
+    private bool HasResults = false;
+    private double Magnification = 0;
+    private double TFOV = 0;
+    private double TFOVMinutes = 0;
+    private double ExitPupil = 0;
+    private double FocalRatio = 0;
+
+    private const double MaxSkyDegrees = 4.0; // escala del simulador
+
+    // ── HELPERS CALCULADOS ──────────────────────────────────────────────────
+    private bool IsNearMaxMagnification =>
+        HasResults && TelescopeAperture.HasValue &&
+        Magnification > (TelescopeAperture.Value * 1.8);
+
+    private string TFOVComparison => TFOV switch
+    {
+        < 0.6 => "< Luna llena",
+        < 1.1 => "~ Luna llena",
+        < 2.5 => "< Pléyades",
+        < 3.0 => "~ Pléyades",
+        _ => "> 3°"
+    };
+
+    private string ExitPupilClass => ExitPupil switch
+    {
+        >= 5 and <= 7 => "ep-good",
+        >= 2 and < 5 => "ep-planetary",
+        < 2 => "ep-narrow",
+        _ => ""
+    };
+
+    private string ExitPupilTip => ExitPupil switch
+    {
+        >= 5 and <= 7 => L["FOV_GoodExitPupil"],
+        >= 2 and < 5 => L["FOV_PlanetaryExitPupil"],
+        < 2 => L["FOV_NarrowExitPupil"],
+        _ => ""
+    };
+
+    // ── PRESETS AFOV ────────────────────────────────────────────────────────
+    private record AfovPreset(string Name, double Value);
+    private readonly List<AfovPreset> AfovPresets = new()
+    {
+        new("Plössl",    52),
+        new("Kellner",   45),
+        new("Wide",      68),
+        new("Ultra-W",   82),
+        new("Hyperion",  68),
+        new("Nagler",    82),
+    };
+
+    // ── CIELO SVG PRECALCULADO ───────────────────────────────────────────────
+    private string _skyMarkup = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        _skyMarkup = BuildSkyMarkup();
+    }
+
+    private string BuildSkyMarkup()
+    {
+        var rng = new Random(42);
+        var sb = new System.Text.StringBuilder();
+        var ic = CultureInfo.InvariantCulture;
+
+        for (int i = 0; i < 90; i++)
+        {
+            double angle = rng.NextDouble() * Math.PI * 2;
+            double dist = Math.Sqrt(rng.NextDouble()) * 183;
+            double x = 200 + dist * Math.Cos(angle);
+            double y = 200 + dist * Math.Sin(angle);
+            double r = rng.NextDouble() * 1.3 + 0.4;
+            double op = rng.NextDouble() * 0.6 + 0.3;
+
+            if (rng.NextDouble() > 0.85)
+            {
+                double glow = r * 3;
+                sb.Append($"<circle cx=\"{x.ToString("F1", ic)}\" cy=\"{y.ToString("F1", ic)}\" r=\"{glow.ToString("F1", ic)}\" fill=\"white\" opacity=\"{(op * 0.15).ToString("F2", ic)}\"/>");
+            }
+            sb.Append($"<circle cx=\"{x.ToString("F1", ic)}\" cy=\"{y.ToString("F1", ic)}\" r=\"{r.ToString("F1", ic)}\" fill=\"white\" opacity=\"{op.ToString("F2", ic)}\"/>");
+        }
+
+        string[] starColors = { "#fff9e0", "#ffd0a0", "#c0d8ff", "#ffe8e0", "#e0f0ff" };
+        for (int i = 0; i < 5; i++)
+        {
+            double angle = rng.NextDouble() * Math.PI * 2;
+            double dist = rng.NextDouble() * 160;
+            double x = 200 + dist * Math.Cos(angle);
+            double y = 200 + dist * Math.Sin(angle);
+            string color = starColors[i % starColors.Length];
+
+            sb.Append($"<circle cx=\"{x.ToString("F1", ic)}\" cy=\"{y.ToString("F1", ic)}\" r=\"4\" fill=\"{color}\" opacity=\"0.08\"/>");
+            sb.Append($"<circle cx=\"{x.ToString("F1", ic)}\" cy=\"{y.ToString("F1", ic)}\" r=\"2\" fill=\"{color}\" opacity=\"0.25\"/>");
+            sb.Append($"<circle cx=\"{x.ToString("F1", ic)}\" cy=\"{y.ToString("F1", ic)}\" r=\"1.2\" fill=\"{color}\" opacity=\"0.95\"/>");
+            sb.Append($"<line x1=\"{(x - 6).ToString("F1", ic)}\" y1=\"{y.ToString("F1", ic)}\" x2=\"{(x + 6).ToString("F1", ic)}\" y2=\"{y.ToString("F1", ic)}\" stroke=\"{color}\" stroke-width=\"0.5\" opacity=\"0.4\"/>");
+            sb.Append($"<line x1=\"{x.ToString("F1", ic)}\" y1=\"{(y - 6).ToString("F1", ic)}\" x2=\"{x.ToString("F1", ic)}\" y2=\"{(y + 6).ToString("F1", ic)}\" stroke=\"{color}\" stroke-width=\"0.5\" opacity=\"0.4\"/>");
+        }
+
+        sb.Append("<ellipse cx=\"140\" cy=\"160\" rx=\"45\" ry=\"30\" fill=\"rgba(123,94,167,0.04)\" transform=\"rotate(-20,140,160)\"/>");
+        sb.Append("<ellipse cx=\"270\" cy=\"250\" rx=\"35\" ry=\"20\" fill=\"rgba(46,196,182,0.03)\" transform=\"rotate(15,270,250)\"/>");
+
+        return sb.ToString();
+    }
+
+    // ── LÓGICA ──────────────────────────────────────────────────────────────
+    private void Calculate()
+    {
+        if (!TelescopeFocal.HasValue || !TelescopeAperture.HasValue ||
+            !EyepieceFocal.HasValue || !EyepieceAFOV.HasValue)
+            return;
+
+        if (EyepieceFocal.Value <= 0 || TelescopeFocal.Value <= 0) return;
+
+        Magnification = TelescopeFocal.Value / EyepieceFocal.Value;
+        TFOV = EyepieceAFOV.Value / Magnification;
+        TFOVMinutes = TFOV * 60;
+        ExitPupil = TelescopeAperture.Value / Magnification;
+        FocalRatio = TelescopeFocal.Value / TelescopeAperture.Value;
+        HasResults = true;
+    }
+
+    private void Reset()
+    {
+        TelescopeFocal = null;
+        TelescopeAperture = null;
+        EyepieceFocal = null;
+        EyepieceAFOV = null;
+        HasResults = false;
+    }
+
+    private void SetAfov(double value) => EyepieceAFOV = value;
+
+    private void OnTelescopeFocalSlider(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        if (double.TryParse(e.Value?.ToString(), out var v)) TelescopeFocal = v;
+    }
+
+    private void OnTelescopeApertureSlider(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        if (double.TryParse(e.Value?.ToString(), out var v)) TelescopeAperture = v;
+    }
+
+    private void OnEyepieceFocalSlider(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        if (double.TryParse(e.Value?.ToString(), out var v)) EyepieceFocal = v;
+    }
+}

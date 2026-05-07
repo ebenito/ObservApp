@@ -333,4 +333,109 @@
   <data name="Nav_Calculators" xml:space="preserve">
     <value>Calculators</value>
   </data>
+  <data name="FOV_Title" xml:space="preserve">
+    <value>Field of View (FOV)</value>
+  </data>
+  <data name="FOV_Subtitle" xml:space="preserve">
+    <value>Calculate the real and apparent field of view for your telescope-eyepiece combination</value>
+  </data>
+  <data name="FOV_TelescopeSection" xml:space="preserve">
+    <value>Telescope</value>
+  </data>
+  <data name="FOV_EyepieceSection" xml:space="preserve">
+    <value>Eyepiece</value>
+  </data>
+  <data name="FOV_FocalLength" xml:space="preserve">
+    <value>Focal length (mm)</value>
+  </data>
+  <data name="FOV_Aperture" xml:space="preserve">
+    <value>Aperture (mm)</value>
+  </data>
+  <data name="FOV_EyepieceFocal" xml:space="preserve">
+    <value>Eyepiece focal length (mm)</value>
+  </data>
+  <data name="FOV_AFOV" xml:space="preserve">
+    <value>Apparent field of view (AFOV °)</value>
+  </data>
+  <data name="FOV_Calculate" xml:space="preserve">
+    <value>Calculate</value>
+  </data>
+  <data name="FOV_Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="FOV_Results" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="FOV_Magnification" xml:space="preserve">
+    <value>Magnification</value>
+  </data>
+  <data name="FOV_TFOV" xml:space="preserve">
+    <value>True field of view (TFOV)</value>
+  </data>
+  <data name="FOV_ExitPupil" xml:space="preserve">
+    <value>Exit pupil</value>
+  </data>
+  <data name="FOV_FocalRatio" xml:space="preserve">
+    <value>Focal ratio (f/)</value>
+  </data>
+  <data name="FOV_Degrees" xml:space="preserve">
+    <value>degrees</value>
+  </data>
+  <data name="FOV_Millimeters" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="FOV_Times" xml:space="preserve">
+    <value>x</value>
+  </data>
+  <data name="FOV_SimulatorTitle" xml:space="preserve">
+    <value>Visual field simulation</value>
+  </data>
+  <data name="FOV_MoonLabel" xml:space="preserve">
+    <value>Full Moon: 0.5°</value>
+  </data>
+  <data name="FOV_SunLabel" xml:space="preserve">
+    <value>Sun: 0.5°</value>
+  </data>
+  <data name="FOV_PleiadesFOV" xml:space="preserve">
+    <value>Pleiades: ~2°</value>
+  </data>
+  <data name="FOV_FormulasTitle" xml:space="preserve">
+    <value>Formulas and references</value>
+  </data>
+  <data name="FOV_FormulaMAG" xml:space="preserve">
+    <value>Magnification = Telescope focal length ÷ Eyepiece focal length</value>
+  </data>
+  <data name="FOV_FormulaTFOV" xml:space="preserve">
+    <value>True FOV (TFOV) = AFOV ÷ Magnification</value>
+  </data>
+  <data name="FOV_FormulaEP" xml:space="preserve">
+    <value>Exit pupil = Aperture ÷ Magnification</value>
+  </data>
+  <data name="FOV_FormulaFR" xml:space="preserve">
+    <value>Focal ratio = Focal length ÷ Aperture</value>
+  </data>
+  <data name="FOV_ReferencesTitle" xml:space="preserve">
+    <value>Astronomical references</value>
+  </data>
+  <data name="FOV_Tip_ExitPupil" xml:space="preserve">
+    <value>Ideal exit pupil: 5-7mm for dark skies, 2-4mm for planetary viewing.</value>
+  </data>
+  <data name="FOV_Tip_Magnification" xml:space="preserve">
+    <value>Maximum useful magnification is approximately 50x per inch of aperture (2x per mm).</value>
+  </data>
+  <data name="FOV_MaxMagWarning" xml:space="preserve">
+    <value>⚠ Near maximum useful magnification for this aperture</value>
+  </data>
+  <data name="FOV_GoodExitPupil" xml:space="preserve">
+    <value>✓ Optimal exit pupil for deep-sky observation</value>
+  </data>
+  <data name="FOV_PlanetaryExitPupil" xml:space="preserve">
+    <value>✓ Suitable exit pupil for planetary observation</value>
+  </data>
+  <data name="FOV_NarrowExitPupil" xml:space="preserve">
+    <value>⚠ Very small exit pupil — very dim image</value>
+  </data>
+  <data name="Nav_CalculadoraFOV" xml:space="preserve">
+    <value>Field of View (FOV</value>
+  </data>
 </root>

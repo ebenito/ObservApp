@@ -1,0 +1,673 @@
+﻿/* ═══════════════════════════════════════════════
+   CalculadoraFOV — estilos
+   Paleta: midnight/navy/deep · star/aurora/nebula
+═══════════════════════════════════════════════ */
+
+/* PAGE */
+.fov-page {
+    padding: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Navegación de vuelta */
+.fov-header-back {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.fov-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--obs-aurora);
+    text-decoration: none;
+    margin-bottom: 16px;
+    opacity: .8;
+    transition: opacity var(--transition), transform var(--transition);
+}
+
+    .fov-back:hover {
+        opacity: 1;
+        transform: translateX(-3px);
+    }
+
+/* ── HEADER ───────────────────────────────────── */
+.fov-header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--obs-border);
+}
+
+.fov-header-icon svg {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+}
+
+.fov-title {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--obs-star);
+    letter-spacing: -0.01em;
+}
+
+.fov-subtitle {
+    margin: 0.25rem 0 0;
+    color: var(--obs-comet);
+    font-size: 0.9rem;
+}
+
+/* ── GRID PRINCIPAL ───────────────────────────── */
+.fov-main-grid {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+@media (max-width: 860px) {
+    .fov-main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── CARDS GENÉRICAS ──────────────────────────── */
+.fov-card {
+    background: var(--obs-navy);
+    border: 1px solid var(--obs-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.fov-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.75rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+    .fov-card-header.telescope {
+        background: linear-gradient(90deg, rgba(46,196,182,0.15) 0%, transparent 100%);
+        color: var(--obs-aurora);
+        border-bottom: 1px solid rgba(46,196,182,0.2);
+    }
+
+    .fov-card-header.eyepiece {
+        background: linear-gradient(90deg, rgba(123,94,167,0.15) 0%, transparent 100%);
+        color: var(--obs-nebula);
+        border-bottom: 1px solid rgba(123,94,167,0.2);
+    }
+
+    .fov-card-header.simulator {
+        background: linear-gradient(90deg, rgba(244,196,48,0.12) 0%, transparent 100%);
+        color: var(--obs-star);
+        border-bottom: 1px solid rgba(244,196,48,0.2);
+    }
+
+    .fov-card-header.formulas {
+        background: linear-gradient(90deg, rgba(226,232,240,0.08) 0%, transparent 100%);
+        color: var(--obs-moon);
+        border-bottom: 1px solid var(--obs-border);
+    }
+
+.fov-card-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+/* ── INPUTS PANEL ─────────────────────────────── */
+.fov-inputs-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.fov-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.fov-label {
+    font-size: 0.8rem;
+    color: var(--obs-comet);
+    font-weight: 500;
+}
+
+.fov-input-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.fov-numeric {
+    flex: 1;
+}
+
+.fov-unit {
+    font-size: 0.85rem;
+    color: var(--obs-comet);
+    min-width: 24px;
+    text-align: right;
+}
+
+/* Slider custom */
+.fov-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--obs-border);
+    outline: none;
+    margin-top: 0.3rem;
+}
+
+    .fov-slider.telescope-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--obs-aurora);
+        cursor: pointer;
+        border: 2px solid var(--obs-midnight);
+        box-shadow: 0 0 6px rgba(46,196,182,0.5);
+    }
+
+    .fov-slider.eyepiece-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--obs-nebula);
+        cursor: pointer;
+        border: 2px solid var(--obs-midnight);
+        box-shadow: 0 0 6px rgba(123,94,167,0.5);
+    }
+
+.fov-slider-range {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--obs-border);
+    margin-top: -0.1rem;
+}
+
+/* AFOV Presets */
+.fov-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.2rem;
+}
+
+.fov-preset-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.3rem 0.55rem;
+    border-radius: 8px;
+    border: 1px solid var(--obs-border);
+    background: var(--obs-deep);
+    color: var(--obs-comet);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    line-height: 1.2;
+}
+
+    .fov-preset-btn .preset-name {
+        font-size: 0.65rem;
+        font-weight: 400;
+        color: var(--obs-border);
+    }
+
+    .fov-preset-btn:hover {
+        border-color: var(--obs-nebula);
+        color: var(--obs-nebula);
+    }
+
+    .fov-preset-btn.active {
+        border-color: var(--obs-nebula);
+        background: rgba(123,94,167,0.2);
+        color: var(--obs-nebula);
+    }
+
+        .fov-preset-btn.active .preset-name {
+            color: rgba(123,94,167,0.7);
+        }
+
+/* BOTONES */
+.fov-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.fov-btn-calc {
+    flex: 1;
+}
+
+.fov-btn-reset {
+    background: transparent !important;
+    border: 1px solid var(--obs-border) !important;
+    color: var(--obs-comet) !important;
+}
+
+    .fov-btn-reset:hover {
+        border-color: var(--obs-mars) !important;
+        color: var(--obs-mars) !important;
+    }
+
+/* ── RESULTADOS ───────────────────────────────── */
+.fov-results-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.fov-result-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.fov-result-card {
+    background: var(--obs-navy);
+    border: 1px solid var(--obs-border);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+    .fov-result-card.primary {
+        border-top: 3px solid var(--obs-aurora);
+    }
+
+    .fov-result-card.highlight {
+        border-top: 3px solid var(--obs-star);
+        background: linear-gradient(160deg, rgba(244,196,48,0.08) 0%, var(--obs-navy) 60%);
+    }
+
+    .fov-result-card.secondary {
+        border-top: 3px solid var(--obs-nebula);
+    }
+
+    .fov-result-card.tertiary {
+        border-top: 3px solid var(--obs-comet);
+    }
+
+.result-card-top {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--obs-comet);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.result-value {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--obs-moon);
+    line-height: 1.1;
+    margin-top: 0.2rem;
+}
+
+.result-unit {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--obs-comet);
+    margin-left: 0.15rem;
+}
+
+.result-sub {
+    font-size: 0.75rem;
+    color: var(--obs-comet);
+    margin-top: 0.15rem;
+}
+
+    .result-sub.ep-good {
+        color: var(--obs-aurora);
+    }
+
+    .result-sub.ep-planetary {
+        color: var(--obs-nebula);
+    }
+
+    .result-sub.ep-narrow {
+        color: var(--obs-mars);
+    }
+
+.result-warning {
+    font-size: 0.72rem;
+    color: var(--obs-mars);
+    margin-top: 0.2rem;
+}
+
+/* ── SIMULADOR ────────────────────────────────── */
+.fov-simulator-card {
+}
+
+.simulator-body {
+    align-items: center;
+}
+
+.fov-sky-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.fov-sky-svg {
+    width: 100%;
+    max-width: 320px;
+    border-radius: 50%;
+    border: 2px solid var(--obs-border);
+    box-shadow: 0 0 32px rgba(244,196,48,0.08), 0 0 8px rgba(46,196,182,0.1);
+}
+
+.fov-sky-legend {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    color: var(--obs-comet);
+}
+
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid;
+    flex-shrink: 0;
+}
+
+    .legend-dot.tfov-dot {
+        border-color: var(--obs-star);
+        background: rgba(244,196,48,0.15);
+    }
+
+    .legend-dot.afov-dot {
+        border-color: var(--obs-aurora);
+        background: transparent;
+    }
+
+    .legend-dot.moon-dot {
+        border-color: rgba(226,232,240,0.7);
+        background: transparent;
+    }
+
+/* Barra comparación */
+.fov-comparison-bar {
+    width: 100%;
+    padding: 0 0.5rem;
+}
+
+.comparison-label {
+    font-size: 0.75rem;
+    color: var(--obs-comet);
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.comparison-track {
+    position: relative;
+    height: 8px;
+    background: var(--obs-deep);
+    border-radius: 4px;
+    border: 1px solid var(--obs-border);
+}
+
+.comparison-fill {
+    height: 100%;
+    background: linear-gradient(90deg, rgba(244,196,48,0.6), rgba(244,196,48,0.2));
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+
+.comparison-moon {
+    position: absolute;
+    top: -3px;
+    width: 2px;
+    height: 14px;
+    background: rgba(226,232,240,0.8);
+    border-radius: 1px;
+    transform: translateX(-50%);
+}
+
+.comparison-pleiades {
+    position: absolute;
+    top: -3px;
+    width: 2px;
+    height: 14px;
+    background: rgba(123,94,167,0.8);
+    border-radius: 1px;
+    transform: translateX(-50%);
+}
+
+.comparison-labels-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.3rem;
+    font-size: 0.7rem;
+    color: var(--obs-comet);
+    position: relative;
+}
+
+.ref-moon {
+    color: rgba(226,232,240,0.8);
+    position: absolute;
+    left: 12.5%;
+    transform: translateX(-50%);
+}
+
+.ref-pleiades {
+    color: var(--obs-nebula);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* ── ESTADO VACÍO ─────────────────────────────── */
+.fov-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 3rem 2rem;
+    background: var(--obs-navy);
+    border: 1px dashed var(--obs-border);
+    border-radius: 14px;
+    text-align: center;
+}
+
+.fov-empty-icon svg {
+    width: 100px;
+    height: 100px;
+    opacity: 0.5;
+}
+
+.fov-empty-text {
+    color: var(--obs-comet);
+    font-size: 0.9rem;
+    max-width: 320px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ── FÓRMULAS Y REFERENCIAS ───────────────────── */
+.fov-formulas-card {
+}
+
+.formulas-body {
+    gap: 1.5rem !important;
+}
+
+.formulas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.75rem;
+}
+
+.formula-item {
+    background: var(--obs-deep);
+    border: 1px solid var(--obs-border);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+}
+
+.formula-name {
+    font-size: 0.78rem;
+    color: var(--obs-comet);
+    margin-bottom: 0.35rem;
+}
+
+.formula-math {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--obs-star);
+    font-family: 'Courier New', monospace;
+}
+
+    .formula-math sub {
+        font-size: 0.7em;
+    }
+
+.tips-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.tip-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.82rem;
+    color: var(--obs-comet);
+    background: rgba(244,196,48,0.05);
+    border: 1px solid rgba(244,196,48,0.1);
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    line-height: 1.45;
+}
+
+.tip-icon {
+    flex-shrink: 0;
+    font-size: 0.9rem;
+}
+
+/* Referencias */
+.fov-references {
+    border-top: 1px solid var(--obs-border);
+    padding-top: 1.25rem;
+}
+
+.references-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--obs-comet);
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.references-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 0.5rem;
+}
+
+.ref-link {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.8rem;
+    border-radius: 8px;
+    border: 1px solid var(--obs-border);
+    background: var(--obs-deep);
+    text-decoration: none;
+    transition: all 0.15s ease;
+    color: var(--obs-moon);
+}
+
+    .ref-link:hover {
+        border-color: var(--obs-aurora);
+        background: rgba(46,196,182,0.08);
+        text-decoration: none;
+    }
+
+.ref-source {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
+}
+
+    .ref-source.nasa {
+        background: rgba(14,77,146,0.5);
+        color: #6ab0ff;
+        border: 1px solid rgba(14,77,146,0.6);
+    }
+
+    .ref-source.esa {
+        background: rgba(0,102,204,0.4);
+        color: #80c0ff;
+        border: 1px solid rgba(0,102,204,0.5);
+    }
+
+    .ref-source.sky {
+        background: rgba(180,60,0,0.35);
+        color: #ffaa70;
+        border: 1px solid rgba(180,60,0,0.5);
+    }
+
+    .ref-source.ast {
+        background: rgba(60,0,120,0.4);
+        color: #c090ff;
+        border: 1px solid rgba(60,0,120,0.5);
+    }
+
+    .ref-source.cn {
+        background: rgba(30,80,40,0.4);
+        color: #80e090;
+        border: 1px solid rgba(30,80,40,0.5);
+    }
+
+.ref-desc {
+    font-size: 0.78rem;
+    color: var(--obs-comet);
+    line-height: 1.3;
+}

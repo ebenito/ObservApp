@@ -21,7 +21,7 @@ Disponible como app nativa (Android y Windows) y como aplicación web progresiva
 ### 🧮 Calculadoras incluidas
 
 - **Exposición para eclipses** — Tiempos de exposición por fase usando la fórmula NASA Q
-- **Campo visual (FOV)** — FOV real y aparente para combinaciones telescopio‑ocular *(próximamente)*
+- **Campo visual (FOV)** — FOV real y aparente para combinaciones telescopio‑ocular
 - **Aumento y pupila de salida** — Magnificación óptima según equipo *(próximamente)*
 - **Límite de resolución** — Criterios de Rayleigh y Dawes *(próximamente)*
 - **Escala de placa** — arcsec/px y campo total del setup de astrofotografía *(próximamente)*

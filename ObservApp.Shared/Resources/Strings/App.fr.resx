@@ -333,4 +333,113 @@
   <data name="Nav_Calculators" xml:space="preserve">
     <value>Calculatrices</value>
   </data>
+
+<data name="Calc_FOV_Title" xml:space="preserve">
+  <value>Champ de vision (FOV)</value>
+</data>
+<data name="Calc_FOV_Desc" xml:space="preserve">
+  <value>Calculez le champ réel et apparent de votre combinaison télescope-oculaire</value>
+</data>
+<data name="FOV_Title" xml:space="preserve">
+  <value>Champ de vision (FOV)</value>
+</data>
+<data name="FOV_Subtitle" xml:space="preserve">
+  <value>Calculez le champ réel et apparent de votre combinaison télescope-oculaire</value>
+</data>
+<data name="FOV_TelescopeSection" xml:space="preserve">
+  <value>Télescope</value>
+</data>
+<data name="FOV_EyepieceSection" xml:space="preserve">
+  <value>Oculaire</value>
+</data>
+<data name="FOV_FocalLength" xml:space="preserve">
+  <value>Distance focale (mm)</value>
+</data>
+<data name="FOV_Aperture" xml:space="preserve">
+  <value>Ouverture (mm)</value>
+</data>
+<data name="FOV_EyepieceFocal" xml:space="preserve">
+  <value>Focale de l'oculaire (mm)</value>
+</data>
+<data name="FOV_AFOV" xml:space="preserve">
+  <value>Champ apparent de l'oculaire (AFOV °)</value>
+</data>
+<data name="FOV_Calculate" xml:space="preserve">
+  <value>Calculer</value>
+</data>
+<data name="FOV_Reset" xml:space="preserve">
+  <value>Réinitialiser</value>
+</data>
+<data name="FOV_Results" xml:space="preserve">
+  <value>Résultats</value>
+</data>
+<data name="FOV_Magnification" xml:space="preserve">
+  <value>Grossissement</value>
+</data>
+<data name="FOV_TFOV" xml:space="preserve">
+  <value>Champ réel (TFOV)</value>
+</data>
+<data name="FOV_ExitPupil" xml:space="preserve">
+  <value>Pupille de sortie</value>
+</data>
+<data name="FOV_FocalRatio" xml:space="preserve">
+  <value>Rapport focal (f/)</value>
+</data>
+<data name="FOV_Degrees" xml:space="preserve">
+  <value>degrés</value>
+</data>
+<data name="FOV_Millimeters" xml:space="preserve">
+  <value>mm</value>
+</data>
+<data name="FOV_Times" xml:space="preserve">
+  <value>x</value>
+</data>
+<data name="FOV_SimulatorTitle" xml:space="preserve">
+  <value>Simulation du champ visuel</value>
+</data>
+<data name="FOV_MoonLabel" xml:space="preserve">
+  <value>Pleine Lune : 0,5°</value>
+</data>
+<data name="FOV_PleiadesFOV" xml:space="preserve">
+  <value>Pléiades : ~2°</value>
+</data>
+<data name="FOV_FormulasTitle" xml:space="preserve">
+  <value>Formules et références</value>
+</data>
+<data name="FOV_FormulaMAG" xml:space="preserve">
+  <value>Grossissement = Focale télescope ÷ Focale oculaire</value>
+</data>
+<data name="FOV_FormulaTFOV" xml:space="preserve">
+  <value>Champ réel (TFOV) = AFOV ÷ Grossissement</value>
+</data>
+<data name="FOV_FormulaEP" xml:space="preserve">
+  <value>Pupille de sortie = Ouverture ÷ Grossissement</value>
+</data>
+<data name="FOV_FormulaFR" xml:space="preserve">
+  <value>Rapport focal = Focale ÷ Ouverture</value>
+</data>
+<data name="FOV_ReferencesTitle" xml:space="preserve">
+  <value>Références astronomiques</value>
+</data>
+<data name="FOV_Tip_ExitPupil" xml:space="preserve">
+  <value>Pupille de sortie idéale : 5-7mm pour ciel sombre, 2-4mm pour planétaire.</value>
+</data>
+<data name="FOV_Tip_Magnification" xml:space="preserve">
+  <value>Le grossissement maximal utile est environ 50x par pouce d'ouverture (2x par mm).</value>
+</data>
+<data name="FOV_MaxMagWarning" xml:space="preserve">
+  <value>⚠ Proche du grossissement maximal utile pour cette ouverture</value>
+</data>
+<data name="FOV_GoodExitPupil" xml:space="preserve">
+  <value>✓ Pupille optimale pour l'observation du ciel profond</value>
+</data>
+<data name="FOV_PlanetaryExitPupil" xml:space="preserve">
+  <value>✓ Pupille adaptée à l'observation planétaire</value>
+</data>
+<data name="FOV_NarrowExitPupil" xml:space="preserve">
+  <value>⚠ Pupille très petite — image très sombre</value>
+</data>
+<data name="Nav_CalculadoraFOV" xml:space="preserve">
+  <value>Champ de vision (FOV)</value>
+</data>
 </root>
