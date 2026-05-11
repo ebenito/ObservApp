@@ -132,7 +132,7 @@
 .obs-nav {
     padding:    8px 0;
     flex:       1;
-    overflow-y: auto;
+    /*overflow-y: auto;*/
 }
 
 .obs-nav-group-label {
@@ -177,6 +177,28 @@
     flex-shrink: 0;
     width:      22px;
     text-align: center;
+}
+
+/* Separador del sidebar */
+.obs-nav-divider {
+    height:     1px;
+    background: var(--obs-border);
+    margin:     8px 16px;
+    opacity:    .5;
+}
+
+/* Botón Salir */
+.obs-nav-exit {
+    width:      100%;
+    background: transparent;
+    border:     none;
+    text-align: left;
+}
+
+.obs-nav-exit:hover {
+    background: rgba(231,111,81,.12) !important;
+    color:      var(--obs-mars) !important;
+    transform:  translateX(3px);
 }
 
 /* Pie del sidebar */

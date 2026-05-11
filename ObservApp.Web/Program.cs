@@ -22,6 +22,7 @@ builder.Services.AddSyncfusionBlazor();
 builder.Services.AddLocalization();
 builder.Services.AddScoped<ILocalizationService, SsrLocalizationService>();
 builder.Services.AddScoped<ISettingsService, SsrSettingsService>();
+builder.Services.AddScoped<IAppLifecycleService, WebAppLifecycleService>();
 builder.Services.AddSingleton<AppState>();
 
 var app = builder.Build();

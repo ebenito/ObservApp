@@ -156,6 +156,9 @@
   <data name="Nav_About" xml:space="preserve">
     <value>Informazioni</value>
   </data>
+  <data name="Nav_Exit" xml:space="preserve">
+    <value>Esci</value>
+  </data>
   <data name="Nav_Section_Main" xml:space="preserve">
     <value>Principale</value>
   </data>

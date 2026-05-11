@@ -4,6 +4,7 @@
 @inject NavigationManager NavManager
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
 @inject ILocalizationService Localization
+@inject IAppLifecycleService AppLifecycle
 @inject IJSRuntime JS
 @implements IDisposable
 
@@ -77,6 +78,11 @@
                 <span class="obs-nav-icon">ℹ️</span> @L["Nav_About"]
             </a>
 
+            <div class="obs-nav-divider"></div>
+            <button class="obs-nav-link obs-nav-exit" @onclick="ExitAppAsync">
+                <span class="obs-nav-icon">🚪</span> @L["Nav_Exit"]
+            </button>
+
         </nav>
 
         <div class="obs-sidebar-footer">
@@ -143,5 +149,19 @@
     {
         NavManager.LocationChanged -= OnLocationChanged;
         Localization.OnLanguageChanged -= OnLanguageChanged;
+    }
+
+    private async Task ExitAppAsync()
+    {
+        await CloseSidebarAsync();
+        await AppLifecycle.ExitApplicationAsync();
+    }
+
+    private async Task CloseSidebarAsync()
+    {
+        _sidebarOpen = false;
+        await InvokeAsync(StateHasChanged);
+        // Pequeña pausa para que el sidebar se cierre visualmente antes de salir
+        await Task.Delay(150);
     }
 }
