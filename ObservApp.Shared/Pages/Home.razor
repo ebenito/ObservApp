@@ -1,8 +1,241 @@
-﻿@inject IStringLocalizer<App> L
-@page "/"
+﻿@page "/"
+@inject IStringLocalizer<App> L
 
-<PageTitle>@L["Home_Title"]</PageTitle>
+<PageTitle>@L["AppName"] · @L["Home_Title"]</PageTitle>
 
-<h1>@L["Home_Title"]</h1>
+<div class="home-page">
 
-@L["Home_Welcome"]
+    <!-- ══════════════════════════════════════════════════════
+         HERO
+    ══════════════════════════════════════════════════════ -->
+    <section class="home-hero">
+
+        <!-- Ilustración SVG: cielo nocturno + telescopio -->
+        <div class="home-hero-illustration" aria-hidden="true">
+            <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" class="home-svg">
+                <defs>
+                    <!-- Halo lunar plateado -->
+                    <radialGradient id="hg-moon-glow" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#d0ccc0" stop-opacity=".30"/>
+                        <stop offset="100%" stop-color="#0d1b2a" stop-opacity="0"/>
+                    </radialGradient>
+                    <filter id="hg-blur">
+                        <feGaussianBlur stdDeviation="3"/>
+                    </filter>
+                    <filter id="hg-blur-sm">
+                        <feGaussianBlur stdDeviation="1.5"/>
+                    </filter>
+                    <filter id="hg-star-glow">
+                        <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                    <linearGradient id="hg-sky" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#0a1520"/>
+                        <stop offset="100%" stop-color="#1b2a3b"/>
+                    </linearGradient>
+                    <linearGradient id="hg-horizon" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#243447" stop-opacity="0"/>
+                        <stop offset="100%" stop-color="#243447" stop-opacity="1"/>
+                    </linearGradient>
+                </defs>
+
+                <!-- Cielo -->
+                <rect width="360" height="220" fill="url(#hg-sky)"/>
+
+                <!-- Vía Láctea (brazo visto desde dentro, no galaxia completa) -->
+                <path d="M-30 126 C 36 96, 112 72, 206 56 C 280 44, 338 38, 392 30"
+                      fill="none" stroke="#b7b0d1" stroke-width="20" stroke-linecap="round"
+                      opacity=".11" filter="url(#hg-blur)"/>
+                <path d="M-20 121 C 44 92, 120 68, 210 54 C 282 43, 338 37, 386 31"
+                      fill="none" stroke="#d5d1e8" stroke-width="10" stroke-linecap="round"
+                      opacity=".12" filter="url(#hg-blur)"/>
+                <path d="M0 116 C 58 90, 132 68, 214 56 C 284 46, 336 42, 372 38"
+                      fill="none" stroke="#f1effa" stroke-width="3" stroke-linecap="round"
+                      opacity=".10" filter="url(#hg-blur-sm)"/>
+
+                <!-- Halo plateado de la luna -->
+                <circle cx="290" cy="48" r="54" fill="url(#hg-moon-glow)" filter="url(#hg-blur)"/>
+
+                <!-- Luna llena (blanco-marfil) -->
+                <circle cx="290" cy="48" r="22" fill="#E8E6D9" opacity=".22" filter="url(#hg-blur-sm)"/>
+                <circle cx="290" cy="48" r="18" fill="#E8E6D9"/>
+                <!-- Cráteres sutiles (gris plateado) -->
+                <circle cx="283" cy="43" r="3"   fill="#b0aca2" opacity=".35"/>
+                <circle cx="296" cy="55" r="2"   fill="#b0aca2" opacity=".28"/>
+                <circle cx="287" cy="53" r="1.5" fill="#b0aca2" opacity=".32"/>
+
+                <!-- Nebulosa aurora lejana -->
+                <ellipse cx="62"  cy="102" rx="58" ry="24" fill="#2ec4b6" opacity=".07" filter="url(#hg-blur)"/>
+                <ellipse cx="96"  cy="92"  rx="42" ry="16" fill="#7b5ea7" opacity=".09" filter="url(#hg-blur)"/>
+
+                <!-- Estrellas (blanco-azulado) -->
+                <g class="home-svg-stars" fill="#dce8f8">
+                    <circle cx="20"  cy="18"  r="1.2" opacity=".9"/>
+                    <circle cx="55"  cy="8"   r="0.9" opacity=".7"/>
+                    <circle cx="145" cy="12"  r="0.8" opacity=".6"/>
+                    <circle cx="175" cy="30"  r="1.1" opacity=".8"/>
+                    <circle cx="210" cy="14"  r="1.3" opacity=".9"/>
+                    <circle cx="240" cy="34"  r="0.7" opacity=".55"/>
+                    <circle cx="258" cy="18"  r="1.0" opacity=".75"/>
+                    <circle cx="320" cy="28"  r="0.9" opacity=".65"/>
+                    <circle cx="345" cy="10"  r="1.2" opacity=".85"/>
+                    <circle cx="35"  cy="45"  r="0.8" opacity=".5"/>
+                    <circle cx="72"  cy="38"  r="1.1" opacity=".8"/>
+                    <circle cx="130" cy="50"  r="0.7" opacity=".6"/>
+                    <circle cx="220" cy="54"  r="0.8" opacity=".6"/>
+                    <circle cx="335" cy="72"  r="1.0" opacity=".7"/>
+                    <circle cx="350" cy="44"  r="0.7" opacity=".5"/>
+                </g>
+
+                <!-- Estrella brillante de referencia (Vega) -->
+                <g filter="url(#hg-star-glow)">
+                    <circle cx="160" cy="42" r="2.2" fill="#eef4ff"/>
+                    <line x1="160" y1="36" x2="160" y2="32" stroke="#eef4ff" stroke-width="0.8" opacity=".55"/>
+                    <line x1="160" y1="48" x2="160" y2="52" stroke="#eef4ff" stroke-width="0.8" opacity=".55"/>
+                    <line x1="154" y1="42" x2="150" y2="42" stroke="#eef4ff" stroke-width="0.8" opacity=".55"/>
+                    <line x1="166" y1="42" x2="170" y2="42" stroke="#eef4ff" stroke-width="0.8" opacity=".55"/>
+                </g>
+
+                <!-- Horizonte difuminado -->
+                <rect y="155" width="360" height="65" fill="url(#hg-horizon)"/>
+
+                <!-- Silueta de montaña -->
+                <path d="M0 200 Q60 155 120 170 Q160 155 200 172 Q250 145 300 168 Q330 160 360 175 L360 220 L0 220 Z"
+                      fill="#1b2a3b" opacity=".9"/>
+                <path d="M0 210 Q80 185 180 195 Q260 180 360 192 L360 220 L0 220 Z"
+                      fill="#0d1b2a"/>
+
+                <!-- Telescopio (por DELANTE de la montaña y apoyado en el suelo) -->
+                <g transform="translate(132, 122)">
+                    <!-- Trípode patas (estático) -->
+                    <line x1="25" y1="56" x2="5"  y2="84" stroke="#364e68" stroke-width="2.5" stroke-linecap="round"/>
+                    <line x1="25" y1="56" x2="25" y2="86" stroke="#364e68" stroke-width="2.5" stroke-linecap="round"/>
+                    <line x1="25" y1="56" x2="45" y2="84" stroke="#364e68" stroke-width="2.5" stroke-linecap="round"/>
+                    <!-- Barra cruzada trípode -->
+                    <line x1="10" y1="72" x2="40" y2="72" stroke="#364e68" stroke-width="1.5" stroke-linecap="round"/>
+                    <!-- Montura -->
+                    <circle cx="25" cy="56" r="5" fill="#243447" stroke="#364e68" stroke-width="1.5"/>
+                    <!-- Tubo + accesorios (pivote real en montura, bajo el buscador) -->
+                    <g transform="translate(22, 56)">
+                        <g class="home-svg-scope-tube">
+                            <!-- Tubo principal (más ancho) -->
+                            <rect x="-8" y="-16" width="44" height="20" rx="4"
+                                  fill="#243447" stroke="#2ec4b6" stroke-width="1.5"/>
+                            <!-- Objetivo frontal -->
+                            <ellipse cx="36" cy="-6" rx="3.5" ry="10"
+                                     fill="#1b2a3b" stroke="#2ec4b6" stroke-width="1.2"/>
+                            <!-- Ocular trasero -->
+                            <rect x="-15" y="-13" width="7" height="10" rx="1.8"
+                                  fill="#1b2a3b" stroke="#f4c430" stroke-width="1.1"/>
+                            <!-- Buscador -->
+                            <rect x="4" y="-22" width="16" height="4.5" rx="1.4"
+                                  fill="#243447" stroke="#94a3b8" stroke-width="1"/>
+                            <!-- Haz de luz simbólico -->
+                            <line x1="41" y1="-6" x2="57" y2="-6"
+                                  stroke="#2ec4b6" stroke-width="1" stroke-dasharray="3 2" opacity=".5"/>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+        </div>
+
+        <!-- Texto hero -->
+        <div class="home-hero-text">
+            <div class="home-hero-badge">
+                <span class="home-hero-star">★</span> ObservApp
+            </div>
+            <h1 class="home-hero-title">@L["Home_Welcome"]</h1>
+            <p class="home-hero-subtitle">@L["Home_Subtitle"]</p>
+        </div>
+
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         ACCESO RÁPIDO
+    ══════════════════════════════════════════════════════ -->
+    <section class="home-section">
+        <h2 class="home-section-title">@L["Home_QuickAccess"]</h2>
+        <div class="home-quick-grid">
+
+            <a class="home-qcard home-qcard--map" href="/mapa">
+                <div class="home-qcard-icon">🗺️</div>
+                <div class="home-qcard-body">
+                    <span class="home-qcard-title">@L["Nav_Map"]</span>
+                    <span class="home-qcard-desc">@L["Home_Card_Map_Desc"]</span>
+                </div>
+                <span class="home-qcard-arrow">→</span>
+            </a>
+
+            <a class="home-qcard home-qcard--planning" href="/planificacion">
+                <div class="home-qcard-icon">📅</div>
+                <div class="home-qcard-body">
+                    <span class="home-qcard-title">@L["Nav_Planning"]</span>
+                    <span class="home-qcard-desc">@L["Home_Card_Planning_Desc"]</span>
+                </div>
+                <span class="home-qcard-arrow">→</span>
+            </a>
+
+            <a class="home-qcard home-qcard--ephemeris" href="/efemerides">
+                <div class="home-qcard-icon">🌙</div>
+                <div class="home-qcard-body">
+                    <span class="home-qcard-title">@L["Nav_Ephemeris"]</span>
+                    <span class="home-qcard-desc">@L["Home_Card_Ephemeris_Desc"]</span>
+                </div>
+                <span class="home-qcard-arrow">→</span>
+            </a>
+
+            <a class="home-qcard home-qcard--calc" href="/calculadoras">
+                <div class="home-qcard-icon">🧮</div>
+                <div class="home-qcard-body">
+                    <span class="home-qcard-title">@L["Nav_Calculators"]</span>
+                    <span class="home-qcard-desc">@L["Home_Card_Calculators_Desc"]</span>
+                </div>
+                <span class="home-qcard-arrow">→</span>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         CARACTERÍSTICAS
+    ══════════════════════════════════════════════════════ -->
+    <section class="home-section">
+        <h2 class="home-section-title">@L["Home_Features_Title"]</h2>
+        <div class="home-features-grid">
+
+            <div class="home-feat">
+                <div class="home-feat-icon home-feat-icon--aurora">🔭</div>
+                <h3 class="home-feat-title">@L["Home_Feature1_Title"]</h3>
+                <p class="home-feat-desc">@L["Home_Feature1_Desc"]</p>
+            </div>
+
+            <div class="home-feat">
+                <div class="home-feat-icon home-feat-icon--star">🧮</div>
+                <h3 class="home-feat-title">@L["Home_Feature2_Title"]</h3>
+                <p class="home-feat-desc">@L["Home_Feature2_Desc"]</p>
+            </div>
+
+            <div class="home-feat">
+                <div class="home-feat-icon home-feat-icon--nebula">📷</div>
+                <h3 class="home-feat-title">@L["Home_Feature3_Title"]</h3>
+                <p class="home-feat-desc">@L["Home_Feature3_Desc"]</p>
+            </div>
+
+            <div class="home-feat">
+                <div class="home-feat-icon home-feat-icon--mars">📜</div>
+                <h3 class="home-feat-title">@L["Home_Feature4_Title"]</h3>
+                <p class="home-feat-desc">@L["Home_Feature4_Desc"]</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         PIE DE VERSIÓN
+    ══════════════════════════════════════════════════════ -->
+    <footer class="home-footer">
+        <span class="home-footer-star">★</span>
+        <span>@L["AppName"] @L["AppVersion"]</span>
+    </footer>
+
+</div>

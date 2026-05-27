@@ -1,4 +1,6 @@
 @using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
 
 <Router AppAssembly="@typeof(Routes).Assembly"
         AdditionalAssemblies="@_additionalAssemblies">
@@ -8,17 +10,15 @@
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
-        <PageTitle>No encontrado</PageTitle>
+        <PageTitle>@L["NotFound_Title"]</PageTitle>
         <LayoutView Layout="@typeof(Layout.MainLayout)">
             <div style="display:flex;flex-direction:column;align-items:center;
                         justify-content:center;min-height:60vh;gap:16px;">
                 <span style="font-size:3rem;">🔭</span>
-                <h3 style="color:var(--obs-moon);">Página no encontrada</h3>
-                <p style="color:var(--obs-comet);">
-                    El contenido que buscas no existe o ha sido movido.
-                </p>
+                <h3 style="color:var(--obs-moon);">@L["NotFound_Title"]</h3>
+                <p style="color:var(--obs-comet);">@L["NotFound_Message"]</p>
                 <a href="/" style="color:var(--obs-aurora);text-decoration:none;">
-                    ← Volver al inicio
+                    @L["NotFound_Back"]
                 </a>
             </div>
         </LayoutView>

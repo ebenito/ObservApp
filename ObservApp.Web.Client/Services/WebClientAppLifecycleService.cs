@@ -12,6 +12,8 @@ public class WebClientAppLifecycleService : IAppLifecycleService
         _jsRuntime = jsRuntime;
     }
 
+    public bool CanExit => false;
+
     public async Task ExitApplicationAsync()
     {
         // En la versión web, cerrar la pestaña/ventana del navegador

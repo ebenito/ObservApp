@@ -56,13 +56,13 @@
 
     <ItemGroup>
         <!-- MAUI core -->
-        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.7" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.7" />
-        <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.7" />
-        <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.60" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.60" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.7" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.7" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.8" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.8" />
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.8" />
+        <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.70" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.70" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.8" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.8" />
 
         <!-- Syncfusion licensing (el resto de paquetes SF van en Shared) -->
 
@@ -74,7 +74,7 @@
 
         <!-- Community Toolkit MAUI — permisos, share, toast nativo Android -->
         <PackageReference Include="CommunityToolkit.Maui" Version="14.1.1" />
-        <PackageReference Include="Syncfusion.Licensing" Version="33.2.5" />
+        <PackageReference Include="Syncfusion.Licensing" Version="33.2.8" />
     </ItemGroup>
 
 </Project>

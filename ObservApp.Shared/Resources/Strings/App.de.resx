@@ -445,4 +445,49 @@
 <data name="Nav_CalculadoraFOV" xml:space="preserve">
   <value>Sichtfeld (FOV)</value>
 </data>
+<data name="Home_Subtitle" xml:space="preserve">
+  <value>Dein Begleiter für die Planung und Aufzeichnung astronomischer Beobachtungen. Ephemeriden, Rechner und Karten an einem Ort.</value>
+</data>
+<data name="Home_QuickAccess" xml:space="preserve">
+  <value>Schnellzugriff</value>
+</data>
+<data name="Home_Card_Map_Desc" xml:space="preserve">
+  <value>Finde Standorte mit dunklem Himmel in deiner Nähe</value>
+</data>
+<data name="Home_Card_Planning_Desc" xml:space="preserve">
+  <value>Plane deine nächste Beobachtungssession</value>
+</data>
+<data name="Home_Card_Ephemeris_Desc" xml:space="preserve">
+  <value>Positionen von Planeten, Sonnenauf- und -untergang sowie Mondaufgang</value>
+</data>
+<data name="Home_Card_Calculators_Desc" xml:space="preserve">
+  <value>Gesichtsfeld, Finsternisbelichtung, Vergrößerung und mehr</value>
+</data>
+<data name="Home_Features_Title" xml:space="preserve">
+  <value>Was kannst du tun?</value>
+</data>
+<data name="Home_Feature1_Title" xml:space="preserve">
+  <value>Visuelle Beobachtung</value>
+</data>
+<data name="Home_Feature1_Desc" xml:space="preserve">
+  <value>Berechne Gesichtsfeld, Vergrößerung und Austrittspupille für jede Teleskop-Okular-Kombination</value>
+</data>
+<data name="Home_Feature2_Title" xml:space="preserve">
+  <value>Rechner</value>
+</data>
+<data name="Home_Feature2_Desc" xml:space="preserve">
+  <value>Präzise Werkzeuge für Astrofotografie: Bildmaßstab, Finsternisbelichtung und mehr</value>
+</data>
+<data name="Home_Feature3_Title" xml:space="preserve">
+  <value>Astrofotografie</value>
+</data>
+<data name="Home_Feature3_Desc" xml:space="preserve">
+  <value>Berechne Belichtungszeiten mit der NASA-Q-Formel für jede Phase der Finsternis</value>
+</data>
+<data name="Home_Feature4_Title" xml:space="preserve">
+  <value>Verlauf</value>
+</data>
+<data name="Home_Feature4_Desc" xml:space="preserve">
+  <value>Speichere und überprüfe das Protokoll all deiner vergangenen Beobachtungssessions</value>
+</data>
 </root>

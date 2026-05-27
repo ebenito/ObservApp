@@ -445,4 +445,49 @@
 <data name="Nav_CalculadoraFOV" xml:space="preserve">
   <value>مجال الرؤية (FOV)</value>
 </data>
+<data name="Home_Subtitle" xml:space="preserve">
+  <value>رفيقك لتخطيط وتسجيل الرصد الفلكي. التقاويم الفلكية والحاسبات والخرائط في مكان واحد.</value>
+</data>
+<data name="Home_QuickAccess" xml:space="preserve">
+  <value>وصول سريع</value>
+</data>
+<data name="Home_Card_Map_Desc" xml:space="preserve">
+  <value>ابحث عن مواقع السماء المظلمة بالقرب منك</value>
+</data>
+<data name="Home_Card_Planning_Desc" xml:space="preserve">
+  <value>خطط لجلسة الرصد القادمة</value>
+</data>
+<data name="Home_Card_Ephemeris_Desc" xml:space="preserve">
+  <value>مواضع الكواكب وشروق وغروب الشمس والقمر</value>
+</data>
+<data name="Home_Card_Calculators_Desc" xml:space="preserve">
+  <value>مجال الرؤية، تعريض الكسوف، التكبير والمزيد</value>
+</data>
+<data name="Home_Features_Title" xml:space="preserve">
+  <value>ماذا يمكنك أن تفعل؟</value>
+</data>
+<data name="Home_Feature1_Title" xml:space="preserve">
+  <value>الرصد البصري</value>
+</data>
+<data name="Home_Feature1_Desc" xml:space="preserve">
+  <value>احسب مجال الرؤية والتكبير وحدقة الخروج لكل تركيبة تلسكوب وعدسة عينية</value>
+</data>
+<data name="Home_Feature2_Title" xml:space="preserve">
+  <value>الحاسبات</value>
+</data>
+<data name="Home_Feature2_Desc" xml:space="preserve">
+  <value>أدوات دقيقة للتصوير الفلكي: مقياس اللوحة، تعريض الكسوف والمزيد</value>
+</data>
+<data name="Home_Feature3_Title" xml:space="preserve">
+  <value>التصوير الفلكي</value>
+</data>
+<data name="Home_Feature3_Desc" xml:space="preserve">
+  <value>احسب أوقات التعريض بمعادلة NASA Q لكل مرحلة من الكسوف</value>
+</data>
+<data name="Home_Feature4_Title" xml:space="preserve">
+  <value>السجل</value>
+</data>
+<data name="Home_Feature4_Desc" xml:space="preserve">
+  <value>احفظ وراجع سجل جميع جلسات الرصد السابقة</value>
+</data>
 </root>

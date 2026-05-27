@@ -445,4 +445,49 @@
 <data name="Nav_CalculadoraFOV" xml:space="preserve">
   <value>Campo visivo (FOV)</value>
 </data>
+<data name="Home_Subtitle" xml:space="preserve">
+  <value>Il tuo compagno per pianificare e registrare osservazioni astronomiche. Effemeridi, calcolatori e mappe in un unico posto.</value>
+</data>
+<data name="Home_QuickAccess" xml:space="preserve">
+  <value>Accesso rapido</value>
+</data>
+<data name="Home_Card_Map_Desc" xml:space="preserve">
+  <value>Trova luoghi con cieli bui vicino a te</value>
+</data>
+<data name="Home_Card_Planning_Desc" xml:space="preserve">
+  <value>Pianifica la tua prossima sessione di osservazione</value>
+</data>
+<data name="Home_Card_Ephemeris_Desc" xml:space="preserve">
+  <value>Posizioni dei pianeti, alba e tramonto del Sole e della Luna</value>
+</data>
+<data name="Home_Card_Calculators_Desc" xml:space="preserve">
+  <value>Campo visivo, esposizione eclissi, ingrandimento e altro</value>
+</data>
+<data name="Home_Features_Title" xml:space="preserve">
+  <value>Cosa puoi fare?</value>
+</data>
+<data name="Home_Feature1_Title" xml:space="preserve">
+  <value>Osservazione visiva</value>
+</data>
+<data name="Home_Feature1_Desc" xml:space="preserve">
+  <value>Calcola il campo visivo, l'ingrandimento e la pupilla d'uscita per ogni combinazione telescopio-oculare</value>
+</data>
+<data name="Home_Feature2_Title" xml:space="preserve">
+  <value>Calcolatori</value>
+</data>
+<data name="Home_Feature2_Desc" xml:space="preserve">
+  <value>Strumenti precisi per l'astrofotografia: scala di piatto, esposizione eclissi e altro</value>
+</data>
+<data name="Home_Feature3_Title" xml:space="preserve">
+  <value>Astrofotografia</value>
+</data>
+<data name="Home_Feature3_Desc" xml:space="preserve">
+  <value>Calcola i tempi di esposizione con la formula NASA Q per ogni fase dell'eclissi</value>
+</data>
+<data name="Home_Feature4_Title" xml:space="preserve">
+  <value>Cronologia</value>
+</data>
+<data name="Home_Feature4_Desc" xml:space="preserve">
+  <value>Salva e consulta il registro di tutte le tue sessioni di osservazione passate</value>
+</data>
 </root>

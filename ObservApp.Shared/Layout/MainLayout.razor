@@ -78,10 +78,13 @@
                 <span class="obs-nav-icon">ℹ️</span> @L["Nav_About"]
             </a>
 
-            <div class="obs-nav-divider"></div>
-            <button class="obs-nav-link obs-nav-exit" @onclick="ExitAppAsync">
-                <span class="obs-nav-icon">🚪</span> @L["Nav_Exit"]
-            </button>
+            @if (AppLifecycle.CanExit)
+            {
+                <div class="obs-nav-divider"></div>
+                <button class="obs-nav-link obs-nav-exit" @onclick="ExitAppAsync">
+                    <span class="obs-nav-icon">🚪</span> @L["Nav_Exit"]
+                </button>
+            }
 
         </nav>
 

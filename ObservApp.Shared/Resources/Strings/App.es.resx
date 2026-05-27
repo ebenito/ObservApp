@@ -441,4 +441,49 @@
   <data name="Nav_CalculadoraFOV" xml:space="preserve">
     <value>Campo Visual (FOV)</value>
   </data>
+  <data name="Home_Subtitle" xml:space="preserve">
+    <value>Tu compañero para planificar y registrar observaciones astronómicas. Efemerides, calculadoras y mapas en un solo lugar.</value>
+  </data>
+  <data name="Home_QuickAccess" xml:space="preserve">
+    <value>Acceso rápido</value>
+  </data>
+  <data name="Home_Card_Map_Desc" xml:space="preserve">
+    <value>Busca lugares con cielos oscuros cerca de ti</value>
+  </data>
+  <data name="Home_Card_Planning_Desc" xml:space="preserve">
+    <value>Planifica tu próxima sesión de observación</value>
+  </data>
+  <data name="Home_Card_Ephemeris_Desc" xml:space="preserve">
+    <value>Posición de planetas, salida y puesta del Sol y la Luna</value>
+  </data>
+  <data name="Home_Card_Calculators_Desc" xml:space="preserve">
+    <value>FOV, exposición para eclipses, aumentos y más</value>
+  </data>
+  <data name="Home_Features_Title" xml:space="preserve">
+    <value>¿Qué puedes hacer?</value>
+  </data>
+  <data name="Home_Feature1_Title" xml:space="preserve">
+    <value>Observación visual</value>
+  </data>
+  <data name="Home_Feature1_Desc" xml:space="preserve">
+    <value>Calcula campo visual, aumentos y pupila de salida para cada combinación telescopio-ocular</value>
+  </data>
+  <data name="Home_Feature2_Title" xml:space="preserve">
+    <value>Calculadoras</value>
+  </data>
+  <data name="Home_Feature2_Desc" xml:space="preserve">
+    <value>Herramientas precisas para astrofotografía: escala de placa, exposición para eclipses y más</value>
+  </data>
+  <data name="Home_Feature3_Title" xml:space="preserve">
+    <value>Astrofotografía</value>
+  </data>
+  <data name="Home_Feature3_Desc" xml:space="preserve">
+    <value>Calcula tiempos de exposición con la fórmula NASA Q para cada fase del eclipse</value>
+  </data>
+  <data name="Home_Feature4_Title" xml:space="preserve">
+    <value>Historial</value>
+  </data>
+  <data name="Home_Feature4_Desc" xml:space="preserve">
+    <value>Guarda y revisa el registro de todas tus sesiones de observación pasadas</value>
+  </data>
 </root>

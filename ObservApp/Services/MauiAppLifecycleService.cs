@@ -4,6 +4,8 @@ namespace ObservApp.Services;
 
 public class MauiAppLifecycleService : IAppLifecycleService
 {
+    public bool CanExit => true;
+
     public Task ExitApplicationAsync()
     {
 #if WINDOWS

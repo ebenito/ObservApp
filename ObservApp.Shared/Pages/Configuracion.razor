@@ -47,12 +47,6 @@
                 ⏳ @L["Settings_Language_Applying"]
             </div>
         }
-        else if (_showConfirmation)
-        {
-            <div class="cfg-toast cfg-toast--ok" role="status">
-                ✅ @L["Settings_Language_Applied"]
-            </div>
-        }
 
     </section>
 
@@ -60,7 +54,6 @@
 
 @code {
     private string _selectedCode = string.Empty;
-    private bool _showConfirmation;
     private bool _isReloading;
 
     protected override void OnInitialized()
@@ -80,13 +73,6 @@
 
         Settings.SetLanguage(code);
         Localization.SetLanguage(code); // en web esto recarga la página
-    }
-
-    private async Task HideConfirmationAsync()
-    {
-        await Task.Delay(2500);
-        _showConfirmation = false;
-        await InvokeAsync(StateHasChanged);
     }
 
     private void OnLanguageChanged()

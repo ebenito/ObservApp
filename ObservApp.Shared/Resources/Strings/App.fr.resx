@@ -445,4 +445,49 @@
 <data name="Nav_CalculadoraFOV" xml:space="preserve">
   <value>Champ de vision (FOV)</value>
 </data>
+<data name="Home_Subtitle" xml:space="preserve">
+  <value>Votre compagnon pour planifier et consigner vos observations astronomiques. Éphémérides, calculateurs et cartes en un seul endroit.</value>
+</data>
+<data name="Home_QuickAccess" xml:space="preserve">
+  <value>Accès rapide</value>
+</data>
+<data name="Home_Card_Map_Desc" xml:space="preserve">
+  <value>Trouvez des sites à ciel sombre près de chez vous</value>
+</data>
+<data name="Home_Card_Planning_Desc" xml:space="preserve">
+  <value>Planifiez votre prochaine session d'observation</value>
+</data>
+<data name="Home_Card_Ephemeris_Desc" xml:space="preserve">
+  <value>Positions des planètes, lever et coucher du Soleil et de la Lune</value>
+</data>
+<data name="Home_Card_Calculators_Desc" xml:space="preserve">
+  <value>Champ de vision, exposition éclipse, grossissement et plus</value>
+</data>
+<data name="Home_Features_Title" xml:space="preserve">
+  <value>Que pouvez-vous faire ?</value>
+</data>
+<data name="Home_Feature1_Title" xml:space="preserve">
+  <value>Observation visuelle</value>
+</data>
+<data name="Home_Feature1_Desc" xml:space="preserve">
+  <value>Calculez le champ de vision, le grossissement et la pupille de sortie pour chaque combinaison télescope-oculaire</value>
+</data>
+<data name="Home_Feature2_Title" xml:space="preserve">
+  <value>Calculateurs</value>
+</data>
+<data name="Home_Feature2_Desc" xml:space="preserve">
+  <value>Outils précis pour l'astrophotographie : échelle de plaque, exposition éclipse et plus</value>
+</data>
+<data name="Home_Feature3_Title" xml:space="preserve">
+  <value>Astrophotographie</value>
+</data>
+<data name="Home_Feature3_Desc" xml:space="preserve">
+  <value>Calculez les temps d'exposition avec la formule NASA Q pour chaque phase de l'éclipse</value>
+</data>
+<data name="Home_Feature4_Title" xml:space="preserve">
+  <value>Historique</value>
+</data>
+<data name="Home_Feature4_Desc" xml:space="preserve">
+  <value>Enregistrez et consultez le journal de toutes vos sessions d'observation passées</value>
+</data>
 </root>

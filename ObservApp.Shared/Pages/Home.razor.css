@@ -1,0 +1,278 @@
+/* ============================================================
+   HOME — Pantalla de inicio
+   ============================================================ */
+
+.home-page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 16px 48px;
+}
+
+/* ── HERO ─────────────────────────────────────────────────── */
+.home-hero {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    margin-bottom: 32px;
+    background: var(--obs-navy);
+    border: 1px solid var(--obs-border);
+    box-shadow: var(--shadow-card);
+}
+
+.home-hero-illustration {
+    width: 100%;
+    display: block;
+    line-height: 0;
+}
+
+.home-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Animación radial del tubo del telescopio (0° a 75°) */
+@keyframes home-scope-track {
+    0%   { transform: rotate(0deg); }
+    45%  { transform: rotate(-75deg); }
+    55%  { transform: rotate(-75deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.home-svg-scope-tube {
+    transform-origin: 0 0;   /* pivote en la montura (0,0 del grupo interno) */
+    animation: home-scope-track 18s ease-in-out infinite;
+}
+
+/* Centelleo de estrellas */
+@keyframes home-star-twinkle {
+    0%, 100% { opacity: .9; }
+    50%       { opacity: .3; }
+}
+
+.home-svg-stars circle:nth-child(odd) {
+    animation: home-star-twinkle 3.2s ease-in-out infinite;
+}
+
+.home-svg-stars circle:nth-child(even) {
+    animation: home-star-twinkle 4.5s ease-in-out infinite 1.1s;
+}
+
+/* Texto hero superpuesto */
+.home-hero-text {
+    padding: 20px 24px 24px;
+    background: linear-gradient(to bottom, transparent, rgba(13,27,42,.95) 30%);
+    margin-top: -40px;
+    position: relative;
+    z-index: 1;
+}
+
+.home-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--obs-star);
+    background: rgba(244, 196, 48, .12);
+    border: 1px solid rgba(244, 196, 48, .3);
+    border-radius: 999px;
+    padding: 3px 10px;
+    margin-bottom: 10px;
+}
+
+.home-hero-star {
+    font-size: 0.75rem;
+}
+
+.home-hero-title {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: var(--obs-moon);
+    margin: 0 0 8px;
+    line-height: 1.25;
+    letter-spacing: -.02em;
+}
+
+.home-hero-subtitle {
+    font-size: 0.85rem;
+    color: var(--obs-comet);
+    margin: 0;
+    line-height: 1.6;
+    max-width: 400px;
+}
+
+/* ── SECCIONES ─────────────────────────────────────────────── */
+.home-section {
+    margin-bottom: 32px;
+}
+
+.home-section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--obs-comet);
+    margin: 0 0 14px;
+}
+
+/* ── ACCESO RÁPIDO ─────────────────────────────────────────── */
+.home-quick-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.home-qcard {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--obs-navy);
+    border: 1.5px solid var(--obs-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition:
+        border-color var(--transition),
+        background    var(--transition),
+        box-shadow    var(--transition),
+        transform     var(--transition);
+}
+
+.home-qcard:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
+}
+
+/* Colores de acento por tarjeta */
+.home-qcard--map:hover      { border-color: var(--obs-aurora);  background: rgba(46,196,182,.06); }
+.home-qcard--planning:hover { border-color: var(--obs-star);    background: rgba(244,196,48,.06); }
+.home-qcard--ephemeris:hover{ border-color: var(--obs-nebula);  background: rgba(123,94,167,.07); }
+.home-qcard--calc:hover     { border-color: var(--obs-mars);    background: rgba(231,111,81,.06); }
+
+.home-qcard-icon {
+    font-size: 1.7rem;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 44px;
+    text-align: center;
+}
+
+.home-qcard-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.home-qcard-title {
+    font-size: 0.93rem;
+    font-weight: 700;
+    color: var(--obs-moon);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.home-qcard-desc {
+    font-size: 0.78rem;
+    color: var(--obs-comet);
+    line-height: 1.4;
+}
+
+.home-qcard-arrow {
+    font-size: 1.1rem;
+    color: var(--obs-comet);
+    flex-shrink: 0;
+    transition: color var(--transition), transform var(--transition);
+}
+
+.home-qcard:hover .home-qcard-arrow {
+    color: var(--obs-moon);
+    transform: translateX(4px);
+}
+
+/* ── CARACTERÍSTICAS ──────────────────────────────────────── */
+.home-features-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.home-feat {
+    background: var(--obs-navy);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-lg);
+    padding: 18px 16px;
+}
+
+.home-feat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+}
+
+.home-feat-icon--aurora { background: rgba(46,196,182,.12); }
+.home-feat-icon--star   { background: rgba(244,196,48,.13); }
+.home-feat-icon--nebula { background: rgba(123,94,167,.14); }
+.home-feat-icon--mars   { background: rgba(231,111,81,.12); }
+
+.home-feat-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--obs-moon);
+    margin: 0 0 6px;
+}
+
+.home-feat-desc {
+    font-size: 0.76rem;
+    color: var(--obs-comet);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ── PIE ──────────────────────────────────────────────────── */
+.home-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding-top: 8px;
+    font-size: 0.72rem;
+    color: var(--obs-comet);
+    opacity: .5;
+    letter-spacing: .04em;
+}
+
+.home-footer-star {
+    color: var(--obs-star);
+    font-size: 0.75rem;
+}
+
+/* ── RESPONSIVE: pantallas anchas (tablet/desktop) ─────────── */
+@media (min-width: 520px) {
+    .home-quick-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .home-qcard {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 20px;
+    }
+
+    .home-qcard-arrow {
+        align-self: flex-end;
+        margin-top: auto;
+    }
+}

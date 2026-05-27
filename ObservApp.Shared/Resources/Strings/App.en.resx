@@ -441,4 +441,49 @@
   <data name="Nav_CalculadoraFOV" xml:space="preserve">
     <value>Field of View (FOV</value>
   </data>
+  <data name="Home_Subtitle" xml:space="preserve">
+    <value>Your companion for planning and logging astronomical observations. Ephemeris, calculators and maps all in one place.</value>
+  </data>
+  <data name="Home_QuickAccess" xml:space="preserve">
+    <value>Quick access</value>
+  </data>
+  <data name="Home_Card_Map_Desc" xml:space="preserve">
+    <value>Find dark-sky locations near you</value>
+  </data>
+  <data name="Home_Card_Planning_Desc" xml:space="preserve">
+    <value>Plan your next observation session</value>
+  </data>
+  <data name="Home_Card_Ephemeris_Desc" xml:space="preserve">
+    <value>Positions of planets, sunrise, sunset and moonrise</value>
+  </data>
+  <data name="Home_Card_Calculators_Desc" xml:space="preserve">
+    <value>FOV, eclipse exposure, magnification and more</value>
+  </data>
+  <data name="Home_Features_Title" xml:space="preserve">
+    <value>What can you do?</value>
+  </data>
+  <data name="Home_Feature1_Title" xml:space="preserve">
+    <value>Visual observation</value>
+  </data>
+  <data name="Home_Feature1_Desc" xml:space="preserve">
+    <value>Calculate field of view, magnification and exit pupil for every telescope-eyepiece combination</value>
+  </data>
+  <data name="Home_Feature2_Title" xml:space="preserve">
+    <value>Calculators</value>
+  </data>
+  <data name="Home_Feature2_Desc" xml:space="preserve">
+    <value>Precise tools for astrophotography: plate scale, eclipse exposure and more</value>
+  </data>
+  <data name="Home_Feature3_Title" xml:space="preserve">
+    <value>Astrophotography</value>
+  </data>
+  <data name="Home_Feature3_Desc" xml:space="preserve">
+    <value>Calculate exposure times using the NASA Q formula for each eclipse phase</value>
+  </data>
+  <data name="Home_Feature4_Title" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="Home_Feature4_Desc" xml:space="preserve">
+    <value>Save and review the log of all your past observation sessions</value>
+  </data>
 </root>
