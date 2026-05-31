@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -490,4 +490,202 @@
 <data name="Home_Feature4_Desc" xml:space="preserve">
   <value>احفظ وراجع سجل جميع جلسات الرصد السابقة</value>
 </data>
+
+  <!-- ══ حاسبة الشمس والقمر ══ -->
+  <data name="Calc_SolLuna_Title" xml:space="preserve">
+    <value>الشمس والقمر</value>
+  </data>
+  <data name="Calc_SolLuna_Desc" xml:space="preserve">
+    <value>الشروق والغروب والشفق وأطوار القمر والانقلابات والاعتدالات لأي تاريخ وموقع</value>
+  </data>
+  <data name="SolLuna_Title" xml:space="preserve">
+    <value>حاسبة الشمس والقمر</value>
+  </data>
+  <data name="SolLuna_Subtitle" xml:space="preserve">
+    <value>بيانات فلكية دقيقة للشمس والقمر لأي تاريخ (1901–2099) وإحداثيات WGS-84</value>
+  </data>
+  <data name="SolLuna_Date" xml:space="preserve">
+    <value>التاريخ</value>
+  </data>
+  <data name="SolLuna_Location" xml:space="preserve">
+    <value>الموقع (WGS-84)</value>
+  </data>
+  <data name="SolLuna_Latitude" xml:space="preserve">
+    <value>خط العرض (°)</value>
+  </data>
+  <data name="SolLuna_Longitude" xml:space="preserve">
+    <value>خط الطول (°)</value>
+  </data>
+  <data name="SolLuna_Altitude" xml:space="preserve">
+    <value>الارتفاع</value>
+  </data>
+  <data name="SolLuna_Tab_Sun" xml:space="preserve">
+    <value>الشمس</value>
+  </data>
+  <data name="SolLuna_Tab_Moon" xml:space="preserve">
+    <value>القمر</value>
+  </data>
+  <data name="SolLuna_Tab_Events" xml:space="preserve">
+    <value>الأحداث السنوية</value>
+  </data>
+  <data name="SolLuna_Sun_Times" xml:space="preserve">
+    <value>أوقات الشمس الرئيسية</value>
+  </data>
+  <data name="SolLuna_Dawn_Astronomical" xml:space="preserve">
+    <value>الفجر الفلكي</value>
+  </data>
+  <data name="SolLuna_Dawn_Nautical" xml:space="preserve">
+    <value>الفجر البحري</value>
+  </data>
+  <data name="SolLuna_Dawn_Civil" xml:space="preserve">
+    <value>الفجر المدني</value>
+  </data>
+  <data name="SolLuna_Sunrise" xml:space="preserve">
+    <value>شروق الشمس</value>
+  </data>
+  <data name="SolLuna_SolarNoon" xml:space="preserve">
+    <value>الظهيرة الشمسية</value>
+  </data>
+  <data name="SolLuna_Sunset" xml:space="preserve">
+    <value>غروب الشمس</value>
+  </data>
+  <data name="SolLuna_Dusk_Civil" xml:space="preserve">
+    <value>الغسق المدني</value>
+  </data>
+  <data name="SolLuna_Dusk_Nautical" xml:space="preserve">
+    <value>الغسق البحري</value>
+  </data>
+  <data name="SolLuna_Dusk_Astronomical" xml:space="preserve">
+    <value>الغسق الفلكي</value>
+  </data>
+  <data name="SolLuna_DayLength" xml:space="preserve">
+    <value>مدة النهار</value>
+  </data>
+  <data name="SolLuna_Sun_Position" xml:space="preserve">
+    <value>موضع الشمس</value>
+  </data>
+  <data name="SolLuna_AzimuthRise" xml:space="preserve">
+    <value>سمت الشروق</value>
+  </data>
+  <data name="SolLuna_AzimuthSet" xml:space="preserve">
+    <value>سمت الغروب</value>
+  </data>
+  <data name="SolLuna_MaxAltitude" xml:space="preserve">
+    <value>أقصى ارتفاع</value>
+  </data>
+  <data name="SolLuna_Declination" xml:space="preserve">
+    <value>الميل</value>
+  </data>
+  <data name="SolLuna_RightAscension" xml:space="preserve">
+    <value>المصعد المستقيم</value>
+  </data>
+  <data name="SolLuna_EquationOfTime" xml:space="preserve">
+    <value>معادلة الوقت</value>
+  </data>
+  <data name="SolLuna_Distance" xml:space="preserve">
+    <value>المسافة</value>
+  </data>
+  <data name="SolLuna_Sun_Path" xml:space="preserve">
+    <value>مسار الشمس</value>
+  </data>
+  <data name="SolLuna_Moon_Times" xml:space="preserve">
+    <value>أوقات القمر الرئيسية</value>
+  </data>
+  <data name="SolLuna_Moonrise" xml:space="preserve">
+    <value>شروق القمر</value>
+  </data>
+  <data name="SolLuna_MoonTransit" xml:space="preserve">
+    <value>عبور القمر</value>
+  </data>
+  <data name="SolLuna_Moonset" xml:space="preserve">
+    <value>غروب القمر</value>
+  </data>
+  <data name="SolLuna_Moon_Position" xml:space="preserve">
+    <value>موضع القمر</value>
+  </data>
+  <data name="SolLuna_AngularDiam" xml:space="preserve">
+    <value>القطر الزاوي</value>
+  </data>
+  <data name="SolLuna_Moon_Phase" xml:space="preserve">
+    <value>طور القمر</value>
+  </data>
+  <data name="SolLuna_NextNewMoon" xml:space="preserve">
+    <value>المحاق القادم</value>
+  </data>
+  <data name="SolLuna_NextFullMoon" xml:space="preserve">
+    <value>البدر القادم</value>
+  </data>
+  <data name="SolLuna_LunarAge" xml:space="preserve">
+    <value>عمر القمر</value>
+  </data>
+  <data name="SolLuna_Days" xml:space="preserve">
+    <value>أيام</value>
+  </data>
+  <data name="SolLuna_Moon_Path" xml:space="preserve">
+    <value>مسار القمر</value>
+  </data>
+  <data name="SolLuna_Events_Year" xml:space="preserve">
+    <value>الأحداث الفلكية</value>
+  </data>
+  <data name="SolLuna_Solstices_Equinoxes" xml:space="preserve">
+    <value>الانقلابات والاعتدالات</value>
+  </data>
+  <data name="SolLuna_VernalEquinox" xml:space="preserve">
+    <value>اعتدال الربيع</value>
+  </data>
+  <data name="SolLuna_SummerSolstice" xml:space="preserve">
+    <value>انقلاب الصيف</value>
+  </data>
+  <data name="SolLuna_AutumnalEquinox" xml:space="preserve">
+    <value>اعتدال الخريف</value>
+  </data>
+  <data name="SolLuna_WinterSolstice" xml:space="preserve">
+    <value>انقلاب الشتاء</value>
+  </data>
+  <data name="SolLuna_Moon_Phases_Year" xml:space="preserve">
+    <value>أطوار القمر في العام</value>
+  </data>
+  <data name="SolLuna_Phase_New" xml:space="preserve">
+    <value>المحاق</value>
+  </data>
+  <data name="SolLuna_Phase_WaxCrescent" xml:space="preserve">
+    <value>الهلال المتزايد</value>
+  </data>
+  <data name="SolLuna_Phase_FirstQuarter" xml:space="preserve">
+    <value>التربيع الأول</value>
+  </data>
+  <data name="SolLuna_Phase_WaxGibbous" xml:space="preserve">
+    <value>الأحدب المتزايد</value>
+  </data>
+  <data name="SolLuna_Phase_Full" xml:space="preserve">
+    <value>البدر</value>
+  </data>
+  <data name="SolLuna_Phase_WanGibbous" xml:space="preserve">
+    <value>الأحدب المتناقص</value>
+  </data>
+  <data name="SolLuna_Phase_LastQuarter" xml:space="preserve">
+    <value>التربيع الأخير</value>
+  </data>
+  <data name="SolLuna_Phase_WanCrescent" xml:space="preserve">
+    <value>الهلال المتناقص</value>
+  </data>
+  <data name="SolLuna_Twi_Astro" xml:space="preserve">
+    <value>الليل الفلكي</value>
+  </data>
+  <data name="SolLuna_Twi_Naut" xml:space="preserve">
+    <value>الشفق البحري</value>
+  </data>
+  <data name="SolLuna_Twi_Civil" xml:space="preserve">
+    <value>الشفق المدني</value>
+  </data>
+  <data name="SolLuna_Daytime" xml:space="preserve">
+    <value>ضوء النهار</value>
+  </data>
+  <data name="SolLuna_NoData" xml:space="preserve">
+    <value>تعذّر حساب البيانات لهذا التاريخ والموقع.</value>
+  </data>
+
+  <data name="SolLuna_UseGPS" xml:space="preserve">
+    <value>GPS</value>
+  </data>
 </root>

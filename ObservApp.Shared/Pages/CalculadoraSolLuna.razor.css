@@ -1,0 +1,495 @@
+/* ============================================================
+   CALCULADORA SOL Y LUNA
+   ============================================================ */
+
+.soluna-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px 16px 56px;
+}
+
+/* ── Navegación de vuelta ── */
+.soluna-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--obs-aurora);
+    text-decoration: none;
+    margin-bottom: 16px;
+    opacity: .8;
+    transition: opacity var(--transition), transform var(--transition);
+}
+
+    .soluna-back:hover {
+        opacity: 1;
+        transform: translateX(-3px);
+    }
+
+/* ── Cabecera ── */
+.soluna-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.soluna-header-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.soluna-header-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--obs-moon);
+    margin: 0 0 4px;
+}
+
+.soluna-header-subtitle {
+    font-size: 0.84rem;
+    color: var(--obs-comet);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ── Grid de inputs ── */
+.soluna-inputs-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 540px) {
+    .soluna-inputs-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Tarjeta genérica ── */
+.soluna-card {
+    background: var(--obs-card-bg, rgba(255,255,255,.04));
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.soluna-card--sun {
+    border-color: rgba(245,158,11,.2);
+}
+
+.soluna-card--moon {
+    border-color: rgba(148,163,184,.2);
+}
+
+.soluna-card--events {
+    border-color: rgba(99,102,241,.2);
+}
+
+.soluna-card--full {
+    grid-column: 1 / -1;
+}
+
+.soluna-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    background: rgba(255,255,255,.04);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    color: var(--obs-comet);
+}
+
+.soluna-card--sun .soluna-card-header {
+    background: rgba(245,158,11,.08);
+    color: #f59e0b;
+}
+
+.soluna-card--moon .soluna-card-header {
+    background: rgba(148,163,184,.08);
+    color: var(--obs-moon);
+}
+
+.soluna-card--events .soluna-card-header {
+    background: rgba(99,102,241,.08);
+    color: #818cf8;
+}
+
+.soluna-card-body {
+    padding: 12px 14px;
+}
+
+/* ── Ubicación ── */
+.soluna-location-body {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+@media (max-width: 480px) {
+    .soluna-location-body {
+        grid-template-columns: 1fr;
+    }
+}
+
+.soluna-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.soluna-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--obs-comet);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.soluna-input {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 8px;
+    color: var(--obs-moon);
+    font-size: 0.9rem;
+    padding: 7px 10px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color var(--transition);
+}
+
+    .soluna-input:focus {
+        outline: none;
+        border-color: var(--obs-aurora);
+    }
+
+    .soluna-input[type="date"] {
+        min-width: 140px;
+    }
+
+/* ── Pestañas ── */
+.soluna-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.soluna-tab {
+    flex: 1;
+    min-width: 90px;
+    padding: 9px 14px;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+    background: rgba(255,255,255,.04);
+    color: var(--obs-comet);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    text-align: center;
+}
+
+    .soluna-tab:hover {
+        background: rgba(255,255,255,.08);
+        color: var(--obs-moon);
+    }
+
+    .soluna-tab.soluna-tab--active {
+        background: rgba(99,179,237,.15);
+        border-color: var(--obs-aurora);
+        color: var(--obs-aurora);
+    }
+
+/* ── Grid de secciones ── */
+.soluna-section-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+/* ── Filas de datos ── */
+.soluna-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+    gap: 8px;
+}
+
+    .soluna-row:last-child {
+        border-bottom: none;
+    }
+
+.soluna-row--highlight {
+    background: rgba(255,255,255,.03);
+    border-radius: 6px;
+    padding: 7px 6px;
+    margin: 2px -6px;
+}
+
+.soluna-row--separator {
+    margin-top: 8px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,.08);
+    border-bottom: none;
+}
+
+.soluna-row-label {
+    font-size: 0.8rem;
+    color: var(--obs-comet);
+    flex-shrink: 0;
+}
+
+.soluna-row-value {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--obs-moon);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+
+/* ── Fase lunar ── */
+.soluna-phase-display {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.soluna-phase-emoji {
+    font-size: 2.8rem;
+    line-height: 1;
+}
+
+.soluna-phase-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--obs-moon);
+}
+
+.soluna-phase-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.soluna-phase-bar {
+    flex: 1;
+    height: 8px;
+    background: rgba(255,255,255,.08);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.soluna-phase-fill {
+    height: 100%;
+    background: linear-gradient(90deg, rgba(148,163,184,.4), var(--obs-moon));
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+
+.soluna-phase-pct {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--obs-moon);
+    min-width: 38px;
+    text-align: right;
+}
+
+/* ── Gráfico de trayectoria ── */
+.soluna-path-chart {
+    position: relative;
+    width: 100%;
+    height: 160px;
+    background: rgba(0,0,0,.25);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.soluna-path-dot {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: .85;
+}
+
+.soluna-path-dot--moon {
+    background: var(--obs-moon) !important;
+    opacity: .7;
+}
+
+.soluna-path-horizon {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 18%;
+    height: 1px;
+    background: rgba(255,255,255,.2);
+}
+
+.soluna-path-hlabel {
+    position: absolute;
+    bottom: 2px;
+    font-size: 0.6rem;
+    color: rgba(255,255,255,.35);
+    transform: translateX(-50%);
+}
+
+.soluna-path-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.soluna-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.72rem;
+    color: var(--obs-comet);
+}
+
+    .soluna-legend-item::before {
+        content: '';
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--lc);
+    }
+
+/* ── Eventos ── */
+.soluna-events-subtitle {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--obs-moon);
+    margin: 0 0 10px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.soluna-events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.soluna-event-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.05);
+}
+
+.soluna-event-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+    width: 22px;
+    text-align: center;
+}
+
+.soluna-event-label {
+    flex: 1;
+    font-size: 0.82rem;
+    color: var(--obs-comet);
+}
+
+.soluna-event-date {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--obs-moon);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── Estado vacío ── */
+.soluna-empty {
+    text-align: center;
+    padding: 32px;
+    color: var(--obs-comet);
+    font-size: 0.9rem;
+}
+
+/* ── Botón GPS ── */
+.soluna-location-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.soluna-gps-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 11px;
+    border-radius: 8px;
+    border: 1px solid var(--obs-aurora);
+    background: rgba(99,179,237,.12);
+    color: var(--obs-aurora);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--transition), opacity var(--transition);
+    white-space: nowrap;
+}
+
+    .soluna-gps-btn:hover:not(:disabled) {
+        background: rgba(99,179,237,.22);
+    }
+
+    .soluna-gps-btn:disabled,
+    .soluna-gps-btn--loading {
+        opacity: .6;
+        cursor: not-allowed;
+    }
+
+.soluna-gps-spinner {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(99,179,237,.3);
+    border-top-color: var(--obs-aurora);
+    border-radius: 50%;
+    animation: soluna-spin 0.7s linear infinite;
+}
+
+@keyframes soluna-spin {
+    to { transform: rotate(360deg); }
+}
+
+.soluna-gps-error {
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    color: #f87171;
+    background: rgba(248,113,113,.08);
+    border-top: 1px solid rgba(248,113,113,.15);
+}
+
+.soluna-gps-source {
+    padding: 5px 14px;
+    font-size: 0.72rem;
+    color: var(--obs-aurora);
+    background: rgba(99,179,237,.06);
+    border-top: 1px solid rgba(99,179,237,.1);
+    opacity: .85;
+}

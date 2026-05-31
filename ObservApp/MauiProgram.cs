@@ -53,6 +53,10 @@ public static class MauiProgram
 		builder.Services.AddSingleton<IAppLifecycleService, MauiAppLifecycleService>();
 		builder.Services.AddSingleton<AppState>();
 
+		// ── Geolocalización ───────────────────────────────────────────────────
+		builder.Services.AddSingleton<IGeolocation>(Geolocation.Default);
+		builder.Services.AddSingleton<IGeolocationService, MauiGeolocationService>();
+
 		// ── HttpClient ───────────────────────────────────────────────────────
 		builder.Services.AddHttpClient();
 

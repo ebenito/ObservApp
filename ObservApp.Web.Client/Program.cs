@@ -22,6 +22,7 @@ builder.Services.AddLocalization();
 builder.Services.AddSingleton<ILocalizationService, WebLocalizationService>();
 builder.Services.AddSingleton<ISettingsService, WebSettingsService>();
 builder.Services.AddSingleton<IAppLifecycleService, WebClientAppLifecycleService>();
+builder.Services.AddSingleton<IGeolocationService, WebGeolocationService>();
 builder.Services.AddSingleton<AppState>();
 builder.Services.AddScoped(sp => new HttpClient
 {

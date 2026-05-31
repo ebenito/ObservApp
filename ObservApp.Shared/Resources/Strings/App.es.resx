@@ -486,4 +486,203 @@
   <data name="Home_Feature4_Desc" xml:space="preserve">
     <value>Guarda y revisa el registro de todas tus sesiones de observación pasadas</value>
   </data>
+
+  <!-- ══ Calculadora Sol y Luna ══ -->
+  <data name="Calc_SolLuna_Title" xml:space="preserve">
+    <value>Sol y Luna</value>
+  </data>
+  <data name="Calc_SolLuna_Desc" xml:space="preserve">
+    <value>Salida, puesta, crepúsculos, fases lunares, solsticios y equinoccios para cualquier fecha y lugar</value>
+  </data>
+  <data name="SolLuna_Title" xml:space="preserve">
+    <value>Calculadora Sol y Luna</value>
+  </data>
+  <data name="SolLuna_Subtitle" xml:space="preserve">
+    <value>Datos astronómicos precisos de Sol y Luna para cualquier fecha (1901–2099) y coordenadas WGS-84</value>
+  </data>
+  <data name="SolLuna_Date" xml:space="preserve">
+    <value>Fecha</value>
+  </data>
+  <data name="SolLuna_Location" xml:space="preserve">
+    <value>Ubicación (WGS-84)</value>
+  </data>
+  <data name="SolLuna_Latitude" xml:space="preserve">
+    <value>Latitud (°)</value>
+  </data>
+  <data name="SolLuna_Longitude" xml:space="preserve">
+    <value>Longitud (°)</value>
+  </data>
+  <data name="SolLuna_Altitude" xml:space="preserve">
+    <value>Altitud</value>
+  </data>
+  <data name="SolLuna_Tab_Sun" xml:space="preserve">
+    <value>Sol</value>
+  </data>
+  <data name="SolLuna_Tab_Moon" xml:space="preserve">
+    <value>Luna</value>
+  </data>
+  <data name="SolLuna_Tab_Events" xml:space="preserve">
+    <value>Eventos anuales</value>
+  </data>
+  <data name="SolLuna_Sun_Times" xml:space="preserve">
+    <value>Tiempos clave del Sol</value>
+  </data>
+  <data name="SolLuna_Dawn_Astronomical" xml:space="preserve">
+    <value>Alba astronómica</value>
+  </data>
+  <data name="SolLuna_Dawn_Nautical" xml:space="preserve">
+    <value>Alba náutica</value>
+  </data>
+  <data name="SolLuna_Dawn_Civil" xml:space="preserve">
+    <value>Alba civil</value>
+  </data>
+  <data name="SolLuna_Sunrise" xml:space="preserve">
+    <value>Salida del Sol</value>
+  </data>
+  <data name="SolLuna_SolarNoon" xml:space="preserve">
+    <value>Mediodía solar</value>
+  </data>
+  <data name="SolLuna_Sunset" xml:space="preserve">
+    <value>Puesta del Sol</value>
+  </data>
+  <data name="SolLuna_Dusk_Civil" xml:space="preserve">
+    <value>Crepúsculo civil</value>
+  </data>
+  <data name="SolLuna_Dusk_Nautical" xml:space="preserve">
+    <value>Crepúsculo náutico</value>
+  </data>
+  <data name="SolLuna_Dusk_Astronomical" xml:space="preserve">
+    <value>Crepúsculo astronómico</value>
+  </data>
+  <data name="SolLuna_DayLength" xml:space="preserve">
+    <value>Duración del día</value>
+  </data>
+  <data name="SolLuna_Sun_Position" xml:space="preserve">
+    <value>Posición del Sol</value>
+  </data>
+  <data name="SolLuna_AzimuthRise" xml:space="preserve">
+    <value>Azimut de salida</value>
+  </data>
+  <data name="SolLuna_AzimuthSet" xml:space="preserve">
+    <value>Azimut de puesta</value>
+  </data>
+  <data name="SolLuna_MaxAltitude" xml:space="preserve">
+    <value>Altitud máxima</value>
+  </data>
+  <data name="SolLuna_Declination" xml:space="preserve">
+    <value>Declinación</value>
+  </data>
+  <data name="SolLuna_RightAscension" xml:space="preserve">
+    <value>Ascensión recta</value>
+  </data>
+  <data name="SolLuna_EquationOfTime" xml:space="preserve">
+    <value>Ecuación del tiempo</value>
+  </data>
+  <data name="SolLuna_Distance" xml:space="preserve">
+    <value>Distancia</value>
+  </data>
+  <data name="SolLuna_Sun_Path" xml:space="preserve">
+    <value>Camino solar</value>
+  </data>
+  <data name="SolLuna_Moon_Times" xml:space="preserve">
+    <value>Tiempos clave de la Luna</value>
+  </data>
+  <data name="SolLuna_Moonrise" xml:space="preserve">
+    <value>Salida de la Luna</value>
+  </data>
+  <data name="SolLuna_MoonTransit" xml:space="preserve">
+    <value>Tránsito lunar</value>
+  </data>
+  <data name="SolLuna_Moonset" xml:space="preserve">
+    <value>Puesta de la Luna</value>
+  </data>
+  <data name="SolLuna_Moon_Position" xml:space="preserve">
+    <value>Posición de la Luna</value>
+  </data>
+  <data name="SolLuna_AngularDiam" xml:space="preserve">
+    <value>Diámetro angular</value>
+  </data>
+  <data name="SolLuna_Moon_Phase" xml:space="preserve">
+    <value>Fase lunar</value>
+  </data>
+  <data name="SolLuna_NextNewMoon" xml:space="preserve">
+    <value>Próxima luna nueva</value>
+  </data>
+  <data name="SolLuna_NextFullMoon" xml:space="preserve">
+    <value>Próxima luna llena</value>
+  </data>
+  <data name="SolLuna_LunarAge" xml:space="preserve">
+    <value>Edad lunar</value>
+  </data>
+  <data name="SolLuna_Days" xml:space="preserve">
+    <value>días</value>
+  </data>
+  <data name="SolLuna_Moon_Path" xml:space="preserve">
+    <value>Camino lunar</value>
+  </data>
+  <data name="SolLuna_Events_Year" xml:space="preserve">
+    <value>Eventos astronómicos</value>
+  </data>
+  <data name="SolLuna_Solstices_Equinoxes" xml:space="preserve">
+    <value>Solsticios y Equinoccios</value>
+  </data>
+  <data name="SolLuna_VernalEquinox" xml:space="preserve">
+    <value>Equinoccio de primavera</value>
+  </data>
+  <data name="SolLuna_SummerSolstice" xml:space="preserve">
+    <value>Solsticio de verano</value>
+  </data>
+  <data name="SolLuna_AutumnalEquinox" xml:space="preserve">
+    <value>Equinoccio de otoño</value>
+  </data>
+  <data name="SolLuna_WinterSolstice" xml:space="preserve">
+    <value>Solsticio de invierno</value>
+  </data>
+  <data name="SolLuna_Moon_Phases_Year" xml:space="preserve">
+    <value>Fases lunares del año</value>
+  </data>
+  <data name="SolLuna_Phase_New" xml:space="preserve">
+    <value>Luna nueva</value>
+  </data>
+  <data name="SolLuna_Phase_WaxCrescent" xml:space="preserve">
+    <value>Luna creciente</value>
+  </data>
+  <data name="SolLuna_Phase_FirstQuarter" xml:space="preserve">
+    <value>Cuarto creciente</value>
+  </data>
+  <data name="SolLuna_Phase_WaxGibbous" xml:space="preserve">
+    <value>Gibosa creciente</value>
+  </data>
+  <data name="SolLuna_Phase_Full" xml:space="preserve">
+    <value>Luna llena</value>
+  </data>
+  <data name="SolLuna_Phase_WanGibbous" xml:space="preserve">
+    <value>Gibosa menguante</value>
+  </data>
+  <data name="SolLuna_Phase_LastQuarter" xml:space="preserve">
+    <value>Cuarto menguante</value>
+  </data>
+  <data name="SolLuna_Phase_WanCrescent" xml:space="preserve">
+    <value>Luna menguante</value>
+  </data>
+  <data name="SolLuna_Twi_Astro" xml:space="preserve">
+    <value>Noche astronómica</value>
+  </data>
+  <data name="SolLuna_Twi_Naut" xml:space="preserve">
+    <value>Crepúsculo náutico</value>
+  </data>
+  <data name="SolLuna_Twi_Civil" xml:space="preserve">
+    <value>Crepúsculo civil</value>
+  </data>
+  <data name="SolLuna_Daytime" xml:space="preserve">
+    <value>Luz diurna</value>
+  </data>
+  <data name="SolLuna_NoData" xml:space="preserve">
+    <value>No se pudieron calcular los datos para esta fecha y ubicación.</value>
+  </data>
+  <data name="SolLuna_UseGPS" xml:space="preserve">
+    <value>Usar GPS</value>
+  </data>
+
+
 </root>

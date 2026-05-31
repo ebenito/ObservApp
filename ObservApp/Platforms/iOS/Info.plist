@@ -28,5 +28,9 @@
     </array>
     <key>XSAppIconAssets</key>
     <string>Assets.xcassets/appicon.appiconset</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>ObservApp necesita tu ubicación para calcular datos astronómicos de Sol y Luna precisos para tu posición.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>ObservApp necesita tu ubicación para calcular datos astronómicos de Sol y Luna precisos para tu posición.</string>
 </dict>
 </plist>

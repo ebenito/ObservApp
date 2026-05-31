@@ -1,0 +1,819 @@
+@page "/calculadoras/soluna"
+@using CosineKitty
+@inject IStringLocalizer<App> L
+@inject IGeolocationService GeoService
+
+<PageTitle>@L["SolLuna_Title"] — ObservApp</PageTitle>
+
+<div class="soluna-page">
+
+    <!-- Cabecera -->
+    <div class="soluna-header-back">
+        <a class="soluna-back" href="/calculadoras">← @L["Action_Back"]</a>
+    </div>
+    <div class="soluna-header">
+        <span class="soluna-header-icon">🌞🌙</span>
+        <div>
+            <h1 class="soluna-header-title">@L["SolLuna_Title"]</h1>
+            <p class="soluna-header-subtitle">@L["SolLuna_Subtitle"]</p>
+        </div>
+    </div>
+
+    <!-- Inputs: Fecha y Ubicación -->
+    <div class="soluna-inputs-grid">
+
+        <!-- Fecha -->
+        <div class="soluna-card">
+            <div class="soluna-card-header">
+                <span>📅</span> @L["SolLuna_Date"]
+            </div>
+            <div class="soluna-card-body">
+                <input class="soluna-input" type="date"
+                       value="@_fecha.ToString("yyyy-MM-dd")"
+                       min="1901-01-01" max="2099-01-31"
+                       @onchange="OnFechaChanged" />
+            </div>
+        </div>
+
+        <!-- Ubicación -->
+        <div class="soluna-card">
+            <div class="soluna-card-header soluna-location-header">
+                <span>📍</span> @L["SolLuna_Location"]
+                <button class="soluna-gps-btn @(_gpsLoading ? "soluna-gps-btn--loading" : "")"
+                        @onclick="OnUsarGpsAsync"
+                        disabled="@_gpsLoading"
+                        title="@L["SolLuna_UseGPS"]">
+                    @if (_gpsLoading)
+                    {
+                        <span class="soluna-gps-spinner"></span>
+                    }
+                    else
+                    {
+                        <span>📡</span>
+                    }
+                    @L["SolLuna_UseGPS"]
+                </button>
+            </div>
+            @if (!string.IsNullOrEmpty(_gpsError))
+            {
+                <div class="soluna-gps-error">⚠️ @_gpsError</div>
+            }
+            <div class="soluna-card-body soluna-location-body">
+                <div class="soluna-field">
+                    <label class="soluna-label">@L["SolLuna_Latitude"]</label>
+                    <input class="soluna-input" type="number" min="-90" max="90" step="0.0001"
+                           value="@_lat"
+                           @oninput="e => { if (double.TryParse(e.Value?.ToString(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var v)) { _lat = Math.Clamp(v, -90, 90); Calcular(); } }" />
+                </div>
+                <div class="soluna-field">
+                    <label class="soluna-label">@L["SolLuna_Longitude"]</label>
+                    <input class="soluna-input" type="number" min="-180" max="180" step="0.0001"
+                           value="@_lon"
+                           @oninput="e => { if (double.TryParse(e.Value?.ToString(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var v)) { _lon = Math.Clamp(v, -180, 180); Calcular(); } }" />
+                </div>
+                <div class="soluna-field">
+                    <label class="soluna-label">@L["SolLuna_Altitude"] (m)</label>
+                    <input class="soluna-input" type="number" min="-500" max="8900" step="1"
+                           value="@_altMetros"
+                           @oninput="e => { if (double.TryParse(e.Value?.ToString(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var v)) { _altMetros = v; Calcular(); } }" />
+                </div>
+            </div>
+            @if (_gpsSource is not null)
+            {
+                <div class="soluna-gps-source">📡 @_gpsSource</div>
+            }
+        </div>
+
+    </div>
+
+    <!-- Pestañas Sol / Luna -->
+    <div class="soluna-tabs">
+        <button class="soluna-tab @(_tab == Tab.Sol ? "soluna-tab--active" : "")"
+                @onclick="() => _tab = Tab.Sol">
+            ☀️ @L["SolLuna_Tab_Sun"]
+        </button>
+        <button class="soluna-tab @(_tab == Tab.Luna ? "soluna-tab--active" : "")"
+                @onclick="() => _tab = Tab.Luna">
+            🌙 @L["SolLuna_Tab_Moon"]
+        </button>
+        <button class="soluna-tab @(_tab == Tab.Eventos ? "soluna-tab--active" : "")"
+                @onclick="() => _tab = Tab.Eventos">
+            🗓️ @L["SolLuna_Tab_Events"]
+        </button>
+    </div>
+
+    <!-- ═══════════════════ TAB SOL ═══════════════════ -->
+    @if (_tab == Tab.Sol && _sol != null)
+    {
+        <div class="soluna-section-grid">
+
+            <!-- Tiempos clave del Sol -->
+            <div class="soluna-card soluna-card--sun">
+                <div class="soluna-card-header">
+                    ☀️ @L["SolLuna_Sun_Times"]
+                </div>
+                <div class="soluna-card-body">
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_Dawn_Astronomical"]</span>
+                        <span class="soluna-row-value">@FormatTime(_sol.CrepusculoAstronomicoAmanecer)</span>
+                    </div>
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_Dawn_Nautical"]</span>
+                        <span class="soluna-row-value">@FormatTime(_sol.CrepusculoNauticoAmanecer)</span>
+                    </div>
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_Dawn_Civil"]</span>
+                        <span class="soluna-row-value">@FormatTime(_sol.CrepusculoCivilAmanecer)</span>
+                    </div>
+                    <div class="soluna-row soluna-row--highlight">
+                        <span class="soluna-row-label">🌅 @L["SolLuna_Sunrise"]</span>
+                        <span class="soluna-row-value">@FormatTime(_sol.Salida)</span>
+                    </div>
+                    <div class="soluna-row soluna-row--highlight">
+                        <span class="soluna-row-label">🕛 @L["SolLuna_SolarNoon"]</span>
+                        <span class="soluna-row-value">@FormatTime(_sol.Transito)</span>
+                    </div>
+                    <div class="soluna-row soluna-row--highlight">
+                        <span class="soluna-row-label">🌇 @L["SolLuna_Sunset"]</span>
+                        <span class="soluna-row-value">@FormatTime(_sol.Puesta)</span>
+                    </div>
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_Dusk_Civil"]</span>
+                        <span class="soluna-row-value">@FormatTime(_sol.CrepusculoCivilAtardecer)</span>
+                    </div>
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_Dusk_Nautical"]</span>
+                        <span class="soluna-row-value">@FormatTime(_sol.CrepusculoNauticoAtardecer)</span>
+                    </div>
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_Dusk_Astronomical"]</span>
+                        <span class="soluna-row-value">@FormatTime(_sol.CrepusculoAstronomicoAtardecer)</span>
+                    </div>
+                    <div class="soluna-row soluna-row--separator">
+                        <span class="soluna-row-label">⏱ @L["SolLuna_DayLength"]</span>
+                        <span class="soluna-row-value">@FormatDuration(_sol.DuracionDia)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Posicionamiento del Sol -->
+            <div class="soluna-card soluna-card--sun">
+                <div class="soluna-card-header">
+                    📐 @L["SolLuna_Sun_Position"]
+                </div>
+                <div class="soluna-card-body">
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_AzimuthRise"]</span>
+                        <span class="soluna-row-value">@FormatAngle(_sol.AzimutSalida)</span>
+                    </div>
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_AzimuthSet"]</span>
+                        <span class="soluna-row-value">@FormatAngle(_sol.AzimutPuesta)</span>
+                    </div>
+                    <div class="soluna-row soluna-row--highlight">
+                        <span class="soluna-row-label">@L["SolLuna_MaxAltitude"]</span>
+                        <span class="soluna-row-value">@FormatAngle(_sol.AltitudMaxima)</span>
+                    </div>
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_Declination"]</span>
+                        <span class="soluna-row-value">@FormatAngle(_sol.Declinacion)</span>
+                    </div>
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_RightAscension"]</span>
+                        <span class="soluna-row-value">@FormatRA(_sol.AscensionRecta)</span>
+                    </div>
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_EquationOfTime"]</span>
+                        <span class="soluna-row-value">@FormatEOT(_sol.EcuacionTiempo)</span>
+                    </div>
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_Distance"]</span>
+                        <span class="soluna-row-value">@_sol.Distancia.ToString("N3") UA</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Camino solar -->
+        @if (_sol.CaminoSolar.Count > 0)
+        {
+            <div class="soluna-card soluna-card--sun soluna-card--full">
+                <div class="soluna-card-header">
+                    📈 @L["SolLuna_Sun_Path"]
+                </div>
+                <div class="soluna-card-body">
+                    <div class="soluna-path-chart" id="soluna-sun-path">
+                        @foreach (var pt in _sol.CaminoSolar)
+                        {
+                            var x = (pt.Hora / 24.0) * 100.0;
+                            var altNorm = Math.Clamp((pt.Altitud + 18) / (_sol.AltitudMaxima + 20), 0, 1);
+                            var y = (1.0 - altNorm) * 100.0;
+                            var color = pt.Altitud < -18 ? "var(--obs-night)" :
+                                        pt.Altitud < -12 ? "#1a2a4a" :
+                                        pt.Altitud < -6 ? "#2d4a7a" :
+                                        pt.Altitud < 0 ? "var(--obs-aurora)" :
+                                        pt.Altitud < 20 ? "#f59e0b" : "var(--obs-star)";
+                            <div class="soluna-path-dot" title="@pt.Hora:00 — @FormatAngle(pt.Altitud)"
+                                 style="left:@(x.ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%;
+                                        top:@(y.ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%;
+                                        background:@color;"></div>
+                        }
+                        <!-- Línea horizonte -->
+                        <div class="soluna-path-horizon"></div>
+                        <!-- Etiquetas horas -->
+                        @foreach (var h in new[] { 0, 3, 6, 9, 12, 15, 18, 21 })
+                        {
+                            <span class="soluna-path-hlabel"
+                                  style="left:@((h / 24.0 * 100).ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%">@h:00</span>
+                        }
+                    </div>
+                    <div class="soluna-path-legend">
+                        <span class="soluna-legend-item" style="--lc:#1a2a4a">@L["SolLuna_Twi_Astro"]</span>
+                        <span class="soluna-legend-item" style="--lc:#2d4a7a">@L["SolLuna_Twi_Naut"]</span>
+                        <span class="soluna-legend-item" style="--lc:var(--obs-aurora)">@L["SolLuna_Twi_Civil"]</span>
+                        <span class="soluna-legend-item" style="--lc:var(--obs-star)">@L["SolLuna_Daytime"]</span>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else if (_tab == Tab.Sol)
+    {
+        <div class="soluna-empty">⚠️ @L["SolLuna_NoData"]</div>
+    }
+
+    <!-- ═══════════════════ TAB LUNA ═══════════════════ -->
+    @if (_tab == Tab.Luna && _luna != null)
+    {
+        <div class="soluna-section-grid">
+
+            <!-- Tiempos clave de la Luna -->
+            <div class="soluna-card soluna-card--moon">
+                <div class="soluna-card-header">
+                    🌙 @L["SolLuna_Moon_Times"]
+                </div>
+                <div class="soluna-card-body">
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">🌕 @L["SolLuna_Moonrise"]</span>
+                        <span class="soluna-row-value">@FormatTime(_luna.Salida)</span>
+                    </div>
+                    <div class="soluna-row soluna-row--highlight">
+                        <span class="soluna-row-label">🕛 @L["SolLuna_MoonTransit"]</span>
+                        <span class="soluna-row-value">@FormatTime(_luna.Transito)</span>
+                    </div>
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">🌑 @L["SolLuna_Moonset"]</span>
+                        <span class="soluna-row-value">@FormatTime(_luna.Puesta)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Posicionamiento de la Luna -->
+            <div class="soluna-card soluna-card--moon">
+                <div class="soluna-card-header">
+                    📐 @L["SolLuna_Moon_Position"]
+                </div>
+                <div class="soluna-card-body">
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_AzimuthRise"]</span>
+                        <span class="soluna-row-value">@FormatAngle(_luna.AzimutSalida)</span>
+                    </div>
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_AzimuthSet"]</span>
+                        <span class="soluna-row-value">@FormatAngle(_luna.AzimutPuesta)</span>
+                    </div>
+                    <div class="soluna-row soluna-row--highlight">
+                        <span class="soluna-row-label">@L["SolLuna_MaxAltitude"]</span>
+                        <span class="soluna-row-value">@FormatAngle(_luna.AltitudMaxima)</span>
+                    </div>
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_Declination"]</span>
+                        <span class="soluna-row-value">@FormatAngle(_luna.Declinacion)</span>
+                    </div>
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_Distance"]</span>
+                        <span class="soluna-row-value">@_luna.Distancia.ToString("N0") km</span>
+                    </div>
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_AngularDiam"]</span>
+                        <span class="soluna-row-value">@FormatAngle(_luna.DiametroAngular)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase lunar -->
+            <div class="soluna-card soluna-card--moon">
+                <div class="soluna-card-header">
+                    🌓 @L["SolLuna_Moon_Phase"]
+                </div>
+                <div class="soluna-card-body">
+                    <div class="soluna-phase-display">
+                        <span class="soluna-phase-emoji">@_luna.EmojiPhase</span>
+                        <span class="soluna-phase-name">@_luna.NombreFase</span>
+                    </div>
+                    <div class="soluna-phase-bar-wrap">
+                        <div class="soluna-phase-bar">
+                            <div class="soluna-phase-fill" style="width:@(_luna.Iluminacion.ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%"></div>
+                        </div>
+                        <span class="soluna-phase-pct">@_luna.Iluminacion.ToString("F1")%</span>
+                    </div>
+                    <div class="soluna-row soluna-row--separator">
+                        <span class="soluna-row-label">@L["SolLuna_NextNewMoon"]</span>
+                        <span class="soluna-row-value">@_luna.ProximaLunaNueva.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_NextFullMoon"]</span>
+                        <span class="soluna-row-value">@_luna.ProximaLunaLlena.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
+                    <div class="soluna-row">
+                        <span class="soluna-row-label">@L["SolLuna_LunarAge"]</span>
+                        <span class="soluna-row-value">@_luna.EdadLunar.ToString("F1") @L["SolLuna_Days"]</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Camino lunar -->
+        @if (_luna.CaminoLunar.Count > 0)
+        {
+            <div class="soluna-card soluna-card--moon soluna-card--full">
+                <div class="soluna-card-header">
+                    📈 @L["SolLuna_Moon_Path"]
+                </div>
+                <div class="soluna-card-body">
+                    <div class="soluna-path-chart">
+                        @{
+                            var maxAlt = _luna.CaminoLunar.Max(p => p.Altitud);
+                            var minAlt = _luna.CaminoLunar.Min(p => p.Altitud);
+                            var rng = Math.Max(maxAlt - minAlt, 10);
+                        }
+                        @foreach (var pt in _luna.CaminoLunar)
+                        {
+                            var x = (pt.Hora / 24.0) * 100.0;
+                            var altNorm = Math.Clamp((pt.Altitud - minAlt) / rng, 0, 1);
+                            var y = (1.0 - altNorm) * 100.0;
+                            <div class="soluna-path-dot soluna-path-dot--moon"
+                                 title="@pt.Hora:00 — @FormatAngle(pt.Altitud)"
+                                 style="left:@(x.ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%;
+                                        top:@(y.ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%;"></div>
+                        }
+                        <div class="soluna-path-horizon"></div>
+                        @foreach (var h in new[] { 0, 3, 6, 9, 12, 15, 18, 21 })
+                        {
+                            <span class="soluna-path-hlabel"
+                                  style="left:@((h / 24.0 * 100).ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%">@h:00</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else if (_tab == Tab.Luna)
+    {
+        <div class="soluna-empty">⚠️ @L["SolLuna_NoData"]</div>
+    }
+
+    <!-- ═══════════════════ TAB EVENTOS ═══════════════════ -->
+    @if (_tab == Tab.Eventos && _eventos != null)
+    {
+        <div class="soluna-card soluna-card--events soluna-card--full">
+            <div class="soluna-card-header">
+                🗓️ @L["SolLuna_Events_Year"] @_fecha.Year
+            </div>
+            <div class="soluna-card-body">
+
+                <h3 class="soluna-events-subtitle">☀️ @L["SolLuna_Solstices_Equinoxes"]</h3>
+                <div class="soluna-events-list">
+                    <div class="soluna-event-row">
+                        <span class="soluna-event-icon">🌱</span>
+                        <span class="soluna-event-label">@L["SolLuna_VernalEquinox"]</span>
+                        <span class="soluna-event-date">@_eventos.EquinoccioPrimavera.ToString("dd/MM/yyyy HH:mm") UTC</span>
+                    </div>
+                    <div class="soluna-event-row">
+                        <span class="soluna-event-icon">☀️</span>
+                        <span class="soluna-event-label">@L["SolLuna_SummerSolstice"]</span>
+                        <span class="soluna-event-date">@_eventos.SolsticiVerano.ToString("dd/MM/yyyy HH:mm") UTC</span>
+                    </div>
+                    <div class="soluna-event-row">
+                        <span class="soluna-event-icon">🍂</span>
+                        <span class="soluna-event-label">@L["SolLuna_AutumnalEquinox"]</span>
+                        <span class="soluna-event-date">@_eventos.EquinocioOtono.ToString("dd/MM/yyyy HH:mm") UTC</span>
+                    </div>
+                    <div class="soluna-event-row">
+                        <span class="soluna-event-icon">❄️</span>
+                        <span class="soluna-event-label">@L["SolLuna_WinterSolstice"]</span>
+                        <span class="soluna-event-date">@_eventos.SolsticioInvierno.ToString("dd/MM/yyyy HH:mm") UTC</span>
+                    </div>
+                </div>
+
+                <h3 class="soluna-events-subtitle" style="margin-top:20px;">🌙 @L["SolLuna_Moon_Phases_Year"]</h3>
+                <div class="soluna-events-list">
+                    @foreach (var fase in _eventos.FasesLunares)
+                    {
+                        <div class="soluna-event-row">
+                            <span class="soluna-event-icon">@fase.Emoji</span>
+                            <span class="soluna-event-label">@fase.Nombre</span>
+                            <span class="soluna-event-date">@fase.Fecha.ToString("dd/MM/yyyy HH:mm") UTC</span>
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    }
+    else if (_tab == Tab.Eventos)
+    {
+        <div class="soluna-empty">⚠️ @L["SolLuna_NoData"]</div>
+    }
+
+</div>
+
+@code {
+    // ── Enumeración de pestañas ───────────────────────────────────────────────
+    private enum Tab { Sol, Luna, Eventos }
+    private Tab _tab = Tab.Sol;
+
+    // ── Parámetros de entrada ─────────────────────────────────────────────────
+    private DateTime _fecha = DateTime.Today;
+    private double _lat = 40.4168;   // Madrid por defecto
+    private double _lon = -3.7038;
+    private double _altMetros = 650; // metros sobre el nivel del mar
+
+    // ── Estado GPS ───────────────────────────────────────────────────────────
+    private bool _gpsLoading;
+    private string? _gpsError;
+    private string? _gpsSource;
+
+    // ── Resultados ────────────────────────────────────────────────────────────
+    private DatosSol? _sol;
+    private DatosLuna? _luna;
+    private DatosEventos? _eventos;
+
+    // ── Ciclo de vida ─────────────────────────────────────────────────────────
+    protected override void OnInitialized() => Calcular();
+
+    // ── GPS ───────────────────────────────────────────────────────────────────
+    private async Task OnUsarGpsAsync()
+    {
+        _gpsLoading = true;
+        _gpsError = null;
+        _gpsSource = null;
+        StateHasChanged();
+
+        var loc = await GeoService.GetCurrentLocationAsync(highAccuracy: true);
+
+        if (loc is not null)
+        {
+            _lat = loc.Latitude;
+            _lon = loc.Longitude;
+            _altMetros = loc.AltitudeMeters ?? _altMetros;
+            _gpsSource = $"{loc.SourceLabel} · {loc.Latitude:F4}°, {loc.Longitude:F4}°" +
+                         (loc.AccuracyMeters.HasValue ? $" · ±{loc.AccuracyMeters:F0} m" : "");
+            Calcular();
+        }
+        else
+        {
+            _gpsError = GeoService.LastError;
+        }
+
+        _gpsLoading = false;
+        StateHasChanged();
+    }
+
+    // ── Handlers ─────────────────────────────────────────────────────────────
+    private void OnFechaChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        if (DateTime.TryParse(e.Value?.ToString(), out var d))
+        {
+            _fecha = d;
+            Calcular();
+        }
+    }
+
+    // ── Motor de cálculo principal ────────────────────────────────────────────
+    private void Calcular()
+    {
+        try
+        {
+            var observer = new Observer(_lat, _lon, _altMetros);
+            var astroTime = new AstroTime(_fecha.Year, _fecha.Month, _fecha.Day, 12, 0, 0);
+
+            _sol = CalcularSol(observer, astroTime);
+            _luna = CalcularLuna(observer, astroTime);
+            _eventos = CalcularEventos(_fecha.Year);
+        }
+        catch
+        {
+            _sol = null;
+            _luna = null;
+            _eventos = null;
+        }
+    }
+
+    // ── Cálculos Sol ─────────────────────────────────────────────────────────
+    private DatosSol CalcularSol(Observer observer, AstroTime day)
+    {
+        var datos = new DatosSol();
+
+        // Salida, tránsito, puesta del Sol
+        datos.Salida = RiseSetTime(observer, day, Body.Sun, Direction.Rise);
+        datos.Transito = TransitTime(observer, day, Body.Sun);
+        datos.Puesta = RiseSetTime(observer, day, Body.Sun, Direction.Set);
+
+        // Crepúsculos (alturas -6, -12, -18)
+        datos.CrepusculoCivilAmanecer = TwilightTime(observer, day, -6.0, Direction.Rise);
+        datos.CrepusculoNauticoAmanecer = TwilightTime(observer, day, -12.0, Direction.Rise);
+        datos.CrepusculoAstronomicoAmanecer = TwilightTime(observer, day, -18.0, Direction.Rise);
+        datos.CrepusculoCivilAtardecer = TwilightTime(observer, day, -6.0, Direction.Set);
+        datos.CrepusculoNauticoAtardecer = TwilightTime(observer, day, -12.0, Direction.Set);
+        datos.CrepusculoAstronomicoAtardecer = TwilightTime(observer, day, -18.0, Direction.Set);
+
+        // Duración del día
+        if (datos.Salida.HasValue && datos.Puesta.HasValue)
+            datos.DuracionDia = datos.Puesta.Value - datos.Salida.Value;
+
+        // Azimut de salida/puesta
+        datos.AzimutSalida = HorizonAzimuth(observer, day, Body.Sun, Direction.Rise);
+        datos.AzimutPuesta = HorizonAzimuth(observer, day, Body.Sun, Direction.Set);
+
+        // Altitud máxima al mediodía solar
+        if (datos.Transito.HasValue)
+        {
+            var eqc = Astronomy.Equator(Body.Sun, new AstroTime(datos.Transito.Value.ToUniversalTime()), observer, EquatorEpoch.OfDate, Aberration.Corrected);
+            var hor = Astronomy.Horizon(new AstroTime(datos.Transito.Value.ToUniversalTime()), observer, eqc.ra, eqc.dec, Refraction.Normal);
+            datos.AltitudMaxima = hor.altitude;
+            datos.AzimutTransito = hor.azimuth;
+        }
+
+        // Declinación y AR al mediodía
+        var eqNoon = Astronomy.Equator(Body.Sun, day, observer, EquatorEpoch.OfDate, Aberration.Corrected);
+        datos.Declinacion = eqNoon.dec;
+        datos.AscensionRecta = eqNoon.ra;
+
+        // Ecuación del tiempo (diferencia mediodía solar - 12:00 UTC en minutos)
+        datos.EcuacionTiempo = EcuacionTiempo(day);
+
+        // Distancia en UA
+        var vec = Astronomy.HelioVector(Body.Earth, day);
+        datos.Distancia = Math.Sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+
+        // Camino solar cada 30 min
+        for (int h = 0; h < 24; h++)
+        {
+            var t = new AstroTime(_fecha.Year, _fecha.Month, _fecha.Day, h, 0, 0);
+            var eq = Astronomy.Equator(Body.Sun, t, observer, EquatorEpoch.OfDate, Aberration.Corrected);
+            var hz = Astronomy.Horizon(t, observer, eq.ra, eq.dec, Refraction.Normal);
+            datos.CaminoSolar.Add(new PuntoTrayectoria { Hora = h, Altitud = hz.altitude, Azimut = hz.azimuth });
+        }
+
+        return datos;
+    }
+
+    // ── Cálculos Luna ─────────────────────────────────────────────────────────
+    private DatosLuna CalcularLuna(Observer observer, AstroTime day)
+    {
+        var datos = new DatosLuna();
+
+        datos.Salida = RiseSetTime(observer, day, Body.Moon, Direction.Rise);
+        datos.Transito = TransitTime(observer, day, Body.Moon);
+        datos.Puesta = RiseSetTime(observer, day, Body.Moon, Direction.Set);
+
+        datos.AzimutSalida = HorizonAzimuth(observer, day, Body.Moon, Direction.Rise);
+        datos.AzimutPuesta = HorizonAzimuth(observer, day, Body.Moon, Direction.Set);
+
+        if (datos.Transito.HasValue)
+        {
+            var t = new AstroTime(datos.Transito.Value.ToUniversalTime());
+            var eq = Astronomy.Equator(Body.Moon, t, observer, EquatorEpoch.OfDate, Aberration.Corrected);
+            var hz = Astronomy.Horizon(t, observer, eq.ra, eq.dec, Refraction.Normal);
+            datos.AltitudMaxima = hz.altitude;
+        }
+
+        var eqNoon = Astronomy.Equator(Body.Moon, day, observer, EquatorEpoch.OfDate, Aberration.Corrected);
+        datos.Declinacion = eqNoon.dec;
+
+        // Distancia y diámetro angular
+        var geo = Astronomy.GeoVector(Body.Moon, day, Aberration.Corrected);
+        var distAU = Math.Sqrt(geo.x * geo.x + geo.y * geo.y + geo.z * geo.z);
+        datos.Distancia = distAU * 149597870.7; // UA → km
+        // Radio ecuatorial Luna 1737.4 km → diámetro angular en grados
+        datos.DiametroAngular = 2.0 * Math.Atan2(1737.4, datos.Distancia) * 180.0 / Math.PI;
+
+        // Fase lunar
+        var ilum = Astronomy.Illumination(Body.Moon, day);
+        datos.Iluminacion = ilum.phase_fraction * 100.0;
+        datos.AnguloFase = ilum.phase_angle;
+        datos.EdadLunar = ((ilum.phase_angle / 360.0) * 29.53058770576);
+        datos.NombreFase = NombreFaseLunar(ilum.phase_angle, datos.Iluminacion);
+        datos.EmojiPhase = EmojiFaseLunar(ilum.phase_angle);
+
+        // Próxima luna nueva y luna llena
+        datos.ProximaLunaNueva = Astronomy.SearchMoonPhase(0, day, 30).ToUtcDateTime();
+        datos.ProximaLunaLlena = Astronomy.SearchMoonPhase(180, day, 30).ToUtcDateTime();
+
+        // Camino lunar cada hora
+        for (int h = 0; h < 24; h++)
+        {
+            var t = new AstroTime(_fecha.Year, _fecha.Month, _fecha.Day, h, 0, 0);
+            var eq = Astronomy.Equator(Body.Moon, t, observer, EquatorEpoch.OfDate, Aberration.Corrected);
+            var hz = Astronomy.Horizon(t, observer, eq.ra, eq.dec, Refraction.Normal);
+            datos.CaminoLunar.Add(new PuntoTrayectoria { Hora = h, Altitud = hz.altitude, Azimut = hz.azimuth });
+        }
+
+        return datos;
+    }
+
+    // ── Cálculos Eventos anuales ─────────────────────────────────────────────
+    private DatosEventos CalcularEventos(int year)
+    {
+        var datos = new DatosEventos();
+
+        datos.EquinoccioPrimavera = Astronomy.Seasons(year).mar_equinox.ToUtcDateTime();
+        datos.SolsticiVerano = Astronomy.Seasons(year).jun_solstice.ToUtcDateTime();
+        datos.EquinocioOtono = Astronomy.Seasons(year).sep_equinox.ToUtcDateTime();
+        datos.SolsticioInvierno = Astronomy.Seasons(year).dec_solstice.ToUtcDateTime();
+
+        // Fases lunares del año (hasta 15 ciclos ≈ 1 año)
+        var inicio = new AstroTime(year, 1, 1, 0, 0, 0);
+        var fin = new DateTime(year, 12, 31, 23, 59, 0, DateTimeKind.Utc);
+
+        foreach (var (ang, nombre, emoji) in new[] {
+            (0.0,   "Luna Nueva",   "🌑"),
+            (90.0,  "Cuarto Creciente", "🌓"),
+            (180.0, "Luna Llena",   "🌕"),
+            (270.0, "Cuarto Menguante", "🌗")
+        })
+        {
+            var t = inicio;
+            for (int i = 0; i < 14; i++)
+            {
+                try
+                {
+                    var fase = Astronomy.SearchMoonPhase(ang, t, 35);
+                    var dt = fase.ToUtcDateTime();
+                    if (dt.Year == year)
+                        datos.FasesLunares.Add(new FaseLunar { Emoji = emoji, Nombre = nombre, Fecha = dt });
+                    t = new AstroTime(dt.AddDays(25));
+                    if (dt >= fin) break;
+                }
+                catch { break; }
+            }
+        }
+
+        datos.FasesLunares.Sort((a, b) => a.Fecha.CompareTo(b.Fecha));
+        return datos;
+    }
+
+    // ── Helpers AstronomyEngine ───────────────────────────────────────────────
+    private static DateTime? RiseSetTime(Observer obs, AstroTime day, Body body, Direction dir)
+    {
+        try
+        {
+            var startOfDay = new AstroTime(day.ToUtcDateTime().Date);
+            var evt = Astronomy.SearchRiseSet(body, obs, dir, startOfDay, 1.0);
+            return evt?.ToUtcDateTime();
+        }
+        catch { return null; }
+    }
+
+    private static DateTime? TransitTime(Observer obs, AstroTime day, Body body)
+    {
+        try
+        {
+            var startOfDay = new AstroTime(day.ToUtcDateTime().Date);
+            var evt = Astronomy.SearchHourAngle(body, obs, 0.0, startOfDay, 1);
+            return evt.time.ToUtcDateTime();
+        }
+        catch { return null; }
+    }
+
+    private static double HorizonAzimuth(Observer obs, AstroTime day, Body body, Direction dir)
+    {
+        try
+        {
+            var t = RiseSetTime(obs, day, body, dir);
+            if (t == null) return double.NaN;
+            var at = new AstroTime(t.Value.ToUniversalTime());
+            var eq = Astronomy.Equator(body, at, obs, EquatorEpoch.OfDate, Aberration.Corrected);
+            var hz = Astronomy.Horizon(at, obs, eq.ra, eq.dec, Refraction.Normal);
+            return hz.azimuth;
+        }
+        catch { return double.NaN; }
+    }
+
+    private DateTime? TwilightTime(Observer obs, AstroTime day, double altitude, Direction dir)
+    {
+        // Busca el momento en que el Sol cruza la altitud dada
+        try
+        {
+            var startOfDay = new AstroTime(_fecha.Year, _fecha.Month, _fecha.Day,
+                                           dir == Direction.Rise ? 0 : 12, 0, 0);
+            var result = Astronomy.SearchAltitude(Body.Sun, obs, dir, startOfDay, 1.0, altitude);
+            return result?.ToUtcDateTime();
+        }
+        catch { return null; }
+    }
+
+    private static double EcuacionTiempo(AstroTime day)
+    {
+        // Diferencia entre tiempo solar aparente y tiempo medio (minutos)
+        try
+        {
+            var eqc = Astronomy.Equator(Body.Sun, day, new Observer(0, 0, 0), EquatorEpoch.OfDate, Aberration.Corrected);
+            // Ascensión recta en horas → minutos de diferencia respecto a 12h
+            return (eqc.ra - 12.0) * 4.0; // aprox
+        }
+        catch { return double.NaN; }
+    }
+
+    // ── Helpers de fase lunar ─────────────────────────────────────────────────
+    private string NombreFaseLunar(double angle, double ilum)
+    {
+        return angle switch
+        {
+            < 22.5 => L["SolLuna_Phase_New"],
+            < 67.5 => L["SolLuna_Phase_WaxCrescent"],
+            < 112.5 => L["SolLuna_Phase_FirstQuarter"],
+            < 157.5 => L["SolLuna_Phase_WaxGibbous"],
+            < 202.5 => L["SolLuna_Phase_Full"],
+            < 247.5 => L["SolLuna_Phase_WanGibbous"],
+            < 292.5 => L["SolLuna_Phase_LastQuarter"],
+            < 337.5 => L["SolLuna_Phase_WanCrescent"],
+            _ => L["SolLuna_Phase_New"]
+        };
+    }
+
+    private static string EmojiFaseLunar(double angle) => angle switch
+    {
+        < 22.5 => "🌑",
+        < 67.5 => "🌒",
+        < 112.5 => "🌓",
+        < 157.5 => "🌔",
+        < 202.5 => "🌕",
+        < 247.5 => "🌖",
+        < 292.5 => "🌗",
+        < 337.5 => "🌘",
+        _ => "🌑"
+    };
+
+    // ── Helpers de formato ────────────────────────────────────────────────────
+    private string FormatTime(DateTime? dt)
+        => dt.HasValue ? dt.Value.ToLocalTime().ToString("HH:mm") : "—";
+
+    private string FormatAngle(double deg)
+        => double.IsNaN(deg) ? "—" : $"{deg:F1}°";
+
+    private string FormatRA(double ra)
+        => double.IsNaN(ra) ? "—" : $"{ra:F3} h";
+
+    private string FormatEOT(double min)
+        => double.IsNaN(min) ? "—" : $"{(min >= 0 ? "+" : "")}{min:F1} min";
+
+    private static string FormatDuration(TimeSpan? ts)
+        => ts.HasValue ? $"{(int)ts.Value.TotalHours}h {ts.Value.Minutes:D2}m" : "—";
+
+    // ── Modelos de datos ──────────────────────────────────────────────────────
+    private class DatosSol
+    {
+        public DateTime? Salida, Transito, Puesta;
+        public DateTime? CrepusculoCivilAmanecer, CrepusculoNauticoAmanecer, CrepusculoAstronomicoAmanecer;
+        public DateTime? CrepusculoCivilAtardecer, CrepusculoNauticoAtardecer, CrepusculoAstronomicoAtardecer;
+        public TimeSpan? DuracionDia;
+        public double AzimutSalida, AzimutPuesta, AzimutTransito;
+        public double AltitudMaxima, Declinacion, AscensionRecta;
+        public double EcuacionTiempo, Distancia;
+        public List<PuntoTrayectoria> CaminoSolar = new();
+    }
+
+    private class DatosLuna
+    {
+        public DateTime? Salida, Transito, Puesta;
+        public double AzimutSalida, AzimutPuesta;
+        public double AltitudMaxima, Declinacion;
+        public double Distancia, DiametroAngular;
+        public double Iluminacion, AnguloFase, EdadLunar;
+        public string NombreFase = "", EmojiPhase = "🌑";
+        public DateTime ProximaLunaNueva, ProximaLunaLlena;
+        public List<PuntoTrayectoria> CaminoLunar = new();
+    }
+
+    private class DatosEventos
+    {
+        public DateTime EquinoccioPrimavera, SolsticiVerano, EquinocioOtono, SolsticioInvierno;
+        public List<FaseLunar> FasesLunares = new();
+    }
+
+    private class PuntoTrayectoria
+    {
+        public int Hora;
+        public double Altitud, Azimut;
+    }
+
+    private class FaseLunar
+    {
+        public string Emoji = "", Nombre = "";
+        public DateTime Fecha;
+    }
+}
