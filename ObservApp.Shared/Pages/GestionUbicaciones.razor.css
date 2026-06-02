@@ -184,6 +184,7 @@
     font-size: 0.95rem;
     transition: var(--transition);
     width: 100%;
+    box-sizing: border-box; /* Asegura que el padding no aumente el ancho total */
 }
 
     .fav-input:focus {
