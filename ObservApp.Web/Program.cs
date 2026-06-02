@@ -24,6 +24,7 @@ builder.Services.AddScoped<ILocalizationService, SsrLocalizationService>();
 builder.Services.AddScoped<ISettingsService, SsrSettingsService>();
 builder.Services.AddScoped<IAppLifecycleService, WebAppLifecycleService>();
 builder.Services.AddScoped<IGeolocationService, SsrGeolocationService>();
+builder.Services.AddScoped<IFavoriteLocationsService, SsrFavoriteLocationsService>();
 builder.Services.AddSingleton<AppState>();
 
 var app = builder.Build();
@@ -36,7 +37,6 @@ else
     app.UseHsts();
 }
 
-app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 app.UseHttpsRedirection();
 app.UseAntiforgery();
 app.MapStaticAssets();
@@ -45,6 +45,17 @@ app.MapRazorComponents<App>()
     .AddAdditionalAssemblies(
         typeof(ObservApp.Shared.AssemblyReference).Assembly,
         typeof(ObservApp.Web.Client._Imports).Assembly);
+
+// Usar un middleware personalizado para manejar 404s dinámicamente
+app.Use(async (context, next) =>
+{
+    await next();
+    if (context.Response.StatusCode == 404)
+    {
+        // Redirigir a /not-found en lugar de reescribir internamente
+        context.Response.Redirect("/not-found", permanent: false);
+    }
+});
 
 app.Run();
 

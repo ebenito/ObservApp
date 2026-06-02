@@ -1,0 +1,354 @@
+﻿/* ============================================================
+   OBSERVAPP — Estilos de Gestión de Ubicaciones Favoritas
+   ============================================================ */
+.fav-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+    animation: fadeIn 300ms ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Cabecera */
+.fav-header-back {
+    margin-bottom: 15px;
+}
+
+.fav-back {
+    color: var(--obs-comet);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+    .fav-back:hover {
+        color: var(--obs-star);
+        transform: translateX(-3px);
+    }
+
+.fav-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--obs-border);
+    padding-bottom: 15px;
+}
+
+.fav-header-icon {
+    font-size: 2.2rem;
+}
+
+.fav-header-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--obs-moon);
+}
+/* Layout de dos columnas */
+.fav-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+}
+
+@media (min-width: 800px) {
+    .fav-layout {
+        grid-template-columns: 4fr 5fr;
+    }
+}
+/* Tarjeta base (Glassmorphic) */
+.fav-card {
+    background-color: rgba(27, 42, 59, 0.65); /* var(--obs-navy) con opacidad */
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    transition: var(--transition);
+}
+
+.fav-card-header {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--obs-star);
+    border-bottom: 1px solid var(--obs-border);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+/* Lista de ubicaciones */
+.fav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.fav-empty {
+    text-align: center;
+    padding: 30px;
+    color: var(--obs-comet);
+    font-style: italic;
+}
+
+.fav-item {
+    background: rgba(36, 52, 71, 0.5); /* var(--obs-deep) */
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-md);
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: var(--transition);
+}
+
+    .fav-item:hover {
+        border-color: var(--obs-star-dim);
+        background: rgba(36, 52, 71, 0.8);
+        transform: translateY(-2px);
+    }
+
+.fav-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+.fav-item-name {
+    font-weight: 600;
+    color: var(--obs-moon);
+}
+
+.fav-item-coords {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--obs-comet);
+}
+
+.fav-item-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.fav-action-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+    .fav-action-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+.fav-action-btn--delete:hover {
+    background: rgba(231, 111, 81, 0.15); /* var(--obs-mars) */
+}
+/* Buscador y Formulario */
+.fav-search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.fav-input {
+    background: rgba(13, 27, 42, 0.8); /* var(--obs-midnight) */
+    border: 1px solid var(--obs-border);
+    color: var(--obs-moon);
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    transition: var(--transition);
+    width: 100%;
+}
+
+    .fav-input:focus {
+        outline: none;
+        border-color: var(--obs-star);
+        box-shadow: 0 0 0 2px rgba(244, 196, 48, 0.2);
+    }
+
+.fav-btn {
+    background: var(--obs-deep);
+    border: 1px solid var(--obs-border);
+    color: var(--obs-moon);
+    padding: 10px 18px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+    .fav-btn:hover:not(:disabled) {
+        background: var(--obs-border);
+        border-color: var(--obs-star-dim);
+    }
+
+    .fav-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+.fav-btn--accent {
+    background: var(--obs-aurora);
+    border-color: var(--obs-aurora);
+    color: var(--obs-midnight);
+}
+
+    .fav-btn--accent:hover:not(:disabled) {
+        background: #25a195;
+        border-color: #25a195;
+        box-shadow: 0 0 10px rgba(46, 196, 182, 0.3);
+    }
+
+.fav-btn--gps {
+    background: transparent;
+    border-color: var(--obs-aurora);
+    color: var(--obs-aurora);
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+    .fav-btn--gps:hover:not(:disabled) {
+        background: rgba(46, 196, 182, 0.1);
+    }
+/* Resultados de búsqueda */
+.fav-search-results {
+    background: rgba(13, 27, 42, 0.95);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-md);
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    padding: 0;
+    list-style: none;
+}
+
+.fav-search-item {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(46, 64, 87, 0.5);
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--obs-moon);
+    transition: var(--transition);
+}
+
+    .fav-search-item:hover {
+        background: var(--obs-deep);
+        color: var(--obs-star);
+    }
+
+    .fav-search-item:last-child {
+        border-bottom: none;
+    }
+/* Contenedor del Mapa */
+.fav-map-container {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.fav-map {
+    height: 280px;
+    width: 100%;
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-md);
+    background: var(--obs-midnight);
+}
+
+.fav-map-hint {
+    font-size: 0.75rem;
+    color: var(--obs-comet);
+    text-align: center;
+    margin-top: 5px;
+}
+/* Formulario */
+.fav-form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+@media (min-width: 480px) {
+    .fav-form-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .fav-field--full {
+        grid-column: span 2;
+    }
+}
+
+.fav-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.fav-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--obs-comet);
+}
+/* Spinner */
+.fav-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: spin 800ms linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.fav-error {
+    color: var(--obs-mars);
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+}
+
+.fav-success-toast {
+    background: rgba(46, 196, 182, 0.15);
+    border: 1px solid var(--obs-aurora);
+    color: var(--obs-aurora);
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    text-align: center;
+}

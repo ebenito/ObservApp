@@ -1,7 +1,10 @@
 @page "/calculadoras/soluna"
 @using CosineKitty
+@using ObservApp.Shared.Models
+@using ObservApp.Shared.Services
 @inject IStringLocalizer<App> L
 @inject IGeolocationService GeoService
+@inject IFavoriteLocationsService FavLocationsService
 
 <PageTitle>@L["SolLuna_Title"] — ObservApp</PageTitle>
 
@@ -53,6 +56,19 @@
                     }
                     @L["SolLuna_UseGPS"]
                 </button>
+            </div>
+            <div style="padding: 10px 15px; border-bottom: 1px solid var(--obs-border);">
+                <select class="soluna-input" @onchange="OnFavLocationChanged" style="width: 100%; background-color: var(--obs-midnight); color: var(--obs-moon); border: 1px solid var(--obs-border); border-radius: var(--radius-sm); padding: 8px; font-size: 0.9rem;">
+                    <option value="manual">📍 @L["FavLoc_Select_Manual"]</option>
+                    <option value="gps">📡 @L["FavLoc_Select_GPS"]</option>
+                    @if (_favLocations != null)
+                    {
+                        @foreach (var loc in _favLocations)
+                        {
+                            <option value="@loc.Id">⭐ @loc.Name</option>
+                        }
+                    }
+                </select>
             </div>
             @if (!string.IsNullOrEmpty(_gpsError))
             {
@@ -441,6 +457,9 @@
     private double _lon = -3.7038;
     private double _altMetros = 650; // metros sobre el nivel del mar
 
+    // ── Ubicaciones Favoritas ─────────────────────────────────────────────────
+    private List<FavoriteLocation>? _favLocations;
+
     // ── Estado GPS ───────────────────────────────────────────────────────────
     private bool _gpsLoading;
     private string? _gpsError;
@@ -452,7 +471,37 @@
     private DatosEventos? _eventos;
 
     // ── Ciclo de vida ─────────────────────────────────────────────────────────
-    protected override void OnInitialized() => Calcular();
+    protected override async Task OnInitializedAsync()
+    {
+        _favLocations = await FavLocationsService.GetFavoriteLocationsAsync();
+        Calcular();
+    }
+
+    private async Task OnFavLocationChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        var val = e.Value?.ToString();
+        if (val == "manual")
+        {
+            // Deja que edite manual
+        }
+        else if (val == "gps")
+        {
+            await OnUsarGpsAsync();
+        }
+        else if (Guid.TryParse(val, out var id))
+        {
+            var loc = _favLocations?.Find(l => l.Id == id);
+            if (loc != null)
+            {
+                _lat = loc.Latitude;
+                _lon = loc.Longitude;
+                _altMetros = loc.AltitudeMeters;
+                _gpsSource = $"⭐ {loc.Name}";
+                _gpsError = null;
+                Calcular();
+            }
+        }
+    }
 
     // ── GPS ───────────────────────────────────────────────────────────────────
     private async Task OnUsarGpsAsync()

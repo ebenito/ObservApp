@@ -1,0 +1,475 @@
+﻿@page "/configuracion/ubicaciones"
+@using System.Text.Json.Serialization
+@using System.Globalization
+@using ObservApp.Shared.Models
+@using ObservApp.Shared.Services
+@inject IFavoriteLocationsService FavLocationsService
+@inject IGeolocationService GeoService
+@inject IJSRuntime JS
+@inject HttpClient Http
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+@implements IDisposable
+<PageTitle>@L["FavLoc_Title"] — ObservApp</PageTitle>
+<div class="fav-page">
+    <!-- Cabecera -->
+    <div class="fav-header-back">
+        <a class="fav-back" href="/configuracion">← @L["Action_Back"]</a>
+    </div>
+
+    <div class="fav-header">
+        <span class="fav-header-icon">🗺️</span>
+        <div>
+            <h1 class="fav-header-title">@L["FavLoc_Title"]</h1>
+        </div>
+    </div>
+    <!-- Layout de dos columnas -->
+    <div class="fav-layout">
+
+        <!-- Columna Izquierda: Listado de ubicaciones guardadas -->
+        <div class="fav-card">
+            <div class="fav-card-header">
+                <span>⭐ @L["Settings_FavoriteLocations"]</span>
+            </div>
+
+            <div class="fav-list">
+                @if (_locations == null)
+                {
+                    <div class="fav-empty">
+                        <span class="fav-spinner"></span> @L["Status_Loading"]
+                    </div>
+                }
+                else if (_locations.Count == 0)
+                {
+                    <div class="fav-empty">
+                        @L["FavLoc_NoLocations"]
+                    </div>
+                }
+                else
+                {
+                    @foreach (var loc in _locations)
+                    {
+                        <div class="fav-item">
+                            <div class="fav-item-info" @onclick="() => LoadToForm(loc)">
+                                <span class="fav-item-name">@loc.Name</span>
+                                <span class="fav-item-coords">
+                                    📍 @loc.Latitude.ToString("F4", CultureInfo.InvariantCulture)°,
+                                    @loc.Longitude.ToString("F4", CultureInfo.InvariantCulture)°
+                                    (@loc.AltitudeMeters.ToString("F0", CultureInfo.InvariantCulture)m)
+                                </span>
+                            </div>
+                            <div class="fav-item-actions">
+                                <button class="fav-action-btn fav-action-btn--delete"
+                                        @onclick="() => DeleteLocation(loc.Id)"
+                                        title="@L["Action_Delete"]">
+                                    🗑️
+                                </button>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        <!-- Columna Derecha: Formulario de edición/búsqueda y mapa -->
+        <div class="fav-card">
+            <div class="fav-card-header">
+                <span>📍 @(_isEditing ? L["FavLoc_Form_Edit"] : L["Action_Add"])</span>
+                @if (_isEditing)
+                {
+                    <button class="fav-btn" style="padding: 4px 8px; font-size: 0.8rem;" @onclick="ResetForm">
+                        @L["Action_Cancel"]
+                    </button>
+                }
+            </div>
+            <!-- Botón Ubicación GPS -->
+            <button class="fav-btn fav-btn--gps @(_gpsLoading ? "disabled" : "")"
+                    @onclick="OnUsarGpsAsync"
+                    disabled="@_gpsLoading">
+                @if (_gpsLoading)
+                {
+                    <span class="fav-spinner"></span>
+                }
+                else
+                {
+                    <span>📡</span>
+                }
+                @L["FavLoc_AddCurrent"]
+            </button>
+            <!-- Buscador Nominatim -->
+            <div class="fav-search-box">
+                <input class="fav-input" type="text"
+                       placeholder="@L["FavLoc_SearchPlaceholder"]"
+                       @bind="_searchQuery"
+                       @onkeyup="OnSearchKeyUp" />
+                <button class="fav-btn" @onclick="BuscarLugarAsync" disabled="@_searchLoading">
+                    @if (_searchLoading)
+                    {
+                        <span class="fav-spinner"></span>
+                    }
+                    else
+                    {
+                        <span>🔍</span>
+                    }
+                    @L["FavLoc_SearchBtn"]
+                </button>
+            </div>
+            <!-- Resultados de búsqueda -->
+            @if (_searchResults != null && _searchResults.Count > 0)
+            {
+                <ul class="fav-search-results">
+                    @foreach (var res in _searchResults)
+                    {
+                        <li class="fav-search-item" @onclick="() => SelectSearchResult(res)">
+                            🏠 @res.DisplayName
+                        </li>
+                    }
+                </ul>
+            }
+            else if (_hasSearched && (_searchResults == null || _searchResults.Count == 0))
+            {
+                <div class="fav-error">⚠️ @L["FavLoc_Search_NoResults"]</div>
+            }
+            <!-- Mapa Leaflet -->
+            <div class="fav-map-container">
+                <div id="leaflet-fav-map" class="fav-map"></div>
+                <div class="fav-map-hint">💡 @L["FavLoc_Form_DragHint"]</div>
+            </div>
+            <!-- Formulario de detalles -->
+            @if (_gpsError != null)
+            {
+                <div class="fav-error">⚠️ @_gpsError</div>
+            }
+            @if (_toastMessage != null)
+            {
+                <div class="fav-success-toast">✓ @_toastMessage</div>
+            }
+            <div class="fav-form-grid">
+                <div class="fav-field fav-field--full">
+                    <label class="fav-label">@L["FavLoc_Form_Name"]</label>
+                    <input class="fav-input" type="text" @bind="_formName" />
+                    @if (_showValidationError && string.IsNullOrWhiteSpace(_formName))
+                    {
+                        <span class="fav-error">@L["FavLoc_Form_Name_Required"]</span>
+                    }
+                </div>
+                <div class="fav-field">
+                    <label class="fav-label">@L["FavLoc_Form_Latitude"]</label>
+                    <input class="fav-input" type="number" min="-90" max="90" step="0.000001"
+                           value="@_formLat.ToString("F6", CultureInfo.InvariantCulture)"
+                           @onchange="OnLatitudeChanged" />
+                </div>
+                <div class="fav-field">
+                    <label class="fav-label">@L["FavLoc_Form_Longitude"]</label>
+                    <input class="fav-input" type="number" min="-180" max="180" step="0.000001"
+                           value="@_formLon.ToString("F6", CultureInfo.InvariantCulture)"
+                           @onchange="OnLongitudeChanged" />
+                </div>
+                <div class="fav-field fav-field--full">
+                    <label class="fav-label">
+                        @L["FavLoc_Form_Altitude"]
+                        @if (_altitudeLoading)
+                        {
+                            <span style="font-size: 0.75rem; color: var(--obs-aurora); margin-left: 6px;">
+                                <span class="fav-spinner"></span> @L["FavLoc_Form_Altitude_Loading"]
+                            </span>
+                        }
+                    </label>
+                    <input class="fav-input" type="number" min="-500" max="9000" step="1" @bind="_formAlt" />
+                </div>
+            </div>
+            <!-- Guardar -->
+            <button class="fav-btn fav-btn--accent" @onclick="GuardarUbicacionAsync" style="width: 100%; justify-content: center;">
+                💾 @L["Action_Save"]
+            </button>
+        </div>
+    </div>
+</div>
+@code {
+    private List<FavoriteLocation>? _locations;
+    private DotNetObjectReference<GestionUbicaciones>? _dotNetRef;
+    // Campos formulario
+    private Guid _formId = Guid.Empty;
+    private string _formName = string.Empty;
+    private double _formLat = 40.4168; // Madrid por defecto
+    private double _formLon = -3.7038;
+    private double _formAlt = 650;
+    private bool _isEditing = false;
+    private bool _showValidationError = false;
+    // Buscador
+    private string _searchQuery = string.Empty;
+    private bool _searchLoading = false;
+    private bool _hasSearched = false;
+    private List<NominatimResult>? _searchResults;
+    // Estados de carga
+    private bool _gpsLoading = false;
+    private string? _gpsError;
+    private bool _altitudeLoading = false;
+    private string? _toastMessage;
+    protected override async Task OnInitializedAsync()
+    {
+        _dotNetRef = DotNetObjectReference.Create(this);
+        await CargarListaAsync();
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Inicializar el mapa de Leaflet
+            await Task.Delay(300); // Dar margen al DOM para renderizar el contenedor
+            await InicializarMapaAsync();
+        }
+    }
+    private async Task CargarListaAsync()
+    {
+        _locations = await FavLocationsService.GetFavoriteLocationsAsync();
+        StateHasChanged();
+    }
+    private async Task InicializarMapaAsync()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("window.observApp.initMap", "leaflet-fav-map", _formLat, _formLon, 13, _dotNetRef);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al inicializar mapa: {ex.Message}");
+        }
+    }
+    private async Task SincronizarMapaPosicionAsync()
+    {
+        try
+        {
+            // Primero intentar actualizar posición si ya existe
+            var existe = await JS.InvokeAsync<bool>("eval", 
+                $"!!document.getElementById('leaflet-fav-map')?._leaflet_map");
+
+            if (existe)
+            {
+                await JS.InvokeVoidAsync("window.observApp.updateMapPosition", "leaflet-fav-map", _formLat, _formLon, 13);
+            }
+            else
+            {
+                // Si no existe, inicializarlo
+                await InicializarMapaAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al sincronizar mapa: {ex.Message}");
+        }
+    }
+    // Callback JS cuando se arrastra la chincheta
+    [JSInvokable]
+    public async Task OnMarkerDragged(double lat, double lon)
+    {
+        _formLat = lat;
+        _formLon = lon;
+        await InvokeAsync(StateHasChanged);
+        await ConsultarAltitudAsync(lat, lon);
+    }
+    private async Task OnUsarGpsAsync()
+    {
+        _gpsLoading = true;
+        _gpsError = null;
+        StateHasChanged();
+        try
+        {
+            var loc = await GeoService.GetCurrentLocationAsync(highAccuracy: true);
+            if (loc != null)
+            {
+                _formLat = loc.Latitude;
+                _formLon = loc.Longitude;
+                _formAlt = loc.AltitudeMeters ?? 0;
+                _formName = string.IsNullOrWhiteSpace(_formName) ? "GPS Location" : _formName;
+                await SincronizarMapaPosicionAsync();
+
+                // Si el GPS no devolvió altitud, la consultamos a Open-Meteo
+                if (!loc.AltitudeMeters.HasValue || loc.AltitudeMeters == 0)
+                {
+                    await ConsultarAltitudAsync(_formLat, _formLon);
+                }
+            }
+            else
+            {
+                _gpsError = GeoService.LastError ?? "Error al obtener ubicación GPS.";
+            }
+        }
+        catch (Exception ex)
+        {
+            _gpsError = ex.Message;
+        }
+        finally
+        {
+            _gpsLoading = false;
+            StateHasChanged();
+        }
+    }
+    private async Task OnSearchKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await BuscarLugarAsync();
+        }
+    }
+    private async Task BuscarLugarAsync()
+    {
+        if (string.IsNullOrWhiteSpace(_searchQuery)) return;
+        _searchLoading = true;
+        _hasSearched = true;
+        _searchResults = null;
+        StateHasChanged();
+        try
+        {
+            var url = $"https://nominatim.openstreetmap.org/search?q={Uri.EscapeDataString(_searchQuery)}&format=json&limit=5";
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.Add("User-Agent", "ObservApp/1.0 (info@observapp.com)");
+            var response = await Http.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                _searchResults = System.Text.Json.JsonSerializer.Deserialize<List<NominatimResult>>(content);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error buscando lugar: {ex.Message}");
+        }
+        finally
+        {
+            _searchLoading = false;
+            StateHasChanged();
+        }
+    }
+    private async Task SelectSearchResult(NominatimResult result)
+    {
+        _formName = result.DisplayName.Split(',')[0];
+        _formLat = result.Latitude;
+        _formLon = result.Longitude;
+        _searchResults = null;
+        _searchQuery = string.Empty;
+        _hasSearched = false;
+        await SincronizarMapaPosicionAsync();
+        await ConsultarAltitudAsync(_formLat, _formLon);
+    }
+    private async Task OnLatitudeChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        if (double.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var lat))
+        {
+            _formLat = Math.Clamp(lat, -90, 90);
+            await SincronizarMapaPosicionAsync();
+            await ConsultarAltitudAsync(_formLat, _formLon);
+        }
+    }
+    private async Task OnLongitudeChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        if (double.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var lon))
+        {
+            _formLon = Math.Clamp(lon, -180, 180);
+            await SincronizarMapaPosicionAsync();
+            await ConsultarAltitudAsync(_formLat, _formLon);
+        }
+    }
+    private async Task ConsultarAltitudAsync(double lat, double lon)
+    {
+        _altitudeLoading = true;
+        StateHasChanged();
+        try
+        {
+            var url = $"https://api.open-meteo.com/v1/elevation?latitude={lat.ToString(CultureInfo.InvariantCulture)}&longitude={lon.ToString(CultureInfo.InvariantCulture)}";
+            var result = await Http.GetFromJsonAsync<OpenMeteoElevationResult>(url);
+            if (result?.Elevation != null && result.Elevation.Length > 0)
+            {
+                _formAlt = Math.Round(result.Elevation[0]);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al consultar la altitud: {ex.Message}");
+        }
+        finally
+        {
+            _altitudeLoading = false;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+    private void LoadToForm(FavoriteLocation loc)
+    {
+        _formId = loc.Id;
+        _formName = loc.Name;
+        _formLat = loc.Latitude;
+        _formLon = loc.Longitude;
+        _formAlt = loc.AltitudeMeters;
+        _isEditing = true;
+        _showValidationError = false;
+        _toastMessage = null;
+        _ = SincronizarMapaPosicionAsync();
+    }
+    private async Task GuardarUbicacionAsync()
+    {
+        if (string.IsNullOrWhiteSpace(_formName))
+        {
+            _showValidationError = true;
+            return;
+        }
+        var loc = new FavoriteLocation
+        {
+            Id = _isEditing ? _formId : Guid.NewGuid(),
+            Name = _formName,
+            Latitude = _formLat,
+            Longitude = _formLon,
+            AltitudeMeters = _formAlt
+        };
+        await FavLocationsService.SaveFavoriteLocationAsync(loc);
+
+        _toastMessage = L["Status_Success"];
+
+        ResetForm();
+        await CargarListaAsync();
+
+        _ = Task.Delay(3000).ContinueWith(_ =>
+                {
+                    _toastMessage = null;
+                    InvokeAsync(StateHasChanged);
+                });
+    }
+    private async Task DeleteLocation(Guid id)
+    {
+        await FavLocationsService.DeleteFavoriteLocationAsync(id);
+
+        if (_isEditing && _formId == id)
+        {
+            ResetForm();
+        }
+
+        await CargarListaAsync();
+    }
+    private void ResetForm()
+    {
+        _formId = Guid.Empty;
+        _formName = string.Empty;
+        _isEditing = false;
+        _showValidationError = false;
+    }
+    public void Dispose()
+    {
+        _dotNetRef?.Dispose();
+    }
+    // Clases auxiliares para deserialización
+    private class NominatimResult
+    {
+        [JsonPropertyName("display_name")]
+        public string DisplayName { get; set; } = string.Empty;
+
+        [JsonPropertyName("lat")]
+        public string LatString { get; set; } = string.Empty;
+
+        [JsonPropertyName("lon")]
+        public string LonString { get; set; } = string.Empty;
+        public double Latitude => double.TryParse(LatString, NumberStyles.Any, CultureInfo.InvariantCulture, out var l) ? l : 0;
+        public double Longitude => double.TryParse(LonString, NumberStyles.Any, CultureInfo.InvariantCulture, out var l) ? l : 0;
+    }
+    private class OpenMeteoElevationResult
+    {
+        [JsonPropertyName("elevation")]
+        public double[]? Elevation { get; set; }
+    }
+}

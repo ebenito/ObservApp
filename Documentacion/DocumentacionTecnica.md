@@ -20,6 +20,8 @@
    - [3.7 Corrección del cierre de la aplicación Windows](#37-corrección-del-cierre-de-la-aplicación-windows)
    - [3.8 Router multi-ensamblado](#38-router-multi-ensamblado)
    - [3.9 Usings globales actualizados](#39-usings-globales-actualizados)
+   - [3.10 Calculadora Sol y Luna](#310-calculadora-sol-y-luna)
+   - [3.11 Servicio de geolocalización multiplataforma](#311-servicio-de-geolocalización-multiplataforma)
 4. [Árbol de archivos resultante](#4-árbol-de-archivos-resultante)
 5. [Dependencias NuGet añadidas](#5-dependencias-nuget-añadidas)
 6. [Decisiones de diseño](#6-decisiones-de-diseño)
@@ -426,6 +428,76 @@ componente tenga que declararlos individualmente:
 
 ---
 
+### 3.10 Calculadora Sol y Luna
+
+**Ruta:** `/calculadoras/soluna`
+
+Nueva calculadora astronómica disponible en la sección de calculadoras de la app.
+Proporciona cálculos offline de alta precisión usando `CosineKitty.AstronomyEngine`.
+
+**Paneles disponibles:**
+
+| Panel | Contenido |
+|---|---|
+| ☀️ Sol | Salida · Tránsito · Puesta · Duración del día · Crepúsculos civil/náutico/astronómico · Azimuts · Altitud máxima · Declinación · AR · Ecuación del tiempo · Distancia UA · Trayectoria horaria |
+| 🌙 Luna | Salida · Tránsito · Puesta · Azimuts · Altitud máxima · Distancia · Diámetro angular · Iluminación · Fase (nombre + emoji) · Edad lunar · Próximas luna nueva/llena · Trayectoria horaria |
+| 🗓️ Eventos | Equinoccios · Solsticios · Listado anual de fases lunares |
+
+**Archivos:**
+- `ObservApp.Shared/Pages/CalculadoraSolLuna.razor`
+- `ObservApp.Shared/Pages/CalculadoraSolLuna.razor.css`
+
+---
+
+### 3.11 Servicio de geolocalización multiplataforma
+
+Se introduce una abstracción reutilizable para obtener la ubicación del dispositivo
+desde cualquier página de `ObservApp.Shared`, sin acoplarse a la plataforma.
+
+#### Interfaz (`ObservApp.Shared/Services/IGeolocationService.cs`)
+
+```csharp
+public record LocationData(
+    double Latitude, double Longitude,
+    double? AltitudeMeters, double? AccuracyMeters,
+    string SourceLabel);
+
+public interface IGeolocationService
+{
+    string? LastError { get; }
+    Task<LocationData?> GetCurrentLocationAsync(
+        bool highAccuracy = true,
+        CancellationToken cancellationToken = default);
+}
+```
+
+#### Implementaciones por plataforma
+
+| Proyecto | Clase | Mecanismo |
+|---|---|---|
+| `ObservApp` (MAUI) | `MauiGeolocationService` | `Microsoft.Maui.Devices.Sensors.IGeolocation` + permisos de plataforma |
+| `ObservApp.Web.Client` (WASM) | `WebGeolocationService` | `IJSRuntime` → `window.observApp.getCurrentPosition()` |
+| `ObservApp.Web` (SSR) | `SsrGeolocationService` | Stub — devuelve `null` (sin acceso a GPS en servidor) |
+
+#### Helper JavaScript (`ObservApp.Shared/wwwroot/geolocation.js`)
+
+Expone `window.observApp.getCurrentPosition(highAccuracy)` como una `Promise` que envuelve
+`navigator.geolocation.getCurrentPosition`. Los errores del navegador se mapean a mensajes
+legibles en español. Cargado en `ObservApp.Web/Components/App.razor`.
+
+#### Nota sobre JSInterop y CancellationToken
+
+Al invocar funciones JS con `IJSRuntime.InvokeAsync`, el `CancellationToken` debe pasarse
+como parámetro de la sobrecarga, **nunca** como argumento posicional, ya que Blazor
+intentaría serializarlo a JSON y fallaría con `SerializeTypeInstanceNotSupported`:
+
+```csharp
+// ✅ Correcto
+await _js.InvokeAsync<T>("fn", cancellationToken, new object[] { arg1 });
+```
+
+---
+
 ## 4. Árbol de archivos resultante
 
 ```
@@ -533,7 +605,7 @@ La migración a `localStorage` es un cambio localizado en un solo archivo.
 |-----------|-------|---------------------|
 | 🔴 Alta | Implementar `SupabaseService` para persistencia en la nube | `MauiProgram.cs` (comentario TODO) |
 | 🔴 Alta | Implementar `AuthService` para autenticación con Supabase | `MauiProgram.cs` (comentario TODO) |
-| 🔴 Alta | Implementar `GeolocationService` — funcionalidad central de la app | `MauiProgram.cs` (comentario TODO) |
+| ✅ Hecho | Implementar `GeolocationService` — multiplataforma (MAUI + WASM + SSR) | `IGeolocationService`, `MauiGeolocationService`, `WebGeolocationService` |
 | 🟡 Media | Reemplazar `WebSettingsService` con `localStorage` via JSInterop | `ObservApp.Web.Client/Services/WebSettingsService.cs` |
 | 🟡 Media | Implementar `AstronomyService` (wrapping de `AstronomyEngine`) | `MauiProgram.cs` (comentario TODO) |
 | 🟢 Baja | Pasar `GetType().Assembly` del host a `<Routes>` cuando se añadan páginas en el host | `Routes.razor` (parámetro `AdditionalAssemblies`) |

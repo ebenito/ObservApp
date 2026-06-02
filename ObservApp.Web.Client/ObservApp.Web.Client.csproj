@@ -4,7 +4,6 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
     <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
     <UserSecretsId>feec7888-5523-4348-9efa-8c389fcf7af8</UserSecretsId>
     <!-- Necesario para cambiar la cultura dinámicamente en Blazor WASM -->
@@ -13,11 +12,15 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.8" />
-	<PackageReference Include="Syncfusion.Licensing" Version="33.2.8" />
+	<PackageReference Include="Syncfusion.Licensing" Version="33.2.10" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ObservApp.Shared\ObservApp.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

@@ -683,6 +683,65 @@
   <data name="SolLuna_UseGPS" xml:space="preserve">
     <value>Usar GPS</value>
   </data>
-
+ <data name="Settings_FavoriteLocations" xml:space="preserve">
+    <value>Ubicaciones favoritas</value>
+  </data>
+  <data name="Settings_ManageLocations" xml:space="preserve">
+    <value>Gestionar ubicaciones favoritas</value>
+  </data>
+  <data name="FavLoc_Title" xml:space="preserve">
+    <value>Ubicaciones favoritas</value>
+  </data>
+  <data name="FavLoc_NoLocations" xml:space="preserve">
+    <value>Aún no tienes ubicaciones guardadas.</value>
+  </data>
+  <data name="FavLoc_AddCurrent" xml:space="preserve">
+    <value>Añadir ubicación actual (GPS)</value>
+  </data>
+  <data name="FavLoc_SearchPlaceholder" xml:space="preserve">
+    <value>Buscar lugar (ej. Teide, Madrid...)</value>
+  </data>
+  <data name="FavLoc_SearchBtn" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
+  <data name="FavLoc_Search_NoResults" xml:space="preserve">
+    <value>No se encontraron resultados.</value>
+  </data>
+  <data name="FavLoc_Form_Name" xml:space="preserve">
+    <value>Nombre de la ubicación</value>
+  </data>
+  <data name="FavLoc_Form_Latitude" xml:space="preserve">
+    <value>Latitud (°)</value>
+  </data>
+  <data name="FavLoc_Form_Longitude" xml:space="preserve">
+    <value>Longitud (°)</value>
+  </data>
+  <data name="FavLoc_Form_Altitude" xml:space="preserve">
+    <value>Altitud (metros)</value>
+  </data>
+  <data name="FavLoc_Form_Save" xml:space="preserve">
+    <value>Guardar ubicación</value>
+  </data>
+  <data name="FavLoc_Form_Edit" xml:space="preserve">
+    <value>Editar ubicación</value>
+  </data>
+  <data name="FavLoc_Form_DragHint" xml:space="preserve">
+    <value>Puedes arrastrar la chincheta por el mapa para afinar la posición.</value>
+  </data>
+  <data name="FavLoc_Form_Altitude_Loading" xml:space="preserve">
+    <value>Calculando altitud automáticamente…</value>
+  </data>
+  <data name="FavLoc_Form_Name_Required" xml:space="preserve">
+    <value>El nombre de la ubicación es obligatorio.</value>
+  </data>
+  <data name="FavLoc_Select_Placeholder" xml:space="preserve">
+    <value>-- Seleccionar ubicación favorita --</value>
+  </data>
+  <data name="FavLoc_Select_Manual" xml:space="preserve">
+    <value>Coordenadas manuales</value>
+  </data>
+  <data name="FavLoc_Select_GPS" xml:space="preserve">
+    <value>Ubicación GPS actual</value>
+  </data>
 
 </root>
