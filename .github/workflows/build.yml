@@ -83,6 +83,10 @@ jobs:
       - name: Publish Blazor WASM
         run: dotnet publish ObservApp.Web.Client/ObservApp.Web.Client.csproj --configuration Release --output ./publish/web --no-restore
 
+      # Diagnóstico: muestra la estructura real del output para verificar rutas
+      - name: Mostrar estructura del publish
+        run: find ./publish/web -type f | sort
+
       - name: Copiar staticwebapp.config.json
         run: cp ObservApp.Web.Client/wwwroot/staticwebapp.config.json ./publish/web/wwwroot/staticwebapp.config.json
 
