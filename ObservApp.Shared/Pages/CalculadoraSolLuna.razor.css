@@ -398,6 +398,7 @@
     border-radius: 8px;
     background: rgba(255,255,255,.03);
     border: 1px solid rgba(255,255,255,.05);
+    flex-wrap: wrap;
 }
 
 .soluna-event-icon {
@@ -417,6 +418,34 @@
     font-size: 0.82rem;
     font-weight: 600;
     color: var(--obs-moon);
+    font-variant-numeric: tabular-nums;
+}
+
+.soluna-event-magnitud {
+    font-size: 0.75rem;
+    color: var(--obs-nebula);
+    margin-left: auto;
+    background: rgba(159, 122, 234, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.soluna-event-times {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.soluna-event-times span {
+    font-size: 0.7rem;
+    color: var(--obs-aurora);
+    background: rgba(99, 179, 237, 0.1);
+    padding: 1px 5px;
+    border-radius: 4px;
     font-variant-numeric: tabular-nums;
 }
 

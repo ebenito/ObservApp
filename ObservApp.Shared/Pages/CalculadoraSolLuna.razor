@@ -433,6 +433,25 @@
                     }
                 </div>
 
+                <h3 class="soluna-events-subtitle" style="margin-top:20px;">🌘 @L["SolLuna_Eclipses_Year"]</h3>
+                <div class="soluna-events-list">
+                    @foreach (var eclipse in _eventos.Eclipses)
+                    {
+                        <div class="soluna-event-row">
+                            <span class="soluna-event-icon">@eclipse.Emoji</span>
+                            <span class="soluna-event-label">@eclipse.Tipo @if(!string.IsNullOrEmpty(eclipse.Subtipo)) { <text>/ @eclipse.Subtipo</text>}</span>
+                            <span class="soluna-event-date">@eclipse.Pico.ToString("dd/MM/yyyy HH:mm") UTC</span>
+                            <span class="soluna-event-magnitud" title="@L["SolLuna_Magnitude_Desc"]">🌌 @eclipse.Magnitud.ToString("F3")</span>
+                            <div class="soluna-event-times">
+                                @if (eclipse.C1.HasValue) { <span title="@L["SolLuna_Contact_C1_Desc"]">🕐 @FormatTime(eclipse.C1)</span> }
+                                @if (eclipse.C2.HasValue) { <span title="@L["SolLuna_Contact_C2_Desc"]">🕑 @FormatTime(eclipse.C2)</span> }
+                                @if (eclipse.C3.HasValue) { <span title="@L["SolLuna_Contact_C3_Desc"]">🕒 @FormatTime(eclipse.C3)</span> }
+                                @if (eclipse.C4.HasValue) { <span title="@L["SolLuna_Contact_C4_Desc"]">🕓 @FormatTime(eclipse.C4)</span> }
+                            </div>
+                        </div>
+                    }
+                </div>
+
             </div>
         </div>
     }
@@ -566,7 +585,7 @@
 
             _sol = CalcularSol(observer, astroTime);
             _luna = CalcularLuna(observer, astroTime);
-            _eventos = CalcularEventos(_fecha.Year);
+            _eventos = CalcularEventos(_fecha.Year, observer);
         }
         catch
         {
@@ -690,7 +709,7 @@
     }
 
     // ── Cálculos Eventos anuales ─────────────────────────────────────────────
-    private DatosEventos CalcularEventos(int year)
+    private DatosEventos CalcularEventos(int year, Observer observer)
     {
         var datos = new DatosEventos();
 
@@ -726,8 +745,103 @@
             }
         }
 
+        datos.Eclipses = CalcularEclipsesLocal(observer, year);
+
         datos.FasesLunares.Sort((a, b) => a.Fecha.CompareTo(b.Fecha));
         return datos;
+    }
+
+    private List<EventoEclipse> CalcularEclipsesLocal(Observer observer, int year)
+    {
+        var eclipses = new List<EventoEclipse>();
+        var at = new AstroTime(year, 1, 1, 0, 0, 0);
+
+        // Buscar eclipses solares en el año
+        var tSolar = at;
+        for (int i = 0; i < 12; i++)
+        {
+            try
+            {
+                var global = Astronomy.SearchGlobalSolarEclipse(tSolar);
+                if (global.peak.ToUtcDateTime().Year > year) break;
+
+                // Buscar localmente
+                var local = Astronomy.SearchLocalSolarEclipse(new AstroTime(global.peak.ToUtcDateTime().AddDays(-1)), observer);
+                if (local.kind != EclipseKind.None && Math.Abs((local.peak.time.ToUtcDateTime() - global.peak.ToUtcDateTime()).TotalHours) < 48)
+                {
+                    eclipses.Add(new EventoEclipse
+                    {
+                        Tipo = L["SolLuna_Eclipse_Solar"],
+                        Emoji = "☀️",
+                        Subtipo = local.kind switch
+                        {
+                            EclipseKind.Total => L["SolLuna_Eclipse_Total"],
+                            EclipseKind.Annular => L["SolLuna_Eclipse_Annular"],
+                            EclipseKind.Partial => L["SolLuna_Eclipse_Partial"],
+                            _ => local.kind.ToString()
+                        },
+                        Pico = local.peak.time.ToUtcDateTime(),
+                        Magnitud = local.obscuration, // Usamos obscuration como aproximación de magnitud local
+                        C1 = local.partial_begin.time?.ToUtcDateTime(),
+                        C2 = local.total_begin.time?.ToUtcDateTime(),
+                        C3 = local.total_end.time?.ToUtcDateTime(),
+                        C4 = local.partial_end.time?.ToUtcDateTime()
+                    });
+                }
+                tSolar = new AstroTime(global.peak.ToUtcDateTime().AddDays(30));
+            }
+            catch { break; }
+        }
+
+        // Buscar eclipses lunares en el año
+        var tLunar = at;
+        for (int i = 0; i < 12; i++)
+        {
+            try
+            {
+                var global = Astronomy.SearchLunarEclipse(tLunar);
+                if (global.peak.ToUtcDateTime().Year > year) break;
+
+                // Un eclipse lunar es visible si la luna está sobre el horizonte durante el pico
+                var eq = Astronomy.Equator(Body.Moon, global.peak, observer, EquatorEpoch.OfDate, Aberration.Corrected);
+                var hz = Astronomy.Horizon(global.peak, observer, eq.ra, eq.dec, Refraction.Normal);
+
+                if (hz.altitude > -1.0)
+                {
+                    // En AstronomyEngine 2.1.19, para el eclipse lunar:
+                    // sd_partial es la magnitud parcial (umbra) si > 0
+                    // sd_total es la magnitud total si > 0
+                    double mag = global.sd_total > 0 ? global.sd_total : (global.sd_partial > 0 ? global.sd_partial : global.sd_penum);
+
+                    // Estimación aproximada de contactos lunares globales
+                    // En esta versión no tenemos contactos locales precisos sin cálculos iterativos complejos,
+                    // así que usaremos los momentos de sombra globales si están cerca de la visibilidad.
+                    eclipses.Add(new EventoEclipse
+                    {
+                        Tipo = L["SolLuna_Eclipse_Lunar"],
+                        Emoji = "🌕",
+                        Subtipo = global.kind switch
+                        {
+                            EclipseKind.Total => L["SolLuna_Eclipse_Total"],
+                            EclipseKind.Partial => L["SolLuna_Eclipse_Partial"],
+                            EclipseKind.Penumbral => L["SolLuna_Eclipse_Penumbral"],
+                            _ => global.kind.ToString()
+                        },
+                        Pico = global.peak.ToUtcDateTime(),
+                        Magnitud = mag,
+                        C1 = null, // Dejar nulo para evitar confusión si no son locales exactos, o usar penumbra_begin si existiera
+                        C2 = null,
+                        C3 = null,
+                        C4 = null
+                    });
+                }
+                tLunar = new AstroTime(global.peak.ToUtcDateTime().AddDays(30));
+            }
+            catch { break; }
+        }
+
+        eclipses.Sort((a, b) => a.Pico.CompareTo(b.Pico));
+        return eclipses;
     }
 
     // ── Helpers AstronomyEngine ───────────────────────────────────────────────
@@ -867,6 +981,20 @@
     {
         public DateTime EquinoccioPrimavera, SolsticiVerano, EquinocioOtono, SolsticioInvierno;
         public List<FaseLunar> FasesLunares = new();
+        public List<EventoEclipse> Eclipses = new();
+    }
+
+    private class EventoEclipse
+    {
+        public string Tipo { get; set; } = "";
+        public string Subtipo { get; set; } = "";
+        public string Emoji { get; set; } = "";
+        public DateTime Pico { get; set; }
+        public double Magnitud { get; set; }
+        public DateTime? C1 { get; set; }
+        public DateTime? C2 { get; set; }
+        public DateTime? C3 { get; set; }
+        public DateTime? C4 { get; set; }
     }
 
     private class PuntoTrayectoria

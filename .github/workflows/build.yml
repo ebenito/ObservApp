@@ -83,12 +83,18 @@ jobs:
       - name: Publish Blazor WASM
         run: dotnet publish ObservApp.Web.Client/ObservApp.Web.Client.csproj --configuration Release --output ./publish/web --no-restore
 
-      # Diagnóstico: muestra la estructura real del output para verificar rutas
-      - name: Mostrar estructura del publish
-        run: find ./publish/web -type f | sort
+      # index.html no existe en el proyecto Client (lo genera el host ASP.NET).
+      # Para Azure Static Web Apps (hosting estático) necesitamos el shell HTML.
+      # Lo copiamos desde ObservApp.Web.Client/wwwroot/index.html que añadimos al repo.
+      - name: Copiar index.html al output wwwroot
+        run: cp ObservApp.Web.Client/wwwroot/index.html ./publish/web/wwwroot/index.html
 
       - name: Copiar staticwebapp.config.json
         run: cp ObservApp.Web.Client/wwwroot/staticwebapp.config.json ./publish/web/wwwroot/staticwebapp.config.json
+
+      # Diagnóstico: muestra la estructura real del output para verificar rutas
+      - name: Mostrar estructura del publish
+        run: find ./publish/web -type f | sort
 
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
