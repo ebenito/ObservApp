@@ -267,12 +267,6 @@
   <data name="Calc_Eclipse_Desc" xml:space="preserve">
     <value>Calcola i tempi di esposizione per ogni fase dell'eclissi usando la formula NASA Q</value>
   </data>
-  <data name="Calc_FOV_Title" xml:space="preserve">
-    <value>Campo visivo (FOV)</value>
-  </data>
-  <data name="Calc_FOV_Desc" xml:space="preserve">
-    <value>Calcola il campo visivo reale e apparente delle tue combinazioni telescopio-oculare</value>
-  </data>
   <data name="Calc_Magnification_Title" xml:space="preserve">
     <value>Ingrandimento e pupilla d'uscita</value>
   </data>
@@ -336,162 +330,156 @@
   <data name="Nav_Calculators" xml:space="preserve">
     <value>Calcolatrici</value>
   </data>
-
-<data name="Calc_FOV_Title" xml:space="preserve">
-  <value>Campo visivo (FOV)</value>
-</data>
-<data name="Calc_FOV_Desc" xml:space="preserve">
-  <value>Calcola il campo visivo reale e apparente della tua combinazione telescopio-oculare</value>
-</data>
-<data name="FOV_Title" xml:space="preserve">
-  <value>Campo visivo (FOV)</value>
-</data>
-<data name="FOV_Subtitle" xml:space="preserve">
-  <value>Calcola il campo visivo reale e apparente della tua combinazione telescopio-oculare</value>
-</data>
-<data name="FOV_TelescopeSection" xml:space="preserve">
-  <value>Telescopio</value>
-</data>
-<data name="FOV_EyepieceSection" xml:space="preserve">
-  <value>Oculare</value>
-</data>
-<data name="FOV_FocalLength" xml:space="preserve">
-  <value>Lunghezza focale (mm)</value>
-</data>
-<data name="FOV_Aperture" xml:space="preserve">
-  <value>Apertura (mm)</value>
-</data>
-<data name="FOV_EyepieceFocal" xml:space="preserve">
-  <value>Focale dell'oculare (mm)</value>
-</data>
-<data name="FOV_AFOV" xml:space="preserve">
-  <value>Campo apparente dell'oculare (AFOV °)</value>
-</data>
-<data name="FOV_Calculate" xml:space="preserve">
-  <value>Calcola</value>
-</data>
-<data name="FOV_Reset" xml:space="preserve">
-  <value>Reimposta</value>
-</data>
-<data name="FOV_Results" xml:space="preserve">
-  <value>Risultati</value>
-</data>
-<data name="FOV_Magnification" xml:space="preserve">
-  <value>Ingrandimento</value>
-</data>
-<data name="FOV_TFOV" xml:space="preserve">
-  <value>Campo reale (TFOV)</value>
-</data>
-<data name="FOV_ExitPupil" xml:space="preserve">
-  <value>Pupilla d'uscita</value>
-</data>
-<data name="FOV_FocalRatio" xml:space="preserve">
-  <value>Rapporto focale (f/)</value>
-</data>
-<data name="FOV_Degrees" xml:space="preserve">
-  <value>gradi</value>
-</data>
-<data name="FOV_Millimeters" xml:space="preserve">
-  <value>mm</value>
-</data>
-<data name="FOV_Times" xml:space="preserve">
-  <value>x</value>
-</data>
-<data name="FOV_SimulatorTitle" xml:space="preserve">
-  <value>Simulazione del campo visivo</value>
-</data>
-<data name="FOV_MoonLabel" xml:space="preserve">
-  <value>Luna piena: 0,5°</value>
-</data>
-<data name="FOV_PleiadesFOV" xml:space="preserve">
-  <value>Pleiadi: ~2°</value>
-</data>
-<data name="FOV_FormulasTitle" xml:space="preserve">
-  <value>Formule e riferimenti</value>
-</data>
-<data name="FOV_FormulaMAG" xml:space="preserve">
-  <value>Ingrandimento = Focale telescopio ÷ Focale oculare</value>
-</data>
-<data name="FOV_FormulaTFOV" xml:space="preserve">
-  <value>Campo reale (TFOV) = AFOV ÷ Ingrandimento</value>
-</data>
-<data name="FOV_FormulaEP" xml:space="preserve">
-  <value>Pupilla d'uscita = Apertura ÷ Ingrandimento</value>
-</data>
-<data name="FOV_FormulaFR" xml:space="preserve">
-  <value>Rapporto focale = Focale ÷ Apertura</value>
-</data>
-<data name="FOV_ReferencesTitle" xml:space="preserve">
-  <value>Riferimenti astronomici</value>
-</data>
-<data name="FOV_Tip_ExitPupil" xml:space="preserve">
-  <value>Pupilla d'uscita ideale: 5-7mm per cieli bui, 2-4mm per osservazione planetaria.</value>
-</data>
-<data name="FOV_Tip_Magnification" xml:space="preserve">
-  <value>L'ingrandimento massimo utile è circa 50x per pollice di apertura (2x per mm).</value>
-</data>
-<data name="FOV_MaxMagWarning" xml:space="preserve">
-  <value>⚠ Vicino all'ingrandimento massimo utile per questa apertura</value>
-</data>
-<data name="FOV_GoodExitPupil" xml:space="preserve">
-  <value>✓ Pupilla ottimale per l'osservazione del cielo profondo</value>
-</data>
-<data name="FOV_PlanetaryExitPupil" xml:space="preserve">
-  <value>✓ Pupilla adatta all'osservazione planetaria</value>
-</data>
-<data name="FOV_NarrowExitPupil" xml:space="preserve">
-  <value>⚠ Pupilla molto piccola — immagine molto scura</value>
-</data>
-<data name="Nav_CalculadoraFOV" xml:space="preserve">
-  <value>Campo visivo (FOV)</value>
-</data>
-<data name="Home_Subtitle" xml:space="preserve">
-  <value>Il tuo compagno per pianificare e registrare osservazioni astronomiche. Effemeridi, calcolatori e mappe in un unico posto.</value>
-</data>
-<data name="Home_QuickAccess" xml:space="preserve">
-  <value>Accesso rapido</value>
-</data>
-<data name="Home_Card_Map_Desc" xml:space="preserve">
-  <value>Trova luoghi con cieli bui vicino a te</value>
-</data>
-<data name="Home_Card_Planning_Desc" xml:space="preserve">
-  <value>Pianifica la tua prossima sessione di osservazione</value>
-</data>
-<data name="Home_Card_Ephemeris_Desc" xml:space="preserve">
-  <value>Posizioni dei pianeti, alba e tramonto del Sole e della Luna</value>
-</data>
-<data name="Home_Card_Calculators_Desc" xml:space="preserve">
-  <value>Campo visivo, esposizione eclissi, ingrandimento e altro</value>
-</data>
-<data name="Home_Features_Title" xml:space="preserve">
-  <value>Cosa puoi fare?</value>
-</data>
-<data name="Home_Feature1_Title" xml:space="preserve">
-  <value>Osservazione visiva</value>
-</data>
-<data name="Home_Feature1_Desc" xml:space="preserve">
-  <value>Calcola il campo visivo, l'ingrandimento e la pupilla d'uscita per ogni combinazione telescopio-oculare</value>
-</data>
-<data name="Home_Feature2_Title" xml:space="preserve">
-  <value>Calcolatori</value>
-</data>
-<data name="Home_Feature2_Desc" xml:space="preserve">
-  <value>Strumenti precisi per l'astrofotografia: scala di piatto, esposizione eclissi e altro</value>
-</data>
-<data name="Home_Feature3_Title" xml:space="preserve">
-  <value>Astrofotografia</value>
-</data>
-<data name="Home_Feature3_Desc" xml:space="preserve">
-  <value>Calcola i tempi di esposizione con la formula NASA Q per ogni fase dell'eclissi</value>
-</data>
-<data name="Home_Feature4_Title" xml:space="preserve">
-  <value>Cronologia</value>
-</data>
-<data name="Home_Feature4_Desc" xml:space="preserve">
-  <value>Salva e consulta il registro di tutte le tue sessioni di osservazione passate</value>
-</data>
-
-  <!-- ══ Calcolatore Sole e Luna ══ -->
+  <data name="Calc_FOV_Title" xml:space="preserve">
+    <value>Campo visivo (FOV)</value>
+  </data>
+  <data name="Calc_FOV_Desc" xml:space="preserve">
+    <value>Calcola il campo visivo reale e apparente della tua combinazione telescopio-oculare</value>
+  </data>
+  <data name="FOV_Title" xml:space="preserve">
+    <value>Campo visivo (FOV)</value>
+  </data>
+  <data name="FOV_Subtitle" xml:space="preserve">
+    <value>Calcola il campo visivo reale e apparente della tua combinazione telescopio-oculare</value>
+  </data>
+  <data name="FOV_TelescopeSection" xml:space="preserve">
+    <value>Telescopio</value>
+  </data>
+  <data name="FOV_EyepieceSection" xml:space="preserve">
+    <value>Oculare</value>
+  </data>
+  <data name="FOV_FocalLength" xml:space="preserve">
+    <value>Lunghezza focale (mm)</value>
+  </data>
+  <data name="FOV_Aperture" xml:space="preserve">
+    <value>Apertura (mm)</value>
+  </data>
+  <data name="FOV_EyepieceFocal" xml:space="preserve">
+    <value>Focale dell'oculare (mm)</value>
+  </data>
+  <data name="FOV_AFOV" xml:space="preserve">
+    <value>Campo apparente dell'oculare (AFOV °)</value>
+  </data>
+  <data name="FOV_Calculate" xml:space="preserve">
+    <value>Calcola</value>
+  </data>
+  <data name="FOV_Reset" xml:space="preserve">
+    <value>Reimposta</value>
+  </data>
+  <data name="FOV_Results" xml:space="preserve">
+    <value>Risultati</value>
+  </data>
+  <data name="FOV_Magnification" xml:space="preserve">
+    <value>Ingrandimento</value>
+  </data>
+  <data name="FOV_TFOV" xml:space="preserve">
+    <value>Campo reale (TFOV)</value>
+  </data>
+  <data name="FOV_ExitPupil" xml:space="preserve">
+    <value>Pupilla d'uscita</value>
+  </data>
+  <data name="FOV_FocalRatio" xml:space="preserve">
+    <value>Rapporto focale (f/)</value>
+  </data>
+  <data name="FOV_Degrees" xml:space="preserve">
+    <value>gradi</value>
+  </data>
+  <data name="FOV_Millimeters" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="FOV_Times" xml:space="preserve">
+    <value>x</value>
+  </data>
+  <data name="FOV_MoonLabel" xml:space="preserve">
+    <value>Luna piena: 0,5°</value>
+  </data>
+  <data name="FOV_PleiadesFOV" xml:space="preserve">
+    <value>Pleiadi: ~2°</value>
+  </data>
+  <data name="FOV_FormulasTitle" xml:space="preserve">
+    <value>Formule e riferimenti</value>
+  </data>
+  <data name="FOV_FormulaMAG" xml:space="preserve">
+    <value>Ingrandimento = Focale telescopio ÷ Focale oculare</value>
+  </data>
+  <data name="FOV_FormulaTFOV" xml:space="preserve">
+    <value>Campo reale (TFOV) = AFOV ÷ Ingrandimento</value>
+  </data>
+  <data name="FOV_FormulaEP" xml:space="preserve">
+    <value>Pupilla d'uscita = Apertura ÷ Ingrandimento</value>
+  </data>
+  <data name="FOV_FormulaFR" xml:space="preserve">
+    <value>Rapporto focale = Focale ÷ Apertura</value>
+  </data>
+  <data name="FOV_ReferencesTitle" xml:space="preserve">
+    <value>Riferimenti astronomici</value>
+  </data>
+  <data name="FOV_Tip_ExitPupil" xml:space="preserve">
+    <value>Pupilla d'uscita ideale: 5-7mm per cieli bui, 2-4mm per osservazione planetaria.</value>
+  </data>
+  <data name="FOV_Tip_Magnification" xml:space="preserve">
+    <value>L'ingrandimento massimo utile è circa 50x per pollice di apertura (2x per mm).</value>
+  </data>
+  <data name="FOV_MaxMagWarning" xml:space="preserve">
+    <value>⚠ Vicino all'ingrandimento massimo utile per questa apertura</value>
+  </data>
+  <data name="FOV_GoodExitPupil" xml:space="preserve">
+    <value>✓ Pupilla ottimale per l'osservazione del cielo profondo</value>
+  </data>
+  <data name="FOV_PlanetaryExitPupil" xml:space="preserve">
+    <value>✓ Pupilla adatta all'osservazione planetaria</value>
+  </data>
+  <data name="FOV_NarrowExitPupil" xml:space="preserve">
+    <value>⚠ Pupilla molto piccola — immagine molto scura</value>
+  </data>
+  <data name="Nav_CalculadoraFOV" xml:space="preserve">
+    <value>Campo visivo (FOV)</value>
+  </data>
+  <data name="Home_Subtitle" xml:space="preserve">
+    <value>Il tuo compagno per pianificare e registrare osservazioni astronomiche. Effemeridi, calcolatori e mappe in un unico posto.</value>
+  </data>
+  <data name="Home_QuickAccess" xml:space="preserve">
+    <value>Accesso rapido</value>
+  </data>
+  <data name="Home_Card_Map_Desc" xml:space="preserve">
+    <value>Trova luoghi con cieli bui vicino a te</value>
+  </data>
+  <data name="Home_Card_Planning_Desc" xml:space="preserve">
+    <value>Pianifica la tua prossima sessione di osservazione</value>
+  </data>
+  <data name="Home_Card_Ephemeris_Desc" xml:space="preserve">
+    <value>Posizioni dei pianeti, alba e tramonto del Sole e della Luna</value>
+  </data>
+  <data name="Home_Card_Calculators_Desc" xml:space="preserve">
+    <value>Campo visivo, esposizione eclissi, ingrandimento e altro</value>
+  </data>
+  <data name="Home_Features_Title" xml:space="preserve">
+    <value>Cosa puoi fare?</value>
+  </data>
+  <data name="Home_Feature1_Title" xml:space="preserve">
+    <value>Osservazione visiva</value>
+  </data>
+  <data name="Home_Feature1_Desc" xml:space="preserve">
+    <value>Calcola il campo visivo, l'ingrandimento e la pupilla d'uscita per ogni combinazione telescopio-oculare</value>
+  </data>
+  <data name="Home_Feature2_Title" xml:space="preserve">
+    <value>Calcolatori</value>
+  </data>
+  <data name="Home_Feature2_Desc" xml:space="preserve">
+    <value>Strumenti precisi per l'astrofotografia: scala di piatto, esposizione eclissi e altro</value>
+  </data>
+  <data name="Home_Feature3_Title" xml:space="preserve">
+    <value>Astrofotografia</value>
+  </data>
+  <data name="Home_Feature3_Desc" xml:space="preserve">
+    <value>Calcola i tempi di esposizione con la formula NASA Q per ogni fase dell'eclissi</value>
+  </data>
+  <data name="Home_Feature4_Title" xml:space="preserve">
+    <value>Cronologia</value>
+  </data>
+  <data name="Home_Feature4_Desc" xml:space="preserve">
+    <value>Salva e consulta il registro di tutte le tue sessioni di osservazione passate</value>
+  </data>
   <data name="Calc_SolLuna_Title" xml:space="preserve">
     <value>Sole &amp; Luna</value>
   </data>
@@ -684,8 +672,106 @@
   <data name="SolLuna_NoData" xml:space="preserve">
     <value>Impossibile calcolare i dati per questa data e posizione.</value>
   </data>
-
   <data name="SolLuna_UseGPS" xml:space="preserve">
     <value>Usa GPS</value>
+  </data>
+  <data name="Settings_FavoriteLocations" xml:space="preserve">
+    <value>Ubicazioni preferite</value>
+  </data>
+  <data name="Settings_ManageLocations" xml:space="preserve">
+    <value>Gestisci ubicazioni preferite</value>
+  </data>
+  <data name="FavLoc_Title" xml:space="preserve">
+    <value>Ubicazioni preferite</value>
+  </data>
+  <data name="FavLoc_NoLocations" xml:space="preserve">
+    <value>Non hai ancora ubicazioni salvate.</value>
+  </data>
+  <data name="FavLoc_AddCurrent" xml:space="preserve">
+    <value>Aggiungi posizione attuale (GPS)</value>
+  </data>
+  <data name="FavLoc_SearchPlaceholder" xml:space="preserve">
+    <value>Cerca luogo (es. Teide, Roma...)</value>
+  </data>
+  <data name="FavLoc_SearchBtn" xml:space="preserve">
+    <value>Cerca</value>
+  </data>
+  <data name="FavLoc_Search_NoResults" xml:space="preserve">
+    <value>Nessun risultato trovato.</value>
+  </data>
+  <data name="FavLoc_Form_Name" xml:space="preserve">
+    <value>Nome dell'ubicazione</value>
+  </data>
+  <data name="FavLoc_Form_Latitude" xml:space="preserve">
+    <value>Latitudine (°)</value>
+  </data>
+  <data name="FavLoc_Form_Longitude" xml:space="preserve">
+    <value>Longitudine (°)</value>
+  </data>
+  <data name="FavLoc_Form_Altitude" xml:space="preserve">
+    <value>Altitudine (metri)</value>
+  </data>
+  <data name="FavLoc_Form_Save" xml:space="preserve">
+    <value>Salva ubicazione</value>
+  </data>
+  <data name="FavLoc_Form_Edit" xml:space="preserve">
+    <value>Modifica ubicazione</value>
+  </data>
+  <data name="FavLoc_Form_DragHint" xml:space="preserve">
+    <value>Puoi trascinare il segnaposto sulla mappa per affinare la posizione.</value>
+  </data>
+  <data name="FavLoc_Form_Altitude_Loading" xml:space="preserve">
+    <value>Calcolo automatico dell'altitudine…</value>
+  </data>
+  <data name="FavLoc_Form_Name_Required" xml:space="preserve">
+    <value>Il nome dell'ubicazione è obbligatorio.</value>
+  </data>
+  <data name="FavLoc_Select_Placeholder" xml:space="preserve">
+    <value>-- Seleziona ubicazione preferita --</value>
+  </data>
+  <data name="FavLoc_Select_Manual" xml:space="preserve">
+    <value>Coordinate manuali</value>
+  </data>
+  <data name="FavLoc_Select_GPS" xml:space="preserve">
+    <value>Posizione GPS attuale</value>
+  </data>
+  <data name="SolLuna_Eclipses_Year" xml:space="preserve">
+    <value>Eclissi dell'anno</value>
+  </data>
+  <data name="SolLuna_Magnitude_Desc" xml:space="preserve">
+    <value>Magnitudo dell'eclissi (frazione oscurata del diametro)</value>
+  </data>
+  <data name="SolLuna_Contact_C1_Desc" xml:space="preserve">
+    <value>C1: Inizio della parzialità</value>
+  </data>
+  <data name="SolLuna_Contact_C2_Desc" xml:space="preserve">
+    <value>C2: Inizio della totalità/anularità</value>
+  </data>
+  <data name="SolLuna_Contact_C3_Desc" xml:space="preserve">
+    <value>C3: Fine della totalità/anularità</value>
+  </data>
+  <data name="SolLuna_Contact_C4_Desc" xml:space="preserve">
+    <value>C4: Fine della parzialità</value>
+  </data>
+  <data name="SolLuna_Eclipse_Solar" xml:space="preserve">
+    <value>Eclissi Solare</value>
+  </data>
+  <data name="SolLuna_Eclipse_Lunar" xml:space="preserve">
+    <value>Eclissi Lunare</value>
+  </data>
+  <data name="SolLuna_Eclipse_Total" xml:space="preserve">
+    <value>Totale</value>
+  </data>
+  <data name="SolLuna_Eclipse_Annular" xml:space="preserve">
+    <value>Anulare</value>
+  </data>
+  <data name="SolLuna_Eclipse_Partial" xml:space="preserve">
+    <value>Parziale</value>
+  </data>
+  <data name="SolLuna_Eclipse_Penumbral" xml:space="preserve">
+    <value>Penombrale</value>
+  </data>
+  <data name="FOV_SimulatorTitle" xml:space="preserve">
+    <value>Simulazione del campo visivo</value>
   </data>
 </root>

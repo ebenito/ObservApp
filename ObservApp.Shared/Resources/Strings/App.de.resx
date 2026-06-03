@@ -267,12 +267,6 @@
   <data name="Calc_Eclipse_Desc" xml:space="preserve">
     <value>Berechnet Belichtungszeiten für jede Phase der Finsternis mithilfe der NASA-Q-Formel</value>
   </data>
-  <data name="Calc_FOV_Title" xml:space="preserve">
-    <value>Gesichtsfeld (FOV)</value>
-  </data>
-  <data name="Calc_FOV_Desc" xml:space="preserve">
-    <value>Berechnet das echte und scheinbare Gesichtsfeld deiner Teleskop-Okular-Kombinationen</value>
-  </data>
   <data name="Calc_Magnification_Title" xml:space="preserve">
     <value>Vergrößerung und Austrittspupille</value>
   </data>
@@ -336,162 +330,156 @@
   <data name="Nav_Calculators" xml:space="preserve">
     <value>Rechner</value>
   </data>
-
-<data name="Calc_FOV_Title" xml:space="preserve">
-  <value>Sichtfeld (FOV)</value>
-</data>
-<data name="Calc_FOV_Desc" xml:space="preserve">
-  <value>Berechnen Sie das reale und scheinbare Sichtfeld Ihrer Teleskop-Okular-Kombination</value>
-</data>
-<data name="FOV_Title" xml:space="preserve">
-  <value>Sichtfeld (FOV)</value>
-</data>
-<data name="FOV_Subtitle" xml:space="preserve">
-  <value>Berechnen Sie das reale und scheinbare Sichtfeld Ihrer Teleskop-Okular-Kombination</value>
-</data>
-<data name="FOV_TelescopeSection" xml:space="preserve">
-  <value>Teleskop</value>
-</data>
-<data name="FOV_EyepieceSection" xml:space="preserve">
-  <value>Okular</value>
-</data>
-<data name="FOV_FocalLength" xml:space="preserve">
-  <value>Brennweite (mm)</value>
-</data>
-<data name="FOV_Aperture" xml:space="preserve">
-  <value>Öffnung (mm)</value>
-</data>
-<data name="FOV_EyepieceFocal" xml:space="preserve">
-  <value>Okular-Brennweite (mm)</value>
-</data>
-<data name="FOV_AFOV" xml:space="preserve">
-  <value>Scheinbares Sichtfeld des Okulars (AFOV °)</value>
-</data>
-<data name="FOV_Calculate" xml:space="preserve">
-  <value>Berechnen</value>
-</data>
-<data name="FOV_Reset" xml:space="preserve">
-  <value>Zurücksetzen</value>
-</data>
-<data name="FOV_Results" xml:space="preserve">
-  <value>Ergebnisse</value>
-</data>
-<data name="FOV_Magnification" xml:space="preserve">
-  <value>Vergrößerung</value>
-</data>
-<data name="FOV_TFOV" xml:space="preserve">
-  <value>Reales Sichtfeld (TFOV)</value>
-</data>
-<data name="FOV_ExitPupil" xml:space="preserve">
-  <value>Austrittspupille</value>
-</data>
-<data name="FOV_FocalRatio" xml:space="preserve">
-  <value>Öffnungsverhältnis (f/)</value>
-</data>
-<data name="FOV_Degrees" xml:space="preserve">
-  <value>Grad</value>
-</data>
-<data name="FOV_Millimeters" xml:space="preserve">
-  <value>mm</value>
-</data>
-<data name="FOV_Times" xml:space="preserve">
-  <value>x</value>
-</data>
-<data name="FOV_SimulatorTitle" xml:space="preserve">
-  <value>Sichtfeld-Simulation</value>
-</data>
-<data name="FOV_MoonLabel" xml:space="preserve">
-  <value>Vollmond: 0,5°</value>
-</data>
-<data name="FOV_PleiadesFOV" xml:space="preserve">
-  <value>Plejaden: ~2°</value>
-</data>
-<data name="FOV_FormulasTitle" xml:space="preserve">
-  <value>Formeln und Referenzen</value>
-</data>
-<data name="FOV_FormulaMAG" xml:space="preserve">
-  <value>Vergrößerung = Teleskop-Brennweite ÷ Okular-Brennweite</value>
-</data>
-<data name="FOV_FormulaTFOV" xml:space="preserve">
-  <value>Reales Sichtfeld (TFOV) = AFOV ÷ Vergrößerung</value>
-</data>
-<data name="FOV_FormulaEP" xml:space="preserve">
-  <value>Austrittspupille = Öffnung ÷ Vergrößerung</value>
-</data>
-<data name="FOV_FormulaFR" xml:space="preserve">
-  <value>Öffnungsverhältnis = Brennweite ÷ Öffnung</value>
-</data>
-<data name="FOV_ReferencesTitle" xml:space="preserve">
-  <value>Astronomische Referenzen</value>
-</data>
-<data name="FOV_Tip_ExitPupil" xml:space="preserve">
-  <value>Ideale Austrittspupille: 5-7mm für dunklen Himmel, 2-4mm für Planetenbeobachtung.</value>
-</data>
-<data name="FOV_Tip_Magnification" xml:space="preserve">
-  <value>Die maximale nutzbare Vergrößerung beträgt ca. 50x pro Zoll Öffnung (2x pro mm).</value>
-</data>
-<data name="FOV_MaxMagWarning" xml:space="preserve">
-  <value>⚠ Nahe der maximalen nutzbaren Vergrößerung für diese Öffnung</value>
-</data>
-<data name="FOV_GoodExitPupil" xml:space="preserve">
-  <value>✓ Optimale Austrittspupille für Deep-Sky-Beobachtung</value>
-</data>
-<data name="FOV_PlanetaryExitPupil" xml:space="preserve">
-  <value>✓ Geeignete Austrittspupille für Planetenbeobachtung</value>
-</data>
-<data name="FOV_NarrowExitPupil" xml:space="preserve">
-  <value>⚠ Sehr kleine Austrittspupille — sehr dunkles Bild</value>
-</data>
-<data name="Nav_CalculadoraFOV" xml:space="preserve">
-  <value>Sichtfeld (FOV)</value>
-</data>
-<data name="Home_Subtitle" xml:space="preserve">
-  <value>Dein Begleiter für die Planung und Aufzeichnung astronomischer Beobachtungen. Ephemeriden, Rechner und Karten an einem Ort.</value>
-</data>
-<data name="Home_QuickAccess" xml:space="preserve">
-  <value>Schnellzugriff</value>
-</data>
-<data name="Home_Card_Map_Desc" xml:space="preserve">
-  <value>Finde Standorte mit dunklem Himmel in deiner Nähe</value>
-</data>
-<data name="Home_Card_Planning_Desc" xml:space="preserve">
-  <value>Plane deine nächste Beobachtungssession</value>
-</data>
-<data name="Home_Card_Ephemeris_Desc" xml:space="preserve">
-  <value>Positionen von Planeten, Sonnenauf- und -untergang sowie Mondaufgang</value>
-</data>
-<data name="Home_Card_Calculators_Desc" xml:space="preserve">
-  <value>Gesichtsfeld, Finsternisbelichtung, Vergrößerung und mehr</value>
-</data>
-<data name="Home_Features_Title" xml:space="preserve">
-  <value>Was kannst du tun?</value>
-</data>
-<data name="Home_Feature1_Title" xml:space="preserve">
-  <value>Visuelle Beobachtung</value>
-</data>
-<data name="Home_Feature1_Desc" xml:space="preserve">
-  <value>Berechne Gesichtsfeld, Vergrößerung und Austrittspupille für jede Teleskop-Okular-Kombination</value>
-</data>
-<data name="Home_Feature2_Title" xml:space="preserve">
-  <value>Rechner</value>
-</data>
-<data name="Home_Feature2_Desc" xml:space="preserve">
-  <value>Präzise Werkzeuge für Astrofotografie: Bildmaßstab, Finsternisbelichtung und mehr</value>
-</data>
-<data name="Home_Feature3_Title" xml:space="preserve">
-  <value>Astrofotografie</value>
-</data>
-<data name="Home_Feature3_Desc" xml:space="preserve">
-  <value>Berechne Belichtungszeiten mit der NASA-Q-Formel für jede Phase der Finsternis</value>
-</data>
-<data name="Home_Feature4_Title" xml:space="preserve">
-  <value>Verlauf</value>
-</data>
-<data name="Home_Feature4_Desc" xml:space="preserve">
-  <value>Speichere und überprüfe das Protokoll all deiner vergangenen Beobachtungssessions</value>
-</data>
-
-  <!-- ══ Sonne und Mond Rechner ══ -->
+  <data name="Calc_FOV_Title" xml:space="preserve">
+    <value>Sichtfeld (FOV)</value>
+  </data>
+  <data name="Calc_FOV_Desc" xml:space="preserve">
+    <value>Berechnen Sie das reale und scheinbare Sichtfeld Ihrer Teleskop-Okular-Kombination</value>
+  </data>
+  <data name="FOV_Title" xml:space="preserve">
+    <value>Sichtfeld (FOV)</value>
+  </data>
+  <data name="FOV_Subtitle" xml:space="preserve">
+    <value>Berechnen Sie das reale und scheinbare Sichtfeld Ihrer Teleskop-Okular-Kombination</value>
+  </data>
+  <data name="FOV_TelescopeSection" xml:space="preserve">
+    <value>Teleskop</value>
+  </data>
+  <data name="FOV_EyepieceSection" xml:space="preserve">
+    <value>Okular</value>
+  </data>
+  <data name="FOV_FocalLength" xml:space="preserve">
+    <value>Brennweite (mm)</value>
+  </data>
+  <data name="FOV_Aperture" xml:space="preserve">
+    <value>Öffnung (mm)</value>
+  </data>
+  <data name="FOV_EyepieceFocal" xml:space="preserve">
+    <value>Okular-Brennweite (mm)</value>
+  </data>
+  <data name="FOV_AFOV" xml:space="preserve">
+    <value>Scheinbares Sichtfeld des Okulars (AFOV °)</value>
+  </data>
+  <data name="FOV_Calculate" xml:space="preserve">
+    <value>Berechnen</value>
+  </data>
+  <data name="FOV_Reset" xml:space="preserve">
+    <value>Zurücksetzen</value>
+  </data>
+  <data name="FOV_Results" xml:space="preserve">
+    <value>Ergebnisse</value>
+  </data>
+  <data name="FOV_Magnification" xml:space="preserve">
+    <value>Vergrößerung</value>
+  </data>
+  <data name="FOV_TFOV" xml:space="preserve">
+    <value>Reales Sichtfeld (TFOV)</value>
+  </data>
+  <data name="FOV_ExitPupil" xml:space="preserve">
+    <value>Austrittspupille</value>
+  </data>
+  <data name="FOV_FocalRatio" xml:space="preserve">
+    <value>Öffnungsverhältnis (f/)</value>
+  </data>
+  <data name="FOV_Degrees" xml:space="preserve">
+    <value>Grad</value>
+  </data>
+  <data name="FOV_Millimeters" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="FOV_Times" xml:space="preserve">
+    <value>x</value>
+  </data>
+  <data name="FOV_MoonLabel" xml:space="preserve">
+    <value>Vollmond: 0,5°</value>
+  </data>
+  <data name="FOV_PleiadesFOV" xml:space="preserve">
+    <value>Plejaden: ~2°</value>
+  </data>
+  <data name="FOV_FormulasTitle" xml:space="preserve">
+    <value>Formeln und Referenzen</value>
+  </data>
+  <data name="FOV_FormulaMAG" xml:space="preserve">
+    <value>Vergrößerung = Teleskop-Brennweite ÷ Okular-Brennweite</value>
+  </data>
+  <data name="FOV_FormulaTFOV" xml:space="preserve">
+    <value>Reales Sichtfeld (TFOV) = AFOV ÷ Vergrößerung</value>
+  </data>
+  <data name="FOV_FormulaEP" xml:space="preserve">
+    <value>Austrittspupille = Öffnung ÷ Vergrößerung</value>
+  </data>
+  <data name="FOV_FormulaFR" xml:space="preserve">
+    <value>Öffnungsverhältnis = Brennweite ÷ Öffnung</value>
+  </data>
+  <data name="FOV_ReferencesTitle" xml:space="preserve">
+    <value>Astronomische Referenzen</value>
+  </data>
+  <data name="FOV_Tip_ExitPupil" xml:space="preserve">
+    <value>Ideale Austrittspupille: 5-7mm für dunklen Himmel, 2-4mm für Planetenbeobachtung.</value>
+  </data>
+  <data name="FOV_Tip_Magnification" xml:space="preserve">
+    <value>Die maximale nutzbare Vergrößerung beträgt ca. 50x pro Zoll Öffnung (2x pro mm).</value>
+  </data>
+  <data name="FOV_MaxMagWarning" xml:space="preserve">
+    <value>⚠ Nahe der maximalen nutzbaren Vergrößerung für diese Öffnung</value>
+  </data>
+  <data name="FOV_GoodExitPupil" xml:space="preserve">
+    <value>✓ Optimale Austrittspupille für Deep-Sky-Beobachtung</value>
+  </data>
+  <data name="FOV_PlanetaryExitPupil" xml:space="preserve">
+    <value>✓ Geeignete Austrittspupille für Planetenbeobachtung</value>
+  </data>
+  <data name="FOV_NarrowExitPupil" xml:space="preserve">
+    <value>⚠ Sehr kleine Austrittspupille — sehr dunkles Bild</value>
+  </data>
+  <data name="Nav_CalculadoraFOV" xml:space="preserve">
+    <value>Sichtfeld (FOV)</value>
+  </data>
+  <data name="Home_Subtitle" xml:space="preserve">
+    <value>Dein Begleiter für die Planung und Aufzeichnung astronomischer Beobachtungen. Ephemeriden, Rechner und Karten an einem Ort.</value>
+  </data>
+  <data name="Home_QuickAccess" xml:space="preserve">
+    <value>Schnellzugriff</value>
+  </data>
+  <data name="Home_Card_Map_Desc" xml:space="preserve">
+    <value>Finde Standorte mit dunklem Himmel in deiner Nähe</value>
+  </data>
+  <data name="Home_Card_Planning_Desc" xml:space="preserve">
+    <value>Plane deine nächste Beobachtungssession</value>
+  </data>
+  <data name="Home_Card_Ephemeris_Desc" xml:space="preserve">
+    <value>Positionen von Planeten, Sonnenauf- und -untergang sowie Mondaufgang</value>
+  </data>
+  <data name="Home_Card_Calculators_Desc" xml:space="preserve">
+    <value>Gesichtsfeld, Finsternisbelichtung, Vergrößerung und mehr</value>
+  </data>
+  <data name="Home_Features_Title" xml:space="preserve">
+    <value>Was kannst du tun?</value>
+  </data>
+  <data name="Home_Feature1_Title" xml:space="preserve">
+    <value>Visuelle Beobachtung</value>
+  </data>
+  <data name="Home_Feature1_Desc" xml:space="preserve">
+    <value>Berechne Gesichtsfeld, Vergrößerung und Austrittspupille für jede Teleskop-Okular-Kombination</value>
+  </data>
+  <data name="Home_Feature2_Title" xml:space="preserve">
+    <value>Rechner</value>
+  </data>
+  <data name="Home_Feature2_Desc" xml:space="preserve">
+    <value>Präzise Werkzeuge für Astrofotografie: Bildmaßstab, Finsternisbelichtung und mehr</value>
+  </data>
+  <data name="Home_Feature3_Title" xml:space="preserve">
+    <value>Astrofotografie</value>
+  </data>
+  <data name="Home_Feature3_Desc" xml:space="preserve">
+    <value>Berechne Belichtungszeiten mit der NASA-Q-Formel für jede Phase der Finsternis</value>
+  </data>
+  <data name="Home_Feature4_Title" xml:space="preserve">
+    <value>Verlauf</value>
+  </data>
+  <data name="Home_Feature4_Desc" xml:space="preserve">
+    <value>Speichere und überprüfe das Protokoll all deiner vergangenen Beobachtungssessions</value>
+  </data>
   <data name="Calc_SolLuna_Title" xml:space="preserve">
     <value>Sonne &amp; Mond</value>
   </data>
@@ -684,8 +672,106 @@
   <data name="SolLuna_NoData" xml:space="preserve">
     <value>Für dieses Datum und diesen Standort konnten keine Daten berechnet werden.</value>
   </data>
-
   <data name="SolLuna_UseGPS" xml:space="preserve">
     <value>GPS verwenden</value>
+  </data>
+  <data name="Settings_FavoriteLocations" xml:space="preserve">
+    <value>Lieblingsorte</value>
+  </data>
+  <data name="Settings_ManageLocations" xml:space="preserve">
+    <value>Lieblingsorte verwalten</value>
+  </data>
+  <data name="FavLoc_Title" xml:space="preserve">
+    <value>Lieblingsorte</value>
+  </data>
+  <data name="FavLoc_NoLocations" xml:space="preserve">
+    <value>Du hast noch keine gespeicherten Orte.</value>
+  </data>
+  <data name="FavLoc_AddCurrent" xml:space="preserve">
+    <value>Aktuellen Standort hinzufügen (GPS)</value>
+  </data>
+  <data name="FavLoc_SearchPlaceholder" xml:space="preserve">
+    <value>Ort suchen (z.B. Teide, Berlin...)</value>
+  </data>
+  <data name="FavLoc_SearchBtn" xml:space="preserve">
+    <value>Suchen</value>
+  </data>
+  <data name="FavLoc_Search_NoResults" xml:space="preserve">
+    <value>Keine Ergebnisse gefunden.</value>
+  </data>
+  <data name="FavLoc_Form_Name" xml:space="preserve">
+    <value>Name des Ortes</value>
+  </data>
+  <data name="FavLoc_Form_Latitude" xml:space="preserve">
+    <value>Breitengrad (°)</value>
+  </data>
+  <data name="FavLoc_Form_Longitude" xml:space="preserve">
+    <value>Längengrad (°)</value>
+  </data>
+  <data name="FavLoc_Form_Altitude" xml:space="preserve">
+    <value>Höhe (Meter)</value>
+  </data>
+  <data name="FavLoc_Form_Save" xml:space="preserve">
+    <value>Ort speichern</value>
+  </data>
+  <data name="FavLoc_Form_Edit" xml:space="preserve">
+    <value>Ort bearbeiten</value>
+  </data>
+  <data name="FavLoc_Form_DragHint" xml:space="preserve">
+    <value>Du kannst die Stecknadel auf der Karte ziehen, um die Position zu verfeinern.</value>
+  </data>
+  <data name="FavLoc_Form_Altitude_Loading" xml:space="preserve">
+    <value>Höhe wird automatisch berechnet…</value>
+  </data>
+  <data name="FavLoc_Form_Name_Required" xml:space="preserve">
+    <value>Der Name des Ortes ist erforderlich.</value>
+  </data>
+  <data name="FavLoc_Select_Placeholder" xml:space="preserve">
+    <value>-- Lieblingsort auswählen --</value>
+  </data>
+  <data name="FavLoc_Select_Manual" xml:space="preserve">
+    <value>Manuelle Koordinaten</value>
+  </data>
+  <data name="FavLoc_Select_GPS" xml:space="preserve">
+    <value>Aktueller GPS-Standort</value>
+  </data>
+  <data name="SolLuna_Eclipses_Year" xml:space="preserve">
+    <value>Finsternisse des Jahres</value>
+  </data>
+  <data name="SolLuna_Magnitude_Desc" xml:space="preserve">
+    <value>Magnitude der Finsternis (verdunkelter Anteil des Durchmessers)</value>
+  </data>
+  <data name="SolLuna_Contact_C1_Desc" xml:space="preserve">
+    <value>C1: Beginn der partiellen Phase</value>
+  </data>
+  <data name="SolLuna_Contact_C2_Desc" xml:space="preserve">
+    <value>C2: Beginn der totalen/ringförmigen Phase</value>
+  </data>
+  <data name="SolLuna_Contact_C3_Desc" xml:space="preserve">
+    <value>C3: Ende der totalen/ringförmigen Phase</value>
+  </data>
+  <data name="SolLuna_Contact_C4_Desc" xml:space="preserve">
+    <value>C4: Ende der partiellen Phase</value>
+  </data>
+  <data name="SolLuna_Eclipse_Solar" xml:space="preserve">
+    <value>Sonnenfinsternis</value>
+  </data>
+  <data name="SolLuna_Eclipse_Lunar" xml:space="preserve">
+    <value>Mondfinsternis</value>
+  </data>
+  <data name="SolLuna_Eclipse_Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="SolLuna_Eclipse_Annular" xml:space="preserve">
+    <value>Ringförmig</value>
+  </data>
+  <data name="SolLuna_Eclipse_Partial" xml:space="preserve">
+    <value>Partiell</value>
+  </data>
+  <data name="SolLuna_Eclipse_Penumbral" xml:space="preserve">
+    <value>Halbschatten</value>
+  </data>
+  <data name="FOV_SimulatorTitle" xml:space="preserve">
+    <value>Sichtfeld-Simulation</value>
   </data>
 </root>

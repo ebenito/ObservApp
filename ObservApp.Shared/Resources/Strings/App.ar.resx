@@ -267,12 +267,6 @@
   <data name="Calc_Eclipse_Desc" xml:space="preserve">
     <value>يحسب أوقات التعريض لكل مرحلة من الكسوف باستخدام معادلة NASA Q</value>
   </data>
-  <data name="Calc_FOV_Title" xml:space="preserve">
-    <value>حقل الرؤية (FOV)</value>
-  </data>
-  <data name="Calc_FOV_Desc" xml:space="preserve">
-    <value>يحسب حقل الرؤية الحقيقي والظاهري لتركيبات التلسكوب-العدسة العينية</value>
-  </data>
   <data name="Calc_Magnification_Title" xml:space="preserve">
     <value>التكبير وبؤبة الخروج</value>
   </data>
@@ -336,162 +330,156 @@
   <data name="Nav_Calculators" xml:space="preserve">
     <value>الحاسبات</value>
   </data>
-
-<data name="Calc_FOV_Title" xml:space="preserve">
-  <value>مجال الرؤية (FOV)</value>
-</data>
-<data name="Calc_FOV_Desc" xml:space="preserve">
-  <value>احسب مجال الرؤية الحقيقي والظاهري لتركيبة التلسكوب والعدسة العينية</value>
-</data>
-<data name="FOV_Title" xml:space="preserve">
-  <value>مجال الرؤية (FOV)</value>
-</data>
-<data name="FOV_Subtitle" xml:space="preserve">
-  <value>احسب مجال الرؤية الحقيقي والظاهري لتركيبة التلسكوب والعدسة العينية</value>
-</data>
-<data name="FOV_TelescopeSection" xml:space="preserve">
-  <value>التلسكوب</value>
-</data>
-<data name="FOV_EyepieceSection" xml:space="preserve">
-  <value>العدسة العينية</value>
-</data>
-<data name="FOV_FocalLength" xml:space="preserve">
-  <value>البعد البؤري (مم)</value>
-</data>
-<data name="FOV_Aperture" xml:space="preserve">
-  <value>فتحة العدسة (مم)</value>
-</data>
-<data name="FOV_EyepieceFocal" xml:space="preserve">
-  <value>البعد البؤري للعدسة العينية (مم)</value>
-</data>
-<data name="FOV_AFOV" xml:space="preserve">
-  <value>مجال الرؤية الظاهري للعدسة العينية (AFOV °)</value>
-</data>
-<data name="FOV_Calculate" xml:space="preserve">
-  <value>احسب</value>
-</data>
-<data name="FOV_Reset" xml:space="preserve">
-  <value>إعادة تعيين</value>
-</data>
-<data name="FOV_Results" xml:space="preserve">
-  <value>النتائج</value>
-</data>
-<data name="FOV_Magnification" xml:space="preserve">
-  <value>التكبير</value>
-</data>
-<data name="FOV_TFOV" xml:space="preserve">
-  <value>مجال الرؤية الحقيقي (TFOV)</value>
-</data>
-<data name="FOV_ExitPupil" xml:space="preserve">
-  <value>حدقة الخروج</value>
-</data>
-<data name="FOV_FocalRatio" xml:space="preserve">
-  <value>النسبة البؤرية (f/)</value>
-</data>
-<data name="FOV_Degrees" xml:space="preserve">
-  <value>درجات</value>
-</data>
-<data name="FOV_Millimeters" xml:space="preserve">
-  <value>مم</value>
-</data>
-<data name="FOV_Times" xml:space="preserve">
-  <value>x</value>
-</data>
-<data name="FOV_SimulatorTitle" xml:space="preserve">
-  <value>محاكاة مجال الرؤية</value>
-</data>
-<data name="FOV_MoonLabel" xml:space="preserve">
-  <value>البدر: 0.5°</value>
-</data>
-<data name="FOV_PleiadesFOV" xml:space="preserve">
-  <value>الثريا: ~2°</value>
-</data>
-<data name="FOV_FormulasTitle" xml:space="preserve">
-  <value>الصيغ والمراجع</value>
-</data>
-<data name="FOV_FormulaMAG" xml:space="preserve">
-  <value>التكبير = البعد البؤري للتلسكوب ÷ البعد البؤري للعدسة العينية</value>
-</data>
-<data name="FOV_FormulaTFOV" xml:space="preserve">
-  <value>مجال الرؤية الحقيقي = AFOV ÷ التكبير</value>
-</data>
-<data name="FOV_FormulaEP" xml:space="preserve">
-  <value>حدقة الخروج = فتحة العدسة ÷ التكبير</value>
-</data>
-<data name="FOV_FormulaFR" xml:space="preserve">
-  <value>النسبة البؤرية = البعد البؤري ÷ فتحة العدسة</value>
-</data>
-<data name="FOV_ReferencesTitle" xml:space="preserve">
-  <value>مراجع فلكية</value>
-</data>
-<data name="FOV_Tip_ExitPupil" xml:space="preserve">
-  <value>حدقة الخروج المثالية: 5-7مم للسماء المظلمة، 2-4مم لمراقبة الكواكب.</value>
-</data>
-<data name="FOV_Tip_Magnification" xml:space="preserve">
-  <value>أقصى تكبير مفيد هو حوالي 50x لكل بوصة من فتحة العدسة (2x لكل مم).</value>
-</data>
-<data name="FOV_MaxMagWarning" xml:space="preserve">
-  <value>⚠ قريب من الحد الأقصى للتكبير المفيد لهذه الفتحة</value>
-</data>
-<data name="FOV_GoodExitPupil" xml:space="preserve">
-  <value>✓ حدقة خروج مثالية لمراقبة السماء العميقة</value>
-</data>
-<data name="FOV_PlanetaryExitPupil" xml:space="preserve">
-  <value>✓ حدقة خروج مناسبة لمراقبة الكواكب</value>
-</data>
-<data name="FOV_NarrowExitPupil" xml:space="preserve">
-  <value>⚠ حدقة خروج صغيرة جداً — صورة مظلمة جداً</value>
-</data>
-<data name="Nav_CalculadoraFOV" xml:space="preserve">
-  <value>مجال الرؤية (FOV)</value>
-</data>
-<data name="Home_Subtitle" xml:space="preserve">
-  <value>رفيقك لتخطيط وتسجيل الرصد الفلكي. التقاويم الفلكية والحاسبات والخرائط في مكان واحد.</value>
-</data>
-<data name="Home_QuickAccess" xml:space="preserve">
-  <value>وصول سريع</value>
-</data>
-<data name="Home_Card_Map_Desc" xml:space="preserve">
-  <value>ابحث عن مواقع السماء المظلمة بالقرب منك</value>
-</data>
-<data name="Home_Card_Planning_Desc" xml:space="preserve">
-  <value>خطط لجلسة الرصد القادمة</value>
-</data>
-<data name="Home_Card_Ephemeris_Desc" xml:space="preserve">
-  <value>مواضع الكواكب وشروق وغروب الشمس والقمر</value>
-</data>
-<data name="Home_Card_Calculators_Desc" xml:space="preserve">
-  <value>مجال الرؤية، تعريض الكسوف، التكبير والمزيد</value>
-</data>
-<data name="Home_Features_Title" xml:space="preserve">
-  <value>ماذا يمكنك أن تفعل؟</value>
-</data>
-<data name="Home_Feature1_Title" xml:space="preserve">
-  <value>الرصد البصري</value>
-</data>
-<data name="Home_Feature1_Desc" xml:space="preserve">
-  <value>احسب مجال الرؤية والتكبير وحدقة الخروج لكل تركيبة تلسكوب وعدسة عينية</value>
-</data>
-<data name="Home_Feature2_Title" xml:space="preserve">
-  <value>الحاسبات</value>
-</data>
-<data name="Home_Feature2_Desc" xml:space="preserve">
-  <value>أدوات دقيقة للتصوير الفلكي: مقياس اللوحة، تعريض الكسوف والمزيد</value>
-</data>
-<data name="Home_Feature3_Title" xml:space="preserve">
-  <value>التصوير الفلكي</value>
-</data>
-<data name="Home_Feature3_Desc" xml:space="preserve">
-  <value>احسب أوقات التعريض بمعادلة NASA Q لكل مرحلة من الكسوف</value>
-</data>
-<data name="Home_Feature4_Title" xml:space="preserve">
-  <value>السجل</value>
-</data>
-<data name="Home_Feature4_Desc" xml:space="preserve">
-  <value>احفظ وراجع سجل جميع جلسات الرصد السابقة</value>
-</data>
-
-  <!-- ══ حاسبة الشمس والقمر ══ -->
+  <data name="Calc_FOV_Title" xml:space="preserve">
+    <value>مجال الرؤية (FOV)</value>
+  </data>
+  <data name="Calc_FOV_Desc" xml:space="preserve">
+    <value>احسب مجال الرؤية الحقيقي والظاهري لتركيبة التلسكوب والعدسة العينية</value>
+  </data>
+  <data name="FOV_Title" xml:space="preserve">
+    <value>مجال الرؤية (FOV)</value>
+  </data>
+  <data name="FOV_Subtitle" xml:space="preserve">
+    <value>احسب مجال الرؤية الحقيقي والظاهري لتركيبة التلسكوب والعدسة العينية</value>
+  </data>
+  <data name="FOV_TelescopeSection" xml:space="preserve">
+    <value>التلسكوب</value>
+  </data>
+  <data name="FOV_EyepieceSection" xml:space="preserve">
+    <value>العدسة العينية</value>
+  </data>
+  <data name="FOV_FocalLength" xml:space="preserve">
+    <value>البعد البؤري (مم)</value>
+  </data>
+  <data name="FOV_Aperture" xml:space="preserve">
+    <value>فتحة العدسة (مم)</value>
+  </data>
+  <data name="FOV_EyepieceFocal" xml:space="preserve">
+    <value>البعد البؤري للعدسة العينية (مم)</value>
+  </data>
+  <data name="FOV_AFOV" xml:space="preserve">
+    <value>مجال الرؤية الظاهري للعدسة العينية (AFOV °)</value>
+  </data>
+  <data name="FOV_Calculate" xml:space="preserve">
+    <value>احسب</value>
+  </data>
+  <data name="FOV_Reset" xml:space="preserve">
+    <value>إعادة تعيين</value>
+  </data>
+  <data name="FOV_Results" xml:space="preserve">
+    <value>النتائج</value>
+  </data>
+  <data name="FOV_Magnification" xml:space="preserve">
+    <value>التكبير</value>
+  </data>
+  <data name="FOV_TFOV" xml:space="preserve">
+    <value>مجال الرؤية الحقيقي (TFOV)</value>
+  </data>
+  <data name="FOV_ExitPupil" xml:space="preserve">
+    <value>حدقة الخروج</value>
+  </data>
+  <data name="FOV_FocalRatio" xml:space="preserve">
+    <value>النسبة البؤرية (f/)</value>
+  </data>
+  <data name="FOV_Degrees" xml:space="preserve">
+    <value>درجات</value>
+  </data>
+  <data name="FOV_Millimeters" xml:space="preserve">
+    <value>مم</value>
+  </data>
+  <data name="FOV_Times" xml:space="preserve">
+    <value>x</value>
+  </data>
+  <data name="FOV_MoonLabel" xml:space="preserve">
+    <value>البدر: 0.5°</value>
+  </data>
+  <data name="FOV_PleiadesFOV" xml:space="preserve">
+    <value>الثريا: ~2°</value>
+  </data>
+  <data name="FOV_FormulasTitle" xml:space="preserve">
+    <value>الصيغ والمراجع</value>
+  </data>
+  <data name="FOV_FormulaMAG" xml:space="preserve">
+    <value>التكبير = البعد البؤري للتلسكوب ÷ البعد البؤري للعدسة العينية</value>
+  </data>
+  <data name="FOV_FormulaTFOV" xml:space="preserve">
+    <value>مجال الرؤية الحقيقي = AFOV ÷ التكبير</value>
+  </data>
+  <data name="FOV_FormulaEP" xml:space="preserve">
+    <value>حدقة الخروج = فتحة العدسة ÷ التكبير</value>
+  </data>
+  <data name="FOV_FormulaFR" xml:space="preserve">
+    <value>النسبة البؤرية = البعد البؤري ÷ فتحة العدسة</value>
+  </data>
+  <data name="FOV_ReferencesTitle" xml:space="preserve">
+    <value>مراجع فلكية</value>
+  </data>
+  <data name="FOV_Tip_ExitPupil" xml:space="preserve">
+    <value>حدقة الخروج المثالية: 5-7مم للسماء المظلمة، 2-4مم لمراقبة الكواكب.</value>
+  </data>
+  <data name="FOV_Tip_Magnification" xml:space="preserve">
+    <value>أقصى تكبير مفيد هو حوالي 50x لكل بوصة من فتحة العدسة (2x لكل مم).</value>
+  </data>
+  <data name="FOV_MaxMagWarning" xml:space="preserve">
+    <value>⚠ قريب من الحد الأقصى للتكبير المفيد لهذه الفتحة</value>
+  </data>
+  <data name="FOV_GoodExitPupil" xml:space="preserve">
+    <value>✓ حدقة خروج مثالية لمراقبة السماء العميقة</value>
+  </data>
+  <data name="FOV_PlanetaryExitPupil" xml:space="preserve">
+    <value>✓ حدقة خروج مناسبة لمراقبة الكواكب</value>
+  </data>
+  <data name="FOV_NarrowExitPupil" xml:space="preserve">
+    <value>⚠ حدقة خروج صغيرة جداً — صورة مظلمة جداً</value>
+  </data>
+  <data name="Nav_CalculadoraFOV" xml:space="preserve">
+    <value>مجال الرؤية (FOV)</value>
+  </data>
+  <data name="Home_Subtitle" xml:space="preserve">
+    <value>رفيقك لتخطيط وتسجيل الرصد الفلكي. التقاويم الفلكية والحاسبات والخرائط في مكان واحد.</value>
+  </data>
+  <data name="Home_QuickAccess" xml:space="preserve">
+    <value>وصول سريع</value>
+  </data>
+  <data name="Home_Card_Map_Desc" xml:space="preserve">
+    <value>ابحث عن مواقع السماء المظلمة بالقرب منك</value>
+  </data>
+  <data name="Home_Card_Planning_Desc" xml:space="preserve">
+    <value>خطط لجلسة الرصد القادمة</value>
+  </data>
+  <data name="Home_Card_Ephemeris_Desc" xml:space="preserve">
+    <value>مواضع الكواكب وشروق وغروب الشمس والقمر</value>
+  </data>
+  <data name="Home_Card_Calculators_Desc" xml:space="preserve">
+    <value>مجال الرؤية، تعريض الكسوف، التكبير والمزيد</value>
+  </data>
+  <data name="Home_Features_Title" xml:space="preserve">
+    <value>ماذا يمكنك أن تفعل؟</value>
+  </data>
+  <data name="Home_Feature1_Title" xml:space="preserve">
+    <value>الرصد البصري</value>
+  </data>
+  <data name="Home_Feature1_Desc" xml:space="preserve">
+    <value>احسب مجال الرؤية والتكبير وحدقة الخروج لكل تركيبة تلسكوب وعدسة عينية</value>
+  </data>
+  <data name="Home_Feature2_Title" xml:space="preserve">
+    <value>الحاسبات</value>
+  </data>
+  <data name="Home_Feature2_Desc" xml:space="preserve">
+    <value>أدوات دقيقة للتصوير الفلكي: مقياس اللوحة، تعريض الكسوف والمزيد</value>
+  </data>
+  <data name="Home_Feature3_Title" xml:space="preserve">
+    <value>التصوير الفلكي</value>
+  </data>
+  <data name="Home_Feature3_Desc" xml:space="preserve">
+    <value>احسب أوقات التعريض بمعادلة NASA Q لكل مرحلة من الكسوف</value>
+  </data>
+  <data name="Home_Feature4_Title" xml:space="preserve">
+    <value>السجل</value>
+  </data>
+  <data name="Home_Feature4_Desc" xml:space="preserve">
+    <value>احفظ وراجع سجل جميع جلسات الرصد السابقة</value>
+  </data>
   <data name="Calc_SolLuna_Title" xml:space="preserve">
     <value>الشمس والقمر</value>
   </data>
@@ -684,8 +672,10 @@
   <data name="SolLuna_NoData" xml:space="preserve">
     <value>تعذّر حساب البيانات لهذا التاريخ والموقع.</value>
   </data>
-
   <data name="SolLuna_UseGPS" xml:space="preserve">
     <value>GPS</value>
+  </data>
+  <data name="FOV_SimulatorTitle" xml:space="preserve">
+    <value>محاكاة مجال الرؤية</value>
   </data>
 </root>

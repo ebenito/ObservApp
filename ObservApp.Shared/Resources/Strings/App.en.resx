@@ -267,12 +267,6 @@
   <data name="Calc_Eclipse_Desc" xml:space="preserve">
     <value>Calculate exposure times for each eclipse phase using the NASA Q formula</value>
   </data>
-  <data name="Calc_FOV_Title" xml:space="preserve">
-    <value>Field of view (FOV)</value>
-  </data>
-  <data name="Calc_FOV_Desc" xml:space="preserve">
-    <value>Calculate true and apparent field of view for your telescope-eyepiece combinations</value>
-  </data>
   <data name="Calc_Magnification_Title" xml:space="preserve">
     <value>Magnification &amp; exit pupil</value>
   </data>
@@ -336,6 +330,12 @@
   <data name="Nav_Calculators" xml:space="preserve">
     <value>Calculators</value>
   </data>
+  <data name="Calc_FOV_Title" xml:space="preserve">
+    <value>Field of view (FOV)</value>
+  </data>
+  <data name="Calc_FOV_Desc" xml:space="preserve">
+    <value>Calculate true and apparent field of view for your telescope-eyepiece combinations</value>
+  </data>
   <data name="FOV_Title" xml:space="preserve">
     <value>Field of View (FOV)</value>
   </data>
@@ -390,14 +390,8 @@
   <data name="FOV_Times" xml:space="preserve">
     <value>x</value>
   </data>
-  <data name="FOV_SimulatorTitle" xml:space="preserve">
-    <value>Visual field simulation</value>
-  </data>
   <data name="FOV_MoonLabel" xml:space="preserve">
     <value>Full Moon: 0.5°</value>
-  </data>
-  <data name="FOV_SunLabel" xml:space="preserve">
-    <value>Sun: 0.5°</value>
   </data>
   <data name="FOV_PleiadesFOV" xml:space="preserve">
     <value>Pleiades: ~2°</value>
@@ -486,8 +480,6 @@
   <data name="Home_Feature4_Desc" xml:space="preserve">
     <value>Save and review the log of all your past observation sessions</value>
   </data>
-
-  <!-- ══ Sun and Moon Calculator ══ -->
   <data name="Calc_SolLuna_Title" xml:space="preserve">
     <value>Sun &amp; Moon</value>
   </data>
@@ -680,11 +672,10 @@
   <data name="SolLuna_NoData" xml:space="preserve">
     <value>Could not calculate data for this date and location.</value>
   </data>
-
   <data name="SolLuna_UseGPS" xml:space="preserve">
     <value>Use GPS</value>
   </data>
-   <data name="Settings_FavoriteLocations" xml:space="preserve">
+  <data name="Settings_FavoriteLocations" xml:space="preserve">
     <value>Favorite locations</value>
   </data>
   <data name="Settings_ManageLocations" xml:space="preserve">
@@ -743,5 +734,44 @@
   </data>
   <data name="FavLoc_Select_GPS" xml:space="preserve">
     <value>Current GPS Location</value>
+  </data>
+  <data name="SolLuna_Eclipses_Year" xml:space="preserve">
+    <value>Eclipses of the year</value>
+  </data>
+  <data name="SolLuna_Magnitude_Desc" xml:space="preserve">
+    <value>Eclipse magnitude (fraction of diameter obscured)</value>
+  </data>
+  <data name="SolLuna_Contact_C1_Desc" xml:space="preserve">
+    <value>C1: Start of partial phase</value>
+  </data>
+  <data name="SolLuna_Contact_C2_Desc" xml:space="preserve">
+    <value>C2: Start of total/annular phase</value>
+  </data>
+  <data name="SolLuna_Contact_C3_Desc" xml:space="preserve">
+    <value>C3: End of total/annular phase</value>
+  </data>
+  <data name="SolLuna_Contact_C4_Desc" xml:space="preserve">
+    <value>C4: End of partial phase</value>
+  </data>
+  <data name="SolLuna_Eclipse_Solar" xml:space="preserve">
+    <value>Solar Eclipse</value>
+  </data>
+  <data name="SolLuna_Eclipse_Lunar" xml:space="preserve">
+    <value>Lunar Eclipse</value>
+  </data>
+  <data name="SolLuna_Eclipse_Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="SolLuna_Eclipse_Annular" xml:space="preserve">
+    <value>Annular</value>
+  </data>
+  <data name="SolLuna_Eclipse_Partial" xml:space="preserve">
+    <value>Partial</value>
+  </data>
+  <data name="SolLuna_Eclipse_Penumbral" xml:space="preserve">
+    <value>Penumbral</value>
+  </data>
+  <data name="FOV_SimulatorTitle" xml:space="preserve">
+    <value>Visual field simulation</value>
   </data>
 </root>
