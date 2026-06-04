@@ -61,7 +61,7 @@ jobs:
           path: ObservApp/publish/windows/*.msix
           if-no-files-found: warn
 
-  deploy-web: 
+  deploy-web:
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
@@ -75,17 +75,24 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      - name: Restore ObservApp.Shared (solo net10.0)
+        run: dotnet restore ObservApp.Shared/ObservApp.Shared.csproj
+               -p:TargetFramework=net10.0
+
       - name: Restore ObservApp.Web
         run: dotnet restore ObservApp.Web/ObservApp.Web.csproj
+               -p:TargetFramework=net10.0
 
       - name: Publish ObservApp.Web
         run: dotnet publish ObservApp.Web/ObservApp.Web.csproj
                --configuration Release
                --output ./publish/web-server
+               --no-restore
+               -p:TargetFramework=net10.0
 
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'observapp-web'          # nombre de tu App Service en Azure
+          app-name: 'observapp-web'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./publish/web-server
