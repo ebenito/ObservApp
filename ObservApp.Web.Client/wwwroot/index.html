@@ -1,28 +1,74 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,
+                                   user-scalable=no, viewport-fit=cover" />
     <title>ObservApp</title>
     <base href="/" />
-    <link rel="stylesheet" href="ObservApp.Web.Client.styles.css" />
+
+    <!-- Syncfusion Material Dark theme -->
+    <link href="_content/Syncfusion.Blazor.Themes/material3-dark.css" rel="stylesheet" />
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+
+    <!-- Estilos de la app (shared + isolation) -->
     <link rel="stylesheet" href="_content/ObservApp.Shared/app.css" />
+    <link rel="stylesheet" href="ObservApp.Web.Client.styles.css" />
+
+    <link rel="icon" href="data:,">
 </head>
 <body>
     <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+        <div class="app-loading">
+            <div class="loading-spinner"></div>
+            <p id="loading-text">Cargando ObservApp…</p>
+        </div>
     </div>
 
     <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="." class="reload">Reload</a>
-        <span class="dismiss">🗙</span>
+        Ocurrió un error no controlado.
+        <a href="" class="reload">Recargar</a>
+        <a class="dismiss">🗙</a>
     </div>
 
+    <!-- Syncfusion script (antes de Blazor) -->
+    <script src="_content/Syncfusion.Blazor.Core/scripts/syncfusion-blazor.min.js"
+            type="text/javascript"></script>
+
+    <!-- Textos de carga i18n -->
+    <script src="_content/ObservApp.Shared/loading-texts.js"></script>
+
+    <!-- Aplicar idioma guardado antes de que arranque Blazor -->
+    <script>
+        (function () {
+            var TEXTS = window.ObservApp && window.ObservApp.LOADING_TEXTS ? window.ObservApp.LOADING_TEXTS : {};
+            var lang;
+            try { lang = localStorage.getItem("app_language"); } catch (e) { }
+            if (!lang)
+                lang = (navigator.language || navigator.userLanguage || "es")
+                    .substring(0, 2).toLowerCase();
+            if (!TEXTS[lang]) lang = "es";
+
+            var el = document.getElementById("loading-text");
+            if (el && TEXTS[lang]) el.textContent = TEXTS[lang];
+
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+        })();
+    </script>
+
+    <!-- Scripts de la app -->
+    <script src="_content/ObservApp.Shared/geolocation.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script src="_content/ObservApp.Shared/leaflet-map.js"></script>
+
+    <!--
+        IMPORTANTE: blazor.webassembly.js (standalone WASM)
+        NO usar blazor.web.js (ese es del servidor ASP.NET Core)
+        NO usar blazor.webview.js (ese es de MAUI)
+    -->
     <script src="_framework/blazor.webassembly.js"></script>
 </body>
 </html>
