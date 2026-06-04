@@ -1,4 +1,5 @@
 using System.Globalization;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
@@ -7,8 +8,15 @@ using Syncfusion.Blazor;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-// ── Licencia Syncfusion — debe registrarse también en el cliente WASM ────────
-//Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("TU_CLAVE_AQUI");
+#if STANDALONE_WASM
+// Solo activo en el build standalone para Azure Static Web Apps.
+// En modo hosted (local + MAUI) el servidor registra los root components
+// vía MapRazorComponents<App>() — añadirlos aquí también causaría conflicto.
+builder.RootComponents.Add<ObservApp.Routes>("#app");
+builder.RootComponents.Add<HeadOutlet>("head::after");
+#endif
+
+// ── Licencia Syncfusion ──────────────────────────────────────────────────────
 var syncfusionKey =
     builder.Configuration["SYNCFUSION_LICENSE_KEY"] ??
     builder.Configuration["SyncfusionLicenseKey"] ??
