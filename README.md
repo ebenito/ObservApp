@@ -2,7 +2,9 @@
 
 **Aplicación multiplataforma para astrofotografía y observación astronómica visual**, construida con **.NET 10**, **.NET MAUI** y **Blazor WebAssembly**.
 
-Disponible como app nativa (Android y Windows) y como aplicación web progresiva, compartiendo toda la lógica y componentes UI gracias a una arquitectura de proyecto compartido.
+Disponible como app nativa (Android y Windows) y como aplicación web progresiva, compartiendo toda la lógica y componentes UI gracias a una arquitectura de proyecto compartido con abstracción de plataforma mediante inyección de dependencias.
+
+**Estado actual:** Arquitectura base establecida · Geolocalización multiplataforma · Calculadora Sol y Luna · Suite de 6 idiomas completa · Localización dinámicamente sincronizada en web.
 
 ---
 
@@ -43,14 +45,19 @@ ObservApp/
 ├── ObservApp/              # .NET MAUI — Android & Windows (nativa)
 ├── ObservApp.Web/          # Blazor Server — host SSR + API
 ├── ObservApp.Web.Client/   # Blazor WebAssembly — cliente interactivo
-└── ObservApp.Shared/       # Lógica compartida: páginas, componentes, servicios, i18n
+└── ObservApp.Shared/       # Lógica compartida: páginas, componentes, servicios, i18n, ViewModels, state
 ```
 
 ### Principios de diseño
 
-- **Código compartido al máximo**: todas las páginas y componentes Razor viven en `ObservApp.Shared` y son consumidos por MAUI y Web sin duplicación.
-- **Abstracción de plataforma**: interfaces (`ISettingsService`, `ILocalizationService`) con implementaciones específicas por plataforma (MAUI Preferences, localStorage/JSInterop, SSR).
-- **Estado centralizado**: `AppState` como servicio singleton con notificación reactiva de cambios.
+- **Código compartido al máximo**: todas las páginas y componentes Razor viven en `ObservApp.Shared` (Razor Class Library) y son consumidos por MAUI y Web sin duplicación.
+- **Abstracción de plataforma**: interfaces (`ISettingsService`, `ILocalizationService`, `IGeolocationService`) con implementaciones específicas por plataforma:
+  - **MAUI:** `MauiSettingsService` (Preferences nativo), `LocalizationService` (cambio dinámico de idioma), `MauiGeolocationService` (IGeolocation)
+  - **Web:** `WebSettingsService` (localStorage vía JSInterop), `WebLocalizationService` (CultureInfo en cliente), `WebGeolocationService` (Geolocation API del navegador)
+  - **SSR:** `SsrGeolocationService` (stub — sin acceso GPS en servidor)
+- **Estado centralizado**: `AppState` como servicio singleton con notificación reactiva de cambios (`OnStateChanged`).
+- **Patrón MVVM con CommunityToolkit.Mvvm:** ViewModels reutilizables (`BaseViewModel`, `HistorialViewModel`, `ConfiguracionViewModel`) con source generators para propiedades observables.
+- **Router multi-ensamblado:** Soporte para páginas `@page` tanto en `ObservApp.Shared` como en proyectos hosts.
 
 ---
 
@@ -71,16 +78,17 @@ El idioma se persiste automáticamente: en web mediante `localStorage`, en MAUI 
 
 ## 🛠️ Stack tecnológico
 
-| Tecnología | Uso |
-|---|---|
-| **.NET 10** | Framework base |
-| **.NET MAUI** | App nativa Android / Windows |
-| **Blazor WebAssembly** | App web interactiva (cliente) |
-| **Blazor SSR** | Host web con renderizado en servidor |
-| **Syncfusion Blazor** | Componentes UI avanzados |
-| **Leaflet.js** | Mapas interactivos para gestión de ubicaciones |
-| **CosineKitty.AstronomyEngine** | Cálculos astronómicos precisos offline |
-| **JSInterop** | Acceso a APIs del navegador desde .NET |
+| Tecnología | Versión | Uso |
+|---|---|---|
+| **.NET** | 10 | Framework base |
+| **.NET MAUI** | 10 | App nativa Android / Windows |
+| **Blazor WebAssembly** | .NET 10 | App web interactiva (cliente) |
+| **Blazor SSR** | .NET 10 | Host web con renderizado en servidor |
+| **CommunityToolkit.Mvvm** | 8.4.0 | ViewModels con source generators |
+| **Syncfusion Blazor** | Última | Componentes UI avanzados |
+| **Leaflet.js** | Última | Mapas interactivos para ubicaciones |
+| **CosineKitty.AstronomyEngine** | Última | Cálculos astronómicos offline precisos |
+| **JSInterop** | .NET 10 | Acceso a APIs del navegador desde .NET |
 
 ---
 
@@ -141,21 +149,6 @@ dotnet build ObservApp -f net10.0-android
 
 **Tip:** Puedes configurar proyectos de inicio múltiples para ejecutar Web y MAUI simultáneamente:
 - Clic derecho en la solución → Propiedades → Proyectos de inicio → Proyectos de inicio múltiples
-
----
-
-## 🛠️ Stack tecnológico
-
-| Tecnología | Uso |
-|---|---|
-| **.NET 10** | Framework base |
-| **.NET MAUI** | App nativa Android / Windows |
-| **Blazor WebAssembly** | App web interactiva (cliente) |
-| **Blazor SSR** | Host web con renderizado en servidor |
-| **Syncfusion Blazor** | Componentes UI avanzados |
-| **Leaflet.js** | Mapas interactivos para gestión de ubicaciones |
-| **CosineKitty.AstronomyEngine** | Cálculos astronómicos precisos offline |
-| **JSInterop** | Acceso a APIs del navegador desde .NET |
 
 ---
 
@@ -220,12 +213,38 @@ private void OnChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
 
 ```
 ObservApp.Shared/
-├── Layout/             # MainLayout, NavMenu
-├── Pages/              # Páginas Razor (Home, Calculadoras, Configuracion…)
-├── Resources/Strings/  # Archivos .resx de localización (es, en, fr, de, it, ar)
-├── Services/           # Interfaces ISettingsService, ILocalizationService
-└── State/              # AppState — estado global reactivo
+├── Layout/               # MainLayout, NavMenu
+├── Pages/                # Páginas Razor (Home, CalculadoraSolLuna, Configuracion…)
+├── Components/           # Componentes reutilizables
+├── Models/               # ObservationSession, ObservationTarget, enumeraciones
+├── Resources/Strings/    # Archivos .resx de localización (es, en, fr, de, it, ar)
+├── Services/             # Interfaces: ISettingsService, ILocalizationService, IGeolocationService
+├── State/                # AppState — estado global reactivo
+├── ViewModels/           # BaseViewModel, HistorialViewModel, ConfiguracionViewModel
+└── wwwroot/
+    ├── app.css
+    └── geolocation.js    # JSInterop wrapper para Geolocation API
 ```
+
+---
+
+## 📚 Documentación técnica completa
+
+Para entender la arquitectura, refactorizaciones, modelos de dominio, patrones MVVM, servicios de plataforma y TODOs pendientes, consulta la documentación técnica:
+
+**→ [Documentacion/DocumentacionTecnica.md](Documentacion/DocumentacionTecnica.md)**
+
+---
+
+## 📝 Historial de cambios
+
+El historial de cambios y releases se mantiene en la carpeta `Documentacion/changelog/`:
+
+| Archivo | Descripción |
+|---------|-------------|
+| [2026_06-refactoring-arquitectura-completa.md](Documentacion/changelog/2026_06-refactoring-arquitectura-completa.md) | Refactoring: arquitectura con abstracción de servicios, MVVM, geolocalización multiplataforma |
+| [2026_05-fix-cambio-idioma-sidebar.md](Documentacion/changelog/2026_05-fix-cambio-idioma-sidebar.md) | Fix: cambio de idioma y menú hamburguesa inoperativos en Blazor WASM |
+| [2026_04-arquitectura-base.md](Documentacion/changelog/2026_04-arquitectura-base.md) | Arquitectura base inicial |
 
 ---
 

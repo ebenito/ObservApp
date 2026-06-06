@@ -9,6 +9,13 @@
     <File Path="Documentacion/changelog/2026_05-fix-cambio-idioma-sidebar.md" />
     <File Path="Documentacion/DocumentacionTecnica.md" />
   </Folder>
+  <Folder Name="/Elementos de la solución/Cluade/">
+    <File Path="Documentacion/Claude/readme.md" />
+    <File Path="Documentacion/Claude/CLAUDE_CONTEXT.md" />
+    <File Path="Documentacion/Claude/SETUP_CLAUDE_PROJECT.md" />
+    <File Path="Documentacion/Claude/CLAUDE_AGENTS.md" />
+    <File Path="InstruccionesProyecto.txt" />
+  </Folder>
   <Project Path="ObservApp.Shared/ObservApp.Shared.csproj" />
   <Project Path="ObservApp.Web.Client/ObservApp.Web.Client.csproj" />
   <Project Path="ObservApp.Web/ObservApp.Web.csproj" />
