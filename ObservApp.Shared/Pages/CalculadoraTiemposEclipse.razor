@@ -63,14 +63,9 @@
             <button class="eclt-gps-btn @(_gpsLoading ? "loading" : "")"
                     @onclick="OnUseGpsAsync" disabled="@_gpsLoading">
                 @if (_gpsLoading)
-                {
-                    <span class="eclt-spinner"></span>
-                }
+                { <span class="eclt-spinner"></span> }
                 else
-                {
-
-                    <span>📡</span>
-                }
+                { <span>📡</span> }
                 @L["EclipseTimer_UseGPS"]
             </button>
         </div>
@@ -143,7 +138,7 @@
                 <div>
                     <div class="eclt-type-label">@GetLocalTypeLabel(_result.Type)</div>
                     <div class="eclt-coverage-label">
-                        @L["EclipseTimer_MaxCoverage"]: @(_result.MaxCoverage * 100).ToString("F1")%
+                        @L["EclipseTimer_MaxCoverage"]: @((_result.MaxCoverage * 100).ToString("F1"))%
                     </div>
                 </div>
                 <!-- Toggle audio -->
@@ -163,7 +158,7 @@
                     <div class="eclt-countdown-time">@_countdownText</div>
                     <!-- SVG de la fase actual -->
                     <div class="eclt-phase-preview">
-                        @((MarkupString)BuildPhaseSvg(_nextEvent.Kind, _nextEvent.CoverageFraction, 120))
+                        @((MarkupString)BuildPhaseSvg(_nextEvent.Kind, _nextEvent.CoverageFraction, 120, _result.Type))
                     </div>
                 </div>
             }
@@ -171,25 +166,55 @@
             <!-- TIMELINE DE CONTACTOS -->
             <div class="eclt-card">
                 <div class="eclt-card-header">
-                    <span>⏱️</span> Contactos y eventos
-                </div>
-                <div class="eclt-card-body eclt-timeline-body">
+                    <span>⏱️</span> @L["EclipseTimer_Contacts"]
 
-                    @foreach (var contact in _result.Contacts)
+                    <!-- Botón simulación completa -->
+                    <div class="eclt-header-actions">
+                        @if (_simMode)
+                        {
+                            <button class="eclt-sim-btn eclt-sim-btn--stop"
+                                    @onclick="StopSimulation">
+                                ⏹ @L["EclipseTimer_SimStop"]
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="eclt-sim-btn"
+                                    @onclick="StartSimulation"
+                                    disabled="@(_result == null)">
+                                ▶ @L["EclipseTimer_SimStart"]
+                            </button>
+                        }
+                    </div>
+                </div>
+
+                @if (_simMode)
+                {
+                    <div class="eclt-sim-banner">
+                        🎬 @L["EclipseTimer_SimActive"] — ×30
+                    </div>
+                }
+
+                <div class="eclt-card-body eclt-timeline-body">
+                    @foreach (var contact in _result!.Contacts)
                     {
-                        bool isPast = contact.UtcTime < DateTime.UtcNow;
+                        bool isPast = (_simMode ? _simNow : DateTime.UtcNow) > contact.UtcTime;
                         bool isNext = _nextEvent?.Kind == contact.Kind;
                         bool isKey = contact.Kind is EclipseEventKind.C1
-                                        or EclipseEventKind.C2
-                                        or EclipseEventKind.Maximum
-                                        or EclipseEventKind.C3
-                                        or EclipseEventKind.C4;
+                                                   or EclipseEventKind.C2
+                                                   or EclipseEventKind.Maximum
+                                                   or EclipseEventKind.C3
+                                                   or EclipseEventKind.C4;
 
                         <div class="eclt-event-row @(isPast ? "past" : "") @(isNext ? "next" : "") @(isKey ? "key" : "")">
 
-                            <!-- SVG miniatura -->
+                            <!-- SVG miniatura con tipo correcto -->
                             <div class="eclt-event-svg">
-                                @((MarkupString)BuildPhaseSvg(contact.Kind, contact.CoverageFraction, 52))
+                                @((MarkupString)BuildPhaseSvg(
+                                    contact.Kind,
+                                    contact.CoverageFraction,
+                                    52,
+                                    _result.Type))
                             </div>
 
                             <!-- Info -->
@@ -203,9 +228,16 @@
                                 </span>
                             </div>
 
-                            <!-- Cuenta atrás por evento -->
-                            <div class="eclt-event-countdown @(isPast ? "done" : "")">
-                                @FormatCountdown(contact.UtcTime)
+                            <!-- Cuenta atrás + botón test -->
+                            <div class="eclt-event-right">
+                                <div class="eclt-event-countdown @(isPast ? "done" : "")">
+                                    @FormatCountdown(contact.UtcTime)
+                                </div>
+                                <button class="eclt-test-btn"
+                                        title="@L["EclipseTimer_TestAlert"]"
+                                        @onclick="() => TestEventAlertAsync(contact)">
+                                    🔔
+                                </button>
                             </div>
                         </div>
                     }
@@ -230,23 +262,29 @@
 
     // ── Estado ────────────────────────────────────────────────────────────────
     private List<EclipseDefinition> _eclipses = new();
-    private EclipseDefinition? _selectedEclipse;
-    private LocalEclipseResult? _result;
+    private EclipseDefinition?      _selectedEclipse;
+    private LocalEclipseResult?     _result;
     private List<FavoriteLocation>? _favLocations;
 
-    private double _lat = 40.4168;
-    private double _lon = -3.7038;
-    private double _alt = 650;
+    // ── Simulación ────────────────────────────────────────────────────────────
+    private bool _simMode = false;
+    private DateTime _simNow = DateTime.UtcNow;
+    private Timer? _simTimer;
+    private string _simBtnLabel = string.Empty;
 
-    private bool _gpsLoading;
+    private double _lat =  40.4168;
+    private double _lon =  -3.7038;
+    private double _alt =  650;
+
+    private bool    _gpsLoading;
     private string? _gpsError;
     private string? _gpsSourceLabel;
-    private bool _audioEnabled = true;
+    private bool    _audioEnabled = true;
 
     // Cuenta atrás
     private EclipseContact? _nextEvent;
-    private string _countdownText = "--:--:--";
-    private Timer? _timer;
+    private string          _countdownText = "--:--:--";
+    private Timer?          _timer;
 
     // ── Inicialización ────────────────────────────────────────────────────────
     protected override async Task OnInitializedAsync()
@@ -283,7 +321,7 @@
     private async Task OnUseGpsAsync()
     {
         _gpsLoading = true;
-        _gpsError = null;
+        _gpsError   = null;
         StateHasChanged();
 
         var loc = await GeoService.GetCurrentLocationAsync(highAccuracy: true);
@@ -338,7 +376,9 @@
     private void UpdateNextEvent()
     {
         if (_result == null) return;
-        var now = DateTime.UtcNow;
+
+        // En modo simulación usamos el tiempo simulado
+        var now = _simMode ? _simNow : DateTime.UtcNow;
 
         _nextEvent = _result.Contacts
             .Where(c => c.UtcTime > now)
@@ -348,19 +388,47 @@
         if (_nextEvent != null)
         {
             var diff = _nextEvent.UtcTime - now;
-            if (diff.TotalSeconds < 0)
-                _countdownText = L["EclipseTimer_Now"];
-            else if (diff.TotalHours >= 1)
-                _countdownText = $"{(int)diff.TotalHours}{L["EclipseTimer_Hours"]} " +
-                                 $"{diff.Minutes:D2}{L["EclipseTimer_Minutes"]} " +
-                                 $"{diff.Seconds:D2}{L["EclipseTimer_Seconds"]}";
-            else
-                _countdownText = $"{diff.Minutes:D2}:{diff.Seconds:D2}";
+            _countdownText = FormatDiff(diff);
 
-            // Aviso sonoro cuando falten ≤ 30s (se dispara una sola vez)
+            // Aviso sonoro cuando falten ≤ 30s
             if (_audioEnabled && diff.TotalSeconds is > 0 and <= 30)
                 _ = TriggerAudioAlertAsync(_nextEvent.Kind);
         }
+    }
+
+    // ── Formateador unificado de diferencias de tiempo ─────────────────────────
+    private string FormatDiff(TimeSpan diff)
+    {
+        if (diff.TotalSeconds <= 0)
+            return L["EclipseTimer_Now"];
+
+        if (diff.TotalDays >= 1)
+        {
+            int days = (int)diff.TotalDays;
+            int hours = diff.Hours;
+            int mins = diff.Minutes;
+            return $"{days}{L["EclipseTimer_Days"]} {hours}{L["EclipseTimer_Hours"]} {mins:D2}{L["EclipseTimer_Minutes"]}";
+        }
+
+        if (diff.TotalHours >= 1)
+            return $"{(int)diff.TotalHours}{L["EclipseTimer_Hours"]} " +
+                   $"{diff.Minutes:D2}{L["EclipseTimer_Minutes"]} " +
+                   $"{diff.Seconds:D2}{L["EclipseTimer_Seconds"]}";
+
+        return $"{diff.Minutes:D2}:{diff.Seconds:D2}";
+    }
+
+    // FormatCountdown para cada fila de evento
+    private string FormatCountdown(DateTime utc)
+    {
+        var now = _simMode ? _simNow : DateTime.UtcNow;
+        var diff = utc - now;
+
+        if (diff.TotalSeconds < -60) return L["EclipseTimer_Ago"];
+        if (diff.TotalSeconds <= 0) return L["EclipseTimer_Now"];
+
+        var prefix = L["EclipseTimer_In"].Value;
+        return $"{prefix} {FormatDiff(diff)}";
     }
 
     // ── Audio ─────────────────────────────────────────────────────────────────
@@ -375,17 +443,17 @@
 
         var message = kind switch
         {
-            EclipseEventKind.C1 => L["Eclipse_Alert_C1"].Value,
-            EclipseEventKind.ShadowBands => L["Eclipse_Alert_ShadowBands"].Value,
-            EclipseEventKind.BailyBeadsStart => L["Eclipse_Alert_BailyStart"].Value,
+            EclipseEventKind.C1               => L["Eclipse_Alert_C1"].Value,
+            EclipseEventKind.ShadowBands      => L["Eclipse_Alert_ShadowBands"].Value,
+            EclipseEventKind.BailyBeadsStart  => L["Eclipse_Alert_BailyStart"].Value,
             EclipseEventKind.DiamondRingStart => L["Eclipse_Alert_DiamondStart"].Value,
-            EclipseEventKind.C2 => L["Eclipse_Alert_C2"].Value,
-            EclipseEventKind.Maximum => L["Eclipse_Alert_Maximum"].Value,
-            EclipseEventKind.C3 => L["Eclipse_Alert_C3"].Value,
-            EclipseEventKind.DiamondRingEnd => L["Eclipse_Alert_DiamondEnd"].Value,
-            EclipseEventKind.BailyBeadsEnd => L["Eclipse_Alert_BailyEnd"].Value,
-            EclipseEventKind.C4 => L["Eclipse_Alert_C4"].Value,
-            _ => string.Empty
+            EclipseEventKind.C2               => L["Eclipse_Alert_C2"].Value,
+            EclipseEventKind.Maximum          => L["Eclipse_Alert_Maximum"].Value,
+            EclipseEventKind.C3               => L["Eclipse_Alert_C3"].Value,
+            EclipseEventKind.DiamondRingEnd   => L["Eclipse_Alert_DiamondEnd"].Value,
+            EclipseEventKind.BailyBeadsEnd    => L["Eclipse_Alert_BailyEnd"].Value,
+            EclipseEventKind.C4               => L["Eclipse_Alert_C4"].Value,
+            _                                 => string.Empty
         };
 
         if (!string.IsNullOrEmpty(message))
@@ -395,61 +463,55 @@
     // ── Helpers de etiquetas ──────────────────────────────────────────────────
     private string GetEventLabel(EclipseEventKind kind) => kind switch
     {
-        EclipseEventKind.C1 => L["Eclipse_C1"],
-        EclipseEventKind.C2 => L["Eclipse_C2"],
-        EclipseEventKind.C3 => L["Eclipse_C3"],
-        EclipseEventKind.C4 => L["Eclipse_C4"],
-        EclipseEventKind.ShadowBands => L["Eclipse_ShadowBands"],
-        EclipseEventKind.BailyBeadsStart => L["Eclipse_BailyBeadsStart"],
-        EclipseEventKind.BailyBeadsEnd => L["Eclipse_BailyBeadsEnd"],
+        EclipseEventKind.C1               => L["Eclipse_C1"],
+        EclipseEventKind.C2               => L["Eclipse_C2"],
+        EclipseEventKind.C3               => L["Eclipse_C3"],
+        EclipseEventKind.C4               => L["Eclipse_C4"],
+        EclipseEventKind.ShadowBands      => L["Eclipse_ShadowBands"],
+        EclipseEventKind.BailyBeadsStart  => L["Eclipse_BailyBeadsStart"],
+        EclipseEventKind.BailyBeadsEnd    => L["Eclipse_BailyBeadsEnd"],
         EclipseEventKind.DiamondRingStart => L["Eclipse_DiamondRingStart"],
-        EclipseEventKind.DiamondRingEnd => L["Eclipse_DiamondRingEnd"],
-        EclipseEventKind.Maximum => L["Eclipse_Maximum"],
-        _ => kind.ToString()
+        EclipseEventKind.DiamondRingEnd   => L["Eclipse_DiamondRingEnd"],
+        EclipseEventKind.Maximum          => L["Eclipse_Maximum"],
+        _                                 => kind.ToString()
     };
 
     private string GetTypeLabel(EclipseType t) => t switch
     {
-        EclipseType.Total => L["EclipseTimer_Type_Total"],
+        EclipseType.Total   => L["EclipseTimer_Type_Total"],
         EclipseType.Annular => L["EclipseTimer_Type_Annular"],
-        EclipseType.Hybrid => L["EclipseTimer_Type_Annular"], // tratar hybrid como anular visualmente
-        _ => L["EclipseTimer_Type_Partial"]
+        EclipseType.Hybrid  => L["EclipseTimer_Type_Annular"], // tratar hybrid como anular visualmente
+        _                   => L["EclipseTimer_Type_Partial"]
     };
 
     private string GetLocalTypeLabel(LocalEclipseType t) => t switch
     {
-        LocalEclipseType.Total => L["EclipseTimer_Type_Total"],
+        LocalEclipseType.Total   => L["EclipseTimer_Type_Total"],
         LocalEclipseType.Annular => L["EclipseTimer_Type_Annular"],
-        _ => L["EclipseTimer_Type_Partial"]
+        _                        => L["EclipseTimer_Type_Partial"]
     };
 
     private string GetLocalTypeEmoji(LocalEclipseType t) => t switch
     {
-        LocalEclipseType.Total => "🌑",
+        LocalEclipseType.Total   => "🌑",
         LocalEclipseType.Annular => "💍",
-        _ => "🌒"
+        _                        => "🌒"
     };
 
     private string GetTypeCssClass(EclipseType t) => t switch
     {
-        EclipseType.Total => "total",
+        EclipseType.Total   => "total",
         EclipseType.Annular => "annular",
-        EclipseType.Hybrid => "annular",
-        _ => "partial"
+        EclipseType.Hybrid  => "annular",
+        _                   => "partial"
     };
 
-    private string FormatCountdown(DateTime utc)
-    {
-        var diff = utc - DateTime.UtcNow;
-        if (diff.TotalSeconds < -60) return L["EclipseTimer_Ago"];
-        if (diff.TotalSeconds < 0) return L["EclipseTimer_Now"];
-        if (diff.TotalHours >= 1)
-            return $"{L["EclipseTimer_In"]} {(int)diff.TotalHours}h {diff.Minutes:D2}m";
-        return $"{L["EclipseTimer_In"]} {diff.Minutes:D2}:{diff.Seconds:D2}";
-    }
-
     // ── SVGs de fases ─────────────────────────────────────────────────────────
-    private static string BuildPhaseSvg(EclipseEventKind kind, double coverage, int size)
+    private static string BuildPhaseSvg(
+     EclipseEventKind kind,
+     double coverage,
+     int size,
+     LocalEclipseType localType = LocalEclipseType.Partial)
     {
         var ic = CultureInfo.InvariantCulture;
         int cx = size / 2;
@@ -457,83 +519,167 @@
         int r = (int)(size * 0.40);
 
         var sb = new System.Text.StringBuilder();
-        sb.Append($"<svg width=\"{size}\" height=\"{size}\" viewBox=\"0 0 {size} {size}\" xmlns=\"http://www.w3.org/2000/svg\">");
+        sb.Append($"<svg width=\"{size}\" height=\"{size}\" " +
+                  $"viewBox=\"0 0 {size} {size}\" " +
+                  $"xmlns=\"http://www.w3.org/2000/svg\">");
+        // Fondo
         sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{size / 2 - 1}\" fill=\"#050d1a\"/>");
 
         switch (kind)
         {
+            // ── C1: Sol casi completo, Luna entrando por la derecha ──────────────
             case EclipseEventKind.C1:
-                // Sol casi completo, Luna entrando por el borde
-                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#f59e0b\" opacity=\"0.9\"/>");
-                int lunaR = (int)(r * 0.95);
-                int lunaOff = (int)(r * 1.7);
-                sb.Append($"<circle cx=\"{cx + lunaOff}\" cy=\"{cy}\" r=\"{lunaR}\" fill=\"#050d1a\"/>");
+                sb.Append(SunDisk(cx, cy, r, ic));
+                int c1MoonOff = (int)(r * 1.72);
+                sb.Append($"<circle cx=\"{cx + c1MoonOff}\" cy=\"{cy}\" " +
+                          $"r=\"{(int)(r * 0.95)}\" fill=\"#050d1a\"/>");
                 break;
 
-            case EclipseEventKind.Maximum when coverage >= 0.98:
-                // Totalidad — corona
+            // ── C2: inicio de totalidad — disco negro puro ───────────────────────
+            case EclipseEventKind.C2 when localType == LocalEclipseType.Total:
+                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#111\"/>");
+                // Borde tenue que indica el Sol detrás
+                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r + 2}\" " +
+                          $"fill=\"none\" stroke=\"rgba(245,158,11,0.35)\" stroke-width=\"2\"/>");
+                break;
+
+            // ── C2 anular: inicio del anillo ─────────────────────────────────────
+            case EclipseEventKind.C2 when localType == LocalEclipseType.Annular:
+                sb.Append(AnnularRingSvg(cx, cy, r, ic));
+                break;
+
+            // ── Maximum total: disco negro + corona ──────────────────────────────
+            case EclipseEventKind.Maximum when localType == LocalEclipseType.Total:
                 sb.Append(BuildCoronaSvg(cx, cy, r, size, ic));
-                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#0a0a0a\"/>");
+                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#080808\"/>");
                 break;
 
+            // ── Maximum anular: anillo de fuego prominente ───────────────────────
+            case EclipseEventKind.Maximum when localType == LocalEclipseType.Annular:
+                sb.Append(AnnularRingSvg(cx, cy, r, ic, prominent: true));
+                break;
+
+            // ── Maximum parcial: ocultación parcial ──────────────────────────────
             case EclipseEventKind.Maximum:
-                // Parcial — ocultación parcial
-                sb.Append(BuildPartialSvg(cx, cy, r, coverage, ic, sb));
+                sb.Append(BuildGenericPartialSvg(cx, cy, r, coverage, ic));
                 break;
 
+            // ── C3: fin de totalidad — disco negro (igual que C2) ────────────────
+            case EclipseEventKind.C3 when localType == LocalEclipseType.Total:
+                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#111\"/>");
+                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r + 2}\" " +
+                          $"fill=\"none\" stroke=\"rgba(245,158,11,0.35)\" stroke-width=\"2\"/>");
+                break;
+
+            case EclipseEventKind.C3 when localType == LocalEclipseType.Annular:
+                sb.Append(AnnularRingSvg(cx, cy, r, ic));
+                break;
+
+            // ── C4: Sol casi completo, Luna saliendo por la izquierda ────────────
+            case EclipseEventKind.C4:
+                sb.Append(SunDisk(cx, cy, r, ic));
+                int c4MoonOff = (int)(r * 1.72);
+                sb.Append($"<circle cx=\"{cx - c4MoonOff}\" cy=\"{cy}\" " +
+                          $"r=\"{(int)(r * 0.95)}\" fill=\"#050d1a\"/>");
+                break;
+
+            // ── Anillo de diamante ───────────────────────────────────────────────
             case EclipseEventKind.DiamondRingStart:
             case EclipseEventKind.DiamondRingEnd:
                 sb.Append(BuildCoronaSvg(cx, cy, r, size, ic));
-                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#0a0a0a\"/>");
-                // Punto brillante (diamante)
-                int dpx = kind == EclipseEventKind.DiamondRingStart ? cx - r : cx + r;
-                sb.Append($"<circle cx=\"{dpx}\" cy=\"{cy}\" r=\"{r / 6}\" fill=\"white\" opacity=\"0.95\" filter=\"url(#glow{size})\"/>");
-                sb.Append($"<defs><filter id=\"glow{size}\"><feGaussianBlur stdDeviation=\"2\" result=\"b\"/><feMerge><feMergeNode in=\"b\"/><feMergeNode in=\"SourceGraphic\"/></feMerge></filter></defs>");
+                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#080808\"/>");
+                int dpx = kind == EclipseEventKind.DiamondRingStart
+                    ? cx - r + 3 : cx + r - 3;
+                // Halo del diamante
+                sb.Append($"<circle cx=\"{dpx}\" cy=\"{cy}\" r=\"{r / 4}\" " +
+                          $"fill=\"rgba(255,240,180,0.25)\"/>");
+                // Punto brillante
+                sb.Append($"<circle cx=\"{dpx}\" cy=\"{cy}\" r=\"{r / 7}\" " +
+                          $"fill=\"white\" opacity=\"0.97\"/>");
                 break;
 
+            // ── Collar de Baily ──────────────────────────────────────────────────
             case EclipseEventKind.BailyBeadsStart:
             case EclipseEventKind.BailyBeadsEnd:
-                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#0a0a0a\"/>");
-                // Perlas en el borde
+                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#080808\"/>");
                 int beadSide = kind == EclipseEventKind.BailyBeadsStart ? -1 : 1;
-                for (int i = -2; i <= 2; i++)
+                var beadRng = new Random(7);
+                for (int i = -3; i <= 3; i++)
                 {
-                    double angle = i * 0.25;
-                    double bx = cx + beadSide * (r - 2) * Math.Cos(angle);
-                    double by = cy + (r - 2) * Math.Sin(angle);
-                    double br = 2.5 + (2 - Math.Abs(i)) * 0.8;
-                    sb.Append($"<circle cx=\"{bx.ToString("F1", ic)}\" cy=\"{by.ToString("F1", ic)}\" r=\"{br.ToString("F1", ic)}\" fill=\"white\" opacity=\"0.9\"/>");
+                    double ang = i * 0.22;
+                    double bx = cx + beadSide * (r - 1) * Math.Cos(ang);
+                    double by = cy + (r - 1) * Math.Sin(ang);
+                    double br = 1.8 + (3 - Math.Abs(i)) * 0.6 + beadRng.NextDouble() * 0.5;
+                    double op = 0.6 + (3 - Math.Abs(i)) * 0.1;
+                    sb.Append($"<circle cx=\"{bx.ToString("F1", ic)}\" " +
+                              $"cy=\"{by.ToString("F1", ic)}\" " +
+                              $"r=\"{br.ToString("F1", ic)}\" " +
+                              $"fill=\"white\" opacity=\"{op.ToString("F2", ic)}\"/>");
                 }
                 break;
 
+            // ── Bandas de sombra ─────────────────────────────────────────────────
             case EclipseEventKind.ShadowBands:
-                // Sol casi tapado, bandas horizontales
-                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#f59e0b\" opacity=\"0.15\"/>");
-                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{(int)(r * 0.97)}\" fill=\"#0a0a0a\"/>");
-                // Bandas
+                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" " +
+                          $"fill=\"#f59e0b\" opacity=\"0.12\"/>");
+                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" " +
+                          $"r=\"{(int)(r * 0.97)}\" fill=\"#080808\"/>");
                 for (int b = -3; b <= 3; b++)
                 {
-                    int by2 = cy + b * (size / 10);
-                    sb.Append($"<line x1=\"0\" y1=\"{by2}\" x2=\"{size}\" y2=\"{by2}\" stroke=\"rgba(255,255,255,0.12)\" stroke-width=\"2\"/>");
+                    int by2 = cy + b * (size / 9);
+                    sb.Append($"<line x1=\"0\" y1=\"{by2}\" x2=\"{size}\" y2=\"{by2}\" " +
+                              $"stroke=\"rgba(255,255,255,0.13)\" stroke-width=\"2\"/>");
                 }
                 break;
 
-            case EclipseEventKind.C4:
-                // Sol casi completo, Luna saliendo
-                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#f59e0b\" opacity=\"0.9\"/>");
-                int lunaR2 = (int)(r * 0.95);
-                int lunaOff2 = (int)(r * 1.7);
-                sb.Append($"<circle cx=\"{cx - lunaOff2}\" cy=\"{cy}\" r=\"{lunaR2}\" fill=\"#050d1a\"/>");
-                break;
-
+            // ── Genérico parcial ─────────────────────────────────────────────────
             default:
-                // Genérico — ocultación parcial
-                double cov2 = Math.Max(0.01, coverage);
-                sb.Append(BuildGenericPartialSvg(cx, cy, r, cov2, ic));
+                sb.Append(BuildGenericPartialSvg(cx, cy, r,
+                    Math.Max(0.01, coverage), ic));
                 break;
         }
 
         sb.Append("</svg>");
+        return sb.ToString();
+    }
+
+    // ── Helpers SVG ──────────────────────────────────────────────────────────────
+
+    private static string SunDisk(int cx, int cy, int r, IFormatProvider ic)
+        => $"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#f59e0b\" opacity=\"0.92\"/>";
+
+    /// <summary>Anillo de fuego para eclipses anulares.</summary>
+    private static string AnnularRingSvg(int cx, int cy, int r,
+        IFormatProvider ic, bool prominent = false)
+    {
+        var sb = new System.Text.StringBuilder();
+        // Halo exterior tenue
+        double halo = prominent ? 0.22 : 0.12;
+        sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{(int)(r * 1.18)}\" " +
+                  $"fill=\"rgba(245,130,20,{halo.ToString("F2", ic)})\"/>");
+        // Anillo solar visible
+        sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#f59e0b\" opacity=\"0.92\"/>");
+        // Disco lunar negro (ligeramente menor que el Sol → anular)
+        int moonR = (int)(r * (prominent ? 0.82 : 0.84));
+        sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{moonR}\" fill=\"#050d1a\"/>");
+        // Borde interior del anillo: resplandor cálido
+        sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{moonR}\" " +
+                  $"fill=\"none\" stroke=\"rgba(255,160,30,{(prominent ? "0.55" : "0.35")})\" " +
+                  $"stroke-width=\"{(prominent ? 3 : 2)}\"/>");
+        return sb.ToString();
+    }
+
+    private static string BuildGenericPartialSvg(
+        int cx, int cy, int r, double coverage, IFormatProvider ic)
+    {
+        var sb = new System.Text.StringBuilder();
+        sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" " +
+                  $"fill=\"#f59e0b\" opacity=\"0.92\"/>");
+        // Offset de la Luna según cobertura (0 = sin tapar, 1 = tapado total)
+        double offset = r * (1.0 - coverage * 1.75);
+        int moonX = (int)(cx - offset);
+        sb.Append($"<circle cx=\"{moonX}\" cy=\"{cy}\" " +
+                  $"r=\"{(int)(r * 0.97)}\" fill=\"#050d1a\"/>");
         return sb.ToString();
     }
 
@@ -550,21 +696,10 @@
         {
             double ang = i * Math.PI / 6 + rng.NextDouble() * 0.3;
             double len = r * (1.15 + rng.NextDouble() * 0.6);
-            double x2 = cx + len * Math.Cos(ang);
-            double y2 = cy + len * Math.Sin(ang);
+            double x2  = cx + len * Math.Cos(ang);
+            double y2  = cy + len * Math.Sin(ang);
             sb.Append($"<line x1=\"{cx}\" y1=\"{cy}\" x2=\"{x2.ToString("F1", ic)}\" y2=\"{y2.ToString("F1", ic)}\" stroke=\"rgba(255,220,100,0.25)\" stroke-width=\"{(1 + rng.NextDouble()).ToString("F1", ic)}\"/>");
         }
-        return sb.ToString();
-    }
-
-    private static string BuildGenericPartialSvg(int cx, int cy, int r, double coverage, IFormatProvider ic)
-    {
-        var sb = new System.Text.StringBuilder();
-        sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#f59e0b\" opacity=\"0.9\"/>");
-        // Offset de la Luna según cobertura
-        double offset = r * (1 - coverage * 1.8);
-        int moonX = (int)(cx - offset);
-        sb.Append($"<circle cx=\"{moonX.ToString("F0", ic)}\" cy=\"{cy}\" r=\"{(int)(r * 0.98)}\" fill=\"#050d1a\"/>");
         return sb.ToString();
     }
 
@@ -631,6 +766,81 @@
 
         sb.Append("</svg>");
         return sb.ToString();
+    }
+
+    // ── Test de aviso individual ───────────────────────────────────────────────
+    private async Task TestEventAlertAsync(EclipseContact contact)
+    {
+        await AudioService.AnnounceEventAsync(GetAlertMessage(contact.Kind));
+    }
+
+    // Extraer el texto de alerta a método para reutilizar
+    private string GetAlertMessage(EclipseEventKind kind) => kind switch
+    {
+        EclipseEventKind.C1 => L["Eclipse_Alert_C1"].Value,
+        EclipseEventKind.ShadowBands => L["Eclipse_Alert_ShadowBands"].Value,
+        EclipseEventKind.BailyBeadsStart => L["Eclipse_Alert_BailyStart"].Value,
+        EclipseEventKind.DiamondRingStart => L["Eclipse_Alert_DiamondStart"].Value,
+        EclipseEventKind.C2 => L["Eclipse_Alert_C2"].Value,
+        EclipseEventKind.Maximum => L["Eclipse_Alert_Maximum"].Value,
+        EclipseEventKind.C3 => L["Eclipse_Alert_C3"].Value,
+        EclipseEventKind.DiamondRingEnd => L["Eclipse_Alert_DiamondEnd"].Value,
+        EclipseEventKind.BailyBeadsEnd => L["Eclipse_Alert_BailyEnd"].Value,
+        EclipseEventKind.C4 => L["Eclipse_Alert_C4"].Value,
+        _ => string.Empty
+    };
+
+    // ── Simulación completa ────────────────────────────────────────────────────
+    private void StartSimulation()
+    {
+        if (_result == null || _result.Contacts.Count == 0) return;
+
+        // Detener simulación previa si la hubiera
+        StopSimulation();
+
+        // Punto de arranque: C1 real - 5 segundos, comprimido
+        // La simulación acelera el tiempo: 1 segundo real = 30 segundos simulados
+        // Así un eclipse de 3h se recorre en 6 minutos.
+        // Pero para no esperar, usamos offset: simulamos que "ahora" es C1 - 5s
+        var c1 = _result.Contacts.First();
+        _simNow = c1.UtcTime.AddSeconds(-5);
+        _simMode = true;
+        _announcedEvents.Clear();
+
+        const double speedFactor = 30.0; // 1s real = 30s simulados
+
+        _simTimer = new Timer(_ => InvokeAsync(() =>
+        {
+            _simNow = _simNow.AddSeconds(speedFactor);
+
+            // Avisos: cuando en tiempo simulado falten ≤ 30s para un evento
+            if (_audioEnabled)
+            {
+                foreach (var contact in _result.Contacts)
+                {
+                    var diff = contact.UtcTime - _simNow;
+                    if (diff.TotalSeconds is > 0 and <= 30)
+                        _ = TriggerAudioAlertAsync(contact.Kind);
+                }
+            }
+
+            // Fin: cuando superamos el último evento
+            var lastEvent = _result.Contacts.Last();
+            if (_simNow > lastEvent.UtcTime.AddSeconds(30))
+                StopSimulation();
+
+            UpdateNextEvent();
+            StateHasChanged();
+        }), null, 0, 1000);
+    }
+
+    private void StopSimulation()
+    {
+        _simTimer?.Dispose();
+        _simTimer = null;
+        _simMode = false;
+        _announcedEvents.Clear();
+        UpdateNextEvent();
     }
 
     // ── Dispose ───────────────────────────────────────────────────────────────

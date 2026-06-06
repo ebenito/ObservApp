@@ -675,8 +675,44 @@
   <data name="SolLuna_UseGPS" xml:space="preserve">
     <value>GPS</value>
   </data>
+  <data name="SolLuna_Eclipses_Year" xml:space="preserve">
+    <value>كسوفات السنة</value>
+  </data>
+  <data name="SolLuna_Magnitude_Desc" xml:space="preserve">
+    <value>مقدار الكسوف (الجزء المحجوب من القطر)</value>
+  </data>
+  <data name="SolLuna_Contact_C1_Desc" xml:space="preserve">
+    <value>C1: بدء المرحلة الجزئية</value>
+  </data>
+  <data name="SolLuna_Contact_C2_Desc" xml:space="preserve">
+    <value>C2: بدء المرحلة الكلية/الحلقية</value>
+  </data>
+  <data name="SolLuna_Contact_C3_Desc" xml:space="preserve">
+    <value>C3: نهاية المرحلة الكلية/الحلقية</value>
+  </data>
+  <data name="SolLuna_Contact_C4_Desc" xml:space="preserve">
+    <value>C4: نهاية المرحلة الجزئية</value>
+  </data>
   <data name="FOV_SimulatorTitle" xml:space="preserve">
     <value>محاكاة مجال الرؤية</value>
+  </data>
+  <data name="SolLuna_Eclipse_Solar" xml:space="preserve">
+    <value>كسوف شمسي</value>
+  </data>
+  <data name="SolLuna_Eclipse_Lunar" xml:space="preserve">
+    <value>كسوف قمري</value>
+  </data>
+  <data name="SolLuna_Eclipse_Total" xml:space="preserve">
+    <value>كلي</value>
+  </data>
+  <data name="SolLuna_Eclipse_Annular" xml:space="preserve">
+    <value>حلقي</value>
+  </data>
+  <data name="SolLuna_Eclipse_Partial" xml:space="preserve">
+    <value>جزئي</value>
+  </data>
+  <data name="SolLuna_Eclipse_Penumbral" xml:space="preserve">
+    <value>ظلي</value>
   </data>
   <!-- ══ حاسبة أوقات الكسوف ══ -->
   <data name="Calc_EclipseTimer_Title" xml:space="preserve">
@@ -828,5 +864,83 @@
   </data>
   <data name="EclipseTimer_Region" xml:space="preserve">
     <value>منطقة الرؤية القصوى</value>
+  </data>
+  <data name="EclipseTimer_Days" xml:space="preserve">
+    <value>ي</value>
+  </data>
+  <data name="EclipseTimer_Contacts" xml:space="preserve">
+    <value>التلامسات والأحداث</value>
+  </data>
+  <data name="EclipseTimer_SimStart" xml:space="preserve">
+    <value>محاكاة الكسوف</value>
+  </data>
+  <data name="EclipseTimer_SimStop" xml:space="preserve">
+    <value>إيقاف المحاكاة</value>
+  </data>
+  <data name="EclipseTimer_SimActive" xml:space="preserve">
+    <value>المحاكاة نشطة بالسرعة</value>
+  </data>
+  <data name="EclipseTimer_TestAlert" xml:space="preserve">
+    <value>اختبار التنبيه الصوتي</value>
+  </data>
+  <data name="Settings_FavoriteLocations" xml:space="preserve">
+    <value>المواقع المفضلة</value>
+  </data>
+  <data name="Settings_ManageLocations" xml:space="preserve">
+    <value>إدارة المواقع المفضلة</value>
+  </data>
+  <data name="FavLoc_Title" xml:space="preserve">
+    <value>المواقع المفضلة</value>
+  </data>
+  <data name="FavLoc_NoLocations" xml:space="preserve">
+    <value>لم تقم بحفظ أي مواقع حتى الآن.</value>
+  </data>
+  <data name="FavLoc_AddCurrent" xml:space="preserve">
+    <value>إضافة الموقع الحالي (GPS)</value>
+  </data>
+  <data name="FavLoc_SearchPlaceholder" xml:space="preserve">
+    <value>ابحث عن مكان (مثل تيد، لندن...)</value>
+  </data>
+  <data name="FavLoc_SearchBtn" xml:space="preserve">
+    <value>بحث</value>
+  </data>
+  <data name="FavLoc_Search_NoResults" xml:space="preserve">
+    <value>لم يتم العثور على نتائج.</value>
+  </data>
+  <data name="FavLoc_Form_Name" xml:space="preserve">
+    <value>اسم الموقع</value>
+  </data>
+  <data name="FavLoc_Form_Latitude" xml:space="preserve">
+    <value>خط العرض (°)</value>
+  </data>
+  <data name="FavLoc_Form_Longitude" xml:space="preserve">
+    <value>خط الطول (°)</value>
+  </data>
+  <data name="FavLoc_Form_Altitude" xml:space="preserve">
+    <value>الارتفاع (متر)</value>
+  </data>
+  <data name="FavLoc_Form_Save" xml:space="preserve">
+    <value>حفظ الموقع</value>
+  </data>
+  <data name="FavLoc_Form_Edit" xml:space="preserve">
+    <value>تعديل الموقع</value>
+  </data>
+  <data name="FavLoc_Form_DragHint" xml:space="preserve">
+    <value>يمكنك سحب الدبوس على الخريطة لتحسين الموقع.</value>
+  </data>
+  <data name="FavLoc_Form_Altitude_Loading" xml:space="preserve">
+    <value>جاري حساب الارتفاع تلقائياً...</value>
+  </data>
+  <data name="FavLoc_Form_Name_Required" xml:space="preserve">
+    <value>اسم الموقع مطلوب.</value>
+  </data>
+  <data name="FavLoc_Select_Placeholder" xml:space="preserve">
+    <value>-- اختر موقع مفضل --</value>
+  </data>
+  <data name="FavLoc_Select_Manual" xml:space="preserve">
+    <value>إحداثيات يدوية</value>
+  </data>
+  <data name="FavLoc_Select_GPS" xml:space="preserve">
+    <value>موقع GPS الحالي</value>
   </data>
 </root>

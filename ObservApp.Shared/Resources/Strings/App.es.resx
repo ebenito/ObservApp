@@ -828,4 +828,23 @@
 <data name="EclipseTimer_Warning_Past"><value>Este eclipse ya ha ocurrido</value></data>
 <data name="EclipseTimer_EclipseType_Global"><value>Tipo global</value></data>
 <data name="EclipseTimer_Region"><value>Región de máxima visibilidad</value></data>
+
+<data name="EclipseTimer_Days" xml:space="preserve">
+  <value>d</value>
+</data>
+<data name="EclipseTimer_Contacts" xml:space="preserve">
+  <value>Contactos y eventos</value>
+</data>
+<data name="EclipseTimer_SimStart" xml:space="preserve">
+  <value>Simular eclipse</value>
+</data>
+<data name="EclipseTimer_SimStop" xml:space="preserve">
+  <value>Detener simulación</value>
+</data>
+<data name="EclipseTimer_SimActive" xml:space="preserve">
+  <value>Simulación activa a velocidad</value>
+</data>
+<data name="EclipseTimer_TestAlert" xml:space="preserve">
+  <value>Probar aviso sonoro</value>
+</data>
 </root>

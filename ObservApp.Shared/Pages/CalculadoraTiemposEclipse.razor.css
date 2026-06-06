@@ -485,3 +485,95 @@
         transform: rotate(360deg);
     }
 }
+
+/* ── Cabecera tarjeta con acciones ── */
+.eclt-card-header {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.eclt-header-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+}
+
+/* ── Botón simulación ── */
+.eclt-sim-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--obs-nebula);
+    background: rgba(123,94,167,.15);
+    color: var(--obs-nebula);
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+}
+
+    .eclt-sim-btn:hover:not(:disabled) {
+        background: rgba(123,94,167,.28);
+    }
+
+    .eclt-sim-btn:disabled {
+        opacity: .4;
+        cursor: not-allowed;
+    }
+
+.eclt-sim-btn--stop {
+    border-color: var(--obs-mars);
+    background: rgba(231,111,81,.15);
+    color: var(--obs-mars);
+}
+
+    .eclt-sim-btn--stop:hover {
+        background: rgba(231,111,81,.28);
+    }
+
+/* ── Banner simulación activa ── */
+.eclt-sim-banner {
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--obs-nebula);
+    background: rgba(123,94,167,.1);
+    border-bottom: 1px solid rgba(123,94,167,.2);
+    text-align: center;
+    letter-spacing: .03em;
+}
+
+/* ── Botón test individual ── */
+.eclt-event-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.eclt-test-btn {
+    background: transparent;
+    border: 1px solid var(--obs-border);
+    border-radius: 6px;
+    padding: 2px 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    color: var(--obs-comet);
+    transition: all var(--transition);
+    line-height: 1.4;
+}
+
+    .eclt-test-btn:hover {
+        border-color: var(--obs-aurora);
+        color: var(--obs-aurora);
+        background: rgba(46,196,182,.08);
+    }
+
+/* ── Filas: ajustar grid para la nueva columna derecha ── */
+.eclt-event-row {
+    grid-template-columns: 56px 1fr auto;
+}

@@ -925,4 +925,22 @@
   <data name="EclipseTimer_Region" xml:space="preserve">
     <value>Region of maximum visibility</value>
   </data>
+  <data name="EclipseTimer_Days" xml:space="preserve">
+  <value>d</value>
+</data>
+<data name="EclipseTimer_Contacts" xml:space="preserve">
+  <value>Contacts and events</value>
+</data>
+<data name="EclipseTimer_SimStart" xml:space="preserve">
+  <value>Simulate eclipse</value>
+</data>
+<data name="EclipseTimer_SimStop" xml:space="preserve">
+  <value>Stop simulation</value>
+</data>
+<data name="EclipseTimer_SimActive" xml:space="preserve">
+  <value>Simulation active at speed</value>
+</data>
+<data name="EclipseTimer_TestAlert" xml:space="preserve">
+  <value>Test audio alert</value>
+</data>
 </root>
