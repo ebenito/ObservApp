@@ -23,6 +23,7 @@ Disponible como app nativa (Android y Windows) y como aplicación web progresiva
 ### 🧮 Calculadoras incluidas
 
 - ✅ **Sol y Luna** — Tiempos de salida/puesta/tránsito, crepúsculos, fases lunares, eventos anuales
+- ✅ **Tiempos de eclipse** — Cálculo de contactos, fases y duración del eclipse solar; incluye avisos sonoros de cada evento del eclipse.
 - ✅ **Exposición para eclipses** — Tiempos de exposición por fase usando la fórmula NASA Q
 - ✅ **Campo visual (FOV)** — FOV real y aparente para combinaciones telescopio‑ocular
 - 🔜 **Aumento y pupila de salida** — Magnificación óptima según equipo *(próximamente)*
@@ -242,6 +243,7 @@ El historial de cambios y releases se mantiene en la carpeta `Documentacion/chan
 
 | Archivo | Descripción |
 |---------|-------------|
+| [2026_07-calculadora-tiempos-eclipse.md](Documentacion/changelog/2026_07-calculadora-tiempos-eclipse.md) | Feature: Calculadora de tiempos de eclipse solar con avisos sonoros y simulación en tiempo real |
 | [2026_06-refactoring-arquitectura-completa.md](Documentacion/changelog/2026_06-refactoring-arquitectura-completa.md) | Refactoring: arquitectura con abstracción de servicios, MVVM, geolocalización multiplataforma |
 | [2026_05-fix-cambio-idioma-sidebar.md](Documentacion/changelog/2026_05-fix-cambio-idioma-sidebar.md) | Fix: cambio de idioma y menú hamburguesa inoperativos en Blazor WASM |
 | [2026_04-arquitectura-base.md](Documentacion/changelog/2026_04-arquitectura-base.md) | Arquitectura base inicial |

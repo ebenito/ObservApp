@@ -21,7 +21,8 @@
    - [3.8 Router multi-ensamblado](#38-router-multi-ensamblado)
    - [3.9 Usings globales actualizados](#39-usings-globales-actualizados)
    - [3.10 Calculadora Sol y Luna](#310-calculadora-sol-y-luna)
-   - [3.11 Servicio de geolocalización multiplataforma](#311-servicio-de-geolocalización-multiplataforma)
+   - [3.11 Calculadora de tiempos de eclipse](#311-calculadora-de-tiempos-de-eclipse)
+   - [3.12 Servicio de geolocalización multiplataforma](#312-servicio-de-geolocalización-multiplataforma)
 4. [Árbol de archivos resultante](#4-árbol-de-archivos-resultante)
 5. [Dependencias NuGet añadidas](#5-dependencias-nuget-añadidas)
 6. [Decisiones de diseño](#6-decisiones-de-diseño)
@@ -449,7 +450,104 @@ Proporciona cálculos offline de alta precisión usando `CosineKitty.AstronomyEn
 
 ---
 
-### 3.11 Servicio de geolocalización multiplataforma
+### 3.11 Calculadora de tiempos de eclipse
+
+**Ruta:** `/calculadoras/eclipse-tiempos`
+
+Nueva calculadora especializada para eclipses solares que proporciona información de **altísima precisión** sobre los tiempos y fenómenos visuales en una ubicación específica.
+
+#### Características principales
+
+**Cálculo de contactos:**
+- C1 (Primera entrada) — entrada de la Luna en el disco solar
+- C2 (Segunda entrada) — inicio de la totalidad
+- C3 (Tercera salida) — fin de la totalidad  
+- C4 (Cuarta salida) — última salida de la Luna del disco solar
+
+**Fenómenos visuales:**
+- 💎 **Anillo de diamantes** — destello al inicio/final de totalidad
+- 📿 **Collar de Baily** — últimas luces en borde lunar
+- ⚫ **Bandas de sombra** — ondulaciones de luz/oscuridad antes de C2
+- 🌑 **Máxima totalidad** — punto de máxima oscuridad
+
+**Avisos sonoros sin conexión:**
+- **MAUI:** TextToSpeech nativo + reproducción de archivos de audio
+- **Web:** Web Speech API + Audio HTML5 (con fallback visual)
+- Adapta voz al idioma actual (español, inglés, francés, alemán, italiano, árabe)
+- Avisos configurables: 1 hora antes de C1, 15 min, 5 min, 30 seg, al momento de cada contacto
+
+**Simulación interactiva:**
+- Acelera tiempo real 10x
+- Reproduce todos los avisos configurados
+- Pausa y reanudación
+- Inicia 5 segundos antes de C1 para probar completo
+
+**Botones de test:**
+- Test individual de cada contacto (reproduce aviso para verificar audio)
+- Test global de simulación (recrea todo el evento en tiempo acelerado)
+
+#### Servicios asociados
+
+**`IEclipseTimingService`** — Interfaz para cálculo de contactos
+
+```csharp
+public interface IEclipseTimingService
+{
+    Task<List<EclipseContact>> CalculateContactsAsync(
+        double latitude, double longitude, DateTime eclipseDate);
+
+    Task<List<EclipseEvent>> CalculateEventsAsync(
+        double latitude, double longitude, DateTime eclipseDate);
+
+    string? LastError { get; }
+}
+```
+
+**Implementación:** `AstronomyEngineEclipseService` — Usa `CosineKitty.AstronomyEngine` para cálculos de precisión astronómica
+
+**`IAudioAlertService`** — Interfaz para avisos sonoros
+
+```csharp
+public interface IAudioAlertService
+{
+    Task PlayTextAlertAsync(string message, string languageCode = "es-ES");
+    Task PlayAudioFileAsync(string filePath);
+    Task StopAsync();
+    bool IsPlaying { get; }
+}
+```
+
+**Implementaciones:**
+- **MAUI:** `MauiAudioAlertService` — TextToSpeech + MediaElement
+- **Web WASM:** `WebAudioAlertService` — Web Speech API + Audio HTML5
+- **SSR:** `SsrAudioAlertService` — Stub (no audio en servidor)
+
+#### ViewModel: `CalculadoraTiemposEclipseViewModel`
+
+Hereda de `BaseViewModel` y maneja:
+- Entrada de fecha y ubicación
+- Cálculo de contactos y eventos
+- Configuración de avisos (qué contactos y con cuánta anticipación)
+- Lógica de simulación (aceleración temporal, reproducción de avisos)
+- Actualización de fase actual y contador regresivo
+
+**Archivos:**
+- `ObservApp.Shared/Pages/CalculadoraTiemposEclipse.razor`
+- `ObservApp.Shared/Pages/CalculadoraTiemposEclipse.razor.css`
+- `ObservApp.Shared/ViewModels/CalculadoraTiemposEclipseViewModel.cs`
+- `ObservApp.Shared/Services/IEclipseTimingService.cs`
+- `ObservApp.Shared/Services/AstronomyEngineEclipseService.cs`
+- `ObservApp.Shared/Services/IAudioAlertService.cs`
+- `ObservApp.Shared/wwwroot/audio-alerts.js` — Helper para TTS y audio
+- `ObservApp/Services/MauiAudioAlertService.cs`
+- `ObservApp.Web/Services/SsrAudioAlertService.cs`
+- `ObservApp.Web.Client/Services/WebAudioAlertService.cs`
+
+**Ver documentación completa:** [Documentacion/changelog/2026_07-calculadora-tiempos-eclipse.md](Documentacion/changelog/2026_07-calculadora-tiempos-eclipse.md)
+
+---
+
+### 3.12 Servicio de geolocalización multiplataforma
 
 Se introduce una abstracción reutilizable para obtener la ubicación del dispositivo
 desde cualquier página de `ObservApp.Shared`, sin acoplarse a la plataforma.
@@ -520,15 +618,22 @@ ObservApp.Shared/
 │       └── AppStrings.cs
 ├── Services/                              # 🆕 Carpeta nueva
 │   ├── ILocalizationService.cs            # 🆕 Interfaz de localización
-│   └── ISettingsService.cs               # 🆕 Interfaz de preferencias
+│   ├── ISettingsService.cs               # 🆕 Interfaz de preferencias
+│   ├── IGeolocationService.cs            # 🆕 Interfaz de geolocalización
+│   ├── IEclipseTimingService.cs          # 🆕 Interfaz de cálculo de eclipses
+│   ├── AstronomyEngineEclipseService.cs  # 🆕 Cálculos de eclipse
+│   └── IAudioAlertService.cs             # 🆕 Interfaz de avisos sonoros
 ├── State/                                 # 🆕 Carpeta nueva
 │   └── AppState.cs                        # 🆕 Estado global reactivo
 ├── ViewModels/                            # 🆕 Carpeta nueva
 │   ├── BaseViewModel.cs                   # 🆕 ViewModel base
 │   ├── ConfiguracionViewModel.cs          # 🆕 ViewModel de configuración
-│   └── HistorialViewModel.cs              # 🆕 ViewModel de historial
+│   ├── HistorialViewModel.cs              # 🆕 ViewModel de historial
+│   └── CalculadoraTiemposEclipseViewModel.cs  # 🆕 ViewModel de tiempos de eclipse
 └── wwwroot/
-    └── app.css
+    ├── app.css
+    ├── geolocation.js                    # 🆕 Helper JSInterop para geolocalización
+    └── audio-alerts.js                   # 🆕 Helper JSInterop para TTS/audio
 
 ObservApp/
 ├── App.xaml.cs                            # ✏️ Modificado — eliminado Environment.Exit(0)
@@ -536,11 +641,16 @@ ObservApp/
 ├── MainPage.xaml.cs
 ├── Services/
 │   ├── LocalizationService.cs             # ✏️ Modificado — implementa ILocalizationService
-│   └── MauiSettingsService.cs             # 🆕 Implementación MAUI de ISettingsService
+│   ├── MauiSettingsService.cs             # 🆕 Implementación MAUI de ISettingsService
+│   ├── MauiGeolocationService.cs          # 🆕 Implementación MAUI de IGeolocationService
+│   └── MauiAudioAlertService.cs           # 🆕 Implementación MAUI de IAudioAlertService
 └── Platforms/...
 
 ObservApp.Web/
 ├── Program.cs                             # ✏️ Modificado — registro completo de servicios
+├── Services/
+│   ├── SsrGeolocationService.cs           # 🆕 Stub SSR de IGeolocationService
+│   └── SsrAudioAlertService.cs            # 🆕 Stub SSR de IAudioAlertService
 └── ObservApp.Web.csproj                   # ✏️ Modificado — añadido CommunityToolkit.Mvvm
 
 ObservApp.Web.Client/
@@ -548,7 +658,9 @@ ObservApp.Web.Client/
 ├── Program.cs                             # ✏️ Modificado — registro completo de servicios
 └── Services/                             # 🆕 Carpeta nueva
     ├── WebLocalizationService.cs          # 🆕 Implementación Web de ILocalizationService
-    └── WebSettingsService.cs              # 🆕 Implementación Web de ISettingsService
+    ├── WebSettingsService.cs              # 🆕 Implementación Web de ISettingsService
+    ├── WebGeolocationService.cs           # 🆕 Implementación Web de IGeolocationService
+    └── WebAudioAlertService.cs            # 🆕 Implementación Web de IAudioAlertService
 ```
 
 ---
@@ -601,14 +713,18 @@ La migración a `localStorage` es un cambio localizado en un solo archivo.
 
 ## 7. Trabajo pendiente (TODO)
 
-| Prioridad | Tarea | Archivo relacionado |
-|-----------|-------|---------------------|
-| 🔴 Alta | Implementar `SupabaseService` para persistencia en la nube | `MauiProgram.cs` (comentario TODO) |
-| 🔴 Alta | Implementar `AuthService` para autenticación con Supabase | `MauiProgram.cs` (comentario TODO) |
-| ✅ Hecho | Implementar `GeolocationService` — multiplataforma (MAUI + WASM + SSR) | `IGeolocationService`, `MauiGeolocationService`, `WebGeolocationService` |
-| 🟡 Media | Reemplazar `WebSettingsService` con `localStorage` via JSInterop | `ObservApp.Web.Client/Services/WebSettingsService.cs` |
-| 🟡 Media | Implementar `AstronomyService` (wrapping de `AstronomyEngine`) | `MauiProgram.cs` (comentario TODO) |
-| 🟢 Baja | Pasar `GetType().Assembly` del host a `<Routes>` cuando se añadan páginas en el host | `Routes.razor` (parámetro `AdditionalAssemblies`) |
-| 🟢 Baja | Crear páginas Razor para todas las rutas del menú (Mapa, Planificación, Efemérides…) | `ObservApp.Shared/Pages/` |
-| 🟢 Baja | Añadir pruebas unitarias para los ViewModels | Proyecto de tests nuevo |
+| Prioridad | Tarea | Estado |
+|-----------|-------|--------|
+| 🔴 Alta | Implementar `SupabaseService` para persistencia en la nube | ⏳ Pendiente |
+| 🔴 Alta | Implementar `AuthService` para autenticación con Supabase | ⏳ Pendiente |
+| ✅ Hecho | Implementar `GeolocationService` — multiplataforma (MAUI + WASM + SSR) | ✅ Completado |
+| ✅ Hecho | Implementar `AudioAlertService` — avisos sonoros multiplataforma (TTS + audio) | ✅ Completado |
+| ✅ Hecho | Implementar `CalculadoraTiemposEclipse` — cálculos exactos + simulación + avisos | ✅ Completado |
+| 🟡 Media | Reemplazar `WebSettingsService` con `localStorage` via JSInterop | ⏳ Pendiente |
+| 🟡 Media | Almacenar grabaciones de voz personalizadas para avisos (multiidioma) | ⏳ Pendiente |
+| 🟡 Media | Integrar notificaciones push en MAUI para avisos incluso con app minimizada | ⏳ Pendiente |
+| 🟢 Baja | Pasar `GetType().Assembly` del host a `<Routes>` cuando se añadan páginas en el host | ⏳ Pendiente |
+| 🟢 Baja | Crear páginas Razor para Mapa, Planificación, Efemérides | ⏳ Pendiente |
+| 🟢 Baja | Exportar calendario (ICS) con eventos del eclipse | ⏳ Pendiente |
+| 🟢 Baja | Añadir pruebas unitarias para los ViewModels y servicios | ⏳ Pendiente |
 

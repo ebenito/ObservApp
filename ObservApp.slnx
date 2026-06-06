@@ -7,7 +7,11 @@
   </Folder>
   <Folder Name="/Elementos de la solución/changelog/">
     <File Path="Documentacion/changelog/2026_04-arquitectura-base.md" />
+    <File Path="Documentacion/changelog/2026_05-calculadora-sol-luna.md" />
     <File Path="Documentacion/changelog/2026_05-fix-cambio-idioma-sidebar.md" />
+    <File Path="Documentacion/changelog/2026_05-mejoras-pantalla-inicio-nav-correcciones.md" />
+    <File Path="Documentacion/changelog/2026_06-refactoring-arquitectura-completa.md" />
+    <File Path="Documentacion/changelog/2026_07-calculadora-tiempos-eclipse.md" />
     <File Path="Documentacion/DocumentacionTecnica.md" />
   </Folder>
   <Folder Name="/Elementos de la solución/Cluade/">
