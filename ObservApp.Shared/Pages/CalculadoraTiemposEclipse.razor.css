@@ -1,0 +1,487 @@
+﻿/* ============================================================
+   CALCULADORA DE TIEMPOS DE ECLIPSE
+   ============================================================ */
+
+.eclt-page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 20px 16px 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* ── Cabecera ── */
+.eclt-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--obs-aurora);
+    text-decoration: none;
+    margin-bottom: 8px;
+    opacity: .8;
+    transition: opacity var(--transition), transform var(--transition);
+}
+
+    .eclt-back:hover {
+        opacity: 1;
+        transform: translateX(-3px);
+    }
+
+.eclt-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding-bottom: 8px;
+}
+
+.eclt-header-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.eclt-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--obs-moon);
+    margin: 0 0 4px;
+}
+
+.eclt-subtitle {
+    font-size: 0.84rem;
+    color: var(--obs-comet);
+    margin: 0;
+}
+
+/* ── Cards ── */
+.eclt-card {
+    background: var(--obs-navy);
+    border: 1px solid var(--obs-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.eclt-card--warning {
+    border-color: rgba(231,111,81,.35);
+    background: rgba(231,111,81,.06);
+}
+
+.eclt-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    background: rgba(255,255,255,.04);
+    border-bottom: 1px solid var(--obs-border);
+    color: var(--obs-comet);
+}
+
+.eclt-location-header {
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.eclt-card-body {
+    padding: 14px;
+}
+
+/* ── Lista de eclipses ── */
+.eclt-eclipse-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.eclt-eclipse-btn {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 2px 10px;
+    align-items: center;
+    padding: 10px 14px;
+    background: var(--obs-deep);
+    border: 2px solid var(--obs-border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all var(--transition);
+    text-align: left;
+    color: var(--obs-moon);
+}
+
+    .eclt-eclipse-btn:hover {
+        border-color: var(--obs-star);
+        background: rgba(244,196,48,.06);
+    }
+
+    .eclt-eclipse-btn.selected {
+        border-color: var(--obs-star);
+        background: rgba(244,196,48,.10);
+        box-shadow: 0 0 0 1px var(--obs-star);
+    }
+
+    .eclt-eclipse-btn.past {
+        opacity: .55;
+    }
+
+.eclt-eclipse-date {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--obs-moon);
+}
+
+.eclt-eclipse-type {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+}
+
+    .eclt-eclipse-type.total {
+        background: rgba(46,196,182,.15);
+        color: var(--obs-aurora);
+        border: 1px solid rgba(46,196,182,.3);
+    }
+
+    .eclt-eclipse-type.annular {
+        background: rgba(244,196,48,.15);
+        color: var(--obs-star);
+        border: 1px solid rgba(244,196,48,.3);
+    }
+
+    .eclt-eclipse-type.partial {
+        background: rgba(148,163,184,.12);
+        color: var(--obs-comet);
+        border: 1px solid rgba(148,163,184,.2);
+    }
+
+.eclt-eclipse-region {
+    grid-column: 1 / -1;
+    font-size: 0.78rem;
+    color: var(--obs-comet);
+}
+
+.eclt-eclipse-past-badge {
+    grid-column: 1 / -1;
+    font-size: 0.70rem;
+    color: var(--obs-mars);
+}
+
+/* ── Ubicación ── */
+.eclt-gps-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 11px;
+    border-radius: 8px;
+    border: 1px solid var(--obs-aurora);
+    background: rgba(46,196,182,.1);
+    color: var(--obs-aurora);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--transition);
+    white-space: nowrap;
+}
+
+    .eclt-gps-btn:hover:not(:disabled) {
+        background: rgba(46,196,182,.2);
+    }
+
+    .eclt-gps-btn:disabled, .eclt-gps-btn.loading {
+        opacity: .6;
+        cursor: not-allowed;
+    }
+
+.eclt-select {
+    width: 100%;
+    background: var(--obs-deep);
+    border: 1px solid var(--obs-border);
+    color: var(--obs-moon);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.eclt-coords-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+@media (max-width: 480px) {
+    .eclt-coords-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.eclt-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.eclt-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--obs-comet);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.eclt-input {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 8px;
+    color: var(--obs-moon);
+    font-size: 0.9rem;
+    padding: 7px 10px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color var(--transition);
+}
+
+    .eclt-input:focus {
+        outline: none;
+        border-color: var(--obs-aurora);
+    }
+
+.eclt-gps-source {
+    font-size: 0.72rem;
+    color: var(--obs-aurora);
+    margin-bottom: 10px;
+}
+
+.eclt-error {
+    font-size: 0.78rem;
+    color: var(--obs-mars);
+    margin-bottom: 10px;
+}
+
+.eclt-calc-btn {
+    width: 100%;
+    padding: 10px;
+    background: var(--obs-star);
+    color: var(--obs-midnight);
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity var(--transition);
+}
+
+    .eclt-calc-btn:hover:not(:disabled) {
+        opacity: .9;
+    }
+
+    .eclt-calc-btn:disabled {
+        opacity: .4;
+        cursor: not-allowed;
+    }
+
+/* ── Banner tipo ── */
+.eclt-type-banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: 14px;
+    border: 2px solid;
+    flex-wrap: wrap;
+}
+
+.eclt-type-banner--total {
+    border-color: var(--obs-aurora);
+    background: rgba(46,196,182,.08);
+}
+
+.eclt-type-banner--annular {
+    border-color: var(--obs-star);
+    background: rgba(244,196,48,.08);
+}
+
+.eclt-type-banner--partial {
+    border-color: var(--obs-comet);
+    background: rgba(148,163,184,.06);
+}
+
+.eclt-type-icon {
+    font-size: 2.4rem;
+}
+
+.eclt-type-label {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--obs-moon);
+}
+
+.eclt-coverage-label {
+    font-size: 0.82rem;
+    color: var(--obs-comet);
+    margin-top: 2px;
+}
+
+/* ── Toggle audio ── */
+.eclt-audio-toggle {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    border: 1px solid;
+}
+
+    .eclt-audio-toggle.on {
+        background: rgba(46,196,182,.15);
+        color: var(--obs-aurora);
+        border-color: var(--obs-aurora);
+    }
+
+    .eclt-audio-toggle.off {
+        background: rgba(148,163,184,.1);
+        color: var(--obs-comet);
+        border-color: var(--obs-border);
+    }
+
+/* ── Cuenta atrás ── */
+.eclt-countdown-card {
+    background: var(--obs-deep);
+    border: 1px solid var(--obs-border);
+    border-radius: 14px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+}
+
+.eclt-countdown-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--obs-comet);
+}
+
+.eclt-countdown-event {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--obs-star);
+}
+
+.eclt-countdown-time {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--obs-moon);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.02em;
+}
+
+.eclt-phase-preview {
+    margin-top: 6px;
+}
+
+/* ── Timeline de eventos ── */
+.eclt-timeline-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.eclt-event-row {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition: background var(--transition);
+}
+
+    .eclt-event-row.key {
+        background: rgba(255,255,255,.03);
+        border-color: rgba(255,255,255,.06);
+    }
+
+    .eclt-event-row.next {
+        background: rgba(244,196,48,.08);
+        border-color: rgba(244,196,48,.3);
+    }
+
+    .eclt-event-row.past {
+        opacity: .45;
+    }
+
+.eclt-event-svg {
+    flex-shrink: 0;
+}
+
+.eclt-event-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.eclt-event-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--obs-moon);
+}
+
+.eclt-event-time {
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    color: var(--obs-star);
+}
+
+.eclt-event-alt {
+    font-size: 0.72rem;
+    color: var(--obs-comet);
+}
+
+.eclt-event-countdown {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--obs-aurora);
+    text-align: right;
+    white-space: nowrap;
+}
+
+    .eclt-event-countdown.done {
+        color: var(--obs-comet);
+    }
+
+/* ── Spinner ── */
+.eclt-spinner {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(46,196,182,.3);
+    border-top-color: var(--obs-aurora);
+    border-radius: 50%;
+    animation: eclt-spin .7s linear infinite;
+}
+
+@keyframes eclt-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -1,0 +1,641 @@
+﻿@page "/calculadoras/eclipse-solar"
+@using CosineKitty
+@using System.Globalization
+@using ObservApp.Shared.Models
+@using ObservApp.Shared.Services
+@implements IDisposable
+@inject IStringLocalizer<App> L
+@inject IGeolocationService GeoService
+@inject IFavoriteLocationsService FavLocationsService
+@inject IEclipseCalculatorService EclipseCalc
+@inject IEclipseAudioService AudioService
+
+<PageTitle>@L["EclipseTimer_Title"] — ObservApp</PageTitle>
+
+<div class="eclt-page">
+
+    <!-- CABECERA -->
+    <div class="eclt-header-back">
+        <a class="eclt-back" href="/calculadoras">← @L["Action_Back"]</a>
+    </div>
+    <div class="eclt-header">
+        <span class="eclt-header-icon">🌑</span>
+        <div>
+            <h1 class="eclt-title">@L["EclipseTimer_Title"]</h1>
+            <p class="eclt-subtitle">@L["EclipseTimer_Subtitle"]</p>
+        </div>
+    </div>
+
+    <!-- SELECTOR DE ECLIPSE -->
+    <div class="eclt-card">
+        <div class="eclt-card-header">
+            <span>☀️</span> @L["EclipseTimer_SelectEclipse"]
+        </div>
+        <div class="eclt-card-body">
+            <div class="eclt-eclipse-list">
+                @foreach (var ecl in _eclipses)
+                {
+                    bool selected = _selectedEclipse?.Id == ecl.Id;
+                    bool past = ecl.Date < DateTime.UtcNow;
+                    <button class="eclt-eclipse-btn @(selected ? "selected" : "") @(past ? "past" : "")"
+                            @onclick="() => SelectEclipse(ecl)">
+                        <span class="eclt-eclipse-date">
+                            @ecl.Date.ToLocalTime().ToString("d MMM yyyy")
+                        </span>
+                        <span class="eclt-eclipse-type @GetTypeCssClass(ecl.MaxType)">
+                            @GetTypeLabel(ecl.MaxType)
+                        </span>
+                        <span class="eclt-eclipse-region">@ecl.RegionLabel</span>
+                        @if (past)
+                        {
+                            <span class="eclt-eclipse-past-badge">@L["EclipseTimer_Warning_Past"]</span>
+                        }
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- SELECTOR DE UBICACIÓN -->
+    <div class="eclt-card">
+        <div class="eclt-card-header eclt-location-header">
+            <span>📍</span> @L["EclipseTimer_Location"]
+            <button class="eclt-gps-btn @(_gpsLoading ? "loading" : "")"
+                    @onclick="OnUseGpsAsync" disabled="@_gpsLoading">
+                @if (_gpsLoading)
+                {
+                    <span class="eclt-spinner"></span>
+                }
+                else
+                {
+
+                    <span>📡</span>
+                }
+                @L["EclipseTimer_UseGPS"]
+            </button>
+        </div>
+        <div class="eclt-card-body">
+            <!-- Selector de favoritas -->
+            <select class="eclt-select" @onchange="OnFavLocationChanged">
+                <option value="manual">📍 @L["FavLoc_Select_Manual"]</option>
+                <option value="gps">📡 @L["FavLoc_Select_GPS"]</option>
+                @if (_favLocations != null)
+                {
+                    @foreach (var loc in _favLocations)
+                    {
+                        <option value="@loc.Id">⭐ @loc.Name</option>
+                    }
+                }
+            </select>
+
+            @if (!string.IsNullOrEmpty(_gpsError))
+            {
+                <div class="eclt-error">⚠️ @_gpsError</div>
+            }
+
+            <!-- Coordenadas manuales -->
+            <div class="eclt-coords-row">
+                <div class="eclt-field">
+                    <label class="eclt-label">@L["SolLuna_Latitude"]</label>
+                    <input class="eclt-input" type="number" min="-90" max="90" step="0.0001"
+                           @bind="_lat" />
+                </div>
+                <div class="eclt-field">
+                    <label class="eclt-label">@L["SolLuna_Longitude"]</label>
+                    <input class="eclt-input" type="number" min="-180" max="180" step="0.0001"
+                           @bind="_lon" />
+                </div>
+                <div class="eclt-field">
+                    <label class="eclt-label">@L["SolLuna_Altitude"] (m)</label>
+                    <input class="eclt-input" type="number" @bind="_alt" />
+                </div>
+            </div>
+
+            @if (_gpsSourceLabel != null)
+            {
+                <div class="eclt-gps-source">📡 @_gpsSourceLabel</div>
+            }
+
+            <button class="eclt-calc-btn" @onclick="CalculateEclipse"
+                    disabled="@(_selectedEclipse == null)">
+                @L["EclipseTimer_Calculate"]
+            </button>
+        </div>
+    </div>
+
+    <!-- RESULTADOS -->
+    @if (_result != null)
+    {
+        @if (!_result.IsVisible || _result.Type == LocalEclipseType.None)
+        {
+            <div class="eclt-card eclt-card--warning">
+                <div class="eclt-card-body">
+                    <span class="eclt-warning-icon">🌐</span>
+                    <p>@L["EclipseTimer_NotVisible"]</p>
+                </div>
+            </div>
+        }
+        else
+        {
+            <!-- BANNER TIPO LOCAL -->
+            <div class="eclt-type-banner eclt-type-banner--@_result.Type.ToString().ToLower()">
+                <span class="eclt-type-icon">@GetLocalTypeEmoji(_result.Type)</span>
+                <div>
+                    <div class="eclt-type-label">@GetLocalTypeLabel(_result.Type)</div>
+                    <div class="eclt-coverage-label">
+                        @L["EclipseTimer_MaxCoverage"]: @(_result.MaxCoverage * 100).ToString("F1")%
+                    </div>
+                </div>
+                <!-- Toggle audio -->
+                <button class="eclt-audio-toggle @(_audioEnabled ? "on" : "off")"
+                        @onclick="ToggleAudio">
+                    @(_audioEnabled ? "🔔" : "🔕")
+                    @(_audioEnabled ? L["EclipseTimer_AudioOn"] : L["EclipseTimer_AudioOff"])
+                </button>
+            </div>
+
+            <!-- CUENTA ATRÁS AL PRÓXIMO EVENTO -->
+            @if (_nextEvent != null)
+            {
+                <div class="eclt-countdown-card">
+                    <div class="eclt-countdown-label">@L["EclipseTimer_NextEvent"]</div>
+                    <div class="eclt-countdown-event">@GetEventLabel(_nextEvent.Kind)</div>
+                    <div class="eclt-countdown-time">@_countdownText</div>
+                    <!-- SVG de la fase actual -->
+                    <div class="eclt-phase-preview">
+                        @((MarkupString)BuildPhaseSvg(_nextEvent.Kind, _nextEvent.CoverageFraction, 120))
+                    </div>
+                </div>
+            }
+
+            <!-- TIMELINE DE CONTACTOS -->
+            <div class="eclt-card">
+                <div class="eclt-card-header">
+                    <span>⏱️</span> Contactos y eventos
+                </div>
+                <div class="eclt-card-body eclt-timeline-body">
+
+                    @foreach (var contact in _result.Contacts)
+                    {
+                        bool isPast = contact.UtcTime < DateTime.UtcNow;
+                        bool isNext = _nextEvent?.Kind == contact.Kind;
+                        bool isKey = contact.Kind is EclipseEventKind.C1
+                                        or EclipseEventKind.C2
+                                        or EclipseEventKind.Maximum
+                                        or EclipseEventKind.C3
+                                        or EclipseEventKind.C4;
+
+                        <div class="eclt-event-row @(isPast ? "past" : "") @(isNext ? "next" : "") @(isKey ? "key" : "")">
+
+                            <!-- SVG miniatura -->
+                            <div class="eclt-event-svg">
+                                @((MarkupString)BuildPhaseSvg(contact.Kind, contact.CoverageFraction, 52))
+                            </div>
+
+                            <!-- Info -->
+                            <div class="eclt-event-info">
+                                <span class="eclt-event-name">@GetEventLabel(contact.Kind)</span>
+                                <span class="eclt-event-time">
+                                    @contact.UtcTime.ToLocalTime().ToString("HH:mm:ss")
+                                </span>
+                                <span class="eclt-event-alt">
+                                    @L["EclipseTimer_Altitude"]: @contact.SunAltitudeDeg.ToString("F1")°
+                                </span>
+                            </div>
+
+                            <!-- Cuenta atrás por evento -->
+                            <div class="eclt-event-countdown @(isPast ? "done" : "")">
+                                @FormatCountdown(contact.UtcTime)
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- GRÁFICO TIMELINE VISUAL -->
+            <div class="eclt-card">
+                <div class="eclt-card-header">
+                    <span>🌘</span> Progreso del eclipse
+                </div>
+                <div class="eclt-card-body">
+                    @((MarkupString)BuildTimelineSvg())
+                </div>
+            </div>
+        }
+    }
+
+</div>
+
+@code {
+
+    // ── Estado ────────────────────────────────────────────────────────────────
+    private List<EclipseDefinition> _eclipses = new();
+    private EclipseDefinition? _selectedEclipse;
+    private LocalEclipseResult? _result;
+    private List<FavoriteLocation>? _favLocations;
+
+    private double _lat = 40.4168;
+    private double _lon = -3.7038;
+    private double _alt = 650;
+
+    private bool _gpsLoading;
+    private string? _gpsError;
+    private string? _gpsSourceLabel;
+    private bool _audioEnabled = true;
+
+    // Cuenta atrás
+    private EclipseContact? _nextEvent;
+    private string _countdownText = "--:--:--";
+    private Timer? _timer;
+
+    // ── Inicialización ────────────────────────────────────────────────────────
+    protected override async Task OnInitializedAsync()
+    {
+        _eclipses = EclipseCalc.GetUpcomingEclipses(6).ToList();
+
+        // Seleccionar automáticamente el próximo eclipse futuro
+        _selectedEclipse = _eclipses.FirstOrDefault(e => e.Date > DateTime.UtcNow)
+                        ?? _eclipses.FirstOrDefault();
+
+        _favLocations = await FavLocationsService.GetFavoriteLocationsAsync();
+
+        // Si hay un eclipse seleccionado, calcular directamente
+        if (_selectedEclipse != null)
+            CalculateEclipse();
+
+        // Timer para actualizar cuentas atrás cada segundo
+        _timer = new Timer(_ => InvokeAsync(() =>
+        {
+            UpdateNextEvent();
+            StateHasChanged();
+        }), null, 0, 1000);
+    }
+
+    // ── Selección de eclipse ──────────────────────────────────────────────────
+    private void SelectEclipse(EclipseDefinition ecl)
+    {
+        _selectedEclipse = ecl;
+        _result = null;
+        CalculateEclipse();
+    }
+
+    // ── Ubicación ─────────────────────────────────────────────────────────────
+    private async Task OnUseGpsAsync()
+    {
+        _gpsLoading = true;
+        _gpsError = null;
+        StateHasChanged();
+
+        var loc = await GeoService.GetCurrentLocationAsync(highAccuracy: true);
+        if (loc != null)
+        {
+            _lat = loc.Latitude;
+            _lon = loc.Longitude;
+            _alt = loc.AltitudeMeters ?? _alt;
+            _gpsSourceLabel = $"{loc.SourceLabel} · {_lat:F4}°, {_lon:F4}°";
+            CalculateEclipse();
+        }
+        else
+        {
+            _gpsError = GeoService.LastError;
+        }
+
+        _gpsLoading = false;
+        StateHasChanged();
+    }
+
+    private async Task OnFavLocationChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        var val = e.Value?.ToString();
+        if (val == "gps")
+        {
+            await OnUseGpsAsync();
+            return;
+        }
+        if (Guid.TryParse(val, out var id))
+        {
+            var loc = _favLocations?.Find(l => l.Id == id);
+            if (loc != null)
+            {
+                _lat = loc.Latitude;
+                _lon = loc.Longitude;
+                _alt = loc.AltitudeMeters;
+                _gpsSourceLabel = $"⭐ {loc.Name}";
+                _gpsError = null;
+                CalculateEclipse();
+            }
+        }
+    }
+
+    // ── Cálculo ───────────────────────────────────────────────────────────────
+    private void CalculateEclipse()
+    {
+        if (_selectedEclipse == null) return;
+        _result = EclipseCalc.Calculate(_selectedEclipse, _lat, _lon, _alt);
+        UpdateNextEvent();
+    }
+
+    private void UpdateNextEvent()
+    {
+        if (_result == null) return;
+        var now = DateTime.UtcNow;
+
+        _nextEvent = _result.Contacts
+            .Where(c => c.UtcTime > now)
+            .OrderBy(c => c.UtcTime)
+            .FirstOrDefault();
+
+        if (_nextEvent != null)
+        {
+            var diff = _nextEvent.UtcTime - now;
+            if (diff.TotalSeconds < 0)
+                _countdownText = L["EclipseTimer_Now"];
+            else if (diff.TotalHours >= 1)
+                _countdownText = $"{(int)diff.TotalHours}{L["EclipseTimer_Hours"]} " +
+                                 $"{diff.Minutes:D2}{L["EclipseTimer_Minutes"]} " +
+                                 $"{diff.Seconds:D2}{L["EclipseTimer_Seconds"]}";
+            else
+                _countdownText = $"{diff.Minutes:D2}:{diff.Seconds:D2}";
+
+            // Aviso sonoro cuando falten ≤ 30s (se dispara una sola vez)
+            if (_audioEnabled && diff.TotalSeconds is > 0 and <= 30)
+                _ = TriggerAudioAlertAsync(_nextEvent.Kind);
+        }
+    }
+
+    // ── Audio ─────────────────────────────────────────────────────────────────
+    private void ToggleAudio() => _audioEnabled = !_audioEnabled;
+
+    private readonly HashSet<EclipseEventKind> _announcedEvents = new();
+
+    private async Task TriggerAudioAlertAsync(EclipseEventKind kind)
+    {
+        if (_announcedEvents.Contains(kind)) return;
+        _announcedEvents.Add(kind);
+
+        var message = kind switch
+        {
+            EclipseEventKind.C1 => L["Eclipse_Alert_C1"].Value,
+            EclipseEventKind.ShadowBands => L["Eclipse_Alert_ShadowBands"].Value,
+            EclipseEventKind.BailyBeadsStart => L["Eclipse_Alert_BailyStart"].Value,
+            EclipseEventKind.DiamondRingStart => L["Eclipse_Alert_DiamondStart"].Value,
+            EclipseEventKind.C2 => L["Eclipse_Alert_C2"].Value,
+            EclipseEventKind.Maximum => L["Eclipse_Alert_Maximum"].Value,
+            EclipseEventKind.C3 => L["Eclipse_Alert_C3"].Value,
+            EclipseEventKind.DiamondRingEnd => L["Eclipse_Alert_DiamondEnd"].Value,
+            EclipseEventKind.BailyBeadsEnd => L["Eclipse_Alert_BailyEnd"].Value,
+            EclipseEventKind.C4 => L["Eclipse_Alert_C4"].Value,
+            _ => string.Empty
+        };
+
+        if (!string.IsNullOrEmpty(message))
+            await AudioService.AnnounceEventAsync(message);
+    }
+
+    // ── Helpers de etiquetas ──────────────────────────────────────────────────
+    private string GetEventLabel(EclipseEventKind kind) => kind switch
+    {
+        EclipseEventKind.C1 => L["Eclipse_C1"],
+        EclipseEventKind.C2 => L["Eclipse_C2"],
+        EclipseEventKind.C3 => L["Eclipse_C3"],
+        EclipseEventKind.C4 => L["Eclipse_C4"],
+        EclipseEventKind.ShadowBands => L["Eclipse_ShadowBands"],
+        EclipseEventKind.BailyBeadsStart => L["Eclipse_BailyBeadsStart"],
+        EclipseEventKind.BailyBeadsEnd => L["Eclipse_BailyBeadsEnd"],
+        EclipseEventKind.DiamondRingStart => L["Eclipse_DiamondRingStart"],
+        EclipseEventKind.DiamondRingEnd => L["Eclipse_DiamondRingEnd"],
+        EclipseEventKind.Maximum => L["Eclipse_Maximum"],
+        _ => kind.ToString()
+    };
+
+    private string GetTypeLabel(EclipseType t) => t switch
+    {
+        EclipseType.Total => L["EclipseTimer_Type_Total"],
+        EclipseType.Annular => L["EclipseTimer_Type_Annular"],
+        EclipseType.Hybrid => L["EclipseTimer_Type_Annular"], // tratar hybrid como anular visualmente
+        _ => L["EclipseTimer_Type_Partial"]
+    };
+
+    private string GetLocalTypeLabel(LocalEclipseType t) => t switch
+    {
+        LocalEclipseType.Total => L["EclipseTimer_Type_Total"],
+        LocalEclipseType.Annular => L["EclipseTimer_Type_Annular"],
+        _ => L["EclipseTimer_Type_Partial"]
+    };
+
+    private string GetLocalTypeEmoji(LocalEclipseType t) => t switch
+    {
+        LocalEclipseType.Total => "🌑",
+        LocalEclipseType.Annular => "💍",
+        _ => "🌒"
+    };
+
+    private string GetTypeCssClass(EclipseType t) => t switch
+    {
+        EclipseType.Total => "total",
+        EclipseType.Annular => "annular",
+        EclipseType.Hybrid => "annular",
+        _ => "partial"
+    };
+
+    private string FormatCountdown(DateTime utc)
+    {
+        var diff = utc - DateTime.UtcNow;
+        if (diff.TotalSeconds < -60) return L["EclipseTimer_Ago"];
+        if (diff.TotalSeconds < 0) return L["EclipseTimer_Now"];
+        if (diff.TotalHours >= 1)
+            return $"{L["EclipseTimer_In"]} {(int)diff.TotalHours}h {diff.Minutes:D2}m";
+        return $"{L["EclipseTimer_In"]} {diff.Minutes:D2}:{diff.Seconds:D2}";
+    }
+
+    // ── SVGs de fases ─────────────────────────────────────────────────────────
+    private static string BuildPhaseSvg(EclipseEventKind kind, double coverage, int size)
+    {
+        var ic = CultureInfo.InvariantCulture;
+        int cx = size / 2;
+        int cy = size / 2;
+        int r = (int)(size * 0.40);
+
+        var sb = new System.Text.StringBuilder();
+        sb.Append($"<svg width=\"{size}\" height=\"{size}\" viewBox=\"0 0 {size} {size}\" xmlns=\"http://www.w3.org/2000/svg\">");
+        sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{size / 2 - 1}\" fill=\"#050d1a\"/>");
+
+        switch (kind)
+        {
+            case EclipseEventKind.C1:
+                // Sol casi completo, Luna entrando por el borde
+                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#f59e0b\" opacity=\"0.9\"/>");
+                int lunaR = (int)(r * 0.95);
+                int lunaOff = (int)(r * 1.7);
+                sb.Append($"<circle cx=\"{cx + lunaOff}\" cy=\"{cy}\" r=\"{lunaR}\" fill=\"#050d1a\"/>");
+                break;
+
+            case EclipseEventKind.Maximum when coverage >= 0.98:
+                // Totalidad — corona
+                sb.Append(BuildCoronaSvg(cx, cy, r, size, ic));
+                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#0a0a0a\"/>");
+                break;
+
+            case EclipseEventKind.Maximum:
+                // Parcial — ocultación parcial
+                sb.Append(BuildPartialSvg(cx, cy, r, coverage, ic, sb));
+                break;
+
+            case EclipseEventKind.DiamondRingStart:
+            case EclipseEventKind.DiamondRingEnd:
+                sb.Append(BuildCoronaSvg(cx, cy, r, size, ic));
+                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#0a0a0a\"/>");
+                // Punto brillante (diamante)
+                int dpx = kind == EclipseEventKind.DiamondRingStart ? cx - r : cx + r;
+                sb.Append($"<circle cx=\"{dpx}\" cy=\"{cy}\" r=\"{r / 6}\" fill=\"white\" opacity=\"0.95\" filter=\"url(#glow{size})\"/>");
+                sb.Append($"<defs><filter id=\"glow{size}\"><feGaussianBlur stdDeviation=\"2\" result=\"b\"/><feMerge><feMergeNode in=\"b\"/><feMergeNode in=\"SourceGraphic\"/></feMerge></filter></defs>");
+                break;
+
+            case EclipseEventKind.BailyBeadsStart:
+            case EclipseEventKind.BailyBeadsEnd:
+                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#0a0a0a\"/>");
+                // Perlas en el borde
+                int beadSide = kind == EclipseEventKind.BailyBeadsStart ? -1 : 1;
+                for (int i = -2; i <= 2; i++)
+                {
+                    double angle = i * 0.25;
+                    double bx = cx + beadSide * (r - 2) * Math.Cos(angle);
+                    double by = cy + (r - 2) * Math.Sin(angle);
+                    double br = 2.5 + (2 - Math.Abs(i)) * 0.8;
+                    sb.Append($"<circle cx=\"{bx.ToString("F1", ic)}\" cy=\"{by.ToString("F1", ic)}\" r=\"{br.ToString("F1", ic)}\" fill=\"white\" opacity=\"0.9\"/>");
+                }
+                break;
+
+            case EclipseEventKind.ShadowBands:
+                // Sol casi tapado, bandas horizontales
+                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#f59e0b\" opacity=\"0.15\"/>");
+                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{(int)(r * 0.97)}\" fill=\"#0a0a0a\"/>");
+                // Bandas
+                for (int b = -3; b <= 3; b++)
+                {
+                    int by2 = cy + b * (size / 10);
+                    sb.Append($"<line x1=\"0\" y1=\"{by2}\" x2=\"{size}\" y2=\"{by2}\" stroke=\"rgba(255,255,255,0.12)\" stroke-width=\"2\"/>");
+                }
+                break;
+
+            case EclipseEventKind.C4:
+                // Sol casi completo, Luna saliendo
+                sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#f59e0b\" opacity=\"0.9\"/>");
+                int lunaR2 = (int)(r * 0.95);
+                int lunaOff2 = (int)(r * 1.7);
+                sb.Append($"<circle cx=\"{cx - lunaOff2}\" cy=\"{cy}\" r=\"{lunaR2}\" fill=\"#050d1a\"/>");
+                break;
+
+            default:
+                // Genérico — ocultación parcial
+                double cov2 = Math.Max(0.01, coverage);
+                sb.Append(BuildGenericPartialSvg(cx, cy, r, cov2, ic));
+                break;
+        }
+
+        sb.Append("</svg>");
+        return sb.ToString();
+    }
+
+    private static string BuildCoronaSvg(int cx, int cy, int r, int size, IFormatProvider ic)
+    {
+        var sb = new System.Text.StringBuilder();
+        // Resplandor de la corona
+        sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{(int)(r * 1.6)}\" fill=\"rgba(255,200,100,0.06)\"/>");
+        sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{(int)(r * 1.3)}\" fill=\"rgba(255,200,100,0.10)\"/>");
+        sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{(int)(r * 1.15)}\" fill=\"rgba(255,220,120,0.18)\"/>");
+        // Rayos de corona
+        var rng = new Random(42);
+        for (int i = 0; i < 12; i++)
+        {
+            double ang = i * Math.PI / 6 + rng.NextDouble() * 0.3;
+            double len = r * (1.15 + rng.NextDouble() * 0.6);
+            double x2 = cx + len * Math.Cos(ang);
+            double y2 = cy + len * Math.Sin(ang);
+            sb.Append($"<line x1=\"{cx}\" y1=\"{cy}\" x2=\"{x2.ToString("F1", ic)}\" y2=\"{y2.ToString("F1", ic)}\" stroke=\"rgba(255,220,100,0.25)\" stroke-width=\"{(1 + rng.NextDouble()).ToString("F1", ic)}\"/>");
+        }
+        return sb.ToString();
+    }
+
+    private static string BuildGenericPartialSvg(int cx, int cy, int r, double coverage, IFormatProvider ic)
+    {
+        var sb = new System.Text.StringBuilder();
+        sb.Append($"<circle cx=\"{cx}\" cy=\"{cy}\" r=\"{r}\" fill=\"#f59e0b\" opacity=\"0.9\"/>");
+        // Offset de la Luna según cobertura
+        double offset = r * (1 - coverage * 1.8);
+        int moonX = (int)(cx - offset);
+        sb.Append($"<circle cx=\"{moonX.ToString("F0", ic)}\" cy=\"{cy}\" r=\"{(int)(r * 0.98)}\" fill=\"#050d1a\"/>");
+        return sb.ToString();
+    }
+
+    private static string BuildPartialSvg(int cx, int cy, int r, double coverage, IFormatProvider ic, System.Text.StringBuilder _)
+    {
+        return BuildGenericPartialSvg(cx, cy, r, coverage, ic);
+    }
+
+    // ── Timeline SVG horizontal ───────────────────────────────────────────────
+    private string BuildTimelineSvg()
+    {
+        if (_result == null || _result.Contacts.Count < 2)
+            return "<p style='color:var(--obs-comet);text-align:center'>—</p>";
+
+        var ic = CultureInfo.InvariantCulture;
+        var contacts = _result.Contacts;
+        var t0 = contacts.First().UtcTime;
+        var t1 = contacts.Last().UtcTime;
+        double totalSecs = (t1 - t0).TotalSeconds;
+        if (totalSecs <= 0) totalSecs = 1;
+
+        int W = 560, H = 100;
+        var sb = new System.Text.StringBuilder();
+        sb.Append($"<svg width=\"100%\" viewBox=\"0 0 {W} {H}\" xmlns=\"http://www.w3.org/2000/svg\">");
+
+        // Línea base
+        sb.Append($"<line x1=\"20\" y1=\"50\" x2=\"{W - 20}\" y2=\"50\" stroke=\"var(--obs-border)\" stroke-width=\"2\"/>");
+
+        // Relleno de totalidad (si la hay)
+        if (_result.Type is LocalEclipseType.Total or LocalEclipseType.Annular)
+        {
+            var c2 = contacts.FirstOrDefault(c => c.Kind == EclipseEventKind.C2);
+            var c3 = contacts.FirstOrDefault(c => c.Kind == EclipseEventKind.C3);
+            if (c2 != null && c3 != null)
+            {
+                double x2 = 20 + ((c2.UtcTime - t0).TotalSeconds / totalSecs) * (W - 40);
+                double x3 = 20 + ((c3.UtcTime - t0).TotalSeconds / totalSecs) * (W - 40);
+                sb.Append($"<rect x=\"{x2.ToString("F0", ic)}\" y=\"35\" width=\"{(x3 - x2).ToString("F0", ic)}\" height=\"30\" fill=\"rgba(46,196,182,0.2)\" rx=\"4\"/>");
+            }
+        }
+
+        // Línea "ahora"
+        var now = DateTime.UtcNow;
+        if (now >= t0 && now <= t1)
+        {
+            double xNow = 20 + ((now - t0).TotalSeconds / totalSecs) * (W - 40);
+            sb.Append($"<line x1=\"{xNow.ToString("F0", ic)}\" y1=\"20\" x2=\"{xNow.ToString("F0", ic)}\" y2=\"80\" stroke=\"var(--obs-mars)\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/>");
+            sb.Append($"<text x=\"{xNow.ToString("F0", ic)}\" y=\"16\" text-anchor=\"middle\" fill=\"var(--obs-mars)\" font-size=\"8\">NOW</text>");
+        }
+
+        // Eventos
+        foreach (var c in contacts)
+        {
+            double x = 20 + ((c.UtcTime - t0).TotalSeconds / totalSecs) * (W - 40);
+            bool isKey = c.Kind is EclipseEventKind.C1 or EclipseEventKind.C2
+                                or EclipseEventKind.Maximum
+                                or EclipseEventKind.C3 or EclipseEventKind.C4;
+            string dotColor = isKey ? "var(--obs-star)" : "var(--obs-comet)";
+            int dotR = isKey ? 6 : 4;
+
+            sb.Append($"<circle cx=\"{x.ToString("F0", ic)}\" cy=\"50\" r=\"{dotR}\" fill=\"{dotColor}\"/>");
+            sb.Append($"<text x=\"{x.ToString("F0", ic)}\" y=\"{(isKey ? 30 : 75)}\" text-anchor=\"middle\" fill=\"var(--obs-comet)\" font-size=\"7\">{c.UtcTime.ToLocalTime().ToString("HH:mm")}</text>");
+        }
+
+        sb.Append("</svg>");
+        return sb.ToString();
+    }
+
+    // ── Dispose ───────────────────────────────────────────────────────────────
+    public void Dispose()
+    {
+        _timer?.Dispose();
+    }
+}

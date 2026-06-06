@@ -774,4 +774,155 @@
   <data name="FOV_SimulatorTitle" xml:space="preserve">
     <value>Sichtfeld-Simulation</value>
   </data>
+  <!-- ══ Finsterniszeit-Rechner ══ -->
+  <data name="Calc_EclipseTimer_Title" xml:space="preserve">
+    <value>Finsterniszeiten</value>
+  </data>
+  <data name="Calc_EclipseTimer_Desc" xml:space="preserve">
+    <value>Kontakte C1-C4, Diamantring und Echtzeit-Warnungen für deinen Standort</value>
+  </data>
+  <data name="EclipseTimer_Title" xml:space="preserve">
+    <value>Finsterniszeit-Rechner</value>
+  </data>
+  <data name="EclipseTimer_Subtitle" xml:space="preserve">
+    <value>Präzise Kontakte für deinen Standort mit akustischen Warnungen</value>
+  </data>
+  <data name="EclipseTimer_SelectEclipse" xml:space="preserve">
+    <value>Finsternis auswählen</value>
+  </data>
+  <data name="EclipseTimer_Location" xml:space="preserve">
+    <value>Standort</value>
+  </data>
+  <data name="EclipseTimer_UseGPS" xml:space="preserve">
+    <value>GPS verwenden</value>
+  </data>
+  <data name="EclipseTimer_Calculate" xml:space="preserve">
+    <value>Für meinen Standort berechnen</value>
+  </data>
+  <data name="EclipseTimer_Type_Total" xml:space="preserve">
+    <value>Totale Sonnenfinsternis</value>
+  </data>
+  <data name="EclipseTimer_Type_Annular" xml:space="preserve">
+    <value>Ringförmige Sonnenfinsternis</value>
+  </data>
+  <data name="EclipseTimer_Type_Partial" xml:space="preserve">
+    <value>Partielle Sonnenfinsternis</value>
+  </data>
+  <data name="EclipseTimer_Type_None" xml:space="preserve">
+    <value>Von diesem Standort nicht sichtbar</value>
+  </data>
+  <data name="EclipseTimer_MaxCoverage" xml:space="preserve">
+    <value>Maximale Bedeckung</value>
+  </data>
+  <data name="EclipseTimer_NextEvent" xml:space="preserve">
+    <value>Nächstes Ereignis</value>
+  </data>
+  <data name="EclipseTimer_AudioAlerts" xml:space="preserve">
+    <value>Akustische Warnungen</value>
+  </data>
+  <data name="EclipseTimer_AudioOn" xml:space="preserve">
+    <value>Warnungen aktiv</value>
+  </data>
+  <data name="EclipseTimer_AudioOff" xml:space="preserve">
+    <value>Warnungen deaktiviert</value>
+  </data>
+  <data name="EclipseTimer_SunBelowHorizon" xml:space="preserve">
+    <value>Die Sonne wird während dieser Finsternis an deinem Standort unter dem Horizont sein</value>
+  </data>
+  <data name="EclipseTimer_NotVisible" xml:space="preserve">
+    <value>Diese Finsternis ist von deinem Standort nicht sichtbar</value>
+  </data>
+  <data name="Eclipse_C1" xml:space="preserve">
+    <value>C1 — Erster Kontakt</value>
+  </data>
+  <data name="Eclipse_C2" xml:space="preserve">
+    <value>C2 — Beginn der Totalität</value>
+  </data>
+  <data name="Eclipse_C3" xml:space="preserve">
+    <value>C3 — Ende der Totalität</value>
+  </data>
+  <data name="Eclipse_C4" xml:space="preserve">
+    <value>C4 — Ende der Finsternis</value>
+  </data>
+  <data name="Eclipse_ShadowBands" xml:space="preserve">
+    <value>Schattenbänder</value>
+  </data>
+  <data name="Eclipse_BailyBeadsStart" xml:space="preserve">
+    <value>Baily-Perlen (Beginn)</value>
+  </data>
+  <data name="Eclipse_BailyBeadsEnd" xml:space="preserve">
+    <value>Baily-Perlen (Ende)</value>
+  </data>
+  <data name="Eclipse_DiamondRingStart" xml:space="preserve">
+    <value>Diamantring (Beginn)</value>
+  </data>
+  <data name="Eclipse_DiamondRingEnd" xml:space="preserve">
+    <value>Diamantring (Ende)</value>
+  </data>
+  <data name="Eclipse_Maximum" xml:space="preserve">
+    <value>Finsternis-Maximum</value>
+  </data>
+  <data name="Eclipse_Alert_C1" xml:space="preserve">
+    <value>Erster Kontakt. Die Finsternis beginnt jetzt.</value>
+  </data>
+  <data name="Eclipse_Alert_ShadowBands" xml:space="preserve">
+    <value>Achtung, Schattenbänder in etwa einer Minute.</value>
+  </data>
+  <data name="Eclipse_Alert_BailyStart" xml:space="preserve">
+    <value>Baily-Perlen jetzt sichtbar.</value>
+  </data>
+  <data name="Eclipse_Alert_DiamondStart" xml:space="preserve">
+    <value>Diamantring. Die Totalität beginnt in wenigen Sekunden.</value>
+  </data>
+  <data name="Eclipse_Alert_C2" xml:space="preserve">
+    <value>Zweiter Kontakt. Beginn der Totalität!</value>
+  </data>
+  <data name="Eclipse_Alert_Maximum" xml:space="preserve">
+    <value>Finsternis-Maximum.</value>
+  </data>
+  <data name="Eclipse_Alert_C3" xml:space="preserve">
+    <value>Dritter Kontakt. Die Totalität endet jetzt.</value>
+  </data>
+  <data name="Eclipse_Alert_DiamondEnd" xml:space="preserve">
+    <value>Diamantring beim Austritt.</value>
+  </data>
+  <data name="Eclipse_Alert_BailyEnd" xml:space="preserve">
+    <value>Baily-Perlen beim Austritt.</value>
+  </data>
+  <data name="Eclipse_Alert_C4" xml:space="preserve">
+    <value>Vierter Kontakt. Die Finsternis ist beendet.</value>
+  </data>
+  <data name="EclipseTimer_In" xml:space="preserve">
+    <value>in</value>
+  </data>
+  <data name="EclipseTimer_Ago" xml:space="preserve">
+    <value>vor</value>
+  </data>
+  <data name="EclipseTimer_Now" xml:space="preserve">
+    <value>JETZT!</value>
+  </data>
+  <data name="EclipseTimer_Hours" xml:space="preserve">
+    <value>Std</value>
+  </data>
+  <data name="EclipseTimer_Minutes" xml:space="preserve">
+    <value>Min</value>
+  </data>
+  <data name="EclipseTimer_Seconds" xml:space="preserve">
+    <value>Sek</value>
+  </data>
+  <data name="EclipseTimer_LocalTime" xml:space="preserve">
+    <value>Ortszeit</value>
+  </data>
+  <data name="EclipseTimer_Altitude" xml:space="preserve">
+    <value>Sonnen-Alt.</value>
+  </data>
+  <data name="EclipseTimer_Warning_Past" xml:space="preserve">
+    <value>Diese Finsternis hat bereits stattgefunden</value>
+  </data>
+  <data name="EclipseTimer_EclipseType_Global" xml:space="preserve">
+    <value>Globaler Typ</value>
+  </data>
+  <data name="EclipseTimer_Region" xml:space="preserve">
+    <value>Region der maximalen Sichtbarkeit</value>
+  </data>
 </root>

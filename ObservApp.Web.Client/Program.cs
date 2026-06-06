@@ -32,6 +32,8 @@ builder.Services.AddSingleton<ISettingsService, WebSettingsService>();
 builder.Services.AddSingleton<IAppLifecycleService, WebClientAppLifecycleService>();
 builder.Services.AddSingleton<IGeolocationService, WebGeolocationService>();
 builder.Services.AddSingleton<IFavoriteLocationsService, WebFavoriteLocationsService>();
+builder.Services.AddSingleton<IEclipseCalculatorService, EclipseCalculatorService>();
+builder.Services.AddSingleton<IEclipseAudioService, WebEclipseAudioService>();
 builder.Services.AddSingleton<AppState>();
 builder.Services.AddScoped(sp => new HttpClient
 {

@@ -678,4 +678,155 @@
   <data name="FOV_SimulatorTitle" xml:space="preserve">
     <value>محاكاة مجال الرؤية</value>
   </data>
+  <!-- ══ حاسبة أوقات الكسوف ══ -->
+  <data name="Calc_EclipseTimer_Title" xml:space="preserve">
+    <value>أوقات الكسوف</value>
+  </data>
+  <data name="Calc_EclipseTimer_Desc" xml:space="preserve">
+    <value>التلامسات C1-C4 وخاتم الألماس وتنبيهات فورية لموقعك</value>
+  </data>
+  <data name="EclipseTimer_Title" xml:space="preserve">
+    <value>حاسبة أوقات الكسوف</value>
+  </data>
+  <data name="EclipseTimer_Subtitle" xml:space="preserve">
+    <value>تلامسات دقيقة محسوبة لموقعك مع تنبيهات صوتية</value>
+  </data>
+  <data name="EclipseTimer_SelectEclipse" xml:space="preserve">
+    <value>اختر كسوفًا</value>
+  </data>
+  <data name="EclipseTimer_Location" xml:space="preserve">
+    <value>الموقع</value>
+  </data>
+  <data name="EclipseTimer_UseGPS" xml:space="preserve">
+    <value>استخدام GPS</value>
+  </data>
+  <data name="EclipseTimer_Calculate" xml:space="preserve">
+    <value>احسب لموقعي</value>
+  </data>
+  <data name="EclipseTimer_Type_Total" xml:space="preserve">
+    <value>كسوف كلي</value>
+  </data>
+  <data name="EclipseTimer_Type_Annular" xml:space="preserve">
+    <value>كسوف حلقي</value>
+  </data>
+  <data name="EclipseTimer_Type_Partial" xml:space="preserve">
+    <value>كسوف جزئي</value>
+  </data>
+  <data name="EclipseTimer_Type_None" xml:space="preserve">
+    <value>غير مرئي من هذا الموقع</value>
+  </data>
+  <data name="EclipseTimer_MaxCoverage" xml:space="preserve">
+    <value>الحجب الأقصى</value>
+  </data>
+  <data name="EclipseTimer_NextEvent" xml:space="preserve">
+    <value>الحدث التالي</value>
+  </data>
+  <data name="EclipseTimer_AudioAlerts" xml:space="preserve">
+    <value>التنبيهات الصوتية</value>
+  </data>
+  <data name="EclipseTimer_AudioOn" xml:space="preserve">
+    <value>التنبيهات مفعّلة</value>
+  </data>
+  <data name="EclipseTimer_AudioOff" xml:space="preserve">
+    <value>التنبيهات معطّلة</value>
+  </data>
+  <data name="EclipseTimer_SunBelowHorizon" xml:space="preserve">
+    <value>ستكون الشمس تحت الأفق خلال هذا الكسوف من موقعك</value>
+  </data>
+  <data name="EclipseTimer_NotVisible" xml:space="preserve">
+    <value>هذا الكسوف غير مرئي من موقعك</value>
+  </data>
+  <data name="Eclipse_C1" xml:space="preserve">
+    <value>C1 — التلامس الأول</value>
+  </data>
+  <data name="Eclipse_C2" xml:space="preserve">
+    <value>C2 — بداية الكسوف الكلي</value>
+  </data>
+  <data name="Eclipse_C3" xml:space="preserve">
+    <value>C3 — نهاية الكسوف الكلي</value>
+  </data>
+  <data name="Eclipse_C4" xml:space="preserve">
+    <value>C4 — نهاية الكسوف</value>
+  </data>
+  <data name="Eclipse_ShadowBands" xml:space="preserve">
+    <value>أشرطة الظل</value>
+  </data>
+  <data name="Eclipse_BailyBeadsStart" xml:space="preserve">
+    <value>خرز بايلي (البداية)</value>
+  </data>
+  <data name="Eclipse_BailyBeadsEnd" xml:space="preserve">
+    <value>خرز بايلي (النهاية)</value>
+  </data>
+  <data name="Eclipse_DiamondRingStart" xml:space="preserve">
+    <value>خاتم الألماس (البداية)</value>
+  </data>
+  <data name="Eclipse_DiamondRingEnd" xml:space="preserve">
+    <value>خاتم الألماس (النهاية)</value>
+  </data>
+  <data name="Eclipse_Maximum" xml:space="preserve">
+    <value>ذروة الكسوف</value>
+  </data>
+  <data name="Eclipse_Alert_C1" xml:space="preserve">
+    <value>التلامس الأول. يبدأ الكسوف الآن.</value>
+  </data>
+  <data name="Eclipse_Alert_ShadowBands" xml:space="preserve">
+    <value>انتبه، أشرطة الظل بعد دقيقة تقريبًا.</value>
+  </data>
+  <data name="Eclipse_Alert_BailyStart" xml:space="preserve">
+    <value>خرز بايلي مرئية الآن.</value>
+  </data>
+  <data name="Eclipse_Alert_DiamondStart" xml:space="preserve">
+    <value>خاتم الألماس. يبدأ الكسوف الكلي خلال ثوانٍ.</value>
+  </data>
+  <data name="Eclipse_Alert_C2" xml:space="preserve">
+    <value>التلامس الثاني. بداية الكسوف الكلي!</value>
+  </data>
+  <data name="Eclipse_Alert_Maximum" xml:space="preserve">
+    <value>ذروة الكسوف.</value>
+  </data>
+  <data name="Eclipse_Alert_C3" xml:space="preserve">
+    <value>التلامس الثالث. ينتهي الكسوف الكلي الآن.</value>
+  </data>
+  <data name="Eclipse_Alert_DiamondEnd" xml:space="preserve">
+    <value>خاتم الألماس عند الخروج.</value>
+  </data>
+  <data name="Eclipse_Alert_BailyEnd" xml:space="preserve">
+    <value>خرز بايلي عند الخروج.</value>
+  </data>
+  <data name="Eclipse_Alert_C4" xml:space="preserve">
+    <value>التلامس الرابع. انتهى الكسوف.</value>
+  </data>
+  <data name="EclipseTimer_In" xml:space="preserve">
+    <value>خلال</value>
+  </data>
+  <data name="EclipseTimer_Ago" xml:space="preserve">
+    <value>منذ</value>
+  </data>
+  <data name="EclipseTimer_Now" xml:space="preserve">
+    <value>الآن!</value>
+  </data>
+  <data name="EclipseTimer_Hours" xml:space="preserve">
+    <value>س</value>
+  </data>
+  <data name="EclipseTimer_Minutes" xml:space="preserve">
+    <value>د</value>
+  </data>
+  <data name="EclipseTimer_Seconds" xml:space="preserve">
+    <value>ث</value>
+  </data>
+  <data name="EclipseTimer_LocalTime" xml:space="preserve">
+    <value>التوقيت المحلي</value>
+  </data>
+  <data name="EclipseTimer_Altitude" xml:space="preserve">
+    <value>ارتفاع الشمس</value>
+  </data>
+  <data name="EclipseTimer_Warning_Past" xml:space="preserve">
+    <value>هذا الكسوف قد وقع بالفعل</value>
+  </data>
+  <data name="EclipseTimer_EclipseType_Global" xml:space="preserve">
+    <value>النوع العالمي</value>
+  </data>
+  <data name="EclipseTimer_Region" xml:space="preserve">
+    <value>منطقة الرؤية القصوى</value>
+  </data>
 </root>

@@ -62,13 +62,14 @@
 
             // 3. lang y dir del <html>
             document.documentElement.lang = lang;
-            document.documentElement.dir  = lang === "ar" ? "rtl" : "ltr";
+            document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
         })();
     </script>
 
     <script src="_framework/blazor.webview.js" autostart="false"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script src="_content/ObservApp.Shared/geolocation.js"></script>
+    <script src="_content/ObservApp.Shared/eclipse-audio.js"></script>
     <script src="_content/ObservApp.Shared/leaflet-map.js"></script>
 </body>
 </html>

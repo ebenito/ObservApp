@@ -68,6 +68,10 @@ public static class MauiProgram
         // ── Ubicaciones Favoritas ─────────────────────────────────────────────
         builder.Services.AddSingleton<IFavoriteLocationsService, MauiFavoriteLocationsService>();
 
+        // ── Calculadora de tiempos de eclipses ────────────────────────────────
+        builder.Services.AddSingleton<IEclipseCalculatorService, EclipseCalculatorService>();
+        builder.Services.AddSingleton<IEclipseAudioService, MauiEclipseAudioService>();
+
         // ── HttpClient ───────────────────────────────────────────────────────
         builder.Services.AddHttpClient();
 

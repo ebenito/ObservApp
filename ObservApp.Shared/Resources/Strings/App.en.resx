@@ -774,4 +774,155 @@
   <data name="FOV_SimulatorTitle" xml:space="preserve">
     <value>Visual field simulation</value>
   </data>
+  <!-- ══ Eclipse Timer Calculator ══ -->
+  <data name="Calc_EclipseTimer_Title" xml:space="preserve">
+    <value>Eclipse Timer</value>
+  </data>
+  <data name="Calc_EclipseTimer_Desc" xml:space="preserve">
+    <value>C1-C4 contacts, diamond ring and real-time alerts for your location</value>
+  </data>
+  <data name="EclipseTimer_Title" xml:space="preserve">
+    <value>Eclipse Timer Calculator</value>
+  </data>
+  <data name="EclipseTimer_Subtitle" xml:space="preserve">
+    <value>Precise contacts calculated for your location with audio alerts</value>
+  </data>
+  <data name="EclipseTimer_SelectEclipse" xml:space="preserve">
+    <value>Select eclipse</value>
+  </data>
+  <data name="EclipseTimer_Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="EclipseTimer_UseGPS" xml:space="preserve">
+    <value>Use GPS</value>
+  </data>
+  <data name="EclipseTimer_Calculate" xml:space="preserve">
+    <value>Calculate for my location</value>
+  </data>
+  <data name="EclipseTimer_Type_Total" xml:space="preserve">
+    <value>Total eclipse</value>
+  </data>
+  <data name="EclipseTimer_Type_Annular" xml:space="preserve">
+    <value>Annular eclipse</value>
+  </data>
+  <data name="EclipseTimer_Type_Partial" xml:space="preserve">
+    <value>Partial eclipse</value>
+  </data>
+  <data name="EclipseTimer_Type_None" xml:space="preserve">
+    <value>Not visible from this location</value>
+  </data>
+  <data name="EclipseTimer_MaxCoverage" xml:space="preserve">
+    <value>Maximum coverage</value>
+  </data>
+  <data name="EclipseTimer_NextEvent" xml:space="preserve">
+    <value>Next event</value>
+  </data>
+  <data name="EclipseTimer_AudioAlerts" xml:space="preserve">
+    <value>Audio alerts</value>
+  </data>
+  <data name="EclipseTimer_AudioOn" xml:space="preserve">
+    <value>Alerts on</value>
+  </data>
+  <data name="EclipseTimer_AudioOff" xml:space="preserve">
+    <value>Alerts off</value>
+  </data>
+  <data name="EclipseTimer_SunBelowHorizon" xml:space="preserve">
+    <value>The Sun will be below the horizon during this eclipse at your location</value>
+  </data>
+  <data name="EclipseTimer_NotVisible" xml:space="preserve">
+    <value>This eclipse is not visible from your location</value>
+  </data>
+  <data name="Eclipse_C1" xml:space="preserve">
+    <value>C1 — First contact</value>
+  </data>
+  <data name="Eclipse_C2" xml:space="preserve">
+    <value>C2 — Beginning of totality</value>
+  </data>
+  <data name="Eclipse_C3" xml:space="preserve">
+    <value>C3 — End of totality</value>
+  </data>
+  <data name="Eclipse_C4" xml:space="preserve">
+    <value>C4 — End of eclipse</value>
+  </data>
+  <data name="Eclipse_ShadowBands" xml:space="preserve">
+    <value>Shadow bands</value>
+  </data>
+  <data name="Eclipse_BailyBeadsStart" xml:space="preserve">
+    <value>Baily's Beads (start)</value>
+  </data>
+  <data name="Eclipse_BailyBeadsEnd" xml:space="preserve">
+    <value>Baily's Beads (end)</value>
+  </data>
+  <data name="Eclipse_DiamondRingStart" xml:space="preserve">
+    <value>Diamond ring (start)</value>
+  </data>
+  <data name="Eclipse_DiamondRingEnd" xml:space="preserve">
+    <value>Diamond ring (end)</value>
+  </data>
+  <data name="Eclipse_Maximum" xml:space="preserve">
+    <value>Maximum eclipse</value>
+  </data>
+  <data name="Eclipse_Alert_C1" xml:space="preserve">
+    <value>First contact. The eclipse is beginning now.</value>
+  </data>
+  <data name="Eclipse_Alert_ShadowBands" xml:space="preserve">
+    <value>Attention, shadow bands in approximately one minute.</value>
+  </data>
+  <data name="Eclipse_Alert_BailyStart" xml:space="preserve">
+    <value>Baily's Beads visible now.</value>
+  </data>
+  <data name="Eclipse_Alert_DiamondStart" xml:space="preserve">
+    <value>Diamond ring effect. Totality begins in seconds.</value>
+  </data>
+  <data name="Eclipse_Alert_C2" xml:space="preserve">
+    <value>Second contact. Totality begins now!</value>
+  </data>
+  <data name="Eclipse_Alert_Maximum" xml:space="preserve">
+    <value>Maximum eclipse.</value>
+  </data>
+  <data name="Eclipse_Alert_C3" xml:space="preserve">
+    <value>Third contact. Totality is ending now.</value>
+  </data>
+  <data name="Eclipse_Alert_DiamondEnd" xml:space="preserve">
+    <value>Diamond ring effect at egress.</value>
+  </data>
+  <data name="Eclipse_Alert_BailyEnd" xml:space="preserve">
+    <value>Baily's Beads at egress.</value>
+  </data>
+  <data name="Eclipse_Alert_C4" xml:space="preserve">
+    <value>Fourth contact. The eclipse has ended.</value>
+  </data>
+  <data name="EclipseTimer_In" xml:space="preserve">
+    <value>in</value>
+  </data>
+  <data name="EclipseTimer_Ago" xml:space="preserve">
+    <value>ago</value>
+  </data>
+  <data name="EclipseTimer_Now" xml:space="preserve">
+    <value>NOW!</value>
+  </data>
+  <data name="EclipseTimer_Hours" xml:space="preserve">
+    <value>h</value>
+  </data>
+  <data name="EclipseTimer_Minutes" xml:space="preserve">
+    <value>min</value>
+  </data>
+  <data name="EclipseTimer_Seconds" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="EclipseTimer_LocalTime" xml:space="preserve">
+    <value>Local time</value>
+  </data>
+  <data name="EclipseTimer_Altitude" xml:space="preserve">
+    <value>Sun alt.</value>
+  </data>
+  <data name="EclipseTimer_Warning_Past" xml:space="preserve">
+    <value>This eclipse has already occurred</value>
+  </data>
+  <data name="EclipseTimer_EclipseType_Global" xml:space="preserve">
+    <value>Global type</value>
+  </data>
+  <data name="EclipseTimer_Region" xml:space="preserve">
+    <value>Region of maximum visibility</value>
+  </data>
 </root>

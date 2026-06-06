@@ -63,6 +63,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.70" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.8" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.8" />
+        <PackageReference Include="Plugin.Maui.Audio" Version="4.0.0" />
 
         <!-- Syncfusion licensing (el resto de paquetes SF van en Shared) -->
 
@@ -79,7 +80,6 @@
 
 	<ItemGroup>
 		<EmbeddedResource Include="appsettings.json" />
-		<EmbeddedResource Include="appsettings.Local.json"
-						  Condition="Exists('appsettings.Local.json')" />
+		<EmbeddedResource Include="appsettings.Local.json" Condition="Exists('appsettings.Local.json')" />
 	</ItemGroup>
 </Project>
