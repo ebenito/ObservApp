@@ -1,30 +1,28 @@
-﻿@page "/"
+@page "/"
+@using CosineKitty
+@using System.Globalization
+@using ObservApp.Shared.Models
+@using ObservApp.Shared.Services
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+@inject IGeolocationService GeoService
+@inject IFavoriteLocationsService FavLocationsService
+@inject IEclipseCalculatorService EclipseCalc
 
 <PageTitle>@L["AppName"] · @L["Home_Title"]</PageTitle>
 
 <div class="home-page">
 
-    <!-- ══════════════════════════════════════════════════════
-         HERO
-    ══════════════════════════════════════════════════════ -->
+    <!-- ══ HERO ══════════════════════════════════════════════════════════ -->
     <section class="home-hero">
-
-        <!-- Ilustración SVG: cielo nocturno + telescopio -->
         <div class="home-hero-illustration" aria-hidden="true">
             <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" class="home-svg">
                 <defs>
-                    <!-- Halo lunar plateado -->
                     <radialGradient id="hg-moon-glow" cx="50%" cy="50%" r="50%">
                         <stop offset="0%" stop-color="#d0ccc0" stop-opacity=".30"/>
                         <stop offset="100%" stop-color="#0d1b2a" stop-opacity="0"/>
                     </radialGradient>
-                    <filter id="hg-blur">
-                        <feGaussianBlur stdDeviation="3"/>
-                    </filter>
-                    <filter id="hg-blur-sm">
-                        <feGaussianBlur stdDeviation="1.5"/>
-                    </filter>
+                    <filter id="hg-blur"><feGaussianBlur stdDeviation="3"/></filter>
+                    <filter id="hg-blur-sm"><feGaussianBlur stdDeviation="1.5"/></filter>
                     <filter id="hg-star-glow">
                         <feGaussianBlur stdDeviation="3.5" result="blur"/>
                         <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
@@ -38,56 +36,29 @@
                         <stop offset="100%" stop-color="#243447" stop-opacity="1"/>
                     </linearGradient>
                 </defs>
-
-                <!-- Cielo -->
                 <rect width="360" height="220" fill="url(#hg-sky)"/>
-
-                <!-- Vía Láctea (brazo visto desde dentro, no galaxia completa) -->
                 <path d="M-30 126 C 36 96, 112 72, 206 56 C 280 44, 338 38, 392 30"
                       fill="none" stroke="#b7b0d1" stroke-width="20" stroke-linecap="round"
                       opacity=".11" filter="url(#hg-blur)"/>
-                <path d="M-20 121 C 44 92, 120 68, 210 54 C 282 43, 338 37, 386 31"
-                      fill="none" stroke="#d5d1e8" stroke-width="10" stroke-linecap="round"
-                      opacity=".12" filter="url(#hg-blur)"/>
                 <path d="M0 116 C 58 90, 132 68, 214 56 C 284 46, 336 42, 372 38"
                       fill="none" stroke="#f1effa" stroke-width="3" stroke-linecap="round"
                       opacity=".10" filter="url(#hg-blur-sm)"/>
-
-                <!-- Halo plateado de la luna -->
                 <circle cx="290" cy="48" r="54" fill="url(#hg-moon-glow)" filter="url(#hg-blur)"/>
-
-                <!-- Luna llena (blanco-marfil) -->
-                <circle cx="290" cy="48" r="22" fill="#E8E6D9" opacity=".22" filter="url(#hg-blur-sm)"/>
                 <circle cx="290" cy="48" r="18" fill="#E8E6D9"/>
-                <!-- Cráteres sutiles (gris plateado) -->
                 <circle cx="283" cy="43" r="3"   fill="#b0aca2" opacity=".35"/>
                 <circle cx="296" cy="55" r="2"   fill="#b0aca2" opacity=".28"/>
-                <circle cx="287" cy="53" r="1.5" fill="#b0aca2" opacity=".32"/>
-
-                <!-- Nebulosa aurora lejana -->
-                <ellipse cx="62"  cy="102" rx="58" ry="24" fill="#2ec4b6" opacity=".07" filter="url(#hg-blur)"/>
-                <ellipse cx="96"  cy="92"  rx="42" ry="16" fill="#7b5ea7" opacity=".09" filter="url(#hg-blur)"/>
-
-                <!-- Estrellas (blanco-azulado) -->
+                <ellipse cx="62" cy="102" rx="58" ry="24" fill="#2ec4b6" opacity=".07" filter="url(#hg-blur)"/>
                 <g class="home-svg-stars" fill="#dce8f8">
                     <circle cx="20"  cy="18"  r="1.2" opacity=".9"/>
                     <circle cx="55"  cy="8"   r="0.9" opacity=".7"/>
                     <circle cx="145" cy="12"  r="0.8" opacity=".6"/>
                     <circle cx="175" cy="30"  r="1.1" opacity=".8"/>
                     <circle cx="210" cy="14"  r="1.3" opacity=".9"/>
-                    <circle cx="240" cy="34"  r="0.7" opacity=".55"/>
                     <circle cx="258" cy="18"  r="1.0" opacity=".75"/>
-                    <circle cx="320" cy="28"  r="0.9" opacity=".65"/>
                     <circle cx="345" cy="10"  r="1.2" opacity=".85"/>
-                    <circle cx="35"  cy="45"  r="0.8" opacity=".5"/>
                     <circle cx="72"  cy="38"  r="1.1" opacity=".8"/>
-                    <circle cx="130" cy="50"  r="0.7" opacity=".6"/>
-                    <circle cx="220" cy="54"  r="0.8" opacity=".6"/>
                     <circle cx="335" cy="72"  r="1.0" opacity=".7"/>
-                    <circle cx="350" cy="44"  r="0.7" opacity=".5"/>
                 </g>
-
-                <!-- Estrella brillante de referencia (Vega) -->
                 <g filter="url(#hg-star-glow)">
                     <circle cx="160" cy="42" r="2.2" fill="#eef4ff"/>
                     <line x1="160" y1="36" x2="160" y2="32" stroke="#eef4ff" stroke-width="0.8" opacity=".55"/>
@@ -95,51 +66,28 @@
                     <line x1="154" y1="42" x2="150" y2="42" stroke="#eef4ff" stroke-width="0.8" opacity=".55"/>
                     <line x1="166" y1="42" x2="170" y2="42" stroke="#eef4ff" stroke-width="0.8" opacity=".55"/>
                 </g>
-
-                <!-- Horizonte difuminado -->
                 <rect y="155" width="360" height="65" fill="url(#hg-horizon)"/>
-
-                <!-- Silueta de montaña -->
                 <path d="M0 200 Q60 155 120 170 Q160 155 200 172 Q250 145 300 168 Q330 160 360 175 L360 220 L0 220 Z"
                       fill="#1b2a3b" opacity=".9"/>
-                <path d="M0 210 Q80 185 180 195 Q260 180 360 192 L360 220 L0 220 Z"
-                      fill="#0d1b2a"/>
-
-                <!-- Telescopio (por DELANTE de la montaña y apoyado en el suelo) -->
+                <path d="M0 210 Q80 185 180 195 Q260 180 360 192 L360 220 L0 220 Z" fill="#0d1b2a"/>
                 <g transform="translate(132, 122)">
-                    <!-- Trípode patas (estático) -->
                     <line x1="25" y1="56" x2="5"  y2="84" stroke="#364e68" stroke-width="2.5" stroke-linecap="round"/>
                     <line x1="25" y1="56" x2="25" y2="86" stroke="#364e68" stroke-width="2.5" stroke-linecap="round"/>
                     <line x1="25" y1="56" x2="45" y2="84" stroke="#364e68" stroke-width="2.5" stroke-linecap="round"/>
-                    <!-- Barra cruzada trípode -->
                     <line x1="10" y1="72" x2="40" y2="72" stroke="#364e68" stroke-width="1.5" stroke-linecap="round"/>
-                    <!-- Montura -->
                     <circle cx="25" cy="56" r="5" fill="#243447" stroke="#364e68" stroke-width="1.5"/>
-                    <!-- Tubo + accesorios (pivote real en montura, bajo el buscador) -->
                     <g transform="translate(22, 56)">
                         <g class="home-svg-scope-tube">
-                            <!-- Tubo principal (más ancho) -->
-                            <rect x="-8" y="-16" width="44" height="20" rx="4"
-                                  fill="#243447" stroke="#2ec4b6" stroke-width="1.5"/>
-                            <!-- Objetivo frontal -->
-                            <ellipse cx="36" cy="-6" rx="3.5" ry="10"
-                                     fill="#1b2a3b" stroke="#2ec4b6" stroke-width="1.2"/>
-                            <!-- Ocular trasero -->
-                            <rect x="-15" y="-13" width="7" height="10" rx="1.8"
-                                  fill="#1b2a3b" stroke="#f4c430" stroke-width="1.1"/>
-                            <!-- Buscador -->
-                            <rect x="4" y="-22" width="16" height="4.5" rx="1.4"
-                                  fill="#243447" stroke="#94a3b8" stroke-width="1"/>
-                            <!-- Haz de luz simbólico -->
-                            <line x1="41" y1="-6" x2="57" y2="-6"
-                                  stroke="#2ec4b6" stroke-width="1" stroke-dasharray="3 2" opacity=".5"/>
+                            <rect x="-8" y="-16" width="44" height="20" rx="4" fill="#243447" stroke="#2ec4b6" stroke-width="1.5"/>
+                            <ellipse cx="36" cy="-6" rx="3.5" ry="10" fill="#1b2a3b" stroke="#2ec4b6" stroke-width="1.2"/>
+                            <rect x="-15" y="-13" width="7" height="10" rx="1.8" fill="#1b2a3b" stroke="#f4c430" stroke-width="1.1"/>
+                            <rect x="4" y="-22" width="16" height="4.5" rx="1.4" fill="#243447" stroke="#94a3b8" stroke-width="1"/>
+                            <line x1="41" y1="-6" x2="57" y2="-6" stroke="#2ec4b6" stroke-width="1" stroke-dasharray="3 2" opacity=".5"/>
                         </g>
                     </g>
                 </g>
             </svg>
         </div>
-
-        <!-- Texto hero -->
         <div class="home-hero-text">
             <div class="home-hero-badge">
                 <span class="home-hero-star">★</span> ObservApp
@@ -147,16 +95,162 @@
             <h1 class="home-hero-title">@L["Home_Welcome"]</h1>
             <p class="home-hero-subtitle">@L["Home_Subtitle"]</p>
         </div>
-
     </section>
 
-    <!-- ══════════════════════════════════════════════════════
-         ACCESO RÁPIDO
-    ══════════════════════════════════════════════════════ -->
+    <!-- ══ PANEL SITUACIÓN ASTRONÓMICA ════════════════════════════════════ -->
+    <section class="home-section">
+        <div class="home-astro-header">
+            <h2 class="home-section-title">@L["Home_Now_Title"]</h2>
+            <div class="home-astro-actions">
+                <!-- Selector de ubicación favorita -->
+                @if (_favLocations != null && _favLocations.Count > 0)
+                {
+                    <select class="home-loc-select" @onchange="OnFavLocationChanged">
+                        <option value="manual">📍 @L["FavLoc_Select_Manual"]</option>
+                        @foreach (var loc in _favLocations)
+                        {
+                            <option value="@loc.Id">⭐ @loc.Name</option>
+                        }
+                    </select>
+                }
+                <!-- Botón GPS -->
+                <button class="home-gps-btn @(_gpsLoading ? "loading" : "")"
+                        @onclick="OnUsarGpsAsync"
+                        disabled="@_gpsLoading"
+                        title="@L["SolLuna_UseGPS"]">
+                    @if (_gpsLoading)
+                    {
+                        <span class="home-spinner"></span>
+                    }
+                    else
+                    {
+                        <span>📡</span>
+                    }
+                    @L["SolLuna_UseGPS"]
+                </button>
+            </div>
+        </div>
+
+        <!-- Indicador de ubicación activa -->
+        <div class="home-loc-badge">
+            <span class="home-loc-icon">📍</span>
+            <span class="home-loc-text">@_locationLabel</span>
+        </div>
+
+        @if (_gpsError != null)
+        {
+            <div class="home-error-note">⚠️ @_gpsError</div>
+        }
+
+        @if (_astroData != null)
+        {
+            <div class="home-astro-grid">
+
+                <!-- Sol -->
+                <div class="home-astro-card home-astro-card--sun">
+                    <div class="home-astro-card-header">
+                        <span class="home-astro-icon">☀️</span>
+                        <span class="home-astro-label">@L["SolLuna_Tab_Sun"]</span>
+                        <span class="home-astro-badge @(_astroData.IsDaytime ? "badge--day" : "badge--night")">
+                            @(_astroData.IsDaytime ? L["Home_Sun_Up"] : L["Home_Sun_Down"])
+                        </span>
+                    </div>
+                    <div class="home-astro-rows">
+                        <div class="home-astro-row">
+                            <span class="home-astro-row-label">🌅 @L["SolLuna_Sunrise"]</span>
+                            <span class="home-astro-row-value">@FormatTime(_astroData.Sunrise)</span>
+                        </div>
+                        <div class="home-astro-row">
+                            <span class="home-astro-row-label">🌇 @L["SolLuna_Sunset"]</span>
+                            <span class="home-astro-row-value">@FormatTime(_astroData.Sunset)</span>
+                        </div>
+                        <div class="home-astro-row">
+                            <span class="home-astro-row-label">🌃 @L["Home_AstroNight"]</span>
+                            <span class="home-astro-row-value @(_astroData.IsAstroNight ? "value--active" : "")">
+                                @(_astroData.IsAstroNight ? L["Home_AstroNight_Active"] : FormatTime(_astroData.AstroTwilightEnd))
+                            </span>
+                        </div>
+                        <div class="home-astro-row">
+                            <span class="home-astro-row-label">⏱ @L["SolLuna_DayLength"]</span>
+                            <span class="home-astro-row-value">@_astroData.DayLength</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Luna -->
+                <div class="home-astro-card home-astro-card--moon">
+                    <div class="home-astro-card-header">
+                        <span class="home-astro-icon">@_astroData.MoonEmoji</span>
+                        <span class="home-astro-label">@L["SolLuna_Tab_Moon"]</span>
+                    </div>
+                    <div class="home-moon-phase-display">
+                        <span class="home-moon-emoji">@_astroData.MoonEmoji</span>
+                        <div class="home-moon-info">
+                            <span class="home-moon-name">@_astroData.MoonPhaseName</span>
+                            <div class="home-moon-illum-bar">
+                                <div class="home-moon-illum-fill"
+                                     style="width:@(_astroData.MoonIllumination.ToString("F0", CultureInfo.InvariantCulture))%">
+                                </div>
+                            </div>
+                            <span class="home-moon-pct">@_astroData.MoonIllumination.ToString("F0")%</span>
+                        </div>
+                    </div>
+                    <div class="home-astro-rows">
+                        <div class="home-astro-row">
+                            <span class="home-astro-row-label">🌕 @L["SolLuna_Moonrise"]</span>
+                            <span class="home-astro-row-value">@FormatTime(_astroData.Moonrise)</span>
+                        </div>
+                        <div class="home-astro-row">
+                            <span class="home-astro-row-label">🌑 @L["SolLuna_Moonset"]</span>
+                            <span class="home-astro-row-value">@FormatTime(_astroData.Moonset)</span>
+                        </div>
+                        <div class="home-astro-row">
+                            <span class="home-astro-row-label">📅 @L["SolLuna_LunarAge"]</span>
+                            <span class="home-astro-row-value">@_astroData.MoonAge.ToString("F1") @L["SolLuna_Days"]</span>
+                        </div>
+                        <div class="home-astro-row">
+                            <span class="home-astro-row-label">🔭 @L["Home_NextFullMoon"]</span>
+                            <span class="home-astro-row-value">@_astroData.NextFullMoon</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Próximo eclipse -->
+            @if (_nextEclipse != null)
+            {
+                <div class="home-eclipse-card">
+                    <div class="home-eclipse-icon">🌑</div>
+                    <div class="home-eclipse-body">
+                        <span class="home-eclipse-label">@L["Home_NextEclipse"]</span>
+                        <span class="home-eclipse-name">
+                            @_nextEclipse.Date.ToString("d MMM yyyy") —
+                            @GetEclipseTypeName(_nextEclipse.MaxType)
+                        </span>
+                        <span class="home-eclipse-region">@_nextEclipse.RegionLabel</span>
+                    </div>
+                    <div class="home-eclipse-countdown">
+                        <span class="home-eclipse-days">@_daysToEclipse</span>
+                        <span class="home-eclipse-days-label">@L["EclipseTimer_Days"]</span>
+                    </div>
+                    <a class="home-eclipse-link" href="/calculadoras/eclipse-solar">→</a>
+                </div>
+            }
+        }
+        else if (_calculating)
+        {
+            <div class="home-calculating">
+                <span class="home-spinner"></span>
+                <span>@L["Status_Loading"]</span>
+            </div>
+        }
+    </section>
+
+    <!-- ══ ACCESO RÁPIDO ══════════════════════════════════════════════════ -->
     <section class="home-section">
         <h2 class="home-section-title">@L["Home_QuickAccess"]</h2>
         <div class="home-quick-grid">
-
             <a class="home-qcard home-qcard--map" href="/mapa">
                 <div class="home-qcard-icon">🗺️</div>
                 <div class="home-qcard-body">
@@ -165,7 +259,6 @@
                 </div>
                 <span class="home-qcard-arrow">→</span>
             </a>
-
             <a class="home-qcard home-qcard--planning" href="/planificacion">
                 <div class="home-qcard-icon">📅</div>
                 <div class="home-qcard-body">
@@ -174,8 +267,7 @@
                 </div>
                 <span class="home-qcard-arrow">→</span>
             </a>
-
-            <a class="home-qcard home-qcard--ephemeris" href="/efemerides">
+            <a class="home-qcard home-qcard--ephemeris" href="/calculadoras/soluna">
                 <div class="home-qcard-icon">🌙</div>
                 <div class="home-qcard-body">
                     <span class="home-qcard-title">@L["Nav_Ephemeris"]</span>
@@ -183,7 +275,6 @@
                 </div>
                 <span class="home-qcard-arrow">→</span>
             </a>
-
             <a class="home-qcard home-qcard--calc" href="/calculadoras">
                 <div class="home-qcard-icon">🧮</div>
                 <div class="home-qcard-body">
@@ -192,50 +283,298 @@
                 </div>
                 <span class="home-qcard-arrow">→</span>
             </a>
-
         </div>
     </section>
 
-    <!-- ══════════════════════════════════════════════════════
-         CARACTERÍSTICAS
-    ══════════════════════════════════════════════════════ -->
+    <!-- ══ CARACTERÍSTICAS ════════════════════════════════════════════════ -->
     <section class="home-section">
         <h2 class="home-section-title">@L["Home_Features_Title"]</h2>
         <div class="home-features-grid">
-
             <div class="home-feat">
                 <div class="home-feat-icon home-feat-icon--aurora">🔭</div>
                 <h3 class="home-feat-title">@L["Home_Feature1_Title"]</h3>
                 <p class="home-feat-desc">@L["Home_Feature1_Desc"]</p>
             </div>
-
             <div class="home-feat">
                 <div class="home-feat-icon home-feat-icon--star">🧮</div>
                 <h3 class="home-feat-title">@L["Home_Feature2_Title"]</h3>
                 <p class="home-feat-desc">@L["Home_Feature2_Desc"]</p>
             </div>
-
             <div class="home-feat">
                 <div class="home-feat-icon home-feat-icon--nebula">📷</div>
                 <h3 class="home-feat-title">@L["Home_Feature3_Title"]</h3>
                 <p class="home-feat-desc">@L["Home_Feature3_Desc"]</p>
             </div>
-
             <div class="home-feat">
                 <div class="home-feat-icon home-feat-icon--mars">📜</div>
                 <h3 class="home-feat-title">@L["Home_Feature4_Title"]</h3>
                 <p class="home-feat-desc">@L["Home_Feature4_Desc"]</p>
             </div>
-
         </div>
     </section>
 
-    <!-- ══════════════════════════════════════════════════════
-         PIE DE VERSIÓN
-    ══════════════════════════════════════════════════════ -->
     <footer class="home-footer">
         <span class="home-footer-star">★</span>
         <span>@L["AppName"] @L["AppVersion"]</span>
     </footer>
 
 </div>
+
+@code {
+
+    // ── Datos calculados ─────────────────────────────────────────────────────
+    private AstroSnapshot? _astroData;
+    private EclipseDefinition? _nextEclipse;
+    private int _daysToEclipse;
+    private bool _calculating = true;
+
+    // ── Ubicación ────────────────────────────────────────────────────────────
+    private double _lat = 40.4168;   // Madrid por defecto
+    private double _lon = -3.7038;
+    private double _alt = 650;
+    private string _locationLabel = "Madrid (por defecto)";
+
+    private List<FavoriteLocation>? _favLocations;
+    private bool _gpsLoading;
+    private string? _gpsError;
+
+    // ── Ciclo de vida ────────────────────────────────────────────────────────
+    protected override async Task OnInitializedAsync()
+    {
+        _favLocations = await FavLocationsService.GetFavoriteLocationsAsync();
+
+        // Si hay exactamente una favorita, usarla como fallback en lugar de Madrid
+        if (_favLocations?.Count == 1)
+        {
+            var fav = _favLocations[0];
+            _lat = fav.Latitude;
+            _lon = fav.Longitude;
+            _alt = fav.AltitudeMeters;
+            _locationLabel = fav.Name;
+        }
+
+        Calcular();
+        CargarProximoEclipse();
+    }
+
+    // ── Geolocalización ──────────────────────────────────────────────────────
+    private async Task OnUsarGpsAsync()
+    {
+        _gpsLoading = true;
+        _gpsError = null;
+        StateHasChanged();
+
+        var loc = await GeoService.GetCurrentLocationAsync(highAccuracy: true);
+        if (loc != null)
+        {
+            _lat = loc.Latitude;
+            _lon = loc.Longitude;
+            _alt = loc.AltitudeMeters ?? _alt;
+            _locationLabel = $"GPS · {_lat:F4}°, {_lon:F4}°";
+            _gpsError = null;
+            Calcular();
+        }
+        else
+        {
+            _gpsError = GeoService.LastError;
+        }
+
+        _gpsLoading = false;
+        StateHasChanged();
+    }
+
+    private void OnFavLocationChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        var val = e.Value?.ToString();
+        if (string.IsNullOrEmpty(val) || val == "manual") return;
+
+        if (Guid.TryParse(val, out var id))
+        {
+            var loc = _favLocations?.Find(l => l.Id == id);
+            if (loc != null)
+            {
+                _lat = loc.Latitude;
+                _lon = loc.Longitude;
+                _alt = loc.AltitudeMeters;
+                _locationLabel = loc.Name;
+                _gpsError = null;
+                Calcular();
+            }
+        }
+    }
+
+    // ── Cálculo astronómico ──────────────────────────────────────────────────
+    private void Calcular()
+    {
+        _calculating = true;
+        _astroData = null;
+        StateHasChanged();
+
+        try
+        {
+            var observer = new Observer(_lat, _lon, _alt / 1000.0);
+            var now = DateTime.UtcNow;
+            var today = new AstroTime(now.Year, now.Month, now.Day, 12, 0, 0);
+            var nowTime = new AstroTime(now);
+
+            // ── Sol ──────────────────────────────────────────────────────────
+            var sunrise = RiseSetTime(observer, today, Body.Sun, Direction.Rise);
+            var sunset  = RiseSetTime(observer, today, Body.Sun, Direction.Set);
+
+            TimeSpan? dayLength = null;
+            if (sunrise.HasValue && sunset.HasValue)
+                dayLength = sunset.Value - sunrise.Value;
+
+            var astroTwilightEnd   = TwilightTime(observer, today, -18.0, Direction.Set);
+            var astroTwilightStart = TwilightTime(observer, today, -18.0, Direction.Rise);
+
+            // Noche astronómica activa si es después del crepúsculo astronómico del atardecer
+            // o antes del crepúsculo astronómico del amanecer
+            bool isAstroNight = false;
+            if (astroTwilightEnd.HasValue && now.ToLocalTime() > astroTwilightEnd.Value.ToLocalTime())
+                isAstroNight = true;
+            if (astroTwilightStart.HasValue && now.ToLocalTime() < astroTwilightStart.Value.ToLocalTime())
+                isAstroNight = true;
+
+            // Es de día si el Sol está sobre el horizonte
+            var eqSun = Astronomy.Equator(Body.Sun, nowTime, observer,
+                EquatorEpoch.OfDate, Aberration.Corrected);
+            var hzSun = Astronomy.Horizon(nowTime, observer,
+                eqSun.ra, eqSun.dec, Refraction.Normal);
+            bool isDaytime = hzSun.altitude > 0;
+
+            // ── Luna ─────────────────────────────────────────────────────────
+            var moonrise = RiseSetTime(observer, today, Body.Moon, Direction.Rise);
+            var moonset  = RiseSetTime(observer, today, Body.Moon, Direction.Set);
+
+            double moonPhase = Astronomy.MoonPhase(nowTime);
+            var ilum = Astronomy.Illumination(Body.Moon, nowTime);
+            double moonIllum = ilum.phase_fraction * 100.0;
+            double moonAge = (moonPhase / 360.0) * 29.53058770576;
+
+            string moonPhaseName = MoonPhaseName(moonPhase);
+            string moonEmoji     = MoonPhaseEmoji(moonPhase);
+
+            var nextFull = Astronomy.SearchMoonPhase(180, nowTime, 30).ToUtcDateTime();
+
+            _astroData = new AstroSnapshot
+            {
+                Sunrise        = sunrise,
+                Sunset         = sunset,
+                DayLength      = FormatDuration(dayLength),
+                AstroTwilightEnd = astroTwilightEnd,
+                IsAstroNight   = isAstroNight,
+                IsDaytime      = isDaytime,
+                Moonrise       = moonrise,
+                Moonset        = moonset,
+                MoonPhaseName  = moonPhaseName,
+                MoonEmoji      = moonEmoji,
+                MoonIllumination = moonIllum,
+                MoonAge        = moonAge,
+                NextFullMoon   = nextFull.ToLocalTime().ToString("d MMM")
+            };
+        }
+        catch
+        {
+            // Si falla el cálculo, dejamos _astroData en null — la UI lo gestiona
+        }
+
+        _calculating = false;
+        StateHasChanged();
+    }
+
+    private void CargarProximoEclipse()
+    {
+        try
+        {
+            _nextEclipse = EclipseCalc
+                .GetUpcomingEclipses(6)
+                .Where(e => e.Date > DateTime.UtcNow)
+                .OrderBy(e => e.Date)
+                .FirstOrDefault();
+
+            if (_nextEclipse != null)
+                _daysToEclipse = (int)Math.Ceiling(
+                    (_nextEclipse.Date - DateTime.UtcNow).TotalDays);
+        }
+        catch { }
+    }
+
+    // ── Helpers AstronomyEngine ──────────────────────────────────────────────
+    private static DateTime? RiseSetTime(Observer obs, AstroTime day, Body body, Direction dir)
+    {
+        try
+        {
+            var start = new AstroTime(day.ToUtcDateTime().Date);
+            var evt = Astronomy.SearchRiseSet(body, obs, dir, start, 1.0);
+            return evt?.ToUtcDateTime();
+        }
+        catch { return null; }
+    }
+
+    private DateTime? TwilightTime(Observer obs, AstroTime day, double altitude, Direction dir)
+    {
+        try
+        {
+            var now = DateTime.UtcNow;
+            var start = new AstroTime(now.Year, now.Month, now.Day,
+                dir == Direction.Rise ? 0 : 12, 0, 0);
+            var result = Astronomy.SearchAltitude(Body.Sun, obs, dir, start, 1.0, altitude);
+            return result?.ToUtcDateTime();
+        }
+        catch { return null; }
+    }
+
+    // ── Helpers de formato ───────────────────────────────────────────────────
+    private static string FormatTime(DateTime? dt)
+        => dt.HasValue ? dt.Value.ToLocalTime().ToString("HH:mm") : "—";
+
+    private static string FormatDuration(TimeSpan? ts)
+        => ts.HasValue ? $"{(int)ts.Value.TotalHours}h {ts.Value.Minutes:D2}m" : "—";
+
+    private string MoonPhaseName(double angle) => angle switch
+    {
+        < 22.5  => L["SolLuna_Phase_New"],
+        < 67.5  => L["SolLuna_Phase_WaxCrescent"],
+        < 112.5 => L["SolLuna_Phase_FirstQuarter"],
+        < 157.5 => L["SolLuna_Phase_WaxGibbous"],
+        < 202.5 => L["SolLuna_Phase_Full"],
+        < 247.5 => L["SolLuna_Phase_WanGibbous"],
+        < 292.5 => L["SolLuna_Phase_LastQuarter"],
+        < 337.5 => L["SolLuna_Phase_WanCrescent"],
+        _       => L["SolLuna_Phase_New"]
+    };
+
+    private static string MoonPhaseEmoji(double angle) => angle switch
+    {
+        < 22.5  => "🌑", < 67.5  => "🌒", < 112.5 => "🌓", < 157.5 => "🌔",
+        < 202.5 => "🌕", < 247.5 => "🌖", < 292.5 => "🌗", < 337.5 => "🌘",
+        _       => "🌑"
+    };
+
+    private string GetEclipseTypeName(EclipseType t) => t switch
+    {
+        EclipseType.Total   => L["SolLuna_Eclipse_Total"],
+        EclipseType.Annular => L["SolLuna_Eclipse_Annular"],
+        EclipseType.Hybrid  => L["SolLuna_Eclipse_Annular"],
+        _                   => L["SolLuna_Eclipse_Partial"]
+    };
+
+    // ── Modelo de datos local ────────────────────────────────────────────────
+    private sealed class AstroSnapshot
+    {
+        public DateTime? Sunrise         { get; init; }
+        public DateTime? Sunset          { get; init; }
+        public string    DayLength       { get; init; } = "—";
+        public DateTime? AstroTwilightEnd{ get; init; }
+        public bool      IsAstroNight    { get; init; }
+        public bool      IsDaytime       { get; init; }
+        public DateTime? Moonrise        { get; init; }
+        public DateTime? Moonset         { get; init; }
+        public string    MoonPhaseName   { get; init; } = "";
+        public string    MoonEmoji       { get; init; } = "🌑";
+        public double    MoonIllumination{ get; init; }
+        public double    MoonAge         { get; init; }
+        public string    NextFullMoon    { get; init; } = "";
+    }
+}

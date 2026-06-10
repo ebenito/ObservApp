@@ -1,5 +1,5 @@
 /* ============================================================
-   HOME — Pantalla de inicio
+   HOME — Pantalla de inicio con datos astronómicos
    ============================================================ */
 
 .home-page {
@@ -13,52 +13,33 @@
     position: relative;
     border-radius: var(--radius-xl);
     overflow: hidden;
-    margin-bottom: 32px;
+    margin-bottom: 28px;
     background: var(--obs-navy);
     border: 1px solid var(--obs-border);
     box-shadow: var(--shadow-card);
 }
 
-.home-hero-illustration {
-    width: 100%;
-    display: block;
-    line-height: 0;
-}
+.home-hero-illustration { width: 100%; display: block; line-height: 0; }
+.home-svg { width: 100%; height: auto; display: block; }
 
-.home-svg {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Animación radial del tubo del telescopio (0° a 75°) */
 @keyframes home-scope-track {
     0%   { transform: rotate(0deg); }
     45%  { transform: rotate(-75deg); }
     55%  { transform: rotate(-75deg); }
     100% { transform: rotate(0deg); }
 }
-
 .home-svg-scope-tube {
-    transform-origin: 0 0;   /* pivote en la montura (0,0 del grupo interno) */
+    transform-origin: 0 0;
     animation: home-scope-track 18s ease-in-out infinite;
 }
 
-/* Centelleo de estrellas */
 @keyframes home-star-twinkle {
     0%, 100% { opacity: .9; }
     50%       { opacity: .3; }
 }
+.home-svg-stars circle:nth-child(odd)  { animation: home-star-twinkle 3.2s ease-in-out infinite; }
+.home-svg-stars circle:nth-child(even) { animation: home-star-twinkle 4.5s ease-in-out infinite 1.1s; }
 
-.home-svg-stars circle:nth-child(odd) {
-    animation: home-star-twinkle 3.2s ease-in-out infinite;
-}
-
-.home-svg-stars circle:nth-child(even) {
-    animation: home-star-twinkle 4.5s ease-in-out infinite 1.1s;
-}
-
-/* Texto hero superpuesto */
 .home-hero-text {
     padding: 20px 24px 24px;
     background: linear-gradient(to bottom, transparent, rgba(13,27,42,.95) 30%);
@@ -76,38 +57,18 @@
     letter-spacing: .1em;
     text-transform: uppercase;
     color: var(--obs-star);
-    background: rgba(244, 196, 48, .12);
-    border: 1px solid rgba(244, 196, 48, .3);
+    background: rgba(244,196,48,.12);
+    border: 1px solid rgba(244,196,48,.3);
     border-radius: 999px;
     padding: 3px 10px;
     margin-bottom: 10px;
 }
+.home-hero-star  { font-size: 0.75rem; }
+.home-hero-title { font-size: 1.55rem; font-weight: 800; color: var(--obs-moon); margin: 0 0 8px; line-height: 1.25; letter-spacing: -.02em; }
+.home-hero-subtitle { font-size: 0.85rem; color: var(--obs-comet); margin: 0; line-height: 1.6; max-width: 400px; }
 
-.home-hero-star {
-    font-size: 0.75rem;
-}
-
-.home-hero-title {
-    font-size: 1.55rem;
-    font-weight: 800;
-    color: var(--obs-moon);
-    margin: 0 0 8px;
-    line-height: 1.25;
-    letter-spacing: -.02em;
-}
-
-.home-hero-subtitle {
-    font-size: 0.85rem;
-    color: var(--obs-comet);
-    margin: 0;
-    line-height: 1.6;
-    max-width: 400px;
-}
-
-/* ── SECCIONES ─────────────────────────────────────────────── */
-.home-section {
-    margin-bottom: 32px;
-}
+/* ── SECCIONES GENERALES ──────────────────────────────────── */
+.home-section { margin-bottom: 28px; }
 
 .home-section-title {
     font-size: 0.72rem;
@@ -115,15 +76,256 @@
     letter-spacing: .1em;
     text-transform: uppercase;
     color: var(--obs-comet);
-    margin: 0 0 14px;
+    margin: 0 0 12px;
 }
 
-/* ── ACCESO RÁPIDO ─────────────────────────────────────────── */
-.home-quick-grid {
+/* ── CABECERA DEL PANEL ASTRONÓMICO ───────────────────────── */
+.home-astro-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.home-astro-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Selector de favoritas */
+.home-loc-select {
+    background: var(--obs-deep);
+    border: 1px solid var(--obs-border);
+    color: var(--obs-moon);
+    border-radius: var(--radius-sm);
+    padding: 5px 8px;
+    font-size: 0.78rem;
+    max-width: 160px;
+}
+
+/* Botón GPS */
+.home-gps-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 11px;
+    border-radius: 8px;
+    border: 1px solid var(--obs-aurora);
+    background: rgba(46,196,182,.1);
+    color: var(--obs-aurora);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--transition);
+    white-space: nowrap;
+}
+.home-gps-btn:hover:not(:disabled) { background: rgba(46,196,182,.2); }
+.home-gps-btn:disabled, .home-gps-btn.loading { opacity: .6; cursor: not-allowed; }
+
+/* Badge de ubicación activa */
+.home-loc-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.72rem;
+    color: var(--obs-comet);
+    margin-bottom: 12px;
+}
+.home-loc-icon { font-size: 0.8rem; }
+
+.home-error-note {
+    font-size: 0.78rem;
+    color: var(--obs-mars);
+    margin-bottom: 10px;
+}
+
+/* ── GRID SOL / LUNA ──────────────────────────────────────── */
+.home-astro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+@media (max-width: 480px) {
+    .home-astro-grid { grid-template-columns: 1fr; }
+}
+
+.home-astro-card {
+    background: var(--obs-navy);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+.home-astro-card--sun  { border-top: 3px solid rgba(245,158,11,.6); }
+.home-astro-card--moon { border-top: 3px solid rgba(148,163,184,.5); }
+
+.home-astro-card-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 12px 8px;
+    border-bottom: 1px solid var(--obs-border);
+}
+.home-astro-icon  { font-size: 1.1rem; }
+.home-astro-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--obs-comet); flex: 1; }
+
+/* Badge día/noche */
+.home-astro-badge {
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+.badge--day  { background: rgba(245,158,11,.15); color: #f59e0b; border: 1px solid rgba(245,158,11,.3); }
+.badge--night{ background: rgba(99,102,241,.12); color: #818cf8; border: 1px solid rgba(99,102,241,.25); }
+
+/* Filas de datos */
+.home-astro-rows { padding: 8px 12px 10px; display: flex; flex-direction: column; gap: 2px; }
+
+.home-astro-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(46,64,87,.4);
+    gap: 6px;
+}
+.home-astro-row:last-child { border-bottom: none; }
+
+.home-astro-row-label {
+    font-size: 0.76rem;
+    color: var(--obs-comet);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60%;
+}
+.home-astro-row-value {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--obs-moon);
+    white-space: nowrap;
+}
+.value--active { color: var(--obs-aurora); }
+
+/* Fase lunar */
+.home-moon-phase-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px 6px;
+}
+.home-moon-emoji { font-size: 2.2rem; line-height: 1; flex-shrink: 0; }
+.home-moon-info  { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.home-moon-name  { font-size: 0.82rem; font-weight: 700; color: var(--obs-moon); }
+.home-moon-illum-bar {
+    height: 5px;
+    background: rgba(255,255,255,.08);
+    border-radius: 3px;
+    overflow: hidden;
+}
+.home-moon-illum-fill {
+    height: 100%;
+    background: linear-gradient(90deg, rgba(148,163,184,.4), var(--obs-moon));
+    border-radius: 3px;
+    transition: width .4s ease;
+}
+.home-moon-pct { font-size: 0.72rem; color: var(--obs-comet); }
+
+/* ── PRÓXIMO ECLIPSE ──────────────────────────────────────── */
+.home-eclipse-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--obs-navy);
+    border: 1px solid rgba(123,94,167,.35);
+    border-left: 4px solid var(--obs-nebula);
+    border-radius: var(--radius-lg);
+    padding: 12px 14px;
+    margin-top: 12px;
+}
+
+.home-eclipse-icon { font-size: 1.6rem; flex-shrink: 0; }
+
+.home-eclipse-body {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
 }
+.home-eclipse-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--obs-nebula);
+}
+.home-eclipse-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--obs-moon);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.home-eclipse-region { font-size: 0.74rem; color: var(--obs-comet); }
+
+.home-eclipse-countdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    background: rgba(123,94,167,.15);
+    border-radius: var(--radius-md);
+    padding: 6px 10px;
+}
+.home-eclipse-days       { font-size: 1.4rem; font-weight: 800; color: var(--obs-moon); line-height: 1; }
+.home-eclipse-days-label { font-size: 0.62rem; color: var(--obs-nebula); font-weight: 700; text-transform: uppercase; }
+
+.home-eclipse-link {
+    font-size: 1.2rem;
+    color: var(--obs-nebula);
+    text-decoration: none;
+    flex-shrink: 0;
+    padding: 4px 6px;
+    border-radius: var(--radius-sm);
+    transition: background var(--transition);
+}
+.home-eclipse-link:hover { background: rgba(123,94,167,.15); }
+
+/* ── SPINNER / CARGANDO ───────────────────────────────────── */
+.home-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(46,196,182,.3);
+    border-top-color: var(--obs-aurora);
+    border-radius: 50%;
+    animation: home-spin .7s linear infinite;
+}
+@keyframes home-spin { to { transform: rotate(360deg); } }
+
+.home-calculating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 24px;
+    color: var(--obs-comet);
+    font-size: 0.85rem;
+    justify-content: center;
+}
+
+/* ── ACCESO RÁPIDO ────────────────────────────────────────── */
+.home-quick-grid { display: flex; flex-direction: column; gap: 10px; }
 
 .home-qcard {
     display: flex;
@@ -134,73 +336,25 @@
     border: 1.5px solid var(--obs-border);
     border-radius: var(--radius-lg);
     text-decoration: none;
-    transition:
-        border-color var(--transition),
-        background    var(--transition),
-        box-shadow    var(--transition),
-        transform     var(--transition);
+    transition: border-color var(--transition), background var(--transition),
+                box-shadow var(--transition), transform var(--transition);
 }
+.home-qcard:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); }
 
-.home-qcard:hover {
-    box-shadow: var(--shadow-card-hover);
-    transform: translateY(-2px);
-}
+.home-qcard--map:hover      { border-color: var(--obs-aurora); background: rgba(46,196,182,.06); }
+.home-qcard--planning:hover { border-color: var(--obs-star);   background: rgba(244,196,48,.06); }
+.home-qcard--ephemeris:hover{ border-color: var(--obs-nebula); background: rgba(123,94,167,.07); }
+.home-qcard--calc:hover     { border-color: var(--obs-mars);   background: rgba(231,111,81,.06); }
 
-/* Colores de acento por tarjeta */
-.home-qcard--map:hover      { border-color: var(--obs-aurora);  background: rgba(46,196,182,.06); }
-.home-qcard--planning:hover { border-color: var(--obs-star);    background: rgba(244,196,48,.06); }
-.home-qcard--ephemeris:hover{ border-color: var(--obs-nebula);  background: rgba(123,94,167,.07); }
-.home-qcard--calc:hover     { border-color: var(--obs-mars);    background: rgba(231,111,81,.06); }
-
-.home-qcard-icon {
-    font-size: 1.7rem;
-    line-height: 1;
-    flex-shrink: 0;
-    width: 44px;
-    text-align: center;
-}
-
-.home-qcard-body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    min-width: 0;
-}
-
-.home-qcard-title {
-    font-size: 0.93rem;
-    font-weight: 700;
-    color: var(--obs-moon);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.home-qcard-desc {
-    font-size: 0.78rem;
-    color: var(--obs-comet);
-    line-height: 1.4;
-}
-
-.home-qcard-arrow {
-    font-size: 1.1rem;
-    color: var(--obs-comet);
-    flex-shrink: 0;
-    transition: color var(--transition), transform var(--transition);
-}
-
-.home-qcard:hover .home-qcard-arrow {
-    color: var(--obs-moon);
-    transform: translateX(4px);
-}
+.home-qcard-icon  { font-size: 1.7rem; line-height: 1; flex-shrink: 0; width: 44px; text-align: center; }
+.home-qcard-body  { flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.home-qcard-title { font-size: 0.93rem; font-weight: 700; color: var(--obs-moon); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.home-qcard-desc  { font-size: 0.78rem; color: var(--obs-comet); line-height: 1.4; }
+.home-qcard-arrow { font-size: 1.1rem; color: var(--obs-comet); flex-shrink: 0; transition: color var(--transition), transform var(--transition); }
+.home-qcard:hover .home-qcard-arrow { color: var(--obs-moon); transform: translateX(4px); }
 
 /* ── CARACTERÍSTICAS ──────────────────────────────────────── */
-.home-features-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
+.home-features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
 .home-feat {
     background: var(--obs-navy);
@@ -208,71 +362,39 @@
     border-radius: var(--radius-lg);
     padding: 18px 16px;
 }
-
 .home-feat-icon {
-    width: 44px;
-    height: 44px;
+    width: 44px; height: 44px;
     border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    margin-bottom: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; margin-bottom: 12px;
 }
-
 .home-feat-icon--aurora { background: rgba(46,196,182,.12); }
 .home-feat-icon--star   { background: rgba(244,196,48,.13); }
 .home-feat-icon--nebula { background: rgba(123,94,167,.14); }
 .home-feat-icon--mars   { background: rgba(231,111,81,.12); }
 
-.home-feat-title {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--obs-moon);
-    margin: 0 0 6px;
-}
-
-.home-feat-desc {
-    font-size: 0.76rem;
-    color: var(--obs-comet);
-    line-height: 1.5;
-    margin: 0;
-}
+.home-feat-title { font-size: 0.85rem; font-weight: 700; color: var(--obs-moon); margin: 0 0 6px; }
+.home-feat-desc  { font-size: 0.76rem; color: var(--obs-comet); line-height: 1.5; margin: 0; }
 
 /* ── PIE ──────────────────────────────────────────────────── */
 .home-footer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding-top: 8px;
-    font-size: 0.72rem;
-    color: var(--obs-comet);
-    opacity: .5;
-    letter-spacing: .04em;
+    display: flex; align-items: center; justify-content: center;
+    gap: 6px; padding-top: 8px;
+    font-size: 0.72rem; color: var(--obs-comet); opacity: .5; letter-spacing: .04em;
 }
+.home-footer-star { color: var(--obs-star); font-size: 0.75rem; }
 
-.home-footer-star {
-    color: var(--obs-star);
-    font-size: 0.75rem;
-}
-
-/* ── RESPONSIVE: pantallas anchas (tablet/desktop) ─────────── */
+/* ── RESPONSIVE ───────────────────────────────────────────── */
 @media (min-width: 520px) {
     .home-quick-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
     }
-
     .home-qcard {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
         padding: 20px;
     }
-
-    .home-qcard-arrow {
-        align-self: flex-end;
-        margin-top: auto;
-    }
+    .home-qcard-arrow { align-self: flex-end; margin-top: auto; }
 }

@@ -25,6 +25,7 @@ builder.Services.AddScoped<ISettingsService, SsrSettingsService>();
 builder.Services.AddScoped<IAppLifecycleService, WebAppLifecycleService>();
 builder.Services.AddScoped<IGeolocationService, SsrGeolocationService>();
 builder.Services.AddScoped<IFavoriteLocationsService, SsrFavoriteLocationsService>();
+builder.Services.AddScoped<IEclipseCalculatorService, EclipseCalculatorService>();
 builder.Services.AddSingleton<AppState>();
 
 var app = builder.Build();

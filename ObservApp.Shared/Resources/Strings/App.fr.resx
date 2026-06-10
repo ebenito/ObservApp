@@ -943,4 +943,27 @@
   <data name="EclipseTimer_TestAlert" xml:space="preserve">
     <value>Tester l'alerte sonore</value>
   </data>
+  
+  <data name="Home_Now_Title" xml:space="preserve">
+  <value>En ce moment</value>
+</data>
+<data name="Home_Sun_Up" xml:space="preserve">
+  <value>Au-dessus de l'horizon</value>
+</data>
+<data name="Home_Sun_Down" xml:space="preserve">
+  <value>Sous l'horizon</value>
+</data>
+<data name="Home_AstroNight" xml:space="preserve">
+  <value>Nuit astronomique</value>
+</data>
+<data name="Home_AstroNight_Active" xml:space="preserve">
+  <value>Active maintenant ✓</value>
+</data>
+<data name="Home_NextFullMoon" xml:space="preserve">
+  <value>Prochaine pleine lune</value>
+</data>
+<data name="Home_NextEclipse" xml:space="preserve">
+  <value>Prochaine éclipse solaire</value>
+</data>
+ 
 </root>
