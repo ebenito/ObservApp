@@ -966,4 +966,20 @@
   <data name="EclipseTimer_TimelineTitle" xml:space="preserve">
     <value>تقدم عملية الكسوف</value>
   </data>
+  <data name="Signals_Title" xml:space="preserve">
+    <value>الإشارات</value>
+  </data>
+  <data name="Signals_Subtitle" xml:space="preserve">
+    <value>أخبار ومقالات في علم الفلك</value>
+  </data>
+  <data name="Signals_Listen" xml:space="preserve">
+    <value>يسمع</value>
+  </data>
+  <data name="Signals_OpenBrowser" xml:space="preserve">
+    <value>افتح في المتصفح</value>
+  </data>
+  <data name="Nav_Signals" xml:space="preserve">
+    <value>الإشارات</value>
+    <comment>Lector de noticias RSS</comment>
+  </data>
 </root>

@@ -966,4 +966,20 @@
   <data name="EclipseTimer_TimelineTitle" xml:space="preserve">
     <value>Eclipse progress</value>
   </data>
+  <data name="Signals_Title" xml:space="preserve">
+    <value>Signals</value>
+  </data>
+  <data name="Signals_Subtitle" xml:space="preserve">
+    <value>Astronomy news and articles</value>
+  </data>
+  <data name="Signals_Listen" xml:space="preserve">
+    <value>Hear</value>
+  </data>
+  <data name="Signals_OpenBrowser" xml:space="preserve">
+    <value>Open in browser</value>
+  </data>
+  <data name="Nav_Signals" xml:space="preserve">
+    <value>Signals</value>
+    <comment>Lector de noticias RSS</comment>
+  </data>
 </root>

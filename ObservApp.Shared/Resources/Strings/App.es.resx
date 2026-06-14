@@ -226,7 +226,7 @@
     <value>Ha ocurrido un error. Por favor, inténtalo de nuevo.</value>
   </data>
   <data name="Status_NoData" xml:space="preserve">
-    <value>No hay datos disponibles.</value>
+    <value>No hay datos disponibles</value>
   </data>
   <data name="Settings_Title" xml:space="preserve">
     <value>Configuración</value>
@@ -965,5 +965,21 @@
   </data>
   <data name="EclipseTimer_TimelineTitle" xml:space="preserve">
     <value>Progreso del eclipse</value>
+  </data>
+  <data name="Signals_Title" xml:space="preserve">
+    <value>Señales</value>
+  </data>
+  <data name="Signals_Subtitle" xml:space="preserve">
+    <value>Noticias y artículos de astronomía</value>
+  </data>
+  <data name="Signals_Listen" xml:space="preserve">
+    <value>Escuchar</value>
+  </data>
+  <data name="Signals_OpenBrowser" xml:space="preserve">
+    <value>Abrir en navegador</value>
+  </data>
+  <data name="Nav_Signals" xml:space="preserve">
+    <value>Señales</value>
+    <comment>Lector de noticias RSS</comment>
   </data>
 </root>

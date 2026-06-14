@@ -1,0 +1,199 @@
+/* ============================================================
+   SEÑALES — Lector de blog y feeds RSS
+   ============================================================ */
+
+.signals-page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px 16px 56px;
+}
+
+/* ── Cabecera ── */
+.signals-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.signals-header-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.signals-header-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--obs-moon);
+    margin: 0 0 4px;
+}
+
+.signals-header-subtitle {
+    font-size: 0.84rem;
+    color: var(--obs-comet);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ── Estados: carga / error / vacío ── */
+.signals-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--obs-comet);
+    font-size: 0.9rem;
+}
+
+.signals-error {
+    text-align: center;
+    padding: 16px;
+    color: var(--obs-mars);
+    background: rgba(231, 111, 81, .08);
+    border: 1px solid rgba(231, 111, 81, .25);
+    border-radius: var(--radius-md);
+    font-size: 0.88rem;
+}
+
+.signals-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,.15);
+    border-top-color: var(--obs-aurora);
+    border-radius: 50%;
+    animation: signals-spin .8s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+@keyframes signals-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ── Lista de artículos ── */
+.signals-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ── Tarjeta de artículo ── */
+.signals-card {
+    background: var(--obs-navy);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow var(--transition), transform var(--transition);
+}
+
+    .signals-card:hover {
+        box-shadow: var(--shadow-card-hover);
+        transform: translateY(-1px);
+    }
+
+.signals-card-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--obs-deep);
+}
+
+    .signals-card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+.signals-card-body {
+    padding: 16px 18px;
+}
+
+.signals-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.signals-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--obs-aurora);
+    background: rgba(46, 196, 182, .12);
+    border: 1px solid rgba(46, 196, 182, .25);
+    border-radius: 999px;
+    padding: 3px 10px;
+}
+
+.signals-date {
+    font-size: 0.74rem;
+    color: var(--obs-comet);
+    font-family: var(--font-mono);
+    white-space: nowrap;
+}
+
+.signals-card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--obs-moon);
+    margin: 0 0 8px;
+    line-height: 1.35;
+}
+
+.signals-card-summary {
+    font-size: 0.85rem;
+    color: var(--obs-comet);
+    line-height: 1.6;
+    margin: 0 0 14px;
+}
+
+/* ── Acciones ── */
+.signals-card-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.signals-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--obs-border);
+    background: var(--obs-deep);
+    color: var(--obs-moon);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+    .signals-btn:hover:not(:disabled) {
+        border-color: var(--obs-star-dim);
+        background: var(--obs-border);
+    }
+
+    .signals-btn:disabled {
+        opacity: .45;
+        cursor: not-allowed;
+    }
+
+.signals-btn--accent {
+    border-color: rgba(244, 196, 48, .35);
+    background: rgba(244, 196, 48, .08);
+    color: var(--obs-star);
+}
+
+    .signals-btn--accent:hover:not(:disabled) {
+        background: rgba(244, 196, 48, .15);
+        border-color: var(--obs-star);
+    }

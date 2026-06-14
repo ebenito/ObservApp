@@ -966,4 +966,20 @@
   <data name="EclipseTimer_TimelineTitle" xml:space="preserve">
     <value>Fortschritt der Sonnenfinsternis</value>
   </data>
+  <data name="Signals_Title" xml:space="preserve">
+    <value>Signale</value>
+  </data>
+  <data name="Signals_Subtitle" xml:space="preserve">
+    <value>Astronomie-News und Artikel</value>
+  </data>
+  <data name="Signals_Listen" xml:space="preserve">
+    <value>Hören</value>
+  </data>
+  <data name="Signals_OpenBrowser" xml:space="preserve">
+    <value>Im Browser öffnen</value>
+  </data>
+  <data name="Nav_Signals" xml:space="preserve">
+    <value>Signale</value>
+    <comment>Lector de noticias RSS</comment>
+  </data>
 </root>

@@ -72,6 +72,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<IEclipseCalculatorService, EclipseCalculatorService>();
         builder.Services.AddSingleton<IEclipseAudioService, MauiEclipseAudioService>();
 
+        // ── Servicio de lectura de fuentes RSS (blogs) ─────────────────────────────────────────
+        builder.Services.AddSingleton<IRssFeedService, RssFeedService>();
+
         // ── HttpClient ───────────────────────────────────────────────────────
         builder.Services.AddHttpClient();
 

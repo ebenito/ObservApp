@@ -1,0 +1,114 @@
+@page "/senales"
+@using ObservApp.Shared.Services
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+@inject IRssFeedService RssService
+@inject IJSRuntime JS
+
+<PageTitle>@L["Signals_Title"] — ObservApp</PageTitle>
+
+<div class="signals-page">
+
+    <!-- Cabecera -->
+    <div class="signals-header">
+        <span class="signals-header-icon">📡</span>
+        <div>
+            <h1 class="signals-header-title">@L["Signals_Title"]</h1>
+            <p class="signals-header-subtitle">@L["Signals_Subtitle"]</p>
+        </div>
+    </div>
+
+    @if (_loading)
+    {
+        <div class="signals-empty">
+            <span class="signals-spinner"></span> @L["Status_Loading"]
+        </div>
+    }
+    else if (_error is not null)
+    {
+        <div class="signals-error">⚠️ @_error</div>
+    }
+    else if (_items.Count == 0)
+    {
+        <div class="signals-empty">@L["Status_NoData"]</div>
+    }
+    else
+    {
+        <div class="signals-list">
+            @foreach (var item in _items)
+            {
+                <article class="signals-card">
+
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <div class="signals-card-image">
+                            <img src="@item.ImageUrl" alt="" loading="lazy" />
+                        </div>
+                    }
+
+                    <div class="signals-card-body">
+
+                        <div class="signals-card-meta">
+                            <span class="signals-badge">@item.SourceName</span>
+                            <span class="signals-date">@item.PublishedUtc.ToLocalTime().ToString("d MMM yyyy")</span>
+                        </div>
+
+                        <h2 class="signals-card-title">@item.Title</h2>
+                        <p class="signals-card-summary">@item.Summary</p>
+
+                        <div class="signals-card-actions">
+                            <button class="signals-btn signals-btn--accent" disabled>
+                                🔊 @L["Signals_Listen"]
+                            </button>
+                            <button class="signals-btn" @onclick="() => OpenInBrowserAsync(item.Link)">
+                                🌐 @L["Signals_OpenBrowser"]
+                            </button>
+                        </div>
+
+                    </div>
+                </article>
+            }
+        </div>
+    }
+
+</div>
+
+@code {
+    private List<RssFeedItem> _items = new();
+    private bool _loading = true;
+    private string? _error;
+
+    // ── Fuente de prueba — Tubkala fijo, sin gestión de fuentes todavía ─────
+    private static readonly RssSource TubkalaSource = new(
+        Id: "tubkala",
+        Name: "Tubkala",
+        Url: "https://tubkala.com/feed/",
+        IsBuiltIn: true);
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _items = await RssService.GetItemsFromSourceAsync(TubkalaSource);
+
+            if (_items.Count == 0)
+            {
+                _error = RssService.GetLastError(TubkalaSource.Id)
+                         ?? L["Status_NoData"];
+            }
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    private async Task OpenInBrowserAsync(string url)
+    {
+        if (string.IsNullOrWhiteSpace(url)) return;
+        await JS.InvokeVoidAsync("open", url, "_blank");
+    }
+}

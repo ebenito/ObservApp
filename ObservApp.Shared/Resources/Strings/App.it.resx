@@ -966,4 +966,20 @@
   <data name="EclipseTimer_TimelineTitle" xml:space="preserve">
     <value>Progresso dell'eclissi</value>
   </data>
+  <data name="Signals_Title" xml:space="preserve">
+    <value>Segnali</value>
+  </data>
+  <data name="Signals_Subtitle" xml:space="preserve">
+    <value>Notizie e articoli di astronomia</value>
+  </data>
+  <data name="Signals_Listen" xml:space="preserve">
+    <value>Ascoltare</value>
+  </data>
+  <data name="Signals_OpenBrowser" xml:space="preserve">
+    <value>Apri nel browser</value>
+  </data>
+  <data name="Nav_Signals" xml:space="preserve">
+    <value>Segnali</value>
+    <comment>Lector de noticias RSS</comment>
+  </data>
 </root>
