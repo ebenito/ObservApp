@@ -11,18 +11,26 @@ public sealed class WebEclipseAudioService : IEclipseAudioService
 
     public bool IsSupported => true;
 
-    public Task AnnounceEventAsync(string message,
+    public async Task AnnounceEventAsync(string message,
         CancellationToken cancellationToken = default)
-        // En web solo reproducimos el beep (sin TTS)
-        => PlayBeepAsync(cancellationToken);
+    {
+        try
+        {
+            await _js.InvokeVoidAsync("observApp.speakText",
+                cancellationToken,
+                new object[] { message });
+        }
+        catch { /* silencio */ }
+    }
 
     public async Task PlayBeepAsync(CancellationToken cancellationToken = default)
     {
         try
         {
-            await _js.InvokeVoidAsync("observApp.playBeep",
-                cancellationToken, "_content/ObservApp.Shared/sounds/eclipse-beep.wav");
+            await _js.InvokeVoidAsync("observApp.playBeepTone",
+                cancellationToken,
+                Array.Empty<object>());
         }
-        catch { /* silencio si el navegador bloquea audio */ }
+        catch { /* silencio */ }
     }
 }
