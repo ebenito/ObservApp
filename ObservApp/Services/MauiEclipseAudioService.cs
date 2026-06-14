@@ -15,14 +15,23 @@ public sealed class MauiEclipseAudioService : IEclipseAudioService
 
     public bool IsSupported => true;
 
-    public async Task AnnounceEventAsync(string message,
-        CancellationToken cancellationToken = default)
+    public async Task AnnounceEventAsync(string message, CancellationToken cancellationToken = default)
     {
         try
         {
+            var locale = await GetLocaleAsync();
+
+            // Si GetLocaleAsync no encontró voz para el idioma activo,
+            // devuelve null → caemos al fallback de audio
+            if (locale is null)
+            {
+                await PlayBeepAsync(cancellationToken);
+                return;
+            }
+
             var settings = new SpeechOptions
             {
-                Locale = await GetLocaleAsync(),
+                Locale = locale,
                 Volume = 1.0f,
                 Pitch = 1.0f,
             };
@@ -30,7 +39,6 @@ public sealed class MauiEclipseAudioService : IEclipseAudioService
         }
         catch
         {
-            // Fallback: reproducir beep
             await PlayBeepAsync(cancellationToken);
         }
     }
@@ -58,9 +66,9 @@ public sealed class MauiEclipseAudioService : IEclipseAudioService
         var locales = await TextToSpeech.GetLocalesAsync();
         var lang = _loc.CurrentLanguageCode;
 
-        // Buscar una voz que coincida con el idioma activo
+        // Solo devuelve voz si hay coincidencia real con el idioma activo
+        // Si no hay voz para "ar", devuelve null → fallback a audio
         return locales.FirstOrDefault(l =>
-                   l.Language.StartsWith(lang, StringComparison.OrdinalIgnoreCase))
-               ?? locales.FirstOrDefault();
+            l.Language.StartsWith(lang, StringComparison.OrdinalIgnoreCase));
     }
 }

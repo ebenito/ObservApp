@@ -675,66 +675,6 @@
   <data name="SolLuna_UseGPS" xml:space="preserve">
     <value>Use GPS</value>
   </data>
-  <data name="Settings_FavoriteLocations" xml:space="preserve">
-    <value>Favorite locations</value>
-  </data>
-  <data name="Settings_ManageLocations" xml:space="preserve">
-    <value>Manage favorite locations</value>
-  </data>
-  <data name="FavLoc_Title" xml:space="preserve">
-    <value>Favorite Locations</value>
-  </data>
-  <data name="FavLoc_NoLocations" xml:space="preserve">
-    <value>You don't have any saved locations yet.</value>
-  </data>
-  <data name="FavLoc_AddCurrent" xml:space="preserve">
-    <value>Add current location (GPS)</value>
-  </data>
-  <data name="FavLoc_SearchPlaceholder" xml:space="preserve">
-    <value>Search place (e.g. Teide, London...)</value>
-  </data>
-  <data name="FavLoc_SearchBtn" xml:space="preserve">
-    <value>Search</value>
-  </data>
-  <data name="FavLoc_Search_NoResults" xml:space="preserve">
-    <value>No results found.</value>
-  </data>
-  <data name="FavLoc_Form_Name" xml:space="preserve">
-    <value>Location name</value>
-  </data>
-  <data name="FavLoc_Form_Latitude" xml:space="preserve">
-    <value>Latitude (°)</value>
-  </data>
-  <data name="FavLoc_Form_Longitude" xml:space="preserve">
-    <value>Longitude (°)</value>
-  </data>
-  <data name="FavLoc_Form_Altitude" xml:space="preserve">
-    <value>Altitude (meters)</value>
-  </data>
-  <data name="FavLoc_Form_Save" xml:space="preserve">
-    <value>Save location</value>
-  </data>
-  <data name="FavLoc_Form_Edit" xml:space="preserve">
-    <value>Edit location</value>
-  </data>
-  <data name="FavLoc_Form_DragHint" xml:space="preserve">
-    <value>You can drag the pin on the map to refine the position.</value>
-  </data>
-  <data name="FavLoc_Form_Altitude_Loading" xml:space="preserve">
-    <value>Automatically calculating altitude...</value>
-  </data>
-  <data name="FavLoc_Form_Name_Required" xml:space="preserve">
-    <value>Location name is required.</value>
-  </data>
-  <data name="FavLoc_Select_Placeholder" xml:space="preserve">
-    <value>-- Select favorite location --</value>
-  </data>
-  <data name="FavLoc_Select_Manual" xml:space="preserve">
-    <value>Manual Coordinates</value>
-  </data>
-  <data name="FavLoc_Select_GPS" xml:space="preserve">
-    <value>Current GPS Location</value>
-  </data>
   <data name="SolLuna_Eclipses_Year" xml:space="preserve">
     <value>Eclipses of the year</value>
   </data>
@@ -752,6 +692,9 @@
   </data>
   <data name="SolLuna_Contact_C4_Desc" xml:space="preserve">
     <value>C4: End of partial phase</value>
+  </data>
+  <data name="FOV_SimulatorTitle" xml:space="preserve">
+    <value>Visual field simulation</value>
   </data>
   <data name="SolLuna_Eclipse_Solar" xml:space="preserve">
     <value>Solar Eclipse</value>
@@ -771,10 +714,6 @@
   <data name="SolLuna_Eclipse_Penumbral" xml:space="preserve">
     <value>Penumbral</value>
   </data>
-  <data name="FOV_SimulatorTitle" xml:space="preserve">
-    <value>Visual field simulation</value>
-  </data>
-  <!-- ══ Eclipse Timer Calculator ══ -->
   <data name="Calc_EclipseTimer_Title" xml:space="preserve">
     <value>Eclipse Timer</value>
   </data>
@@ -926,43 +865,105 @@
     <value>Region of maximum visibility</value>
   </data>
   <data name="EclipseTimer_Days" xml:space="preserve">
-  <value>d</value>
-</data>
-<data name="EclipseTimer_Contacts" xml:space="preserve">
-  <value>Contacts and events</value>
-</data>
-<data name="EclipseTimer_SimStart" xml:space="preserve">
-  <value>Simulate eclipse</value>
-</data>
-<data name="EclipseTimer_SimStop" xml:space="preserve">
-  <value>Stop simulation</value>
-</data>
-<data name="EclipseTimer_SimActive" xml:space="preserve">
-  <value>Simulation active at speed</value>
-</data>
-<data name="EclipseTimer_TestAlert" xml:space="preserve">
-  <value>Test audio alert</value>
-</data>
-
-<data name="Home_Now_Title" xml:space="preserve">
-  <value>Right now</value>
-</data>
-<data name="Home_Sun_Up" xml:space="preserve">
-  <value>Above horizon</value>
-</data>
-<data name="Home_Sun_Down" xml:space="preserve">
-  <value>Below horizon</value>
-</data>
-<data name="Home_AstroNight" xml:space="preserve">
-  <value>Astronomical night</value>
-</data>
-<data name="Home_AstroNight_Active" xml:space="preserve">
-  <value>Active now ✓</value>
-</data>
-<data name="Home_NextFullMoon" xml:space="preserve">
-  <value>Next full moon</value>
-</data>
-<data name="Home_NextEclipse" xml:space="preserve">
-  <value>Next solar eclipse</value>
-</data>
+    <value>d</value>
+  </data>
+  <data name="EclipseTimer_Contacts" xml:space="preserve">
+    <value>Contacts and events</value>
+  </data>
+  <data name="EclipseTimer_SimStart" xml:space="preserve">
+    <value>Simulate eclipse</value>
+  </data>
+  <data name="EclipseTimer_SimStop" xml:space="preserve">
+    <value>Stop simulation</value>
+  </data>
+  <data name="EclipseTimer_SimActive" xml:space="preserve">
+    <value>Simulation active at speed</value>
+  </data>
+  <data name="EclipseTimer_TestAlert" xml:space="preserve">
+    <value>Test audio alert</value>
+  </data>
+  <data name="Settings_FavoriteLocations" xml:space="preserve">
+    <value>Favorite locations</value>
+  </data>
+  <data name="Settings_ManageLocations" xml:space="preserve">
+    <value>Manage favorite locations</value>
+  </data>
+  <data name="FavLoc_Title" xml:space="preserve">
+    <value>Favorite Locations</value>
+  </data>
+  <data name="FavLoc_NoLocations" xml:space="preserve">
+    <value>You don't have any saved locations yet.</value>
+  </data>
+  <data name="FavLoc_AddCurrent" xml:space="preserve">
+    <value>Add current location (GPS)</value>
+  </data>
+  <data name="FavLoc_SearchPlaceholder" xml:space="preserve">
+    <value>Search place (e.g. Teide, London...)</value>
+  </data>
+  <data name="FavLoc_SearchBtn" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="FavLoc_Search_NoResults" xml:space="preserve">
+    <value>No results found.</value>
+  </data>
+  <data name="FavLoc_Form_Name" xml:space="preserve">
+    <value>Location name</value>
+  </data>
+  <data name="FavLoc_Form_Latitude" xml:space="preserve">
+    <value>Latitude (°)</value>
+  </data>
+  <data name="FavLoc_Form_Longitude" xml:space="preserve">
+    <value>Longitude (°)</value>
+  </data>
+  <data name="FavLoc_Form_Altitude" xml:space="preserve">
+    <value>Altitude (meters)</value>
+  </data>
+  <data name="FavLoc_Form_Save" xml:space="preserve">
+    <value>Save location</value>
+  </data>
+  <data name="FavLoc_Form_Edit" xml:space="preserve">
+    <value>Edit location</value>
+  </data>
+  <data name="FavLoc_Form_DragHint" xml:space="preserve">
+    <value>You can drag the pin on the map to refine the position.</value>
+  </data>
+  <data name="FavLoc_Form_Altitude_Loading" xml:space="preserve">
+    <value>Automatically calculating altitude...</value>
+  </data>
+  <data name="FavLoc_Form_Name_Required" xml:space="preserve">
+    <value>Location name is required.</value>
+  </data>
+  <data name="FavLoc_Select_Placeholder" xml:space="preserve">
+    <value>-- Select favorite location --</value>
+  </data>
+  <data name="FavLoc_Select_Manual" xml:space="preserve">
+    <value>Manual Coordinates</value>
+  </data>
+  <data name="FavLoc_Select_GPS" xml:space="preserve">
+    <value>Current GPS Location</value>
+  </data>
+  <data name="Home_Now_Title" xml:space="preserve">
+    <value>Right now</value>
+  </data>
+  <data name="Home_Sun_Up" xml:space="preserve">
+    <value>Above horizon</value>
+  </data>
+  <data name="Home_Sun_Down" xml:space="preserve">
+    <value>Below horizon</value>
+  </data>
+  <data name="Home_AstroNight" xml:space="preserve">
+    <value>Astronomical night</value>
+  </data>
+  <data name="Home_AstroNight_Active" xml:space="preserve">
+    <value>Active now ✓</value>
+  </data>
+  <data name="Home_NextFullMoon" xml:space="preserve">
+    <value>Next full moon</value>
+  </data>
+  <data name="Home_NextEclipse" xml:space="preserve">
+    <value>Next solar eclipse</value>
+  </data>
+  <data name="EclipseTimer_TimelineTitle" xml:space="preserve">
+    <value>Eclipse progress</value>
+  </data>
 </root>

@@ -178,35 +178,56 @@ public sealed class EclipseCalculatorService : IEclipseCalculatorService
     {
         try
         {
-            var illum = Astronomy.Illumination(Body.Moon, time);
-            // Aproximación: la cobertura máxima se estima con la umbra
-            // Un cálculo exacto requeriría la separación angular Sol-Luna
-            // Para uso práctico usamos el ángulo de fase
-            double separation = Astronomy.AngleBetween(
-                Astronomy.GeoVector(Body.Sun, time, Aberration.Corrected),
-                Astronomy.GeoVector(Body.Moon, time, Aberration.Corrected));
+            // ✅ Posiciones topocéntricas (desde el observador, no desde el centro de la Tierra)
+            // Esto es lo que hace que el % varíe según ubicación y sea correcto en eclipses parciales
+            var sunEq = Astronomy.Equator(Body.Sun, time,
+                observer, EquatorEpoch.OfDate, Aberration.Corrected);
+            var moonEq = Astronomy.Equator(Body.Moon, time,
+                observer, EquatorEpoch.OfDate, Aberration.Corrected);
 
-            // Radio angular del Sol ≈ 0.267°, de la Luna ≈ 0.259° (media)
-            const double rSun = 0.267;
-            const double rMoon = 0.259;
+            // Separación angular topocéntrica Sol-Luna en grados
+            double dRa = (sunEq.ra - moonEq.ra) * 15.0; // AR en horas → grados
+            double dDec = sunEq.dec - moonEq.dec;
+            // Corrección por la proyección en declinación
+            double cosDec = Math.Cos(sunEq.dec * Math.PI / 180.0);
+            double separation = Math.Sqrt(dRa * dRa * cosDec * cosDec + dDec * dDec);
 
+            // Radios angulares medios (grados)
+            // Sol: ~0.267°, Luna: varía entre 0.245° y 0.278° según distancia
+            // Usamos la distancia real de la Luna para mayor precisión
+            var moonVec = Astronomy.GeoVector(Body.Moon, time, Aberration.Corrected);
+            double moonDistAU = moonVec.Length();
+            // Radio lunar: 1737.4 km, 1 AU = 149 597 870.7 km
+            const double moonRadiusKm = 1737.4;
+            const double kmPerAU = 149_597_870.7;
+            double rMoon = Math.Atan2(moonRadiusKm, moonDistAU * kmPerAU) * (180.0 / Math.PI);
+
+            var sunVec = Astronomy.GeoVector(Body.Sun, time, Aberration.Corrected);
+            double sunDistAU = sunVec.Length();
+            const double sunRadiusKm = 695_700.0;
+            double rSun = Math.Atan2(sunRadiusKm, sunDistAU * kmPerAU) * (180.0 / Math.PI);
+
+            // Sin solapamiento
             if (separation >= rSun + rMoon) return 0.0;
-            if (separation <= Math.Abs(rSun - rMoon)) return 1.0;
+            // Luna cubre completamente el Sol (total o anular)
+            if (separation <= Math.Abs(rSun - rMoon))
+                return Math.Clamp((rMoon * rMoon) / (rSun * rSun), 0.0, 1.0);
 
-            // Área de intersección de dos círculos
+            // Área de intersección de dos círculos (fórmula exacta)
             double d = separation;
             double r1 = rSun;
             double r2 = rMoon;
-            double d2 = d * d;
-            double r12 = r1 * r1;
-            double r22 = r2 * r2;
-            double a1 = r12 * Math.Acos((d2 + r12 - r22) / (2 * d * r1));
-            double a2 = r22 * Math.Acos((d2 + r22 - r12) / (2 * d * r2));
-            double a3 = 0.5 * Math.Sqrt((-d + r1 + r2) * (d + r1 - r2)
-                                       * (d - r1 + r2) * (d + r1 + r2));
+            double d2 = d * d, r12 = r1 * r1, r22 = r2 * r2;
+            double a1 = r12 * Math.Acos(Math.Clamp((d2 + r12 - r22) / (2 * d * r1), -1, 1));
+            double a2 = r22 * Math.Acos(Math.Clamp((d2 + r22 - r12) / (2 * d * r2), -1, 1));
+            double a3 = 0.5 * Math.Sqrt(Math.Max(0,
+                             (-d + r1 + r2) * (d + r1 - r2) *
+                             (d - r1 + r2) * (d + r1 + r2)));
             double intersection = a1 + a2 - a3;
+
             return Math.Clamp(intersection / (Math.PI * r12), 0.0, 1.0);
         }
         catch { return 0.0; }
     }
+
 }

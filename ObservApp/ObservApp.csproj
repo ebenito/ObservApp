@@ -47,6 +47,9 @@
 
         <!-- Raw Assets -->
         <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+
+		<!-- Sonido -->
+		<MauiAsset Include="Resources\Raw\sounds\eclipse-beep.wav" />
     </ItemGroup>
 
     <ItemGroup>

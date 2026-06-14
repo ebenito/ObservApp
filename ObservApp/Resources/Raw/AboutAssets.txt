@@ -1,10 +1,10 @@
-﻿Any raw assets you want to be deployed with your application can be placed in
-this directory (and child directories). Deployment of the asset to your application
-is automatically handled by the following `MauiAsset` Build Action within your `.csproj`.
+﻿Cualquier recurso sin procesar que desee implementar con su aplicación puede ubicarse en este directorio (y subdirectorios). 
+La implementación del recurso en su aplicación se gestiona automáticamente mediante la siguiente acción de compilación 
+`MauiAsset` dentro de su archivo `.csproj`.
 
     <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 
-These files will be deployed with your package and will be accessible using Essentials:
+Estos archivos se implementarán con su paquete y serán accesibles mediante Essentials:
 
     async Task LoadMauiAsset()
     {

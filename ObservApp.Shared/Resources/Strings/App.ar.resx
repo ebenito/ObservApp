@@ -714,7 +714,6 @@
   <data name="SolLuna_Eclipse_Penumbral" xml:space="preserve">
     <value>ظلي</value>
   </data>
-  <!-- ══ حاسبة أوقات الكسوف ══ -->
   <data name="Calc_EclipseTimer_Title" xml:space="preserve">
     <value>أوقات الكسوف</value>
   </data>
@@ -943,28 +942,25 @@
   <data name="FavLoc_Select_GPS" xml:space="preserve">
     <value>موقع GPS الحالي</value>
   </data>
-  
-  
-<data name="Home_Now_Title" xml:space="preserve">
-  <value>في هذه اللحظة</value>
-</data>
-<data name="Home_Sun_Up" xml:space="preserve">
-  <value>فوق الأفق</value>
-</data>
-<data name="Home_Sun_Down" xml:space="preserve">
-  <value>تحت الأفق</value>
-</data>
-<data name="Home_AstroNight" xml:space="preserve">
-  <value>الليل الفلكي</value>
-</data>
-<data name="Home_AstroNight_Active" xml:space="preserve">
-  <value>نشط الآن ✓</value>
-</data>
-<data name="Home_NextFullMoon" xml:space="preserve">
-  <value>البدر القادم</value>
-</data>
-<data name="Home_NextEclipse" xml:space="preserve">
-  <value>كسوف الشمس القادم</value>
-</data>
- 
+  <data name="Home_Now_Title" xml:space="preserve">
+    <value>في هذه اللحظة</value>
+  </data>
+  <data name="Home_Sun_Up" xml:space="preserve">
+    <value>فوق الأفق</value>
+  </data>
+  <data name="Home_Sun_Down" xml:space="preserve">
+    <value>تحت الأفق</value>
+  </data>
+  <data name="Home_AstroNight" xml:space="preserve">
+    <value>الليل الفلكي</value>
+  </data>
+  <data name="Home_AstroNight_Active" xml:space="preserve">
+    <value>نشط الآن ✓</value>
+  </data>
+  <data name="Home_NextFullMoon" xml:space="preserve">
+    <value>البدر القادم</value>
+  </data>
+  <data name="Home_NextEclipse" xml:space="preserve">
+    <value>كسوف الشمس القادم</value>
+  </data>
 </root>

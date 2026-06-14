@@ -138,7 +138,7 @@
                 <div>
                     <div class="eclt-type-label">@GetLocalTypeLabel(_result.Type)</div>
                     <div class="eclt-coverage-label">
-                        @L["EclipseTimer_MaxCoverage"]: @((_result.MaxCoverage * 100).ToString("F1"))%
+                        @L["EclipseTimer_MaxCoverage"]: @((MaxCoveragePercent * 100).ToString("F1"))%
                     </div>
                 </div>
                 <!-- Toggle audio -->
@@ -247,7 +247,7 @@
             <!-- GRÁFICO TIMELINE VISUAL -->
             <div class="eclt-card">
                 <div class="eclt-card-header">
-                    <span>🌘</span> Progreso del eclipse
+                    <span>🌘</span> @L["EclipseTimer_TimelineTitle"]
                 </div>
                 <div class="eclt-card-body">
                     @((MarkupString)BuildTimelineSvg())
@@ -393,6 +393,23 @@
             // Aviso sonoro cuando falten ≤ 30s
             if (_audioEnabled && diff.TotalSeconds is > 0 and <= 30)
                 _ = TriggerAudioAlertAsync(_nextEvent.Kind);
+        }
+    }
+
+    // Ocultación máxima: busca el contacto Maximum; si no existe, usa el mayor CoverageFraction
+    private double MaxCoveragePercent
+    {
+        get
+        {
+            if (_result == null) return 0;
+            var maxContact = _result.Contacts
+                .FirstOrDefault(c => c.Kind == EclipseEventKind.Maximum);
+            if (maxContact != null && maxContact.CoverageFraction > 0)
+                return maxContact.CoverageFraction;
+            // Fallback: el mayor valor disponible entre todos los contactos
+            return _result.Contacts.Count > 0
+                ? _result.Contacts.Max(c => c.CoverageFraction)
+                : 0;
         }
     }
 
@@ -721,14 +738,18 @@
         double totalSecs = (t1 - t0).TotalSeconds;
         if (totalSecs <= 0) totalSecs = 1;
 
-        int W = 560, H = 100;
+        // Altura mayor: zona superior para horas, zona inferior para etiquetas NOW
+        int W = 560, H = 130;
+        int lineY = 65; // línea central elevada para dejar espacio abajo
+
         var sb = new System.Text.StringBuilder();
         sb.Append($"<svg width=\"100%\" viewBox=\"0 0 {W} {H}\" xmlns=\"http://www.w3.org/2000/svg\">");
 
         // Línea base
-        sb.Append($"<line x1=\"20\" y1=\"50\" x2=\"{W - 20}\" y2=\"50\" stroke=\"var(--obs-border)\" stroke-width=\"2\"/>");
+        sb.Append($"<line x1=\"20\" y1=\"{lineY}\" x2=\"{W - 20}\" y2=\"{lineY}\" " +
+                  $"stroke=\"var(--obs-border)\" stroke-width=\"2\"/>");
 
-        // Relleno de totalidad (si la hay)
+        // Relleno de totalidad / anularidad
         if (_result.Type is LocalEclipseType.Total or LocalEclipseType.Annular)
         {
             var c2 = contacts.FirstOrDefault(c => c.Kind == EclipseEventKind.C2);
@@ -737,31 +758,64 @@
             {
                 double x2 = 20 + ((c2.UtcTime - t0).TotalSeconds / totalSecs) * (W - 40);
                 double x3 = 20 + ((c3.UtcTime - t0).TotalSeconds / totalSecs) * (W - 40);
-                sb.Append($"<rect x=\"{x2.ToString("F0", ic)}\" y=\"35\" width=\"{(x3 - x2).ToString("F0", ic)}\" height=\"30\" fill=\"rgba(46,196,182,0.2)\" rx=\"4\"/>");
+                string fillColor = _result.Type == LocalEclipseType.Total
+                    ? "rgba(46,196,182,0.2)" : "rgba(244,196,48,0.18)";
+                sb.Append($"<rect x=\"{x2.ToString("F0", ic)}\" y=\"{lineY - 14}\" " +
+                          $"width=\"{(x3 - x2).ToString("F0", ic)}\" height=\"28\" " +
+                          $"fill=\"{fillColor}\" rx=\"4\"/>");
             }
         }
 
         // Línea "ahora"
-        var now = DateTime.UtcNow;
+        var now = _simMode ? _simNow : DateTime.UtcNow;
         if (now >= t0 && now <= t1)
         {
             double xNow = 20 + ((now - t0).TotalSeconds / totalSecs) * (W - 40);
-            sb.Append($"<line x1=\"{xNow.ToString("F0", ic)}\" y1=\"20\" x2=\"{xNow.ToString("F0", ic)}\" y2=\"80\" stroke=\"var(--obs-mars)\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/>");
-            sb.Append($"<text x=\"{xNow.ToString("F0", ic)}\" y=\"16\" text-anchor=\"middle\" fill=\"var(--obs-mars)\" font-size=\"8\">NOW</text>");
+            sb.Append($"<line x1=\"{xNow.ToString("F0", ic)}\" y1=\"10\" " +
+                      $"x2=\"{xNow.ToString("F0", ic)}\" y2=\"{H - 10}\" " +
+                      $"stroke=\"var(--obs-mars)\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/>");
+            // Etiqueta NOW debajo de la línea, no encima del SVG
+            sb.Append($"<text x=\"{xNow.ToString("F0", ic)}\" y=\"{H - 2}\" " +
+                      $"text-anchor=\"middle\" fill=\"var(--obs-mars)\" font-size=\"8\">NOW</text>");
         }
 
-        // Eventos
+        // Eventos: alternar texto arriba/abajo para evitar solapamiento
+        // Los contactos clave (C1-C4, Max) van arriba; los secundarios abajo
         foreach (var c in contacts)
         {
             double x = 20 + ((c.UtcTime - t0).TotalSeconds / totalSecs) * (W - 40);
             bool isKey = c.Kind is EclipseEventKind.C1 or EclipseEventKind.C2
                                 or EclipseEventKind.Maximum
                                 or EclipseEventKind.C3 or EclipseEventKind.C4;
+
             string dotColor = isKey ? "var(--obs-star)" : "var(--obs-comet)";
             int dotR = isKey ? 6 : 4;
 
-            sb.Append($"<circle cx=\"{x.ToString("F0", ic)}\" cy=\"50\" r=\"{dotR}\" fill=\"{dotColor}\"/>");
-            sb.Append($"<text x=\"{x.ToString("F0", ic)}\" y=\"{(isKey ? 30 : 75)}\" text-anchor=\"middle\" fill=\"var(--obs-comet)\" font-size=\"7\">{c.UtcTime.ToLocalTime().ToString("HH:mm")}</text>");
+            sb.Append($"<circle cx=\"{x.ToString("F0", ic)}\" cy=\"{lineY}\" " +
+                      $"r=\"{dotR}\" fill=\"{dotColor}\"/>");
+
+            string timeStr = c.UtcTime.ToLocalTime().ToString("HH:mm");
+
+            if (isKey)
+            {
+                // Texto arriba del punto: hora en y=lineY-18, tick vertical
+                sb.Append($"<line x1=\"{x.ToString("F0", ic)}\" y1=\"{lineY - dotR}\" " +
+                          $"x2=\"{x.ToString("F0", ic)}\" y2=\"{lineY - 12}\" " +
+                          $"stroke=\"{dotColor}\" stroke-width=\"1\" opacity=\"0.5\"/>");
+                sb.Append($"<text x=\"{x.ToString("F0", ic)}\" y=\"{lineY - 20}\" " +
+                          $"text-anchor=\"middle\" fill=\"var(--obs-star)\" " +
+                          $"font-size=\"9\" font-weight=\"600\">{timeStr}</text>");
+            }
+            else
+            {
+                // Texto abajo del punto: hora en y=lineY+22
+                sb.Append($"<line x1=\"{x.ToString("F0", ic)}\" y1=\"{lineY + dotR}\" " +
+                          $"x2=\"{x.ToString("F0", ic)}\" y2=\"{lineY + 12}\" " +
+                          $"stroke=\"{dotColor}\" stroke-width=\"1\" opacity=\"0.5\"/>");
+                sb.Append($"<text x=\"{x.ToString("F0", ic)}\" y=\"{lineY + 22}\" " +
+                          $"text-anchor=\"middle\" fill=\"var(--obs-comet)\" " +
+                          $"font-size=\"8\">{timeStr}</text>");
+            }
         }
 
         sb.Append("</svg>");

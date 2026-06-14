@@ -675,6 +675,213 @@
   <data name="SolLuna_UseGPS" xml:space="preserve">
     <value>Usar GPS</value>
   </data>
+  <data name="SolLuna_Eclipses_Year" xml:space="preserve">
+    <value>Eclipses del año</value>
+  </data>
+  <data name="SolLuna_Magnitude_Desc" xml:space="preserve">
+    <value>Magnitud del eclipse (fracción oculta del diámetro)</value>
+  </data>
+  <data name="SolLuna_Contact_C1_Desc" xml:space="preserve">
+    <value>C1: Inicio de la parcialidad</value>
+  </data>
+  <data name="SolLuna_Contact_C2_Desc" xml:space="preserve">
+    <value>C2: Inicio de la totalidad/anularidad</value>
+  </data>
+  <data name="SolLuna_Contact_C3_Desc" xml:space="preserve">
+    <value>C3: Fin de la totalidad/anularidad</value>
+  </data>
+  <data name="SolLuna_Contact_C4_Desc" xml:space="preserve">
+    <value>C4: Fin de la parcialidad</value>
+  </data>
+  <data name="FOV_SimulatorTitle" xml:space="preserve">
+    <value>Simulación del campo visual</value>
+  </data>
+  <data name="SolLuna_Eclipse_Solar" xml:space="preserve">
+    <value>Eclipse Solar</value>
+  </data>
+  <data name="SolLuna_Eclipse_Lunar" xml:space="preserve">
+    <value>Eclipse Lunar</value>
+  </data>
+  <data name="SolLuna_Eclipse_Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="SolLuna_Eclipse_Annular" xml:space="preserve">
+    <value>Anular</value>
+  </data>
+  <data name="SolLuna_Eclipse_Partial" xml:space="preserve">
+    <value>Parcial</value>
+  </data>
+  <data name="SolLuna_Eclipse_Penumbral" xml:space="preserve">
+    <value>Penumbral</value>
+  </data>
+  <data name="Calc_EclipseTimer_Title" xml:space="preserve">
+    <value>Tiempos de Eclipse</value>
+  </data>
+  <data name="Calc_EclipseTimer_Desc" xml:space="preserve">
+    <value>Contactos C1-C4, anillo de diamante y avisos en tiempo real para tu ubicación</value>
+  </data>
+  <data name="EclipseTimer_Title" xml:space="preserve">
+    <value>Calculadora de Tiempos de Eclipse</value>
+  </data>
+  <data name="EclipseTimer_Subtitle" xml:space="preserve">
+    <value>Contactos precisos calculados para tu ubicación con avisos sonoros</value>
+  </data>
+  <data name="EclipseTimer_SelectEclipse" xml:space="preserve">
+    <value>Seleccionar eclipse</value>
+  </data>
+  <data name="EclipseTimer_Location" xml:space="preserve">
+    <value>Ubicación</value>
+  </data>
+  <data name="EclipseTimer_UseGPS" xml:space="preserve">
+    <value>Usar GPS</value>
+  </data>
+  <data name="EclipseTimer_Calculate" xml:space="preserve">
+    <value>Calcular para mi ubicación</value>
+  </data>
+  <data name="EclipseTimer_Type_Total" xml:space="preserve">
+    <value>Eclipse total</value>
+  </data>
+  <data name="EclipseTimer_Type_Annular" xml:space="preserve">
+    <value>Eclipse anular</value>
+  </data>
+  <data name="EclipseTimer_Type_Partial" xml:space="preserve">
+    <value>Eclipse parcial</value>
+  </data>
+  <data name="EclipseTimer_Type_None" xml:space="preserve">
+    <value>No visible desde esta ubicación</value>
+  </data>
+  <data name="EclipseTimer_MaxCoverage" xml:space="preserve">
+    <value>Ocultación máxima</value>
+  </data>
+  <data name="EclipseTimer_NextEvent" xml:space="preserve">
+    <value>Próximo evento</value>
+  </data>
+  <data name="EclipseTimer_AudioAlerts" xml:space="preserve">
+    <value>Avisos sonoros</value>
+  </data>
+  <data name="EclipseTimer_AudioOn" xml:space="preserve">
+    <value>Activar avisos</value>
+  </data>
+  <data name="EclipseTimer_AudioOff" xml:space="preserve">
+    <value>Desactivar avisos</value>
+  </data>
+  <data name="EclipseTimer_SunBelowHorizon" xml:space="preserve">
+    <value>El Sol estará bajo el horizonte durante este eclipse en tu ubicación</value>
+  </data>
+  <data name="EclipseTimer_NotVisible" xml:space="preserve">
+    <value>Este eclipse no es visible desde tu ubicación</value>
+  </data>
+  <data name="Eclipse_C1" xml:space="preserve">
+    <value>C1 — Primer contacto</value>
+  </data>
+  <data name="Eclipse_C2" xml:space="preserve">
+    <value>C2 — Inicio de totalidad</value>
+  </data>
+  <data name="Eclipse_C3" xml:space="preserve">
+    <value>C3 — Fin de totalidad</value>
+  </data>
+  <data name="Eclipse_C4" xml:space="preserve">
+    <value>C4 — Fin del eclipse</value>
+  </data>
+  <data name="Eclipse_ShadowBands" xml:space="preserve">
+    <value>Bandas de sombra</value>
+  </data>
+  <data name="Eclipse_BailyBeadsStart" xml:space="preserve">
+    <value>Collar de Baily (inicio)</value>
+  </data>
+  <data name="Eclipse_BailyBeadsEnd" xml:space="preserve">
+    <value>Collar de Baily (fin)</value>
+  </data>
+  <data name="Eclipse_DiamondRingStart" xml:space="preserve">
+    <value>Anillo de diamante (inicio)</value>
+  </data>
+  <data name="Eclipse_DiamondRingEnd" xml:space="preserve">
+    <value>Anillo de diamante (fin)</value>
+  </data>
+  <data name="Eclipse_Maximum" xml:space="preserve">
+    <value>Máximo eclipse</value>
+  </data>
+  <data name="Eclipse_Alert_C1" xml:space="preserve">
+    <value>Primer contacto. El eclipse comienza ahora.</value>
+  </data>
+  <data name="Eclipse_Alert_ShadowBands" xml:space="preserve">
+    <value>Atención, bandas de sombra en aproximadamente un minuto.</value>
+  </data>
+  <data name="Eclipse_Alert_BailyStart" xml:space="preserve">
+    <value>Collar de Baily visible ahora.</value>
+  </data>
+  <data name="Eclipse_Alert_DiamondStart" xml:space="preserve">
+    <value>Anillo de diamante. La totalidad comienza en segundos.</value>
+  </data>
+  <data name="Eclipse_Alert_C2" xml:space="preserve">
+    <value>Segundo contacto. ¡Inicio de la totalidad!</value>
+  </data>
+  <data name="Eclipse_Alert_Maximum" xml:space="preserve">
+    <value>Máximo eclipse.</value>
+  </data>
+  <data name="Eclipse_Alert_C3" xml:space="preserve">
+    <value>Tercer contacto. La totalidad termina ahora.</value>
+  </data>
+  <data name="Eclipse_Alert_DiamondEnd" xml:space="preserve">
+    <value>Anillo de diamante de salida.</value>
+  </data>
+  <data name="Eclipse_Alert_BailyEnd" xml:space="preserve">
+    <value>Collar de Baily de salida.</value>
+  </data>
+  <data name="Eclipse_Alert_C4" xml:space="preserve">
+    <value>Cuarto contacto. El eclipse ha terminado.</value>
+  </data>
+  <data name="EclipseTimer_In" xml:space="preserve">
+    <value>en</value>
+  </data>
+  <data name="EclipseTimer_Ago" xml:space="preserve">
+    <value>hace</value>
+  </data>
+  <data name="EclipseTimer_Now" xml:space="preserve">
+    <value>¡AHORA!</value>
+  </data>
+  <data name="EclipseTimer_Hours" xml:space="preserve">
+    <value>h</value>
+  </data>
+  <data name="EclipseTimer_Minutes" xml:space="preserve">
+    <value>min</value>
+  </data>
+  <data name="EclipseTimer_Seconds" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="EclipseTimer_LocalTime" xml:space="preserve">
+    <value>Hora local</value>
+  </data>
+  <data name="EclipseTimer_Altitude" xml:space="preserve">
+    <value>Alt. solar</value>
+  </data>
+  <data name="EclipseTimer_Warning_Past" xml:space="preserve">
+    <value>Este eclipse ya ha ocurrido</value>
+  </data>
+  <data name="EclipseTimer_EclipseType_Global" xml:space="preserve">
+    <value>Tipo global</value>
+  </data>
+  <data name="EclipseTimer_Region" xml:space="preserve">
+    <value>Región de máxima visibilidad</value>
+  </data>
+  <data name="EclipseTimer_Days" xml:space="preserve">
+    <value>d</value>
+  </data>
+  <data name="EclipseTimer_Contacts" xml:space="preserve">
+    <value>Contactos y eventos</value>
+  </data>
+  <data name="EclipseTimer_SimStart" xml:space="preserve">
+    <value>Simular eclipse</value>
+  </data>
+  <data name="EclipseTimer_SimStop" xml:space="preserve">
+    <value>Detener simulación</value>
+  </data>
+  <data name="EclipseTimer_SimActive" xml:space="preserve">
+    <value>Simulación activa a velocidad</value>
+  </data>
+  <data name="EclipseTimer_TestAlert" xml:space="preserve">
+    <value>Probar aviso sonoro</value>
+  </data>
   <data name="Settings_FavoriteLocations" xml:space="preserve">
     <value>Ubicaciones favoritas</value>
   </data>
@@ -735,139 +942,28 @@
   <data name="FavLoc_Select_GPS" xml:space="preserve">
     <value>Ubicación GPS actual</value>
   </data>
-  <data name="SolLuna_Eclipses_Year" xml:space="preserve">
-    <value>Eclipses del año</value>
+  <data name="Home_Now_Title" xml:space="preserve">
+    <value>Ahora mismo</value>
   </data>
-  <data name="SolLuna_Magnitude_Desc" xml:space="preserve">
-    <value>Magnitud del eclipse (fracción oculta del diámetro)</value>
+  <data name="Home_Sun_Up" xml:space="preserve">
+    <value>Sobre el horizonte</value>
   </data>
-  <data name="SolLuna_Contact_C1_Desc" xml:space="preserve">
-    <value>C1: Inicio de la parcialidad</value>
+  <data name="Home_Sun_Down" xml:space="preserve">
+    <value>Bajo el horizonte</value>
   </data>
-  <data name="SolLuna_Contact_C2_Desc" xml:space="preserve">
-    <value>C2: Inicio de la totalidad/anularidad</value>
+  <data name="Home_AstroNight" xml:space="preserve">
+    <value>Noche astronómica</value>
   </data>
-  <data name="SolLuna_Contact_C3_Desc" xml:space="preserve">
-    <value>C3: Fin de la totalidad/anularidad</value>
+  <data name="Home_AstroNight_Active" xml:space="preserve">
+    <value>Activa ahora ✓</value>
   </data>
-  <data name="SolLuna_Contact_C4_Desc" xml:space="preserve">
-    <value>C4: Fin de la parcialidad</value>
+  <data name="Home_NextFullMoon" xml:space="preserve">
+    <value>Próx. luna llena</value>
   </data>
-  <data name="SolLuna_Eclipse_Solar" xml:space="preserve">
-    <value>Eclipse Solar</value>
+  <data name="Home_NextEclipse" xml:space="preserve">
+    <value>Próximo eclipse solar</value>
   </data>
-  <data name="SolLuna_Eclipse_Lunar" xml:space="preserve">
-    <value>Eclipse Lunar</value>
+  <data name="EclipseTimer_TimelineTitle" xml:space="preserve">
+    <value>Progreso del eclipse</value>
   </data>
-  <data name="SolLuna_Eclipse_Total" xml:space="preserve">
-    <value>Total</value>
-  </data>
-  <data name="SolLuna_Eclipse_Annular" xml:space="preserve">
-    <value>Anular</value>
-  </data>
-  <data name="SolLuna_Eclipse_Partial" xml:space="preserve">
-    <value>Parcial</value>
-  </data>
-  <data name="SolLuna_Eclipse_Penumbral" xml:space="preserve">
-    <value>Penumbral</value>
-  </data>
-  <data name="FOV_SimulatorTitle" xml:space="preserve">
-    <value>Simulación del campo visual</value>
-  </data>
-  <!-- ══ Calculadora Tiempos de Eclipse ══ -->
-<data name="Calc_EclipseTimer_Title"><value>Tiempos de Eclipse</value></data>
-<data name="Calc_EclipseTimer_Desc"><value>Contactos C1-C4, anillo de diamante y avisos en tiempo real para tu ubicación</value></data>
-<data name="EclipseTimer_Title"><value>Calculadora de Tiempos de Eclipse</value></data>
-<data name="EclipseTimer_Subtitle"><value>Contactos precisos calculados para tu ubicación con avisos sonoros</value></data>
-<data name="EclipseTimer_SelectEclipse"><value>Seleccionar eclipse</value></data>
-<data name="EclipseTimer_Location"><value>Ubicación</value></data>
-<data name="EclipseTimer_UseGPS"><value>Usar GPS</value></data>
-<data name="EclipseTimer_Calculate"><value>Calcular para mi ubicación</value></data>
-<data name="EclipseTimer_Type_Total"><value>Eclipse total</value></data>
-<data name="EclipseTimer_Type_Annular"><value>Eclipse anular</value></data>
-<data name="EclipseTimer_Type_Partial"><value>Eclipse parcial</value></data>
-<data name="EclipseTimer_Type_None"><value>No visible desde esta ubicación</value></data>
-<data name="EclipseTimer_MaxCoverage"><value>Ocultación máxima</value></data>
-<data name="EclipseTimer_NextEvent"><value>Próximo evento</value></data>
-<data name="EclipseTimer_AudioAlerts"><value>Avisos sonoros</value></data>
-<data name="EclipseTimer_AudioOn"><value>Activar avisos</value></data>
-<data name="EclipseTimer_AudioOff"><value>Desactivar avisos</value></data>
-<data name="EclipseTimer_SunBelowHorizon"><value>El Sol estará bajo el horizonte durante este eclipse en tu ubicación</value></data>
-<data name="EclipseTimer_NotVisible"><value>Este eclipse no es visible desde tu ubicación</value></data>
-<!-- Eventos -->
-<data name="Eclipse_C1"><value>C1 — Primer contacto</value></data>
-<data name="Eclipse_C2"><value>C2 — Inicio de totalidad</value></data>
-<data name="Eclipse_C3"><value>C3 — Fin de totalidad</value></data>
-<data name="Eclipse_C4"><value>C4 — Fin del eclipse</value></data>
-<data name="Eclipse_ShadowBands"><value>Bandas de sombra</value></data>
-<data name="Eclipse_BailyBeadsStart"><value>Collar de Baily (inicio)</value></data>
-<data name="Eclipse_BailyBeadsEnd"><value>Collar de Baily (fin)</value></data>
-<data name="Eclipse_DiamondRingStart"><value>Anillo de diamante (inicio)</value></data>
-<data name="Eclipse_DiamondRingEnd"><value>Anillo de diamante (fin)</value></data>
-<data name="Eclipse_Maximum"><value>Máximo eclipse</value></data>
-<!-- Avisos TTS -->
-<data name="Eclipse_Alert_C1"><value>Primer contacto. El eclipse comienza ahora.</value></data>
-<data name="Eclipse_Alert_ShadowBands"><value>Atención, bandas de sombra en aproximadamente un minuto.</value></data>
-<data name="Eclipse_Alert_BailyStart"><value>Collar de Baily visible ahora.</value></data>
-<data name="Eclipse_Alert_DiamondStart"><value>Anillo de diamante. La totalidad comienza en segundos.</value></data>
-<data name="Eclipse_Alert_C2"><value>Segundo contacto. ¡Inicio de la totalidad!</value></data>
-<data name="Eclipse_Alert_Maximum"><value>Máximo eclipse.</value></data>
-<data name="Eclipse_Alert_C3"><value>Tercer contacto. La totalidad termina ahora.</value></data>
-<data name="Eclipse_Alert_DiamondEnd"><value>Anillo de diamante de salida.</value></data>
-<data name="Eclipse_Alert_BailyEnd"><value>Collar de Baily de salida.</value></data>
-<data name="Eclipse_Alert_C4"><value>Cuarto contacto. El eclipse ha terminado.</value></data>
-<!-- Cuenta atrás -->
-<data name="EclipseTimer_In"><value>en</value></data>
-<data name="EclipseTimer_Ago"><value>hace</value></data>
-<data name="EclipseTimer_Now"><value>¡AHORA!</value></data>
-<data name="EclipseTimer_Hours"><value>h</value></data>
-<data name="EclipseTimer_Minutes"><value>min</value></data>
-<data name="EclipseTimer_Seconds"><value>s</value></data>
-<data name="EclipseTimer_LocalTime"><value>Hora local</value></data>
-<data name="EclipseTimer_Altitude"><value>Alt. solar</value></data>
-<data name="EclipseTimer_Warning_Past"><value>Este eclipse ya ha ocurrido</value></data>
-<data name="EclipseTimer_EclipseType_Global"><value>Tipo global</value></data>
-<data name="EclipseTimer_Region"><value>Región de máxima visibilidad</value></data>
-
-<data name="EclipseTimer_Days" xml:space="preserve">
-  <value>d</value>
-</data>
-<data name="EclipseTimer_Contacts" xml:space="preserve">
-  <value>Contactos y eventos</value>
-</data>
-<data name="EclipseTimer_SimStart" xml:space="preserve">
-  <value>Simular eclipse</value>
-</data>
-<data name="EclipseTimer_SimStop" xml:space="preserve">
-  <value>Detener simulación</value>
-</data>
-<data name="EclipseTimer_SimActive" xml:space="preserve">
-  <value>Simulación activa a velocidad</value>
-</data>
-<data name="EclipseTimer_TestAlert" xml:space="preserve">
-  <value>Probar aviso sonoro</value>
-</data>
-
-<data name="Home_Now_Title" xml:space="preserve">
-  <value>Ahora mismo</value>
-</data>
-<data name="Home_Sun_Up" xml:space="preserve">
-  <value>Sobre el horizonte</value>
-</data>
-<data name="Home_Sun_Down" xml:space="preserve">
-  <value>Bajo el horizonte</value>
-</data>
-<data name="Home_AstroNight" xml:space="preserve">
-  <value>Noche astronómica</value>
-</data>
-<data name="Home_AstroNight_Active" xml:space="preserve">
-  <value>Activa ahora ✓</value>
-</data>
-<data name="Home_NextFullMoon" xml:space="preserve">
-  <value>Próx. luna llena</value>
-</data>
-<data name="Home_NextEclipse" xml:space="preserve">
-  <value>Próximo eclipse solar</value>
-</data>
-
 </root>

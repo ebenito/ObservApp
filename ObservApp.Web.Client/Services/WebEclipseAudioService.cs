@@ -7,6 +7,10 @@ public sealed class WebEclipseAudioService : IEclipseAudioService
 {
     private readonly IJSRuntime _js;
 
+    // Ruta base sin extensión — el JS prueba .mp3 luego .wav automáticamente
+    private const string AudioFallbackUrl =
+        "_content/ObservApp.Shared/sounds/eclipse-beep";
+
     public WebEclipseAudioService(IJSRuntime js) => _js = js;
 
     public bool IsSupported => true;
@@ -16,9 +20,10 @@ public sealed class WebEclipseAudioService : IEclipseAudioService
     {
         try
         {
-            await _js.InvokeVoidAsync("observApp.speakText",
+            await _js.InvokeVoidAsync(
+                "observApp.speakTextWithFallback",
                 cancellationToken,
-                new object[] { message });
+                new object[] { message, AudioFallbackUrl });
         }
         catch { /* silencio */ }
     }
@@ -27,7 +32,8 @@ public sealed class WebEclipseAudioService : IEclipseAudioService
     {
         try
         {
-            await _js.InvokeVoidAsync("observApp.playBeepTone",
+            await _js.InvokeVoidAsync(
+                "observApp.playBeepTone",
                 cancellationToken,
                 Array.Empty<object>());
         }
