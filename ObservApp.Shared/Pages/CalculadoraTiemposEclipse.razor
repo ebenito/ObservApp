@@ -283,7 +283,7 @@
 
     // Cuenta atrás
     private EclipseContact? _nextEvent;
-    private string          _countdownText = "--:--:--";
+    private string          _countdownText = "--:--:--:--";
     private Timer?          _timer;
 
     // ── Inicialización ────────────────────────────────────────────────────────
@@ -424,7 +424,8 @@
             int days = (int)diff.TotalDays;
             int hours = diff.Hours;
             int mins = diff.Minutes;
-            return $"{days}{L["EclipseTimer_Days"]} {hours}{L["EclipseTimer_Hours"]} {mins:D2}{L["EclipseTimer_Minutes"]}";
+            int secs = diff.Seconds;
+            return $"{days}{L["EclipseTimer_Days"]} {hours}{L["EclipseTimer_Hours"]} {mins:D2}{L["EclipseTimer_Minutes"]} {secs:D2}{L["EclipseTimer_Seconds"]}";
         }
 
         if (diff.TotalHours >= 1)
@@ -733,93 +734,130 @@
 
         var ic = CultureInfo.InvariantCulture;
         var contacts = _result.Contacts;
-        var t0 = contacts.First().UtcTime;
-        var t1 = contacts.Last().UtcTime;
-        double totalSecs = (t1 - t0).TotalSeconds;
-        if (totalSecs <= 0) totalSecs = 1;
+        int count = contacts.Count;
 
-        // Altura mayor: zona superior para horas, zona inferior para etiquetas NOW
-        int W = 560, H = 130;
-        int lineY = 65; // línea central elevada para dejar espacio abajo
+        int W = 560;
+        int H = count > 6 ? 160 : 130;
+        int lineY = H / 2;
+        int iconSize = 28; // tamaño del mini-SVG de fase
+        int marginX = 30;
+        double step = count > 1 ? (W - marginX * 2.0) / (count - 1) : 0;
 
         var sb = new System.Text.StringBuilder();
-        sb.Append($"<svg width=\"100%\" viewBox=\"0 0 {W} {H}\" xmlns=\"http://www.w3.org/2000/svg\">");
+        sb.Append($"<svg width=\"100%\" viewBox=\"0 0 {W} {H}\" " +
+                  $"xmlns=\"http://www.w3.org/2000/svg\">");
 
-        // Línea base
-        sb.Append($"<line x1=\"20\" y1=\"{lineY}\" x2=\"{W - 20}\" y2=\"{lineY}\" " +
+        // ── Línea base ────────────────────────────────────────────────────────
+        sb.Append($"<line x1=\"{marginX}\" y1=\"{lineY}\" x2=\"{W - marginX}\" y2=\"{lineY}\" " +
                   $"stroke=\"var(--obs-border)\" stroke-width=\"2\"/>");
 
-        // Relleno de totalidad / anularidad
+        // ── Franja de totalidad / anularidad entre C2 y C3 ───────────────────
         if (_result.Type is LocalEclipseType.Total or LocalEclipseType.Annular)
         {
-            var c2 = contacts.FirstOrDefault(c => c.Kind == EclipseEventKind.C2);
-            var c3 = contacts.FirstOrDefault(c => c.Kind == EclipseEventKind.C3);
-            if (c2 != null && c3 != null)
+            int idxC2 = contacts.FindIndex(c => c.Kind == EclipseEventKind.C2);
+            int idxC3 = contacts.FindIndex(c => c.Kind == EclipseEventKind.C3);
+            if (idxC2 >= 0 && idxC3 >= 0)
             {
-                double x2 = 20 + ((c2.UtcTime - t0).TotalSeconds / totalSecs) * (W - 40);
-                double x3 = 20 + ((c3.UtcTime - t0).TotalSeconds / totalSecs) * (W - 40);
-                string fillColor = _result.Type == LocalEclipseType.Total
-                    ? "rgba(46,196,182,0.2)" : "rgba(244,196,48,0.18)";
-                sb.Append($"<rect x=\"{x2.ToString("F0", ic)}\" y=\"{lineY - 14}\" " +
-                          $"width=\"{(x3 - x2).ToString("F0", ic)}\" height=\"28\" " +
-                          $"fill=\"{fillColor}\" rx=\"4\"/>");
+                double x2 = marginX + idxC2 * step;
+                double x3 = marginX + idxC3 * step;
+                string fc = _result.Type == LocalEclipseType.Total
+                    ? "rgba(46,196,182,0.18)" : "rgba(244,196,48,0.15)";
+                sb.Append($"<rect x=\"{x2.ToString("F0", ic)}\" y=\"{lineY - 12}\" " +
+                          $"width=\"{(x3 - x2).ToString("F0", ic)}\" height=\"24\" " +
+                          $"fill=\"{fc}\" rx=\"3\"/>");
             }
         }
 
-        // Línea "ahora"
-        var now = _simMode ? _simNow : DateTime.UtcNow;
-        if (now >= t0 && now <= t1)
+        // ── Eventos distribuidos uniformemente ────────────────────────────────
+        for (int i = 0; i < count; i++)
         {
-            double xNow = 20 + ((now - t0).TotalSeconds / totalSecs) * (W - 40);
-            sb.Append($"<line x1=\"{xNow.ToString("F0", ic)}\" y1=\"10\" " +
-                      $"x2=\"{xNow.ToString("F0", ic)}\" y2=\"{H - 10}\" " +
-                      $"stroke=\"var(--obs-mars)\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/>");
-            // Etiqueta NOW debajo de la línea, no encima del SVG
-            sb.Append($"<text x=\"{xNow.ToString("F0", ic)}\" y=\"{H - 2}\" " +
-                      $"text-anchor=\"middle\" fill=\"var(--obs-mars)\" font-size=\"8\">NOW</text>");
-        }
+            var c = contacts[i];
+            double x = marginX + i * step;
+            string xStr = x.ToString("F0", ic);
 
-        // Eventos: alternar texto arriba/abajo para evitar solapamiento
-        // Los contactos clave (C1-C4, Max) van arriba; los secundarios abajo
-        foreach (var c in contacts)
-        {
-            double x = 20 + ((c.UtcTime - t0).TotalSeconds / totalSecs) * (W - 40);
             bool isKey = c.Kind is EclipseEventKind.C1 or EclipseEventKind.C2
                                 or EclipseEventKind.Maximum
                                 or EclipseEventKind.C3 or EclipseEventKind.C4;
 
+            bool labelAbove = (i % 2 == 0);
+            int textY = labelAbove ? lineY - 26 : lineY + 32;
+            int timeY = labelAbove ? lineY - 15 : lineY + 21;
+            int tickY1 = labelAbove ? lineY - 7 : lineY + 7;
+            int tickY2 = labelAbove ? lineY - 11 : lineY + 11;
+
             string dotColor = isKey ? "var(--obs-star)" : "var(--obs-comet)";
-            int dotR = isKey ? 6 : 4;
-
-            sb.Append($"<circle cx=\"{x.ToString("F0", ic)}\" cy=\"{lineY}\" " +
-                      $"r=\"{dotR}\" fill=\"{dotColor}\"/>");
-
-            string timeStr = c.UtcTime.ToLocalTime().ToString("HH:mm");
+            string textColor = isKey ? "var(--obs-star)" : "var(--obs-comet)";
 
             if (isKey)
             {
-                // Texto arriba del punto: hora en y=lineY-18, tick vertical
-                sb.Append($"<line x1=\"{x.ToString("F0", ic)}\" y1=\"{lineY - dotR}\" " +
-                          $"x2=\"{x.ToString("F0", ic)}\" y2=\"{lineY - 12}\" " +
-                          $"stroke=\"{dotColor}\" stroke-width=\"1\" opacity=\"0.5\"/>");
-                sb.Append($"<text x=\"{x.ToString("F0", ic)}\" y=\"{lineY - 20}\" " +
-                          $"text-anchor=\"middle\" fill=\"var(--obs-star)\" " +
-                          $"font-size=\"9\" font-weight=\"600\">{timeStr}</text>");
+                // ── Icono de fase incrustado ──────────────────────────────────
+                // Extraemos el interior del SVG generado por BuildPhaseSvg y lo
+                // posicionamos centrado sobre la línea con un <g transform>
+                string phaseSvg = BuildPhaseSvg(c.Kind, c.CoverageFraction,
+                                                iconSize, _result.Type);
+                string phaseInner = ExtractSvgInner(phaseSvg);
+                double gx = x - iconSize / 2.0;
+                double gy = lineY - iconSize / 2.0;
+                sb.Append($"<g transform=\"translate({gx.ToString("F1", ic)},{gy.ToString("F1", ic)})\">");
+                sb.Append(phaseInner);
+                sb.Append("</g>");
             }
             else
             {
-                // Texto abajo del punto: hora en y=lineY+22
-                sb.Append($"<line x1=\"{x.ToString("F0", ic)}\" y1=\"{lineY + dotR}\" " +
-                          $"x2=\"{x.ToString("F0", ic)}\" y2=\"{lineY + 12}\" " +
-                          $"stroke=\"{dotColor}\" stroke-width=\"1\" opacity=\"0.5\"/>");
-                sb.Append($"<text x=\"{x.ToString("F0", ic)}\" y=\"{lineY + 22}\" " +
-                          $"text-anchor=\"middle\" fill=\"var(--obs-comet)\" " +
-                          $"font-size=\"8\">{timeStr}</text>");
+                // Punto pequeño para eventos secundarios
+                sb.Append($"<circle cx=\"{xStr}\" cy=\"{lineY}\" r=\"3\" " +
+                          $"fill=\"{dotColor}\" opacity=\"0.6\"/>");
             }
+
+            // Tick vertical
+            sb.Append($"<line x1=\"{xStr}\" y1=\"{tickY1}\" " +
+                      $"x2=\"{xStr}\" y2=\"{tickY2}\" " +
+                      $"stroke=\"{dotColor}\" stroke-width=\"1\" opacity=\"0.5\"/>");
+
+            // Hora
+            string timeStr = c.UtcTime.ToLocalTime().ToString("HH:mm:ss");
+            sb.Append($"<text x=\"{xStr}\" y=\"{timeY}\" " +
+                      $"text-anchor=\"middle\" fill=\"{textColor}\" " +
+                      $"font-size=\"7\">{timeStr}</text>");
+
+            // Etiqueta nombre
+            string label = GetEventLabel(c.Kind);
+
+            // string label = c.Kind switch
+            // {
+            //     EclipseEventKind.C1 => "C1",
+            //     EclipseEventKind.C2 => "C2",
+            //     EclipseEventKind.C3 => "C3",
+            //     EclipseEventKind.C4 => "C4",
+            //     EclipseEventKind.Maximum => "MAX",
+            //     EclipseEventKind.ShadowBands => "Bandas",
+            //     EclipseEventKind.BailyBeadsStart => "Baily▶",
+            //     EclipseEventKind.BailyBeadsEnd => "◀Baily",
+            //     EclipseEventKind.DiamondRingStart => "💍▶",
+            //     EclipseEventKind.DiamondRingEnd => "◀💍",
+            //     _ => c.Kind.ToString()
+            // };
+
+            sb.Append($"<text x=\"{xStr}\" y=\"{textY}\" " +
+                      $"text-anchor=\"middle\" fill=\"{textColor}\" " +
+                      $"font-size=\"{(isKey ? 8 : 7)}\" " +
+                      $"{(isKey ? "font-weight=\"700\"" : "")}>{label}</text>");
         }
 
         sb.Append("</svg>");
         return sb.ToString();
+    }
+
+    /// <summary>
+    /// Extrae el contenido interior de un SVG generado por BuildPhaseSvg
+    /// (todo excepto el tag svg exterior) para poder incrustarlo en otro SVG.
+    /// </summary>
+    private static string ExtractSvgInner(string svg)
+    {
+        int start = svg.IndexOf('>') + 1;           // fin del tag <svg ...>
+        int end = svg.LastIndexOf("</svg>");       // inicio del cierre
+        if (start <= 0 || end <= start) return svg;
+        return svg[start..end];
     }
 
     // ── Test de aviso individual ───────────────────────────────────────────────

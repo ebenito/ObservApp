@@ -963,4 +963,7 @@
   <data name="Home_NextEclipse" xml:space="preserve">
     <value>Prossima eclissi solare</value>
   </data>
+  <data name="EclipseTimer_TimelineTitle" xml:space="preserve">
+    <value>Progresso dell'eclissi</value>
+  </data>
 </root>

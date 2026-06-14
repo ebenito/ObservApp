@@ -963,4 +963,7 @@
   <data name="Home_NextEclipse" xml:space="preserve">
     <value>كسوف الشمس القادم</value>
   </data>
+  <data name="EclipseTimer_TimelineTitle" xml:space="preserve">
+    <value>تقدم عملية الكسوف</value>
+  </data>
 </root>

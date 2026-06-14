@@ -964,6 +964,6 @@
     <value>Nächste Sonnenfinsternis</value>
   </data>
   <data name="EclipseTimer_TimelineTitle" xml:space="preserve">
-    <value>Progreso del eclipse</value>
+    <value>Fortschritt der Sonnenfinsternis</value>
   </data>
 </root>
