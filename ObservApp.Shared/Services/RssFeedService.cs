@@ -10,7 +10,7 @@ namespace ObservApp.Shared.Services;
 /// Parsea RSS 2.0 (formato WordPress estándar, con content:encoded) y Atom.
 /// No depende de System.ServiceModel.Syndication para mantener el peso bajo en WASM.
 /// </summary>
-public sealed class RssFeedService : IRssFeedService
+public class RssFeedService : IRssFeedService
 {
     private readonly HttpClient _http;
     private readonly Dictionary<string, string?> _lastErrors = new();
@@ -54,7 +54,7 @@ public sealed class RssFeedService : IRssFeedService
         {
             _lastErrors[source.Id] = null;
 
-            var xml = await _http.GetStringAsync(source.Url, cancellationToken);
+            var xml = await _http.GetStringAsync(ResolveUrl(source.Url), cancellationToken);
             var doc = XDocument.Parse(xml);
 
             var root = doc.Root;
@@ -259,4 +259,11 @@ public sealed class RssFeedService : IRssFeedService
         var dash = trimmed.IndexOf('-');
         return dash > 0 ? trimmed[..dash].ToLowerInvariant() : trimmed.ToLowerInvariant();
     }
+
+    /// <summary>
+    /// Permite que las subclases redirijan la URL (por ejemplo, a través de un proxy).
+    /// Por defecto devuelve la URL original.
+    /// </summary>
+    protected virtual string ResolveUrl(string feedUrl) => feedUrl;
+
 }
