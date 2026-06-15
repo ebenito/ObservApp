@@ -982,4 +982,7 @@
     <value>Signale</value>
     <comment>Lector de noticias RSS</comment>
   </data>
+  <data name="Signals_Stop" xml:space="preserve">
+    <value>Stopp</value>
+  </data>
 </root>

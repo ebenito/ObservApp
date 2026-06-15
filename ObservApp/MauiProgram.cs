@@ -78,8 +78,11 @@ public static class MauiProgram
         // ── Enlaces externos (abrir en navegador del sistema) ───────────────────
         builder.Services.AddSingleton<IExternalLinkService, MauiExternalLinkService>();
 
-        // ── HttpClient ───────────────────────────────────────────────────────
-        builder.Services.AddHttpClient();
+		// ── TTS genérico por idioma (lectura de artículos en Señales) ───────────
+		builder.Services.AddSingleton<ITextToSpeechService, MauiTextToSpeechService>();
+
+		// ── HttpClient ───────────────────────────────────────────────────────
+		builder.Services.AddHttpClient();
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();

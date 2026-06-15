@@ -1,8 +1,11 @@
 @page "/senales"
 @using ObservApp.Shared.Services
+@implements IDisposable
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
 @inject IRssFeedService RssService
 @inject IExternalLinkService ExternalLinks
+@inject ITextToSpeechService Tts
+@inject ILocalizationService Localization
 
 <PageTitle>@L["Signals_Title"] — ObservApp</PageTitle>
 
@@ -56,8 +59,16 @@
                         <p class="signals-card-summary">@item.Summary</p>
 
                         <div class="signals-card-actions">
-                            <button class="signals-btn signals-btn--accent" disabled>
-                                🔊 @L["Signals_Listen"]
+                            <button class="signals-btn @(IsPlaying(item) ? "signals-btn--playing" : "signals-btn--accent")"
+                                    @onclick="() => ToggleListenAsync(item)">
+                                @if (IsPlaying(item))
+                                {
+                                    <span>⏹ @L["Signals_Stop"]</span>
+                                }
+                                else
+                                {
+                                    <span>🔊 @L["Signals_Listen"]</span>
+                                }
                             </button>
                             <button class="signals-btn" @onclick="() => OpenInBrowserAsync(item.Link)">
                                 🌐 @L["Signals_OpenBrowser"]
@@ -86,6 +97,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        Tts.PlaybackStateChanged += OnPlaybackStateChanged;
+
         try
         {
             _items = await RssService.GetItemsFromSourceAsync(TubkalaSource);
@@ -109,5 +122,58 @@
     private async Task OpenInBrowserAsync(string url)
     {
         await ExternalLinks.OpenAsync(url);
+    }
+
+    // ── TTS — lectura de artículos ────────────────────────────────────────────
+
+    // Identificamos el artículo en reproducción por su Link (clave natural
+    // del RssFeedItem; no hay Id propio).
+    private string? _playingLink;
+
+    private bool IsPlaying(RssFeedItem item)
+        => _playingLink == item.Link && Tts.IsSpeaking;
+
+    private async Task ToggleListenAsync(RssFeedItem item)
+    {
+        // Si ya está sonando este artículo → lo detenemos.
+        if (IsPlaying(item))
+        {
+            Tts.Stop();
+            _playingLink = null;
+            return;
+        }
+
+        // Si sonaba otro artículo, SpeakAsync lo detiene internamente;
+        // igualmente actualizamos aquí para reflejar el cambio sin demora.
+        _playingLink = item.Link;
+
+        var text = $"{item.Title}. {item.Summary}";
+        var languageCode = string.IsNullOrWhiteSpace(item.LanguageCode)
+            ? Localization.CurrentLanguageCode
+            : item.LanguageCode;
+
+        await Tts.SpeakAsync(text, languageCode);
+
+        // Si no se pudo iniciar (sin voz para el idioma), Tts.IsSpeaking
+        // queda en false — limpiamos el estado para que el botón vuelva
+        // a "Escuchar" en vez de quedarse marcado como activo.
+        if (!Tts.IsSpeaking)
+            _playingLink = null;
+
+        StateHasChanged();
+    }
+
+    private void OnPlaybackStateChanged()
+    {
+        if (!Tts.IsSpeaking)
+            _playingLink = null;
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        Tts.PlaybackStateChanged -= OnPlaybackStateChanged;
+        Tts.Stop();
     }
 }

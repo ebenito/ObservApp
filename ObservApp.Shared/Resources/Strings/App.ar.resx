@@ -982,4 +982,7 @@
     <value>الإشارات</value>
     <comment>Lector de noticias RSS</comment>
   </data>
+  <data name="Signals_Stop" xml:space="preserve">
+    <value>إيقاف</value>
+  </data>
 </root>
