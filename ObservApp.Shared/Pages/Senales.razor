@@ -2,7 +2,7 @@
 @using ObservApp.Shared.Services
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
 @inject IRssFeedService RssService
-@inject IJSRuntime JS
+@inject IExternalLinkService ExternalLinks
 
 <PageTitle>@L["Signals_Title"] — ObservApp</PageTitle>
 
@@ -108,7 +108,6 @@
 
     private async Task OpenInBrowserAsync(string url)
     {
-        if (string.IsNullOrWhiteSpace(url)) return;
-        await JS.InvokeVoidAsync("open", url, "_blank");
+        await ExternalLinks.OpenAsync(url);
     }
 }

@@ -75,6 +75,9 @@ public static class MauiProgram
         // ── Servicio de lectura de fuentes RSS (blogs) ─────────────────────────────────────────
         builder.Services.AddSingleton<IRssFeedService, RssFeedService>();
 
+        // ── Enlaces externos (abrir en navegador del sistema) ───────────────────
+        builder.Services.AddSingleton<IExternalLinkService, MauiExternalLinkService>();
+
         // ── HttpClient ───────────────────────────────────────────────────────
         builder.Services.AddHttpClient();
 
