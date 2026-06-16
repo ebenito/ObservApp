@@ -197,3 +197,15 @@
         background: rgba(244, 196, 48, .15);
         border-color: var(--obs-star);
     }
+
+/* Estado activo mientras se reproduce la lectura TTS de un artículo */
+.signals-btn--playing {
+    border-color: rgba(46, 196, 182, .45);
+    background: rgba(46, 196, 182, .12);
+    color: var(--obs-aurora);
+}
+
+    .signals-btn--playing:hover:not(:disabled) {
+        background: rgba(46, 196, 182, .2);
+        border-color: var(--obs-aurora);
+    }

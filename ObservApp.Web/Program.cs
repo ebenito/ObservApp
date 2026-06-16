@@ -25,11 +25,52 @@ builder.Services.AddScoped<ISettingsService, SsrSettingsService>();
 builder.Services.AddScoped<IAppLifecycleService, WebAppLifecycleService>();
 builder.Services.AddScoped<IGeolocationService, SsrGeolocationService>();
 builder.Services.AddScoped<IFavoriteLocationsService, SsrFavoriteLocationsService>();
+builder.Services.AddScoped<IExternalLinkService, SsrExternalLinkService>();
+builder.Services.AddScoped<ITextToSpeechService, SsrTextToSpeechService>();
 builder.Services.AddScoped<IEclipseCalculatorService, EclipseCalculatorService>();
-builder.Services.AddSingleton<IRssFeedService, RssFeedService>();
+builder.Services.AddScoped<IEclipseAudioService, SsrEclipseAudioService>();
+builder.Services.AddScoped<IRssFeedService, RssFeedService>();
 builder.Services.AddSingleton<AppState>();
 
+builder.Services.AddHttpClient();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("RssProxy", policy =>
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
+
 var app = builder.Build();
+app.UseCors("RssProxy");
+
+app.MapGet("/api/rss-proxy", async (string url, HttpClient http) =>
+{
+    // Whitelist de dominios permitidos
+    var allowed = new[]
+    {
+        "tubkala.com",
+        "apod.nasa.gov",
+        "www.skyandtelescope.org",
+        "spaceweather.com",
+        "blogs.esa.int",
+    };
+
+    if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) ||
+        !allowed.Any(d => uri.Host.EndsWith(d, StringComparison.OrdinalIgnoreCase)))
+        return Results.BadRequest("Dominio no permitido");
+
+    try
+    {
+        http.DefaultRequestHeaders.TryAddWithoutValidation(
+            "User-Agent", "ObservApp/1.0 RSS Reader");
+        var xml = await http.GetStringAsync(url);
+        return Results.Content(xml, "application/xml; charset=utf-8");
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem(ex.Message);
+    }
+});
+
 
 if (app.Environment.IsDevelopment())
     app.UseWebAssemblyDebugging();

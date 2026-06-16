@@ -10,7 +10,7 @@ namespace ObservApp.Shared.Services;
 /// Parsea RSS 2.0 (formato WordPress estándar, con content:encoded) y Atom.
 /// No depende de System.ServiceModel.Syndication para mantener el peso bajo en WASM.
 /// </summary>
-public sealed class RssFeedService : IRssFeedService
+public class RssFeedService : IRssFeedService
 {
     private readonly HttpClient _http;
     private readonly Dictionary<string, string?> _lastErrors = new();
@@ -46,15 +46,48 @@ public sealed class RssFeedService : IRssFeedService
             .ToList();
     }
 
-    public async Task<List<RssFeedItem>> GetItemsFromSourceAsync(
-        RssSource source,
-        CancellationToken cancellationToken = default)
+    public async Task<List<RssFeedItem>> GetItemsFromSourceAsync(RssSource source, CancellationToken cancellationToken = default)
     {
+        const int maxRetries = 3;
+        const int initialDelayMs = 1000;
+        const string htmlIndicator = "<!DOCTYPE";
+
         try
         {
             _lastErrors[source.Id] = null;
 
-            var xml = await _http.GetStringAsync(source.Url, cancellationToken);
+            string xml = string.Empty;
+            int attempt = 0;
+            string resolvedUrl = ResolveUrl(source.Url);
+
+            // Reintentos con espera progresiva si se recibe HTML
+            while (attempt < maxRetries)
+            {
+                xml = await _http.GetStringAsync(resolvedUrl, cancellationToken);
+
+                // Verificar si es HTML (página de verificación de Inmunify 360 u otra)
+                if (!xml.TrimStart().StartsWith(htmlIndicator, StringComparison.OrdinalIgnoreCase))
+                {
+                    break; // Es XML válido, salir del bucle de reintentos
+                }
+
+                attempt++;
+                if (attempt < maxRetries)
+                {
+                    // Espera progresiva: 1s, 2s, 3s
+                    int delayMs = initialDelayMs * attempt;
+                    await Task.Delay(delayMs, cancellationToken);
+                }
+            }
+
+            // Si después de reintentos aún es HTML, lanzar excepción con la URL
+            if (xml.TrimStart().StartsWith(htmlIndicator, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException(
+                    $"OPEN_BROWSER:{resolvedUrl}|El servidor devolvió HTML en lugar de XML. " +
+                    "La URL puede estar protegida por Inmunify 360 u otro sistema de verificación.");
+            }
+
             var doc = XDocument.Parse(xml);
 
             var root = doc.Root;
@@ -259,4 +292,11 @@ public sealed class RssFeedService : IRssFeedService
         var dash = trimmed.IndexOf('-');
         return dash > 0 ? trimmed[..dash].ToLowerInvariant() : trimmed.ToLowerInvariant();
     }
+
+    /// <summary>
+    /// Permite que las subclases redirijan la URL (por ejemplo, a través de un proxy).
+    /// Por defecto devuelve la URL original.
+    /// </summary>
+    protected virtual string ResolveUrl(string feedUrl) => feedUrl;
+
 }

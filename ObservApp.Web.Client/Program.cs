@@ -1,6 +1,8 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Http;
 using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
 using ObservApp.Web.Client.Services;
@@ -31,14 +33,21 @@ builder.Services.AddSingleton<ILocalizationService, WebLocalizationService>();
 builder.Services.AddSingleton<ISettingsService, WebSettingsService>();
 builder.Services.AddSingleton<IAppLifecycleService, WebClientAppLifecycleService>();
 builder.Services.AddSingleton<IGeolocationService, WebGeolocationService>();
-builder.Services.AddSingleton<IFavoriteLocationsService, WebFavoriteLocationsService>();
+builder.Services.AddSingleton<IFavoriteLocationsService, WebFavoriteLocationsService>(); 
+builder.Services.AddSingleton<IExternalLinkService, WebExternalLinkService>();
+builder.Services.AddSingleton<ITextToSpeechService, WebTextToSpeechService>();
 builder.Services.AddSingleton<IEclipseCalculatorService, EclipseCalculatorService>();
 builder.Services.AddSingleton<IEclipseAudioService, WebEclipseAudioService>();
-builder.Services.AddSingleton<IRssFeedService, RssFeedService>();
 builder.Services.AddSingleton<AppState>();
-builder.Services.AddScoped(sp => new HttpClient
+
+//builder.Services.AddScoped(sp => new HttpClient
+//{
+//    BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+//});
+
+builder.Services.AddHttpClient<IRssFeedService, WebRssFeedService>(client =>
 {
-    BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+    client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
 });
 
 var host = builder.Build();

@@ -75,8 +75,14 @@ public static class MauiProgram
         // ── Servicio de lectura de fuentes RSS (blogs) ─────────────────────────────────────────
         builder.Services.AddSingleton<IRssFeedService, RssFeedService>();
 
-        // ── HttpClient ───────────────────────────────────────────────────────
-        builder.Services.AddHttpClient();
+        // ── Enlaces externos (abrir en navegador del sistema) ───────────────────
+        builder.Services.AddSingleton<IExternalLinkService, MauiExternalLinkService>();
+
+		// ── TTS genérico por idioma (lectura de artículos en Señales) ───────────
+		builder.Services.AddSingleton<ITextToSpeechService, MauiTextToSpeechService>();
+
+		// ── HttpClient ───────────────────────────────────────────────────────
+		builder.Services.AddHttpClient();
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
