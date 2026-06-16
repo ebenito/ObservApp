@@ -105,8 +105,28 @@
 
             if (_items.Count == 0)
             {
-                _error = RssService.GetLastError(TubkalaSource.Id)
-                         ?? L["Status_NoData"];
+                var errorMsg = RssService.GetLastError(TubkalaSource.Id)
+                               ?? L["Status_NoData"];
+
+                // Verificar si el error contiene instrucción de abrir navegador
+                if (errorMsg?.StartsWith("OPEN_BROWSER:") == true)
+                {
+                    var parts = errorMsg.Split('|', 2);
+                    if (parts.Length == 2)
+                    {
+                        var url = parts[0].Replace("OPEN_BROWSER:", string.Empty);
+                        _error = parts[1];
+                        await OpenInBrowserAsync(url);
+                    }
+                    else
+                    {
+                        _error = errorMsg;
+                    }
+                }
+                else
+                {
+                    _error = errorMsg;
+                }
             }
         }
         catch (Exception ex)

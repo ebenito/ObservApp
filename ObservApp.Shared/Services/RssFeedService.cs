@@ -46,15 +46,48 @@ public class RssFeedService : IRssFeedService
             .ToList();
     }
 
-    public async Task<List<RssFeedItem>> GetItemsFromSourceAsync(
-        RssSource source,
-        CancellationToken cancellationToken = default)
+    public async Task<List<RssFeedItem>> GetItemsFromSourceAsync(RssSource source, CancellationToken cancellationToken = default)
     {
+        const int maxRetries = 3;
+        const int initialDelayMs = 1000;
+        const string htmlIndicator = "<!DOCTYPE";
+
         try
         {
             _lastErrors[source.Id] = null;
 
-            var xml = await _http.GetStringAsync(ResolveUrl(source.Url), cancellationToken);
+            string xml = string.Empty;
+            int attempt = 0;
+            string resolvedUrl = ResolveUrl(source.Url);
+
+            // Reintentos con espera progresiva si se recibe HTML
+            while (attempt < maxRetries)
+            {
+                xml = await _http.GetStringAsync(resolvedUrl, cancellationToken);
+
+                // Verificar si es HTML (página de verificación de Inmunify 360 u otra)
+                if (!xml.TrimStart().StartsWith(htmlIndicator, StringComparison.OrdinalIgnoreCase))
+                {
+                    break; // Es XML válido, salir del bucle de reintentos
+                }
+
+                attempt++;
+                if (attempt < maxRetries)
+                {
+                    // Espera progresiva: 1s, 2s, 3s
+                    int delayMs = initialDelayMs * attempt;
+                    await Task.Delay(delayMs, cancellationToken);
+                }
+            }
+
+            // Si después de reintentos aún es HTML, lanzar excepción con la URL
+            if (xml.TrimStart().StartsWith(htmlIndicator, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException(
+                    $"OPEN_BROWSER:{resolvedUrl}|El servidor devolvió HTML en lugar de XML. " +
+                    "La URL puede estar protegida por Inmunify 360 u otro sistema de verificación.");
+            }
+
             var doc = XDocument.Parse(xml);
 
             var root = doc.Root;
