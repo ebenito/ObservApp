@@ -985,4 +985,29 @@
   <data name="Signals_Stop" xml:space="preserve">
     <value>Stop</value>
   </data>
+  
+    <data name="Signals_PrevPage" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="Signals_NextPage" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Signals_Page" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="Signals_Articles" xml:space="preserve">
+    <value>articles</value>
+  </data>
+  <data name="Signals_Filter_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Signals_Filter_Es" xml:space="preserve">
+    <value>Spanish</value>
+  </data>
+  <data name="Signals_Filter_En" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Signals_PartialError" xml:space="preserve">
+    <value>Some sources failed to load.</value>
+  </data>
 </root>

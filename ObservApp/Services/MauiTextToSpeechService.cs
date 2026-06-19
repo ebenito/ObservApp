@@ -1,4 +1,4 @@
-﻿using Microsoft.Maui.Media;
+using Microsoft.Maui.Media;
 using ObservApp.Shared.Services;
 
 namespace ObservApp.Services;
@@ -10,90 +10,87 @@ namespace ObservApp.Services;
 /// </summary>
 public sealed class MauiTextToSpeechService : ITextToSpeechService
 {
-	private CancellationTokenSource? _cts;
+    private CancellationTokenSource? _cts;
 
-	public event Action? PlaybackStateChanged;
+    public event Action? PlaybackStateChanged;
 
-	public bool IsSpeaking { get; private set; }
+    public bool IsSpeaking { get; private set; }
 
-	public async Task SpeakAsync(string text, string languageCode)
-	{
-		// Detener cualquier lectura previa antes de empezar una nueva.
-		Stop();
+    public async Task SpeakAsync(string text, string languageCode)
+    {
+        // Detener cualquier lectura previa antes de empezar una nueva.
+        Stop();
 
-		if (string.IsNullOrWhiteSpace(text))
-			return;
+        if (string.IsNullOrWhiteSpace(text))
+            return;
 
-		var locale = await FindLocaleAsync(languageCode);
-		if (locale is null)
-		{
-			// Sin voz disponible para este idioma: silencio, sin cambiar estado.
-			return;
-		}
+        var locale = await FindLocaleAsync(languageCode);
+        if (locale is null)
+        {
+            // Sin voz disponible para este idioma: silencio, sin cambiar estado.
+            return;
+        }
 
-		_cts = new CancellationTokenSource();
-		var token = _cts.Token;
+        _cts = new CancellationTokenSource();
+        var token = _cts.Token;
 
-		SetSpeaking(true);
+        SetSpeaking(true);
 
-		try
-		{
-			var settings = new SpeechOptions
-			{
-				Locale = locale,
-				Volume = 1.0f,
-				Pitch = 1.0f,
-			};
-			await TextToSpeech.SpeakAsync(text, settings, token);
-		}
-		catch (OperationCanceledException)
-		{
-			// Detención manual — esperado.
-		}
-		catch
-		{
-			// Error del motor TTS: silencio.
-		}
-		finally
-		{
-			// Solo notificar fin si este token sigue siendo el activo
-			// (evita carreras si SpeakAsync se llamó de nuevo mientras tanto).
-			if (_cts?.Token == token)
-				SetSpeaking(false);
-		}
-	}
+        try
+        {
+            var settings = new SpeechOptions
+            {
+                Locale = locale,
+                Volume = 1.0f,
+                Pitch  = 1.0f,
+            };
+            await TextToSpeech.SpeakAsync(text, settings, token);
+        }
+        catch (OperationCanceledException)
+        {
+            // Detención manual — esperado.
+        }
+        catch
+        {
+            // Error del motor TTS: silencio.
+        }
+        finally
+        {
+            // Solo notificar fin si este token sigue siendo el activo
+            // (evita carreras si SpeakAsync se llamó de nuevo mientras tanto).
+            if (_cts?.Token == token)
+                SetSpeaking(false);
+        }
+    }
 
-	public void Stop()
-	{
-		if (_cts is null) return;
+    public void Stop()
+    {
+        if (_cts is null) return;
 
-		try
-		{
-			_cts.Cancel();
-		}
-		catch { /* ya cancelado o liberado */ }
+        try { _cts.Cancel(); }
+        catch { /* ya cancelado o liberado */ }
 
-		_cts.Dispose();
-		_cts = null;
+        _cts.Dispose();
+        _cts = null;
 
-		SetSpeaking(false);
-	}
+        SetSpeaking(false);
+    }
 
-	private void SetSpeaking(bool value)
-	{
-		if (IsSpeaking == value) return;
-		IsSpeaking = value;
-		PlaybackStateChanged?.Invoke();
-	}
+    private void SetSpeaking(bool value)
+    {
+        if (IsSpeaking == value) return;
+        IsSpeaking = value;
+        PlaybackStateChanged?.Invoke();
+    }
 
-	private static async Task<Locale?> FindLocaleAsync(string languageCode)
-	{
-		if (string.IsNullOrWhiteSpace(languageCode))
-			return null;
+    private static async Task<Locale?> FindLocaleAsync(string languageCode)
+    {
+        if (string.IsNullOrWhiteSpace(languageCode))
+            return null;
 
-		var locales = await TextToSpeech.GetLocalesAsync();
+        var locales = await TextToSpeech.GetLocalesAsync();
 
-		return locales.FirstOrDefault(l =>
-			l.Language.StartsWith(languageCode, StringComparison.OrdinalIgnoreCase));
-	}
+        return locales.FirstOrDefault(l =>
+            l.Language.StartsWith(languageCode, StringComparison.OrdinalIgnoreCase));
+    }
 }

@@ -37,6 +37,40 @@
     line-height: 1.5;
 }
 
+/* ── Filtro de idioma ── */
+.signals-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.signals-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--obs-border);
+    background: var(--obs-deep);
+    color: var(--obs-comet);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+    .signals-filter-btn:hover {
+        border-color: var(--obs-star-dim);
+        color: var(--obs-moon);
+    }
+
+    .signals-filter-btn.active {
+        border-color: var(--obs-star);
+        background: rgba(244, 196, 48, .12);
+        color: var(--obs-star);
+    }
+
 /* ── Estados: carga / error / vacío ── */
 .signals-empty {
     text-align: center;
@@ -53,6 +87,14 @@
     border: 1px solid rgba(231, 111, 81, .25);
     border-radius: var(--radius-md);
     font-size: 0.88rem;
+}
+
+.signals-error-partial {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 0.78rem;
+    color: var(--obs-mars);
+    opacity: .8;
 }
 
 .signals-spinner {
@@ -208,4 +250,61 @@
     .signals-btn--playing:hover:not(:disabled) {
         background: rgba(46, 196, 182, .2);
         border-color: var(--obs-aurora);
+    }
+
+/* ── Paginación ── */
+.signals-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--obs-border);
+    flex-wrap: wrap;
+}
+
+.signals-page-info {
+    font-size: 0.80rem;
+    color: var(--obs-comet);
+    font-family: var(--font-mono);
+    flex: 1;
+    text-align: center;
+}
+
+.signals-page-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--obs-border);
+    background: var(--obs-deep);
+    color: var(--obs-moon);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+}
+
+    .signals-page-btn:hover:not(:disabled) {
+        border-color: var(--obs-star-dim);
+        background: var(--obs-border);
+    }
+
+    .signals-page-btn:disabled {
+        opacity: .45;
+        cursor: not-allowed;
+    }
+
+.signals-page-btn--next {
+    border-color: rgba(244, 196, 48, .35);
+    background: rgba(244, 196, 48, .08);
+    color: var(--obs-star);
+}
+
+    .signals-page-btn--next:hover:not(:disabled) {
+        background: rgba(244, 196, 48, .15);
+        border-color: var(--obs-star);
     }

@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -72,17 +72,58 @@ public static class MauiProgram
         builder.Services.AddSingleton<IEclipseCalculatorService, EclipseCalculatorService>();
         builder.Services.AddSingleton<IEclipseAudioService, MauiEclipseAudioService>();
 
-        // ── Servicio de lectura de fuentes RSS (blogs) ─────────────────────────────────────────
+        // ── Servicio de lectura de fuentes RSS (parser base) ─────────────────
         builder.Services.AddSingleton<IRssFeedService, RssFeedService>();
 
-        // ── Enlaces externos (abrir en navegador del sistema) ───────────────────
+        // ── Enlaces externos (abrir en navegador del sistema) ─────────────────
         builder.Services.AddSingleton<IExternalLinkService, MauiExternalLinkService>();
 
-		// ── TTS genérico por idioma (lectura de artículos en Señales) ───────────
-		builder.Services.AddSingleton<ITextToSpeechService, MauiTextToSpeechService>();
+        // ── TTS genérico por idioma (lectura de artículos en Señales) ─────────
+        builder.Services.AddSingleton<ITextToSpeechService, MauiTextToSpeechService>();
 
-		// ── HttpClient ───────────────────────────────────────────────────────
-		builder.Services.AddHttpClient();
+        // ── HttpClient ────────────────────────────────────────────────────────
+        builder.Services.AddHttpClient();
+
+        // ── Servicio unificado de artículos (WP API + fuentes RSS) ───────────
+        builder.Services.AddSingleton<IArticleService>(sp =>
+        {
+            var http = sp.GetRequiredService<HttpClient>();
+            var rss  = (RssFeedService)sp.GetRequiredService<IRssFeedService>();
+
+            var wpProvider = new WpRestArticleProvider(http,
+                baseUrl: "https://tubkala.com",
+                sourceName: "Tubkala",
+                languageCode: "es");
+
+            // ── Fuentes RSS — Español ─────────────────────────────────────────
+            var sinc     = new RssSource("sinc",     "SINC",                  "https://www.agenciasinc.es/rss/feed/es_ES/noticias/astronomia", IsBuiltIn: true);
+            var iac      = new RssSource("iac",      "IAC",                   "https://www.iac.es/es/rss.xml",                                 IsBuiltIn: true);
+            var iyc      = new RssSource("iyc",      "Invest. y Ciencia",     "https://www.investigacionyciencia.es/noticias/rss",              IsBuiltIn: true);
+            var astropaf = new RssSource("astropaf", "Astropaf",              "https://astropaf.com/feed/",                                    IsBuiltIn: true);
+            // ── Fuentes RSS — Inglés ──────────────────────────────────────────
+            var jpl      = new RssSource("jpl",      "NASA JPL",              "https://www.jpl.nasa.gov/feeds/news/",                          IsBuiltIn: true);
+            var esa      = new RssSource("esa",      "ESA",                   "https://www.esa.int/rssfeed/RSSFeed/1/Astronomy",               IsBuiltIn: true);
+            var eso      = new RssSource("eso",      "ESO",                   "https://www.eso.org/public/outreach/rss/news/",                 IsBuiltIn: true);
+            var skytel   = new RssSource("skytel",   "Sky & Telescope",       "https://skyandtelescope.org/feed/",                            IsBuiltIn: true);
+            var astromag = new RssSource("astromag", "Astronomy Magazine",    "https://www.astronomy.com/feed/",                              IsBuiltIn: true);
+            var spacecom = new RssSource("spacecom", "Space.com",             "https://www.space.com/feeds/all",                              IsBuiltIn: true);
+
+            var rssProviders = new[]
+            {
+                new RssFeedArticleProvider(rss, sinc,     languageCode: "es"),
+                new RssFeedArticleProvider(rss, iac,      languageCode: "es"),
+                new RssFeedArticleProvider(rss, iyc,      languageCode: "es"),
+                new RssFeedArticleProvider(rss, astropaf, languageCode: "es"),
+                new RssFeedArticleProvider(rss, jpl,      languageCode: "en"),
+                new RssFeedArticleProvider(rss, esa,      languageCode: "en"),
+                new RssFeedArticleProvider(rss, eso,      languageCode: "en"),
+                new RssFeedArticleProvider(rss, skytel,   languageCode: "en"),
+                new RssFeedArticleProvider(rss, astromag, languageCode: "en"),
+                new RssFeedArticleProvider(rss, spacecom, languageCode: "en"),
+            };
+
+            return new ArticleService(wpProvider, rssProviders);
+        });
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
@@ -92,10 +133,6 @@ public static class MauiProgram
         // TODO: registrar servicios a medida que se vayan creando:
         // builder.Services.AddSingleton<SupabaseService>();
         // builder.Services.AddSingleton<AuthService>();
-        // builder.Services.AddSingleton<GeolocationService>();
-        // builder.Services.AddSingleton<AstronomyService>();
-        // builder.Services.AddSingleton<ThemeService>();
-        // builder.Services.AddSingleton<ISettingsService, MauiSettingsService>();
 
         return builder.Build();
     }

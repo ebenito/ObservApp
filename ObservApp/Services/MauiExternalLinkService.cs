@@ -1,4 +1,4 @@
-﻿using ObservApp.Shared.Services;
+using ObservApp.Shared.Services;
 
 namespace ObservApp.Services;
 
