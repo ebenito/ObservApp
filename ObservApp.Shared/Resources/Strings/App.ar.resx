@@ -985,4 +985,31 @@
   <data name="Signals_Stop" xml:space="preserve">
     <value>إيقاف</value>
   </data>
+  
+  
+  <data name="Signals_PrevPage" xml:space="preserve">
+    <value>السابق</value>
+  </data>
+  <data name="Signals_NextPage" xml:space="preserve">
+    <value>التالي</value>
+  </data>
+  <data name="Signals_Page" xml:space="preserve">
+    <value>صفحة</value>
+  </data>
+  <data name="Signals_Articles" xml:space="preserve">
+    <value>مقالات</value>
+  </data>
+  <data name="Signals_Filter_All" xml:space="preserve">
+    <value>الكل</value>
+  </data>
+  <data name="Signals_Filter_Es" xml:space="preserve">
+    <value>الإسبانية</value>
+  </data>
+  <data name="Signals_Filter_En" xml:space="preserve">
+    <value>الإنجليزية</value>
+  </data>
+  <data name="Signals_PartialError" xml:space="preserve">
+    <value>تعذّر تحميل بعض المصادر.</value>
+  </data>
+
 </root>

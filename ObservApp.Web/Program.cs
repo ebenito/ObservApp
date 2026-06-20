@@ -32,6 +32,13 @@ builder.Services.AddScoped<IEclipseAudioService, SsrEclipseAudioService>();
 builder.Services.AddScoped<IRssFeedService, RssFeedService>();
 builder.Services.AddSingleton<AppState>();
 
+// ── IArticleService — stub SSR (cero artículos en render servidor) ───────────
+// La carga real ocurre tras hidratación en el cliente WASM.
+builder.Services.AddScoped<IArticleService>(sp =>
+    new ArticleService(
+        wpProvider: null,
+        rssProviders: Array.Empty<RssFeedArticleProvider>()));
+
 builder.Services.AddHttpClient();
 builder.Services.AddCors(options =>
 {
@@ -44,12 +51,24 @@ app.UseCors("RssProxy");
 
 app.MapGet("/api/rss-proxy", async (string url, HttpClient http) =>
 {
-    // Whitelist de dominios permitidos
+    // Whitelist de dominios permitidos — incluye todas las fuentes de Señales
     var allowed = new[]
     {
         "tubkala.com",
+        // Español
+        "agenciasinc.es",
+        "iac.es",
+        "investigacionyciencia.es",
+        "astropaf.com",
+        // Inglés
+        "jpl.nasa.gov",
+        "esa.int",
+        "eso.org",
+        "skyandtelescope.org",
+        "astronomy.com",
+        "space.com",
+        // Legacy (compatibilidad)
         "apod.nasa.gov",
-        "www.skyandtelescope.org",
         "spaceweather.com",
         "blogs.esa.int",
     };
@@ -71,7 +90,6 @@ app.MapGet("/api/rss-proxy", async (string url, HttpClient http) =>
     }
 });
 
-
 if (app.Environment.IsDevelopment())
     app.UseWebAssemblyDebugging();
 else
@@ -89,16 +107,14 @@ app.MapRazorComponents<App>()
         typeof(ObservApp.Shared.AssemblyReference).Assembly,
         typeof(ObservApp.Web.Client._Imports).Assembly);
 
-// Usar un middleware personalizado para manejar 404s dinámicamente
+// Middleware para manejar 404s dinámicamente
 app.Use(async (context, next) =>
 {
     await next();
     if (context.Response.StatusCode == 404)
     {
-        // Redirigir a /not-found en lugar de reescribir internamente
         context.Response.Redirect("/not-found", permanent: false);
     }
 });
 
 app.Run();
-

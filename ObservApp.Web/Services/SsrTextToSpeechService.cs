@@ -1,4 +1,4 @@
-﻿using ObservApp.Shared.Services;
+using ObservApp.Shared.Services;
 
 namespace ObservApp.Web.Services;
 
@@ -10,15 +10,15 @@ namespace ObservApp.Web.Services;
 /// </summary>
 public sealed class SsrTextToSpeechService : ITextToSpeechService
 {
-	public event Action? PlaybackStateChanged
-	{
-		add { }
-		remove { }
-	}
+    public event Action? PlaybackStateChanged
+    {
+        add { }
+        remove { }
+    }
 
-	public bool IsSpeaking => false;
+    public bool IsSpeaking => false;
 
-	public Task SpeakAsync(string text, string languageCode) => Task.CompletedTask;
+    public Task SpeakAsync(string text, string languageCode) => Task.CompletedTask;
 
-	public void Stop() { }
+    public void Stop() { }
 }

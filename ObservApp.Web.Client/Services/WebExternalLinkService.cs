@@ -1,4 +1,4 @@
-﻿using Microsoft.JSInterop;
+using Microsoft.JSInterop;
 using ObservApp.Shared.Services;
 
 namespace ObservApp.Web.Client.Services;

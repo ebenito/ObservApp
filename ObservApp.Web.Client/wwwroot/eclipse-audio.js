@@ -207,3 +207,73 @@ window.observApp.stopSpeaking = function () {
         console.warn('[ObservApp] stopSpeaking error:', e);
     }
 };
+
+/* ============================================================
+   TTS GENÉRICO POR IDIOMA — usado por "Señales" para leer
+   artículos en el idioma del propio artículo (no en el idioma
+   activo de la UI). Sin fallback a beep: si no hay voz para el
+   idioma solicitado, simplemente no se reproduce nada.
+   ============================================================ */
+
+/**
+ * Lee un texto con una voz que coincida con el código de idioma dado.
+ * @param {string} text - Texto a leer
+ * @param {string} languageCode - Código ISO de 2 letras (es, en, fr...)
+ * @param {object} dotNetRef - DotNetObjectReference con método JSInvokable "OnSpeechEnded"
+ * @returns {boolean} true si se encontró voz y se inició la lectura; false si no hay voz disponible
+ */
+window.observApp.speakWithLanguage = function (text, languageCode, dotNetRef) {
+    try {
+        if (!window.speechSynthesis || !text || !languageCode) return false;
+
+        var langBase = languageCode.toLowerCase();
+
+        var voices = window.speechSynthesis.getVoices();
+        var matchedVoice = voices.find(function (v) {
+            return v.lang.toLowerCase().startsWith(langBase);
+        });
+
+        if (!matchedVoice) {
+            console.info('[ObservApp] Sin voz TTS para idioma "' + languageCode + '".');
+            return false;
+        }
+
+        window.speechSynthesis.cancel();
+
+        var utterance = new SpeechSynthesisUtterance(text);
+        utterance.voice = matchedVoice;
+        utterance.lang = matchedVoice.lang;
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+        utterance.volume = 1.0;
+
+        var notifyEnded = function () {
+            if (dotNetRef) {
+                dotNetRef.invokeMethodAsync('OnSpeechEnded').catch(function () { });
+            }
+        };
+
+        utterance.onend = notifyEnded;
+        utterance.onerror = notifyEnded;
+
+        window.speechSynthesis.speak(utterance);
+        return true;
+
+    } catch (e) {
+        console.warn('[ObservApp] speakWithLanguage error:', e);
+        return false;
+    }
+};
+
+/**
+ * Detiene cualquier lectura TTS en curso (de speakWithLanguage).
+ */
+window.observApp.stopSpeaking = function () {
+    try {
+        if (window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+        }
+    } catch (e) {
+        console.warn('[ObservApp] stopSpeaking error:', e);
+    }
+};

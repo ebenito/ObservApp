@@ -1,8 +1,9 @@
 @page "/senales"
+@using ObservApp.Shared.Models
 @using ObservApp.Shared.Services
 @implements IDisposable
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
-@inject IRssFeedService RssService
+@inject IArticleService Articles
 @inject IExternalLinkService ExternalLinks
 @inject ITextToSpeechService Tts
 @inject ILocalizationService Localization
@@ -20,24 +21,40 @@
         </div>
     </div>
 
-    @if (_loading)
+    <!-- Filtro de idioma -->
+    <div class="signals-filters">
+        <button class="signals-filter-btn @(_langFilter == null ? "active" : "")"
+                @onclick='() => SetLangFilter(null)'>
+            🌍 @L["Signals_Filter_All"]
+        </button>
+        <button class="signals-filter-btn @(_langFilter == "es" ? "active" : "")"
+                @onclick='() => SetLangFilter("es")'>
+            🇪🇸 @L["Signals_Filter_Es"]
+        </button>
+        <button class="signals-filter-btn @(_langFilter == "en" ? "active" : "")"
+                @onclick='() => SetLangFilter("en")'>
+            🇬🇧 @L["Signals_Filter_En"]
+        </button>
+    </div>
+
+    @if (_loading && _currentPage == 1)
     {
         <div class="signals-empty">
             <span class="signals-spinner"></span> @L["Status_Loading"]
         </div>
     }
-    else if (_error is not null)
+    else if (_error is not null && _filteredItems.Count == 0)
     {
         <div class="signals-error">⚠️ @_error</div>
     }
-    else if (_items.Count == 0)
+    else if (_filteredItems.Count == 0)
     {
         <div class="signals-empty">@L["Status_NoData"]</div>
     }
     else
     {
         <div class="signals-list">
-            @foreach (var item in _items)
+            @foreach (var item in _filteredItems)
             {
                 <article class="signals-card">
 
@@ -51,8 +68,8 @@
                     <div class="signals-card-body">
 
                         <div class="signals-card-meta">
-                            <span class="signals-badge">@item.SourceName</span>
-                            <span class="signals-date">@item.PublishedUtc.ToLocalTime().ToString("d MMM yyyy")</span>
+                            <span class="signals-badge">@item.SourceDisplayName</span>
+                            <span class="signals-date">@item.PublishedDate.ToLocalTime().ToString("d MMM yyyy")</span>
                         </div>
 
                         <h2 class="signals-card-title">@item.Title</h2>
@@ -70,7 +87,7 @@
                                     <span>🔊 @L["Signals_Listen"]</span>
                                 }
                             </button>
-                            <button class="signals-btn" @onclick="() => OpenInBrowserAsync(item.Link)">
+                            <button class="signals-btn" @onclick="() => OpenInBrowserAsync(item.SourceUrl)">
                                 🌐 @L["Signals_OpenBrowser"]
                             </button>
                         </div>
@@ -79,55 +96,94 @@
                 </article>
             }
         </div>
+
+        <!-- Paginación -->
+        <div class="signals-pagination">
+
+            @if (_currentPage > 1)
+            {
+                <button class="signals-page-btn" @onclick="PrevPageAsync" disabled="@_loading">
+                    ← @L["Signals_PrevPage"]
+                </button>
+            }
+            else
+            {
+                <span></span>
+            }
+
+            <span class="signals-page-info">
+                @L["Signals_Page"] @_currentPage
+                @if (_totalCount > 0)
+                {
+                    <span> · @_totalCount @L["Signals_Articles"]</span>
+                }
+            </span>
+
+            @if (_hasNextPage)
+            {
+                <button class="signals-page-btn signals-page-btn--next"
+                        @onclick="NextPageAsync" disabled="@_loading">
+                    @if (_loading)
+                    {
+                        <span class="signals-spinner"></span>
+                    }
+                    @L["Signals_NextPage"] →
+                </button>
+            }
+            else
+            {
+                <span></span>
+            }
+
+        </div>
+
+        @if (_error is not null)
+        {
+            <p class="signals-error-partial">⚠️ @L["Signals_PartialError"]</p>
+        }
     }
 
 </div>
 
 @code {
-    private List<RssFeedItem> _items = new();
-    private bool _loading = true;
-    private string? _error;
+    private const int PageSize = 10;
 
-    // ── Fuente de prueba — Tubkala fijo, sin gestión de fuentes todavía ─────
-    private static readonly RssSource TubkalaSource = new(
-        Id: "tubkala",
-        Name: "Tubkala",
-        Url: "https://tubkala.com/feed/",
-        IsBuiltIn: true);
+    private List<ArticleModel> _items         = new();
+    private List<ArticleModel> _filteredItems = new();
+    private bool    _loading      = true;
+    private string? _error;
+    private int     _currentPage  = 1;
+    private bool    _hasNextPage;
+    private int     _totalCount   = -1;
+
+    // Filtro de idioma: null = todos, "es" = español, "en" = inglés
+    private string? _langFilter = null;
 
     protected override async Task OnInitializedAsync()
     {
         Tts.PlaybackStateChanged += OnPlaybackStateChanged;
+        await LoadPageAsync(1);
+    }
+
+    private async Task LoadPageAsync(int page)
+    {
+        _loading = true;
+        _error   = null;
+        StateHasChanged();
 
         try
         {
-            _items = await RssService.GetItemsFromSourceAsync(TubkalaSource);
+            var result = await Articles.GetPageAsync(page, PageSize);
 
-            if (_items.Count == 0)
-            {
-                var errorMsg = RssService.GetLastError(TubkalaSource.Id)
-                               ?? L["Status_NoData"];
+            _items       = result.Items;
+            _currentPage = result.CurrentPage;
+            _hasNextPage = result.HasNextPage;
+            _totalCount  = result.TotalCount;
 
-                // Verificar si el error contiene instrucción de abrir navegador
-                if (errorMsg?.StartsWith("OPEN_BROWSER:") == true)
-                {
-                    var parts = errorMsg.Split('|', 2);
-                    if (parts.Length == 2)
-                    {
-                        var url = parts[0].Replace("OPEN_BROWSER:", string.Empty);
-                        _error = parts[1];
-                        await OpenInBrowserAsync(url);
-                    }
-                    else
-                    {
-                        _error = errorMsg;
-                    }
-                }
-                else
-                {
-                    _error = errorMsg;
-                }
-            }
+            if (Articles.LastError is not null)
+                _error = Articles.LastError;
+
+            ApplyFilter();
         }
         catch (Exception ex)
         {
@@ -139,23 +195,50 @@
         }
     }
 
+    private void ApplyFilter()
+    {
+        _filteredItems = _langFilter is null
+            ? _items
+            : _items.Where(a => a.LanguageCode == _langFilter).ToList();
+    }
+
+    private async Task SetLangFilter(string? lang)
+    {
+        if (_langFilter == lang) return;
+        Tts.Stop();
+        _playingLink = null;
+        _langFilter  = lang;
+        await LoadPageAsync(1);
+    }
+
+    private async Task NextPageAsync()
+    {
+        Tts.Stop();
+        _playingLink = null;
+        await LoadPageAsync(_currentPage + 1);
+    }
+
+    private async Task PrevPageAsync()
+    {
+        Tts.Stop();
+        _playingLink = null;
+        await LoadPageAsync(_currentPage - 1);
+    }
+
     private async Task OpenInBrowserAsync(string url)
     {
         await ExternalLinks.OpenAsync(url);
     }
 
-    // ── TTS — lectura de artículos ────────────────────────────────────────────
+    // ── TTS ──────────────────────────────────────────────────────────────────
 
-    // Identificamos el artículo en reproducción por su Link (clave natural
-    // del RssFeedItem; no hay Id propio).
     private string? _playingLink;
 
-    private bool IsPlaying(RssFeedItem item)
-        => _playingLink == item.Link && Tts.IsSpeaking;
+    private bool IsPlaying(ArticleModel item)
+        => _playingLink == item.SourceUrl && Tts.IsSpeaking;
 
-    private async Task ToggleListenAsync(RssFeedItem item)
+    private async Task ToggleListenAsync(ArticleModel item)
     {
-        // Si ya está sonando este artículo → lo detenemos.
         if (IsPlaying(item))
         {
             Tts.Stop();
@@ -163,20 +246,15 @@
             return;
         }
 
-        // Si sonaba otro artículo, SpeakAsync lo detiene internamente;
-        // igualmente actualizamos aquí para reflejar el cambio sin demora.
-        _playingLink = item.Link;
+        _playingLink = item.SourceUrl;
 
         var text = $"{item.Title}. {item.Summary}";
-        var languageCode = string.IsNullOrWhiteSpace(item.LanguageCode)
+        var lang = string.IsNullOrWhiteSpace(item.LanguageCode)
             ? Localization.CurrentLanguageCode
             : item.LanguageCode;
 
-        await Tts.SpeakAsync(text, languageCode);
+        await Tts.SpeakAsync(text, lang);
 
-        // Si no se pudo iniciar (sin voz para el idioma), Tts.IsSpeaking
-        // queda en false — limpiamos el estado para que el botón vuelva
-        // a "Escuchar" en vez de quedarse marcado como activo.
         if (!Tts.IsSpeaking)
             _playingLink = null;
 

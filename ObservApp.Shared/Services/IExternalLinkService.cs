@@ -1,4 +1,4 @@
-﻿namespace ObservApp.Shared.Services;
+namespace ObservApp.Shared.Services;
 
 /// <summary>
 /// Servicio para abrir enlaces externos (URLs) de forma segura y
