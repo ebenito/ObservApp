@@ -90,6 +90,43 @@ app.MapGet("/api/rss-proxy", async (string url, HttpClient http) =>
     }
 });
 
+// ── Proxy para API REST de WordPress ─────────────────────────────────────────
+app.MapGet("/api/wp-proxy", async (string url, HttpClient http) =>
+{
+    if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) ||
+        !uri.Host.EndsWith("tubkala.com", StringComparison.OrdinalIgnoreCase) ||
+        !uri.PathAndQuery.Contains("/wp-json/"))
+        return Results.BadRequest("URL no permitida");
+
+    try
+    {
+        http.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+            "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36");
+        http.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "application/json");
+
+        using var response = await http.GetAsync(url);
+        if (!response.IsSuccessStatusCode)
+            return Results.Problem($"WP API respondió {(int)response.StatusCode}");
+
+        var json = await response.Content.ReadAsStringAsync();
+        if (json.TrimStart().StartsWith('<'))
+            return Results.Problem("WP API devolvió HTML en lugar de JSON");
+
+        var totalPages = response.Headers.TryGetValues("X-WP-TotalPages", out var tp)
+            ? tp.FirstOrDefault() ?? "1" : "1";
+        var totalCount = response.Headers.TryGetValues("X-WP-Total", out var tc)
+            ? tc.FirstOrDefault() ?? "0" : "0";
+
+        var wrapper = $"{{\"total\":{totalCount},\"totalPages\":{totalPages},\"posts\":{json}}}";
+        return Results.Content(wrapper, "application/json; charset=utf-8");
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem(ex.Message);
+    }
+});
+
 if (app.Environment.IsDevelopment())
     app.UseWebAssemblyDebugging();
 else

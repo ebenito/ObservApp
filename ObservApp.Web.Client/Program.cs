@@ -46,34 +46,42 @@ builder.Services.AddHttpClient<IRssFeedService, WebRssFeedService>(client =>
     client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
 });
 
-// ── IArticleService: WP API directa + RSS vía proxy SSR ─────────────────────
-// WpRestArticleProvider llama a tubkala.com directamente (CORS OK confirmado).
-// RssFeedArticleProvider usa WebRssFeedService que enruta por el proxy SSR.
-builder.Services.AddHttpClient("WpDirect");
+// ── IArticleService: WP API vía proxy SSR + RSS vía proxy SSR ───────────────
+// WpRestArticleProvider usa el proxy SSR (/api/wp-proxy) porque en WASM el
+// navegador bloquea User-Agent como "forbidden header", lo que hace que el
+// WAF de Tubkala devuelva HTML en lugar de JSON.
+// RssFeedArticleProvider usa WebRssFeedService que ya enruta por /api/rss-proxy.
+builder.Services.AddHttpClient("ProxyHttp", client =>
+{
+    client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+});
 
 builder.Services.AddSingleton<IArticleService>(sp =>
 {
     var httpFactory = sp.GetRequiredService<IHttpClientFactory>();
-    var wpHttp = httpFactory.CreateClient("WpDirect");
-    var rss    = (RssFeedService)sp.GetRequiredService<IRssFeedService>();
+    var proxyHttp = httpFactory.CreateClient("ProxyHttp");
+    var rss = (RssFeedService)sp.GetRequiredService<IRssFeedService>();
 
-    var wpProvider = new WpRestArticleProvider(wpHttp,
-        baseUrl: "https://tubkala.com/",
+    // proxyBaseUrl = BaseAddress del propio host WASM (que es el servidor SSR)
+    // → las peticiones /api/wp-proxy las resuelve el servidor SSR
+    var wpProvider = new WpRestArticleProvider(proxyHttp,
+        baseUrl: "https://tubkala.com",
         sourceName: "Tubkala",
-        languageCode: "es");
+        languageCode: "es",
+        proxyBaseUrl: builder.HostEnvironment.BaseAddress.TrimEnd('/'));
 
     // ── Fuentes RSS — Español ─────────────────────────────────────────────────
-    var sinc     = new RssSource("sinc",     "SINC",               "https://www.agenciasinc.es/rss/feed/es_ES/noticias/astronomia", IsBuiltIn: true);
-    var iac      = new RssSource("iac",      "IAC",                "https://www.iac.es/es/rss.xml",                                 IsBuiltIn: true);
-    var iyc      = new RssSource("iyc",      "Invest. y Ciencia",  "https://www.investigacionyciencia.es/noticias/rss",              IsBuiltIn: true);
-    var astropaf = new RssSource("astropaf", "Astropaf",           "https://astropaf.com/feed/",                                    IsBuiltIn: true);
+    var sinc = new RssSource("sinc", "SINC", "https://www.agenciasinc.es/rss/feed/es_ES/noticias/astronomia", IsBuiltIn: true);
+    var iac = new RssSource("iac", "IAC", "https://www.iac.es/es/rss.xml", IsBuiltIn: true);
+    var iyc = new RssSource("iyc", "Invest. y Ciencia", "https://www.investigacionyciencia.es/noticias/rss", IsBuiltIn: true);
+    var astropaf = new RssSource("astropaf", "Astropaf", "https://astropaf.com/feed/", IsBuiltIn: true);
     // ── Fuentes RSS — Inglés ──────────────────────────────────────────────────
-    var jpl      = new RssSource("jpl",      "NASA JPL",           "https://www.jpl.nasa.gov/feeds/news/",                          IsBuiltIn: true);
-    var esa      = new RssSource("esa",      "ESA",                "https://www.esa.int/rssfeed/RSSFeed/1/Astronomy",               IsBuiltIn: true);
-    var eso      = new RssSource("eso",      "ESO",                "https://www.eso.org/public/outreach/rss/news/",                 IsBuiltIn: true);
-    var skytel   = new RssSource("skytel",   "Sky & Telescope",    "https://skyandtelescope.org/feed/",                            IsBuiltIn: true);
-    var astromag = new RssSource("astromag", "Astronomy Magazine", "https://www.astronomy.com/feed/",                              IsBuiltIn: true);
-    var spacecom = new RssSource("spacecom", "Space.com",          "https://www.space.com/feeds/all",                              IsBuiltIn: true);
+    var jpl = new RssSource("jpl", "NASA JPL", "https://www.jpl.nasa.gov/feeds/news/", IsBuiltIn: true);
+    var esa = new RssSource("esa", "ESA", "https://www.esa.int/rssfeed/RSSFeed/1/Astronomy", IsBuiltIn: true);
+    var eso = new RssSource("eso", "ESO", "https://www.eso.org/public/outreach/rss/news/", IsBuiltIn: true);
+    var skytel = new RssSource("skytel", "Sky & Telescope", "https://skyandtelescope.org/feed/", IsBuiltIn: true);
+    var astromag = new RssSource("astromag", "Astronomy Magazine", "https://www.astronomy.com/feed/", IsBuiltIn: true);
+    var spacecom = new RssSource("spacecom", "Space.com", "https://www.space.com/feeds/all", IsBuiltIn: true);
 
     var rssProviders = new[]
     {
