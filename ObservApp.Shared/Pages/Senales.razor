@@ -113,9 +113,9 @@
 
             <span class="signals-page-info">
                 @L["Signals_Page"] @_currentPage
-                @if (_totalCount > 0)
+                @if (_filteredTotalCount > 0)
                 {
-                    <span> · @_totalCount @L["Signals_Articles"]</span>
+                    <span> · @_filteredTotalCount @L["Signals_Articles"]</span>
                 }
             </span>
 
@@ -155,6 +155,7 @@
     private int     _currentPage  = 1;
     private bool    _hasNextPage;
     private int     _totalCount   = -1;
+    private int     _filteredTotalCount = -1; // Total contando el filtro de idioma
 
     // Filtro de idioma: null = todos, "es" = español, "en" = inglés
     private string? _langFilter = null;
@@ -197,9 +198,37 @@
 
     private void ApplyFilter()
     {
+        // Aplicar filtro de idioma
         _filteredItems = _langFilter is null
             ? _items
             : _items.Where(a => a.LanguageCode == _langFilter).ToList();
+
+        // CORRECCIÓN: Recalcular total filtrado
+        // Si no hay filtro, mantener el total de la fuente
+        // Si hay filtro, contar solo los artículos que coinciden
+        if (_langFilter is null)
+        {
+            _filteredTotalCount = _totalCount;
+        }
+        else
+        {
+            // Cuando hay filtro, no podemos saber el total real en el servidor
+            // Por eso estimamos que si en esta página hay artículos del idioma filtrado,
+            // hay más páginas (aunque sea un estimado conservador)
+            _filteredTotalCount = _filteredItems.Count > 0 ? -1 : 0;
+        }
+
+        // CORRECCIÓN: Recalcular _hasNextPage considerando el filtro
+        // Si está filtrando por idioma, solo marcar "tiene próxima" si:
+        // 1. La próxima página tendría contenido (optimista: suponer que sí si _hasNextPage es true)
+        // 2. O si esta página tiene menos items de los solicitados (significa que no hay más en el servidor)
+        if (_langFilter is not null && _filteredItems.Count < PageSize)
+        {
+            // En esta página filtrada hay menos de PageSize elementos
+            // Esto significa: o no hay más en el servidor, o los restantes no son del idioma filtrado
+            _hasNextPage = false;
+        }
+        // Si tiene items completos en esta página y el servidor dice que hay más, confiar en ello
     }
 
     private async Task SetLangFilter(string? lang)
@@ -230,7 +259,7 @@
         await ExternalLinks.OpenAsync(url);
     }
 
-    // ── TTS ──────────────────────────────────────────────────────────────────
+    // ── TTS ───────────────────────────────────────────────────────────
 
     private string? _playingLink;
 
