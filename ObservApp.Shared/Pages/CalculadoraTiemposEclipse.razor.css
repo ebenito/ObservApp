@@ -577,3 +577,52 @@
 .eclt-event-row {
     grid-template-columns: 56px 1fr auto;
 }
+
+/* ── Grid de métricas adicionales del eclipse ── */
+.eclt-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px 16px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid var(--obs-border);
+    border-top: none;
+    border-radius: 0 0 14px 14px;
+    margin-top: -2px; /* fusionar visualmente con el banner */
+}
+
+.eclt-metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.eclt-metric-item--wide {
+    grid-column: span 2;
+}
+
+.eclt-metric-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--obs-comet);
+}
+
+.eclt-metric-value {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--obs-moon);
+}
+
+.eclt-metric-value--highlight {
+    color: var(--obs-aurora);
+}
+
+.eclt-metric-sub {
+    font-size: 0.75rem;
+    color: var(--obs-comet);
+    font-weight: 400;
+    margin-left: 4px;
+}

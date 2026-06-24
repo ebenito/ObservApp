@@ -6,29 +6,58 @@ namespace ObservApp.Shared.Services;
 public sealed class EclipseCalculatorService : IEclipseCalculatorService
 {
     // ── Eclipses solares 2024-2030 ────────────────────────────────────────────
-    // Datos de referencia: NASA Eclipse page. La hora es del máximo global (UTC).
+    // Datos de referencia: NASA Eclipse page. La hora es del máximo global (UTC). / Saros Series Catalog
     private static readonly List<EclipseDefinition> _catalog = new()
     {
-        new("2024-04-08", new DateTime(2024, 4,  8, 18,17,0,DateTimeKind.Utc),
-            EclipseType.Total,   "América del Norte"),
-        new("2024-10-02", new DateTime(2024,10,  2, 18,46,0,DateTimeKind.Utc),
-            EclipseType.Annular, "Pacífico Sur / Sudamérica"),
-        new("2026-02-17", new DateTime(2026, 2, 17,12, 2,0,DateTimeKind.Utc),
-            EclipseType.Annular, "Antártida"),
-        new("2026-08-12", new DateTime(2026, 8, 12,17,47,0,DateTimeKind.Utc),
-            EclipseType.Total,   "Ártico / Europa / África"),
-        new("2027-02-06", new DateTime(2027, 2,  6,16, 0,0,DateTimeKind.Utc),
-            EclipseType.Annular, "Sudamérica / Atlántico"),
-        new("2027-08-02", new DateTime(2027, 8,  2,10,7, 0,DateTimeKind.Utc),
-            EclipseType.Total,   "África / Europa / Asia"),
-        new("2028-01-26", new DateTime(2028, 1, 26,15,54,0,DateTimeKind.Utc),
-            EclipseType.Annular, "Sudamérica"),
-        new("2028-07-22", new DateTime(2028, 7, 22, 2,56,0,DateTimeKind.Utc),
-            EclipseType.Total,   "Australia / Asia"),
-        new("2030-06-01", new DateTime(2030, 6,  1, 6,29,0,DateTimeKind.Utc),
-            EclipseType.Annular, "Europa / Asia"),
-        new("2030-11-25", new DateTime(2030,11, 25, 6,51,0,DateTimeKind.Utc),
-            EclipseType.Total,   "Sudáfrica / Oceanía"),
+        new("2024-04-08",
+            new DateTime(2024, 4,  8, 18,17,0,DateTimeKind.Utc),
+            EclipseType.Total,   "América del Norte",
+            SarosNumber: 139, SarosMember: 31, SarosTotal: 71),
+
+        new("2024-10-02",
+            new DateTime(2024,10,  2, 18,46,0,DateTimeKind.Utc),
+            EclipseType.Annular, "Pacífico Sur / Sudamérica",
+            SarosNumber: 144, SarosMember: 23, SarosTotal: 70),
+
+        new("2026-02-17",
+            new DateTime(2026, 2, 17,12, 2,0,DateTimeKind.Utc),
+            EclipseType.Annular, "Antártida",
+            SarosNumber: 121, SarosMember: 79, SarosTotal: 82),
+
+        new("2026-08-12",
+            new DateTime(2026, 8, 12,17,47,0,DateTimeKind.Utc),
+            EclipseType.Total,   "Ártico / Europa / África",
+            SarosNumber: 126, SarosMember: 48, SarosTotal: 72),
+
+        new("2027-02-06",
+            new DateTime(2027, 2,  6,16, 0,0,DateTimeKind.Utc),
+            EclipseType.Annular, "Sudamérica / Atlántico",
+            SarosNumber: 131, SarosMember: 52, SarosTotal: 70),
+
+        new("2027-08-02",
+            new DateTime(2027, 8,  2,10, 7,0,DateTimeKind.Utc),
+            EclipseType.Total,   "África / Europa / Asia",
+            SarosNumber: 136, SarosMember: 38, SarosTotal: 71),
+
+        new("2028-01-26",
+            new DateTime(2028, 1, 26,15,54,0,DateTimeKind.Utc),
+            EclipseType.Annular, "Sudamérica",
+            SarosNumber: 141, SarosMember: 29, SarosTotal: 70),
+
+        new("2028-07-22",
+            new DateTime(2028, 7, 22, 2,56,0,DateTimeKind.Utc),
+            EclipseType.Total,   "Australia / Asia",
+            SarosNumber: 146, SarosMember: 14, SarosTotal: 76),
+
+        new("2030-06-01",
+            new DateTime(2030, 6,  1, 6,29,0,DateTimeKind.Utc),
+            EclipseType.Annular, "Europa / Asia",
+            SarosNumber: 128, SarosMember: 58, SarosTotal: 73),
+
+        new("2030-11-25",
+            new DateTime(2030,11, 25, 6,51,0,DateTimeKind.Utc),
+            EclipseType.Total,   "Sudáfrica / Oceanía",
+            SarosNumber: 133, SarosMember: 45, SarosTotal: 72),
     };
 
     public IReadOnlyList<EclipseDefinition> GetUpcomingEclipses(int years = 6)
@@ -61,13 +90,13 @@ public sealed class EclipseCalculatorService : IEclipseCalculatorService
             var solar = Astronomy.SearchLocalSolarEclipse(startTime, observer);
 
             if (solar.kind == EclipseKind.None)
-                return new LocalEclipseResult(LocalEclipseType.None, 0, contacts, false);
+                return new LocalEclipseResult(LocalEclipseType.None, 0, contacts, false, null);
 
             localType = solar.kind switch
             {
-                EclipseKind.Total => LocalEclipseType.Total,
+                EclipseKind.Total   => LocalEclipseType.Total,
                 EclipseKind.Annular => LocalEclipseType.Annular,
-                _ => LocalEclipseType.Partial,
+                _                   => LocalEclipseType.Partial,
             };
 
             // C1 — primer contacto externo
@@ -149,12 +178,110 @@ public sealed class EclipseCalculatorService : IEclipseCalculatorService
 
             contacts = contacts.OrderBy(c => c.UtcTime).ToList();
 
-            return new LocalEclipseResult(localType, maxCoverage, contacts, sunVisible);
+            // ── Calcular métricas ────────────────────────────────────
+            var metrics = ComputeMetrics(solar, eclipse, observer);
+            return new LocalEclipseResult(localType, maxCoverage, contacts, sunVisible, metrics);
         }
         catch
         {
-            return new LocalEclipseResult(LocalEclipseType.None, 0, contacts, false);
+            return new LocalEclipseResult(LocalEclipseType.None, 0, contacts, false, null);
         }
+    }
+
+    private static EclipseMetrics ComputeMetrics(
+    LocalSolarEclipseInfo solar,
+    EclipseDefinition eclipse,
+    Observer observer)
+    {
+        // 1. ΔT — usando el momento del máximo
+        double deltaTSeconds = 0;
+        if (solar.peak.time != null)
+        {
+            var t = solar.peak.time!;
+            deltaTSeconds = (t.tt - t.ut) * 86400.0;
+        }
+
+        // 2. Duración de la totalidad (C2 → C3)
+        TimeSpan? totalityDuration = null;
+        if (solar.total_begin.time != null && solar.total_end.time != null)
+        {
+            totalityDuration = solar.total_end.time!.ToUtcDateTime()
+                             - solar.total_begin.time!.ToUtcDateTime();
+        }
+
+        // 3. Magnitud lineal y Gamma — calculados en el momento del pico global
+        double magnitude = 0;
+        double gamma = 0;
+
+        if (solar.peak.time != null)
+        {
+            var t = solar.peak.time!;
+
+            // Posiciones topocéntricas Sol y Luna
+            var sunEq = Astronomy.Equator(Body.Sun, t, observer, EquatorEpoch.OfDate, Aberration.Corrected);
+            var moonEq = Astronomy.Equator(Body.Moon, t, observer, EquatorEpoch.OfDate, Aberration.Corrected);
+
+            // Separación angular topocéntrica (grados)
+            double dRa = (sunEq.ra - moonEq.ra) * 15.0;
+            double dDec = sunEq.dec - moonEq.dec;
+            double cosDec = Math.Cos(sunEq.dec * Math.PI / 180.0);
+            double separation = Math.Sqrt(dRa * dRa * cosDec * cosDec + dDec * dDec);
+
+            // Radios angulares (grados)
+            var moonVec = Astronomy.GeoVector(Body.Moon, t, Aberration.Corrected);
+            double moonDistAU = moonVec.Length();
+            const double moonRadiusKm = 1737.4;
+            const double kmPerAU = 149_597_870.7;
+            double rMoon = Math.Atan2(moonRadiusKm, moonDistAU * kmPerAU) * (180.0 / Math.PI);
+
+            var sunVec = Astronomy.GeoVector(Body.Sun, t, Aberration.Corrected);
+            double sunDistAU = sunVec.Length();
+            const double sunRadiusKm = 695_700.0;
+            double rSun = Math.Atan2(sunRadiusKm, sunDistAU * kmPerAU) * (180.0 / Math.PI);
+
+            // Magnitud lineal: (rSun + rMoon - separation) / (2 * rSun)
+            // > 1.0 para eclipse total (Luna cubre completamente el Sol)
+            magnitude = (rSun + rMoon - separation) / (2.0 * rSun);
+            magnitude = Math.Max(0, magnitude);
+
+            // Gamma: mínima distancia del eje de la sombra al centro de la Tierra
+            // Aproximación: usamos la separación en el pico / radio solar en unidades de radio terrestre
+            // Fórmula estándar simplificada basada en geometría de Bessel
+            // gamma ≈ separación_geocéntrica_en_radios_terrestres
+            // Para una aproximación razonable usamos la declinación del punto subsolar y el observador
+            // Como aproximación práctica: gamma = sin(dec_luna) / sin(inclinación_lunar)
+            // Usamos el método directo: distancia del eje umbra al centro de la Tierra
+            var moonGeo = Astronomy.Equator(Body.Moon, t,
+                new Observer(0, 0, 0), EquatorEpoch.OfDate, Aberration.Corrected);
+            var sunGeo = Astronomy.Equator(Body.Sun, t,
+                new Observer(0, 0, 0), EquatorEpoch.OfDate, Aberration.Corrected);
+
+            // Separación geocéntrica Sol-Luna en grados
+            double dRaGeo = (sunGeo.ra - moonGeo.ra) * 15.0;
+            double dDecGeo = sunGeo.dec - moonGeo.dec;
+            double cosDecGeo = Math.Cos(sunGeo.dec * Math.PI / 180.0);
+            double sepGeo = Math.Sqrt(dRaGeo * dRaGeo * cosDecGeo * cosDecGeo + dDecGeo * dDecGeo);
+
+            // Gamma en radios terrestres (radio terrestre ecuatorial ≈ 6378.1 km)
+            // Proyección sobre plano fundamental de Bessel (simplificada)
+            // sepGeo en grados → convertir a unidades de radio terrestre
+            // 1 radio terrestre ≈ 0.00426 AU
+            const double earthRadiusAU = 6378.1 / 149_597_870.7;
+            double moonDistAUGeo = moonVec.Length();
+            // Distancia del eje de la sombra al centro de la Tierra en km
+            double sepRadians = sepGeo * Math.PI / 180.0;
+            double shadowAxisDistKm = Math.Sin(sepRadians) * moonDistAU * kmPerAU;
+            gamma = shadowAxisDistKm / 6378.1; // en radios terrestres
+        }
+
+        return new EclipseMetrics(
+            DeltaTSeconds: deltaTSeconds,
+            Magnitude: magnitude,
+            Gamma: gamma,
+            TotalityDuration: totalityDuration,
+            SarosNumber: eclipse.SarosNumber,
+            SarosMember: eclipse.SarosMember,
+            SarosTotal: eclipse.SarosTotal);
     }
 
     private static EclipseContact BuildContact(

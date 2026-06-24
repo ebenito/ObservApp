@@ -132,10 +132,10 @@
         }
         else
         {
-            <!-- BANNER TIPO LOCAL -->
+            <!-- BANNER TIPO LOCAL + MÉTRICAS -->
             <div class="eclt-type-banner eclt-type-banner--@_result.Type.ToString().ToLower()">
                 <span class="eclt-type-icon">@GetLocalTypeEmoji(_result.Type)</span>
-                <div>
+                <div class="eclt-type-info">
                     <div class="eclt-type-label">@GetLocalTypeLabel(_result.Type)</div>
                     <div class="eclt-coverage-label">
                         @L["EclipseTimer_MaxCoverage"]: @((MaxCoveragePercent * 100).ToString("F1"))%
@@ -148,6 +148,56 @@
                     @(_audioEnabled ? L["EclipseTimer_AudioOn"] : L["EclipseTimer_AudioOff"])
                 </button>
             </div>
+
+            @if (_result.Metrics != null)
+            {
+                var m = _result.Metrics;
+                var ic = System.Globalization.CultureInfo.InvariantCulture;
+
+                <div class="eclt-metrics-grid">
+
+                    <!-- Magnitud -->
+                    <div class="eclt-metric-item">
+                        <span class="eclt-metric-label">@L["EclipseTimer_Magnitude"]</span>
+                        <span class="eclt-metric-value">@m.Magnitude.ToString("F4", ic)</span>
+                    </div>
+
+                    <!-- Gamma -->
+                    <div class="eclt-metric-item">
+                        <span class="eclt-metric-label">@L["EclipseTimer_Gamma"]</span>
+                        <span class="eclt-metric-value">@m.Gamma.ToString("F4", ic)</span>
+                    </div>
+
+                    <!-- ΔT -->
+                    <div class="eclt-metric-item">
+                        <span class="eclt-metric-label">@L["EclipseTimer_DeltaT"]</span>
+                        <span class="eclt-metric-value">
+                            @m.DeltaTSeconds.ToString("F1", ic) @L["EclipseTimer_DeltaT_Unit"]
+                        </span>
+                    </div>
+
+                    <!-- Duración totalidad (solo si C2 y C3 existen) -->
+                    @if (m.TotalityDuration.HasValue)
+                    {
+                        <div class="eclt-metric-item">
+                            <span class="eclt-metric-label">@L["EclipseTimer_TotalityDuration"]</span>
+                            <span class="eclt-metric-value eclt-metric-value--highlight">
+                                @FormatTotalityDuration(m.TotalityDuration.Value)
+                            </span>
+                        </div>
+                    }
+
+                    <!-- Saros -->
+                    <div class="eclt-metric-item eclt-metric-item--wide">
+                        <span class="eclt-metric-label">@L["EclipseTimer_Saros"]</span>
+                        <span class="eclt-metric-value">
+                            @m.SarosNumber
+                            <span class="eclt-metric-sub">(@m.SarosMember / @m.SarosTotal)</span>
+                        </span>
+                    </div>
+
+                </div>
+            }
 
             <!-- CUENTA ATRÁS AL PRÓXIMO EVENTO -->
             @if (_nextEvent != null)
@@ -523,6 +573,13 @@
         EclipseType.Hybrid  => "annular",
         _                   => "partial"
     };
+
+    private static string FormatTotalityDuration(TimeSpan ts)
+    {
+        if (ts.TotalMinutes >= 1)
+            return $"{(int)ts.TotalMinutes}m {ts.Seconds:D2}s";
+        return $"{ts.Seconds}s";
+    }
 
     // ── SVGs de fases ─────────────────────────────────────────────────────────
     private static string BuildPhaseSvg(
