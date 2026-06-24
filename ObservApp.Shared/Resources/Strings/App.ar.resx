@@ -1012,4 +1012,26 @@
     <value>تعذّر تحميل بعض المصادر.</value>
   </data>
 
+<data name="EclipseTimer_DeltaT" xml:space="preserve">
+  <value>ΔT</value>
+</data>
+<data name="EclipseTimer_DeltaT_Unit" xml:space="preserve">
+  <value>ث</value>
+</data>
+<data name="EclipseTimer_Magnitude" xml:space="preserve">
+  <value>القدر</value>
+</data>
+<data name="EclipseTimer_Gamma" xml:space="preserve">
+  <value>جاما</value>
+</data>
+<data name="EclipseTimer_TotalityDuration" xml:space="preserve">
+  <value>مدة الكسوف الكلي</value>
+</data>
+<data name="EclipseTimer_Saros" xml:space="preserve">
+  <value>دورة ساروس</value>
+</data>
+<data name="EclipseTimer_Metrics_Title" xml:space="preserve">
+  <value>بيانات الكسوف</value>
+</data>
+
 </root>

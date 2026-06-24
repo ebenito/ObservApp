@@ -1010,4 +1010,25 @@
   <data name="Signals_PartialError" xml:space="preserve">
     <value>Some sources failed to load.</value>
   </data>
+  <data name="EclipseTimer_DeltaT" xml:space="preserve">
+  <value>ΔT</value>
+</data>
+<data name="EclipseTimer_DeltaT_Unit" xml:space="preserve">
+  <value>s</value>
+</data>
+<data name="EclipseTimer_Magnitude" xml:space="preserve">
+  <value>Magnitude</value>
+</data>
+<data name="EclipseTimer_Gamma" xml:space="preserve">
+  <value>Gamma</value>
+</data>
+<data name="EclipseTimer_TotalityDuration" xml:space="preserve">
+  <value>Totality duration</value>
+</data>
+<data name="EclipseTimer_Saros" xml:space="preserve">
+  <value>Saros</value>
+</data>
+<data name="EclipseTimer_Metrics_Title" xml:space="preserve">
+  <value>Eclipse data</value>
+</data>
 </root>
