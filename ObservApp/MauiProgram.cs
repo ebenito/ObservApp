@@ -1,11 +1,12 @@
-using System.Reflection;
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ObservApp.Services;
+using ObservApp.Shared.Interfaces;
 using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
 using Syncfusion.Blazor;
+using System.Reflection;
 
 namespace ObservApp;
 
@@ -80,6 +81,14 @@ public static class MauiProgram
 
         // ── TTS genérico por idioma (lectura de artículos en Señales) ─────────
         builder.Services.AddSingleton<ITextToSpeechService, MauiTextToSpeechService>();
+
+        // ── Servicio de disparo de fotografías automatizadas (Android y Windows) ─────────────
+#if WINDOWS
+        builder.Services.AddSingleton<ICameraService, GPhoto2CameraService>();
+#elif ANDROID
+        builder.Services.AddSingleton<ICameraService, PtpIpCameraService>();
+#endif
+        builder.Services.AddSingleton<CameraManager>();
 
         // ── HttpClient ────────────────────────────────────────────────────────
         builder.Services.AddHttpClient();
