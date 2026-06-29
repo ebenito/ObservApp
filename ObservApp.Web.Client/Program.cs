@@ -1,12 +1,13 @@
-using System.Globalization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http;
+using ObservApp.Shared.Interfaces;
 using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
 using ObservApp.Web.Client.Services;
 using Syncfusion.Blazor;
+using System.Globalization;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -39,6 +40,10 @@ builder.Services.AddSingleton<ITextToSpeechService, WebTextToSpeechService>();
 builder.Services.AddSingleton<IEclipseCalculatorService, EclipseCalculatorService>();
 builder.Services.AddSingleton<IEclipseAudioService, WebEclipseAudioService>();
 builder.Services.AddSingleton<AppState>();
+builder.Services.AddSingleton<EclipseCameraProfileState>();
+builder.Services.AddSingleton<ICameraService, MockCameraService>();
+builder.Services.AddSingleton<CameraManager>();
+
 
 // ── IRssFeedService vía proxy SSR (evita CORS en WASM) ──────────────────────
 builder.Services.AddHttpClient<IRssFeedService, WebRssFeedService>(client =>

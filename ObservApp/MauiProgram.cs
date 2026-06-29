@@ -82,16 +82,17 @@ public static class MauiProgram
         // ── TTS genérico por idioma (lectura de artículos en Señales) ─────────
         builder.Services.AddSingleton<ITextToSpeechService, MauiTextToSpeechService>();
 
-        // ── Servicio de disparo de fotografías automatizadas (Android y Windows) ─────────────
+		// ── Servicio de disparo de fotografías automatizadas (Android y Windows) ─────────────
+		builder.Services.AddSingleton<EclipseCameraProfileState>();
 #if WINDOWS
         builder.Services.AddSingleton<ICameraService, GPhoto2CameraService>();
 #elif ANDROID
-        builder.Services.AddSingleton<ICameraService, PtpIpCameraService>();
+		builder.Services.AddSingleton<ICameraService, PtpIpCameraService>();
 #endif
-        builder.Services.AddSingleton<CameraManager>();
+		builder.Services.AddSingleton<CameraManager>();
 
-        // ── HttpClient ────────────────────────────────────────────────────────
-        builder.Services.AddHttpClient();
+		// ── HttpClient ────────────────────────────────────────────────────────
+		builder.Services.AddHttpClient();
 
         // ── Servicio unificado de artículos (WP API + fuentes RSS) ───────────
         builder.Services.AddSingleton<IArticleService>(sp =>

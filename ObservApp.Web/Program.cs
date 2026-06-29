@@ -1,3 +1,4 @@
+using ObservApp.Shared.Interfaces;
 using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
 using ObservApp.Web.Client.Services;
@@ -31,6 +32,9 @@ builder.Services.AddScoped<IEclipseCalculatorService, EclipseCalculatorService>(
 builder.Services.AddScoped<IEclipseAudioService, SsrEclipseAudioService>();
 builder.Services.AddScoped<IRssFeedService, RssFeedService>();
 builder.Services.AddSingleton<AppState>();
+builder.Services.AddSingleton<EclipseCameraProfileState>();
+builder.Services.AddSingleton<ICameraService, MockCameraService>();
+builder.Services.AddSingleton<CameraManager>();
 
 // ── IArticleService — stub SSR (cero artículos en render servidor) ───────────
 // La carga real ocurre tras hidratación en el cliente WASM.

@@ -9,6 +9,9 @@
 @inject IFavoriteLocationsService FavLocationsService
 @inject IEclipseCalculatorService EclipseCalc
 @inject IEclipseAudioService AudioService
+@inject CameraManager CameraManager
+@inject ICameraService CameraDevice
+@inject EclipseCameraProfileState CameraProfile
 
 <PageTitle>@L["EclipseTimer_Title"] — ObservApp</PageTitle>
 
@@ -115,6 +118,68 @@
                     disabled="@(_selectedEclipse == null)">
                 @L["EclipseTimer_Calculate"]
             </button>
+        </div>
+    </div>
+
+    <!-- DISPARO AUTOMÁTICO DE CÁMARA -->
+    <div class="eclt-card">
+        <div class="eclt-card-header">
+            <span>📷</span> Disparo automático de cámara
+        </div>
+        <div class="eclt-card-body">
+
+            <div class="eclt-coords-row" style="grid-template-columns: 1fr 1fr 1fr;">
+                <button class="eclt-gps-btn @(_cameraConnecting ? "loading" : "")"
+                        @onclick="OnConnectCameraAsync" disabled="@_cameraConnecting">
+                    @if (_cameraConnecting)
+                    {
+                        <span class="eclt-spinner"></span>
+                    }
+                    else
+                    {
+                        <span>@(CameraDevice.IsConnected ? "✅" : "🔌")</span>
+                    }
+                    @(CameraDevice.IsConnected ? "Conectada" : "Conectar")
+                </button>
+
+                <div class="eclt-field">
+                    <label class="eclt-label">Fotos por evento</label>
+                    <input class="eclt-input" type="number" min="1" max="20" @bind="_photosPerEvent" />
+                </div>
+
+                <div class="eclt-field">
+                    <label class="eclt-label">Equipo (f/ · ISO)</label>
+                    <span class="eclt-input" style="display:flex;align-items:center;">
+                        @(CameraProfile.IsConfigured ? $"f/{CameraProfile.ApertureFNumber:0.#} · ISO {CameraProfile.Iso}" : "—")
+                    </span>
+                </div>
+            </div>
+
+            @if (!CameraProfile.IsConfigured)
+            {
+                <div class="eclt-error">
+                    ⚠️ Configura apertura/ISO en la
+                    <a href="/calculadoras/eclipse" style="color:var(--obs-aurora)">Calculadora de Exposición</a>.
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(CameraDevice.LastError))
+            {
+                <div class="eclt-error">⚠️ @CameraDevice.LastError</div>
+            }
+
+            <label style="display:flex;align-items:center;gap:8px;margin-top:10px;cursor:pointer;">
+                <input type="checkbox" @bind="_cameraAutoEnabled" disabled="@(!CameraProfile.IsConfigured)" />
+                <span style="color:var(--obs-moon);font-size:0.85rem;">
+                    Activar disparo automático durante este eclipse
+                </span>
+            </label>
+
+            @if (_cameraStatusText is not null)
+            {
+                <div class="eclt-gps-source">📸 @_cameraStatusText</div>
+            }
+
         </div>
     </div>
 
@@ -331,6 +396,14 @@
     private string? _gpsSourceLabel;
     private bool    _audioEnabled = true;
 
+    // ── Disparo automático de cámara ──────────────────────────────────────────
+    private int _photosPerEvent = 3;
+    private bool _cameraAutoEnabled;
+    private bool _cameraConnecting;
+    private string? _cameraStatusText;
+    private List<EclipseExposureCalculator.PhaseExposure>? _cameraTable;
+    private readonly HashSet<EclipseEventKind> _cameraTriggeredEvents = new();
+
     // Cuenta atrás
     private EclipseContact? _nextEvent;
     private string          _countdownText = "--:--:--:--";
@@ -420,6 +493,8 @@
     {
         if (_selectedEclipse == null) return;
         _result = EclipseCalc.Calculate(_selectedEclipse, _lat, _lon, _alt);
+        _cameraTriggeredEvents.Clear();
+
         UpdateNextEvent();
     }
 
@@ -429,6 +504,7 @@
 
         // En modo simulación usamos el tiempo simulado
         var now = _simMode ? _simNow : DateTime.UtcNow;
+        _ = CheckAndTriggerCameraAsync(now);
 
         _nextEvent = _result.Contacts
             .Where(c => c.UtcTime > now)
@@ -955,6 +1031,7 @@
         _simNow = c1.UtcTime.AddSeconds(-5);
         _simMode = true;
         _announcedEvents.Clear();
+        _cameraTriggeredEvents.Clear();
 
         const double speedFactor = 30.0; // 1s real = 30s simulados
 
@@ -992,9 +1069,73 @@
         UpdateNextEvent();
     }
 
+    // ── Disparo automático de cámara ──────────────────────────────────────────
+    protected override void OnInitialized()
+    {
+        // La página ya tiene OnInitializedAsync (carga eclipses + timer) — este
+        // OnInitialized() es un método DISTINTO de ComponentBase, no hay conflicto.
+        CameraProfile.OnChanged += RebuildCameraTable;
+        RebuildCameraTable();
+    }
+
+    private void RebuildCameraTable()
+    {
+        _cameraTable = CameraProfile.IsConfigured
+            ? EclipseExposureCalculator.BuildTable(CameraProfile.ApertureFNumber, CameraProfile.Iso)
+            : null;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task OnConnectCameraAsync()
+    {
+        _cameraConnecting = true;
+        StateHasChanged();
+        await CameraDevice.ConnectAsync();
+        _cameraConnecting = false;
+        StateHasChanged();
+    }
+
+    private async Task CheckAndTriggerCameraAsync(DateTime now)
+    {
+        if (!_cameraAutoEnabled || _cameraTable is null || _result is null) return;
+
+        foreach (var contact in _result.Contacts)
+        {
+            if (_cameraTriggeredEvents.Contains(contact.Kind)) continue;
+
+            var diff = (now - contact.UtcTime).TotalSeconds;
+            if (diff < 0 || diff > 2) continue; // aún no llega, o ya pasó de sobra
+
+            _cameraTriggeredEvents.Add(contact.Kind);
+            await FireCameraForEventAsync(contact.Kind);
+        }
+    }
+
+    private async Task FireCameraForEventAsync(EclipseEventKind kind)
+    {
+        if (_cameraTable is null) return;
+
+        if (kind == EclipseEventKind.C2)
+        {
+            var bracket = EclipseExposureCalculator.GetTotalityBracket(_cameraTable);
+            if (bracket.Count == 0) return;
+
+            _cameraStatusText = $"Bracket de corona iniciado ({bracket.Count} tomas × {_photosPerEvent})";
+            await CameraManager.RunEclipseSequenceAsync(_photosPerEvent, isTotality: true, bracket);
+            return;
+        }
+
+        var setting = EclipseExposureCalculator.ResolveSingleEventExposure(kind, _cameraTable);
+        if (setting is null) return; // Maximum y C3: sin acción propia (ver EclipseExposureCalculator)
+
+        _cameraStatusText = $"{GetEventLabel(kind)} → {setting}";
+        await CameraManager.RunEclipseSequenceAsync(_photosPerEvent, isTotality: false, new[] { setting });
+    }
+
     // ── Dispose ───────────────────────────────────────────────────────────────
     public void Dispose()
     {
         _timer?.Dispose();
+        CameraProfile.OnChanged -= RebuildCameraTable;
     }
 }

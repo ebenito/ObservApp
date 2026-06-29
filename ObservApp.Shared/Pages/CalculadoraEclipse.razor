@@ -1,5 +1,6 @@
 ﻿@page "/calculadoras/eclipse"
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+@inject EclipseCameraProfileState CameraProfile
 
 <PageTitle>@L["Calc_Eclipse_Title"]</PageTitle>
 
@@ -105,6 +106,19 @@
                 </div>
             </div>
 
+            <!-- Confirmación de sincronización con el Timer de Eclipse -->
+            <div class="eclipse-optics" style="border-color:rgba(46,196,182,.3);background:rgba(46,196,182,.06);">
+                <div class="eclipse-optic-item" style="flex:1;">
+                    <span class="eclipse-optic-label" style="color:var(--obs-aurora);">
+                        ✓ Equipo enviado al Timer de Eclipse Solar
+                    </span>
+                    <span class="eclipse-optic-value" style="color:var(--obs-moon);font-size:0.82rem;">
+                        f/@_aperture.ToString("0.#") · ISO @_iso — se usará para calcular las 8 exposiciones de
+                        corona y los disparos automáticos de cada contacto.
+                    </span>
+                </div>
+            </div>
+
             <!-- Tabla de velocidades -->
             <div class="eclipse-table-wrap">
                 <table class="eclipse-table">
@@ -141,9 +155,9 @@
 
 @code {
     // ── Entradas ─────────────────────────────────────────────
-    private double _focal     = 500;
-    private double _aperture  = 8;
-    private int    _iso       = 100;
+    private double _focal = 500;
+    private double _aperture = 8;
+    private int _iso = 100;
     private string _selectedSensor = "FF";
 
     private readonly int[] _isoValues = { 100, 200, 400, 800, 1600, 3200 };
@@ -152,10 +166,10 @@
 
     private readonly Dictionary<string, SensorDef> _sensors = new()
     {
-        ["FF"]   = new("Full Frame",  "36 × 24 mm",    36.0,  24.0),
-        ["APSC"] = new("APS-C",       "23.6 × 15.7 mm", 23.6, 15.7),
-        ["APSC_C"] = new("APS-C Canon","22.3 × 14.9 mm", 22.3, 14.9),
-        ["MFT"]  = new("Micro 4/3",   "17.3 × 13.0 mm", 17.3, 13.0),
+        ["FF"] = new("Full Frame", "36 × 24 mm", 36.0, 24.0),
+        ["APSC"] = new("APS-C", "23.6 × 15.7 mm", 23.6, 15.7),
+        ["APSC_C"] = new("APS-C Canon", "22.3 × 14.9 mm", 22.3, 14.9),
+        ["MFT"] = new("Micro 4/3", "17.3 × 13.0 mm", 17.3, 13.0),
     };
 
     // ── Fases del eclipse (NASA Q values) ────────────────────
@@ -189,10 +203,10 @@
         string Phase, int Q, string ExactTime, string SuggestedTime,
         bool IsTotality, bool IsPartial, string Color);
 
-    private List<ResultRow> _results       = new();
-    private double          _solarDiamMm   = 0;
-    private double          _solarPercent  = 0;
-    private double          _fovDeg        = 0;
+    private List<ResultRow> _results = new();
+    private double _solarDiamMm = 0;
+    private double _solarPercent = 0;
+    private double _fovDeg = 0;
 
     protected override void OnInitialized() => Calculate();
 
@@ -213,7 +227,7 @@
         var sensor = _sensors[_selectedSensor];
 
         // Diámetro del Sol en el plano focal
-        _solarDiamMm  = _focal / 109.0;
+        _solarDiamMm = _focal / 109.0;
         _solarPercent = (_solarDiamMm / sensor.WidthMm) * 100.0;
 
         // FOV diagonal (grados)
@@ -240,5 +254,11 @@
             return new ResultRow(p.Phase, p.Q, exactStr, suggestedStr,
                                  p.IsTotality, p.IsPartial, p.Color);
         }).ToList();
+
+        // Comparte el equipo configurado con el Timer de Eclipse Solar
+        // (CalculadoraTiemposEclipse.razor), que usa EclipseExposureCalculator
+        // para generar la misma tabla y resolver qué exposición corresponde
+        // a cada evento/contacto calculado.
+        CameraProfile.SetEquipment(_aperture, _iso);
     }
 }
