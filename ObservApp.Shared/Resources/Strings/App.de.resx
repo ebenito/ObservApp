@@ -985,8 +985,6 @@
   <data name="Signals_Stop" xml:space="preserve">
     <value>Stopp</value>
   </data>
-  
-  
   <data name="Signals_PrevPage" xml:space="preserve">
     <value>Zurück</value>
   </data>
@@ -1011,26 +1009,37 @@
   <data name="Signals_PartialError" xml:space="preserve">
     <value>Einige Quellen konnten nicht geladen werden.</value>
   </data>
-  
   <data name="EclipseTimer_DeltaT" xml:space="preserve">
-  <value>ΔT</value>
-</data>
-<data name="EclipseTimer_DeltaT_Unit" xml:space="preserve">
-  <value>s</value>
-</data>
-<data name="EclipseTimer_Magnitude" xml:space="preserve">
-  <value>Magnitude</value>
-</data>
-<data name="EclipseTimer_Gamma" xml:space="preserve">
-  <value>Gamma</value>
-</data>
-<data name="EclipseTimer_TotalityDuration" xml:space="preserve">
-  <value>Dauer der Totalität</value>
-</data>
-<data name="EclipseTimer_Saros" xml:space="preserve">
-  <value>Saros</value>
-</data>
-<data name="EclipseTimer_Metrics_Title" xml:space="preserve">
-  <value>Finsternis-Daten</value>
-</data>
+    <value>ΔT</value>
+  </data>
+  <data name="EclipseTimer_DeltaT_Unit" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="EclipseTimer_Magnitude" xml:space="preserve">
+    <value>Magnitude</value>
+  </data>
+  <data name="EclipseTimer_Gamma" xml:space="preserve">
+    <value>Gamma</value>
+  </data>
+  <data name="EclipseTimer_TotalityDuration" xml:space="preserve">
+    <value>Dauer der Totalität</value>
+  </data>
+  <data name="EclipseTimer_Saros" xml:space="preserve">
+    <value>Saros</value>
+  </data>
+  <data name="EclipseTimer_Metrics_Title" xml:space="preserve">
+    <value>Finsternis-Daten</value>
+  </data>
+  <data name="Tooltip_Magnitude" xml:space="preserve">
+    <value>Magnitude: Gibt an, wie viel der Sonne verdeckt ist. Werte &gt; 1,0 bedeuten eine totale oder ringförmige Sonnenfinsternis.</value>
+  </data>
+  <data name="Tooltip_Gamma" xml:space="preserve">
+    <value>Gamma: Abstand der Schattenachse zum Erdmittelpunkt in Erdradien.</value>
+  </data>
+  <data name="Tooltip_DeltaT" xml:space="preserve">
+    <value>ΔT: Differenz zwischen Terrestrischer Zeit (TT) und Weltzeit (UT) aufgrund der Erdrotation.</value>
+  </data>
+  <data name="Tooltip_Saros" xml:space="preserve">
+    <value>Saros: ~18-jähriger astronomischer Zyklus zur Vorhersage ähnlicher Finsternisse.</value>
+  </data>
 </root>

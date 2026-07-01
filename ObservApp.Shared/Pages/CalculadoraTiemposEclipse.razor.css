@@ -581,24 +581,30 @@
 /* ── Grid de métricas adicionales del eclipse ── */
 .eclt-metrics-grid {
     display: grid;
+    /* Forzamos 2 columnas iguales siempre, incluso si falta un elemento */
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px 16px;
+    gap: 12px;
     padding: 14px 18px;
     background: rgba(255,255,255,.03);
     border: 1px solid var(--obs-border);
     border-top: none;
     border-radius: 0 0 14px 14px;
-    margin-top: -2px; /* fusionar visualmente con el banner */
+    margin-top: -2px;
+}
+
+/* El elemento wide siempre ocupa las 2 columnas disponibles */
+.eclt-metric-item--wide {
+    grid-column: 1 / -1; /* Ocupa desde la columna 1 hasta el final */
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 12px;
+    margin-top: 4px;
 }
 
 .eclt-metric-item {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-}
-
-.eclt-metric-item--wide {
-    grid-column: span 2;
+    /* Asegura que los ítems no se estiren innecesariamente */
+    min-width: 0;
 }
 
 .eclt-metric-label {
@@ -626,3 +632,62 @@
     font-weight: 400;
     margin-left: 4px;
 }
+
+.info-icon {
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+/* Contenedor relativo para que el popover flote sobre él */
+.eclt-metric-item {
+    position: relative;
+}
+
+/* El cuadro del popover */
+.popover-box {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    /* 1. Fondo sólido y opaco */
+    background-color: #1e1e1e; /* Color oscuro sólido */
+    /* 2. Aseguramos legibilidad */
+    color: #ffffff;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    /* 3. Elevación y prioridad */
+    z-index: 9999; /* Valor alto para estar encima de todo */
+    width: 250px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5); /* Sombra más marcada */
+    border: 1px solid #444;
+    /* Pequeño margen para que no toque el icono */
+    margin-top: 8px;
+}
+
+/* Overlay invisible que cubre toda la pantalla cuando hay algo abierto */
+.popover-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    background: transparent;
+}
+
+/* Asegura que el contenedor del Saros sea relativo para el popover */
+.eclt-metric-item--wide {
+    position: relative;
+    grid-column: 1 / -1;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 12px;
+    margin-top: 4px;
+}
+
+    /* Forzar que el popover del Saros se alinee a la izquierda */
+    .eclt-metric-item--wide .popover-box {
+        left: 0;
+        right: auto;
+    }
