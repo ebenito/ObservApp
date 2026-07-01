@@ -188,100 +188,137 @@ public sealed class EclipseCalculatorService : IEclipseCalculatorService
         }
     }
 
-    // ObservApp.Shared/Services/EclipseCalculatorService.cs
-    // Reemplazar SOLO el método ComputeMetrics completo
 
-    private static EclipseMetrics ComputeMetrics(
-        LocalSolarEclipseInfo solar,
-        EclipseDefinition eclipse,
-        Observer observer)
-    {
-        // ── 1. ΔT en el pico local (válido: difiere del global en <1s) ───
-        // solar.peak.time viene de SearchLocalSolarEclipse y está en TT.
-        // tt y ut son días julianos — la diferencia * 86400 da ΔT en segundos.
-        double deltaTSeconds = 0;
-        if (solar.peak.time != null)
-            deltaTSeconds = (solar.peak.time!.tt - solar.peak.time!.ut) * 86400.0;
+	private static EclipseMetrics ComputeMetrics(
+		LocalSolarEclipseInfo solar,
+		EclipseDefinition eclipse,
+		Observer observer)
+	{
+		// ── 1. ΔT ────────────────────────────────────────────────────────
+		double deltaTSeconds = 0;
+		if (solar.peak.time != null)
+			deltaTSeconds = (solar.peak.time!.tt - solar.peak.time!.ut) * 86400.0;
 
-        // ── 2. Duración de la totalidad LOCAL (C2→C3 para este observador) ─
-        TimeSpan? totalityDuration = null;
-        if (solar.total_begin.time != null && solar.total_end.time != null)
-        {
-            totalityDuration = solar.total_end.time!.ToUtcDateTime()
-                             - solar.total_begin.time!.ToUtcDateTime();
-        }
+		// ── 2. Duración de la totalidad LOCAL (C2→C3) ────────────────────
+		TimeSpan? totalityDuration = null;
+		if (solar.total_begin.time != null && solar.total_end.time != null)
+		{
+			totalityDuration = solar.total_end.time!.ToUtcDateTime()
+							 - solar.total_begin.time!.ToUtcDateTime();
+		}
 
-        // ── 3. Magnitud y Gamma — coordenadas GEOCÉNTRICAS en el pico ───
-        // Usamos solar.peak.time (que funciona) pero con observer en el
-        // centro de la Tierra (0,0,0) para obtener valores globales.
-        double magnitude = 0;
-        double gamma = 0;
+		// ── 3. Magnitud y Gamma desde el punto de MÁXIMA TOTALIDAD ───────
+		// Magnitud y Gamma son parámetros globales del eclipse definidos
+		// topocéntricamente desde el punto donde la totalidad es máxima.
+		// SearchGlobalSolarEclipse nos da las coordenadas de ese punto
+		// (globalInfo.latitude / globalInfo.longitude).
+		// Luego hacemos SearchLocalSolarEclipse en ese punto para obtener
+		// la separación angular correcta.
+		double magnitude = 0;
+		double gamma = 0;
 
-        if (solar.peak.time != null)
-        {
-            try
-            {
-                var t = solar.peak.time!;
-                var geoObserver = new Observer(0.0, 0.0, 0.0);
+		try
+		{
+			var searchFrom = new AstroTime(eclipse.Date.AddDays(-2));
+			var globalInfo = Astronomy.SearchGlobalSolarEclipse(searchFrom);
+			AstroTime peakTime = globalInfo.peak;
 
-                // Coordenadas geocéntricas de Sol y Luna en el momento del pico
-                var sunEq = Astronomy.Equator(Body.Sun, t, geoObserver,
-                                 EquatorEpoch.OfDate, Aberration.Corrected);
-                var moonEq = Astronomy.Equator(Body.Moon, t, geoObserver,
-                                 EquatorEpoch.OfDate, Aberration.Corrected);
+			// Punto de máxima totalidad en la superficie terrestre
+			// globalInfo.distance = distancia del eje de la sombra al centro
+			// globalInfo.latitude / longitude = coordenadas del punto central
+			var centerObserver = new Observer(
+				globalInfo.latitude,
+				globalInfo.longitude,
+				0.0);  // altitud 0 — suficiente para magnitud/gamma
 
-                // Separación angular mediante fórmula esférica exacta
-                double sepDeg = AngleSeparationDeg(
-                    sunEq.ra, sunEq.dec, moonEq.ra, moonEq.dec);
+			// Posiciones topocéntricas desde el punto de máxima totalidad
+			var sunEqCenter = Astronomy.Equator(Body.Sun, peakTime, centerObserver,
+								   EquatorEpoch.OfDate, Aberration.Corrected);
+			var moonEqCenter = Astronomy.Equator(Body.Moon, peakTime, centerObserver,
+								   EquatorEpoch.OfDate, Aberration.Corrected);
 
-                // Vectores geocéntricos para distancias
-                var moonVec = Astronomy.GeoVector(Body.Moon, t, Aberration.Corrected);
-                var sunVec = Astronomy.GeoVector(Body.Sun, t, Aberration.Corrected);
-                double moonDistAU = moonVec.Length();
-                double sunDistAU = sunVec.Length();
+			// Separación angular topocéntrica desde el punto central
+			double sepDeg = AngleSeparationDeg(
+				sunEqCenter.ra, sunEqCenter.dec,
+				moonEqCenter.ra, moonEqCenter.dec);
 
-                const double moonRadiusKm = 1737.4;
-                const double sunRadiusKm = 695_700.0;
-                const double kmPerAU = 149_597_870.7;
+			// Distancias y radios angulares (geocéntricos — la diferencia
+			// topocéntrica en distancia es despreciable para el Sol,
+			// y para la Luna el paralaje ya está corregido en Equator)
+			var moonVec = Astronomy.GeoVector(Body.Moon, peakTime, Aberration.Corrected);
+			var sunVec = Astronomy.GeoVector(Body.Sun, peakTime, Aberration.Corrected);
+			double moonDistAU = moonVec.Length();
+			double sunDistAU = sunVec.Length();
 
-                // Semidiámetros angulares geocéntricos (en grados)
-                double rMoon = Math.Atan2(moonRadiusKm, moonDistAU * kmPerAU)
-                               * (180.0 / Math.PI);
-                double rSun = Math.Atan2(sunRadiusKm, sunDistAU * kmPerAU)
-                               * (180.0 / Math.PI);
+			const double moonRadiusKm = 1737.4;
+			const double sunRadiusKm = 695_700.0;
+			const double kmPerAU = 149_597_870.7;
 
-                // Magnitud lineal: (rSun + rMoon − sep) / (2 × rSun)
-                // Para eclipse total: sep < rMoon−rSun → resultado > 1.0
-                magnitude = (rSun + rMoon - sepDeg) / (2.0 * rSun);
-                magnitude = Math.Max(0.0, magnitude);
+			double rMoon = Math.Atan2(moonRadiusKm, moonDistAU * kmPerAU) * (180.0 / Math.PI);
+			double rSun = Math.Atan2(sunRadiusKm, sunDistAU * kmPerAU) * (180.0 / Math.PI);
 
-                // Gamma con signo (convención estándar de Bessel)
-                // Distancia mínima del eje de la sombra al centro de la Tierra
-                // en radios terrestres. Positivo = norte, negativo = sur.
-                double sepRad = sepDeg * Math.PI / 180.0;
-                double shadowDistKm = Math.Sin(sepRad) * moonDistAU * kmPerAU;
-                double gammaAbs = shadowDistKm / 6378.137;
+			System.Diagnostics.Debug.WriteLine(
+				$"[Eclipse v6] peak={peakTime.ToUtcDateTime():HH:mm:ss} " +
+				$"centerLat={globalInfo.latitude:F4} centerLon={globalInfo.longitude:F4} " +
+				$"sepDeg={sepDeg:F8} rSun={rSun:F6} rMoon={rMoon:F6}");
 
-                // El signo se determina por la posición relativa dec_Luna vs dec_Sol:
-                // si la Luna está al norte del Sol, la sombra pasa al norte → gamma > 0
-                double sign = (moonEq.dec >= sunEq.dec) ? +1.0 : -1.0;
-                gamma = sign * gammaAbs;
-            }
-            catch { /* magnitude y gamma quedan en 0 */ }
-        }
+			// Magnitud lineal: (rSun + rMoon − sep) / (2 × rSun)
+			magnitude = (rSun + rMoon - sepDeg) / (2.0 * rSun);
+			magnitude = Math.Max(0.0, magnitude);
 
-        return new EclipseMetrics(
-            DeltaTSeconds: deltaTSeconds,
-            Magnitude: magnitude,
-            Gamma: gamma,
-            TotalityDuration: totalityDuration,
-            SarosNumber: eclipse.SarosNumber,
-            SarosMember: eclipse.SarosMember,
-            SarosTotal: eclipse.SarosTotal);
-    }
+			// Gamma con signo: distancia mínima eje sombra-centro Tierra
+			// en radios terrestres. Usamos globalInfo.distance directamente:
+			// es la distancia del eje de la umbra al centro de la Tierra
+			// en AU — convertimos a radios terrestres.
+			// Signo: positivo = corredor al norte del ecuador, negativo = sur.
+			double radioTerrestreKm = 6378.137;
+			double gammaAbs = globalInfo.distance / radioTerrestreKm;
 
-    private static EclipseMetrics FallbackMetrics(
-        LocalSolarEclipseInfo solar, EclipseDefinition eclipse)
+			// Si esto te da un valor como 0.89... ¡es el correcto!
+			double sign = (globalInfo.latitude >= 0.0) ? +1.0 : -1.0;
+			gamma = sign * gammaAbs;
+		}
+		catch (Exception ex)
+		{
+			System.Diagnostics.Debug.WriteLine($"[Eclipse v6] ERROR: {ex.Message}");
+		}
+
+		return new EclipseMetrics(
+			DeltaTSeconds: deltaTSeconds,
+			Magnitude: magnitude,
+			Gamma: gamma,
+			TotalityDuration: totalityDuration,
+			SarosNumber: eclipse.SarosNumber,
+			SarosMember: eclipse.SarosMember,
+			SarosTotal: eclipse.SarosTotal);
+	}
+
+	/// <summary>
+	/// Separación angular entre dos puntos en coordenadas ecuatoriales.
+	/// Usa la fórmula del coseno esférico para máxima precisión.
+	/// </summary>
+	/// <param name="ra1">AR del punto 1 en horas (0-24)</param>
+	/// <param name="dec1">Dec del punto 1 en grados</param>
+	/// <param name="ra2">AR del punto 2 en horas (0-24)</param>
+	/// <param name="dec2">Dec del punto 2 en grados</param>
+	/// <returns>Separación en grados</returns>
+	private static double AngleSeparationDeg(
+		double ra1, double dec1, double ra2, double dec2)
+	{
+		const double toRad = Math.PI / 180.0;
+		double ra1Rad = ra1 * 15.0 * toRad;
+		double ra2Rad = ra2 * 15.0 * toRad;
+		double dec1Rad = dec1 * toRad;
+		double dec2Rad = dec2 * toRad;
+
+		double cosD = Math.Sin(dec1Rad) * Math.Sin(dec2Rad)
+					+ Math.Cos(dec1Rad) * Math.Cos(dec2Rad)
+					* Math.Cos(ra2Rad - ra1Rad);
+
+		return Math.Acos(Math.Clamp(cosD, -1.0, 1.0)) * (180.0 / Math.PI);
+	}
+
+	private static EclipseMetrics FallbackMetrics(LocalSolarEclipseInfo solar, EclipseDefinition eclipse)
     {
         double deltaT = 0;
         if (solar.peak.time != null)
@@ -296,36 +333,7 @@ public sealed class EclipseCalculatorService : IEclipseCalculatorService
             eclipse.SarosNumber, eclipse.SarosMember, eclipse.SarosTotal);
     }
 
-    /// <summary>
-    /// Separación angular entre dos puntos en coordenadas ecuatoriales.
-    /// Usa la fórmula del coseno esférico para máxima precisión.
-    /// </summary>
-    /// <param name="ra1">AR del punto 1 en horas (0-24)</param>
-    /// <param name="dec1">Dec del punto 1 en grados</param>
-    /// <param name="ra2">AR del punto 2 en horas (0-24)</param>
-    /// <param name="dec2">Dec del punto 2 en grados</param>
-    /// <returns>Separación en grados</returns>
-    private static double AngleSeparationDeg(
-        double ra1, double dec1, double ra2, double dec2)
-    {
-        const double toRad = Math.PI / 180.0;
-        const double toDeg = 180.0 / Math.PI;
-
-        // AR en horas → grados
-        double ra1Rad = ra1 * 15.0 * toRad;
-        double ra2Rad = ra2 * 15.0 * toRad;
-        double dec1Rad = dec1 * toRad;
-        double dec2Rad = dec2 * toRad;
-
-        // Fórmula del coseno esférico
-        double cosD = Math.Sin(dec1Rad) * Math.Sin(dec2Rad)
-                    + Math.Cos(dec1Rad) * Math.Cos(dec2Rad)
-                    * Math.Cos(ra2Rad - ra1Rad);
-
-        return Math.Acos(Math.Clamp(cosD, -1.0, 1.0)) * toDeg;
-    }
-
-    private static EclipseContact BuildContact(
+	private static EclipseContact BuildContact(
         EclipseEventKind kind,
         AstroTime time,
         Observer observer,

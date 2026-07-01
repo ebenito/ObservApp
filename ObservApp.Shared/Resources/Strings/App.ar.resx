@@ -985,8 +985,6 @@
   <data name="Signals_Stop" xml:space="preserve">
     <value>إيقاف</value>
   </data>
-  
-  
   <data name="Signals_PrevPage" xml:space="preserve">
     <value>السابق</value>
   </data>
@@ -1011,27 +1009,37 @@
   <data name="Signals_PartialError" xml:space="preserve">
     <value>تعذّر تحميل بعض المصادر.</value>
   </data>
-
-<data name="EclipseTimer_DeltaT" xml:space="preserve">
-  <value>ΔT</value>
-</data>
-<data name="EclipseTimer_DeltaT_Unit" xml:space="preserve">
-  <value>ث</value>
-</data>
-<data name="EclipseTimer_Magnitude" xml:space="preserve">
-  <value>القدر</value>
-</data>
-<data name="EclipseTimer_Gamma" xml:space="preserve">
-  <value>جاما</value>
-</data>
-<data name="EclipseTimer_TotalityDuration" xml:space="preserve">
-  <value>مدة الكسوف الكلي</value>
-</data>
-<data name="EclipseTimer_Saros" xml:space="preserve">
-  <value>دورة ساروس</value>
-</data>
-<data name="EclipseTimer_Metrics_Title" xml:space="preserve">
-  <value>بيانات الكسوف</value>
-</data>
-
+  <data name="EclipseTimer_DeltaT" xml:space="preserve">
+    <value>ΔT</value>
+  </data>
+  <data name="EclipseTimer_DeltaT_Unit" xml:space="preserve">
+    <value>ث</value>
+  </data>
+  <data name="EclipseTimer_Magnitude" xml:space="preserve">
+    <value>القدر</value>
+  </data>
+  <data name="EclipseTimer_Gamma" xml:space="preserve">
+    <value>جاما</value>
+  </data>
+  <data name="EclipseTimer_TotalityDuration" xml:space="preserve">
+    <value>مدة الكسوف الكلي</value>
+  </data>
+  <data name="EclipseTimer_Saros" xml:space="preserve">
+    <value>دورة ساروس</value>
+  </data>
+  <data name="EclipseTimer_Metrics_Title" xml:space="preserve">
+    <value>بيانات الكسوف</value>
+  </data>
+  <data name="Tooltip_Magnitude" xml:space="preserve">
+    <value>القدر: يشير إلى مقدار احتجاب قرص الشمس. القيم &gt; 1.0 تعني كسوفاً كلياً أو حلقياً.</value>
+  </data>
+  <data name="Tooltip_Gamma" xml:space="preserve">
+    <value>Gamma: المسافة من محور الظل إلى مركز الأرض مقاسة بأنصاف أقطار الأرض.</value>
+  </data>
+  <data name="Tooltip_DeltaT" xml:space="preserve">
+    <value>ΔT: الفرق بين الوقت الأرضي (TT) والتوقيت العالمي (UT) بسبب دوران الأرض.</value>
+  </data>
+  <data name="Tooltip_Saros" xml:space="preserve">
+    <value>ساروس: دورة فلكية مدتها ~18 عاماً تُستخدم للتنبؤ بكسوفات متشابهة.</value>
+  </data>
 </root>

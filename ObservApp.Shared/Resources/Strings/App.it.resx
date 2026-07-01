@@ -985,8 +985,6 @@
   <data name="Signals_Stop" xml:space="preserve">
     <value>Interrompi</value>
   </data>
-  
-  
   <data name="Signals_PrevPage" xml:space="preserve">
     <value>Precedente</value>
   </data>
@@ -1011,27 +1009,37 @@
   <data name="Signals_PartialError" xml:space="preserve">
     <value>Alcune fonti non sono state caricate.</value>
   </data>
-
-<data name="EclipseTimer_DeltaT" xml:space="preserve">
-  <value>ΔT</value>
-</data>
-<data name="EclipseTimer_DeltaT_Unit" xml:space="preserve">
-  <value>s</value>
-</data>
-<data name="EclipseTimer_Magnitude" xml:space="preserve">
-  <value>Magnitudine</value>
-</data>
-<data name="EclipseTimer_Gamma" xml:space="preserve">
-  <value>Gamma</value>
-</data>
-<data name="EclipseTimer_TotalityDuration" xml:space="preserve">
-  <value>Durata della totalità</value>
-</data>
-<data name="EclipseTimer_Saros" xml:space="preserve">
-  <value>Saros</value>
-</data>
-<data name="EclipseTimer_Metrics_Title" xml:space="preserve">
-  <value>Dati dell'eclissi</value>
-</data>
-
+  <data name="EclipseTimer_DeltaT" xml:space="preserve">
+    <value>ΔT</value>
+  </data>
+  <data name="EclipseTimer_DeltaT_Unit" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="EclipseTimer_Magnitude" xml:space="preserve">
+    <value>Magnitudine</value>
+  </data>
+  <data name="EclipseTimer_Gamma" xml:space="preserve">
+    <value>Gamma</value>
+  </data>
+  <data name="EclipseTimer_TotalityDuration" xml:space="preserve">
+    <value>Durata della totalità</value>
+  </data>
+  <data name="EclipseTimer_Saros" xml:space="preserve">
+    <value>Saros</value>
+  </data>
+  <data name="EclipseTimer_Metrics_Title" xml:space="preserve">
+    <value>Dati dell'eclissi</value>
+  </data>
+  <data name="Tooltip_Magnitude" xml:space="preserve">
+    <value>Magnitudo: Indica quanta parte del Sole è oscurata. Valori &gt; 1,0 indicano un'eclissi totale o anulare.</value>
+  </data>
+  <data name="Tooltip_Gamma" xml:space="preserve">
+    <value>Gamma: Distanza dell'asse dell'ombra dal centro della Terra in raggi terrestri.</value>
+  </data>
+  <data name="Tooltip_DeltaT" xml:space="preserve">
+    <value>ΔT: Differenza tra Tempo Terrestre (TT) e Tempo Universale (UT) dovuta alla rotazione terrestre.</value>
+  </data>
+  <data name="Tooltip_Saros" xml:space="preserve">
+    <value>Saros: Ciclo astronomico di ~18 anni usato per prevedere eclissi simili.</value>
+  </data>
 </root>
