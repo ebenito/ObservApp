@@ -81,6 +81,13 @@
         <PackageReference Include="Syncfusion.Licensing" Version="33.2.15" />
     </ItemGroup>
 
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">
+    <Content Include="Tools\gphoto2\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <!-- En MSIX, Content con esta acción de compilación viaja dentro del paquete -->
+    </Content>
+  </ItemGroup>
+
 	<ItemGroup>
 		<EmbeddedResource Include="appsettings.json" />
 		<EmbeddedResource Include="appsettings.Local.json" Condition="Exists('appsettings.Local.json')" />

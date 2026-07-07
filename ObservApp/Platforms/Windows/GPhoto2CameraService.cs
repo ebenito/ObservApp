@@ -22,11 +22,21 @@ namespace ObservApp.Services;
 /// Panasonic, Olympus...) sin usar ningún SDK propietario.
 ///
 /// DECISIÓN DE DISEÑO — por qué CLI y no P/Invoke directo:
-///  1. No existe un build oficial con ABI estable de libgphoto2 para Windows
-///     entre versiones; el binario CLI absorbe esos cambios y se actualiza
-///     de forma independiente a ObservApp.
+///  1. libgphoto2 NO tiene port oficial a Windows (confirmado por el propio
+///     proyecto: github.com/gphoto/libgphoto2/issues/279). El binario que se
+///     bundlea proviene del paquete comunitario <c>mingw-w64-x86_64-gphoto2</c>
+///     de MSYS2 — no hay ABI estable garantizada entre versiones, así que el
+///     CLI absorbe esos cambios sin acoplar ObservApp a una versión concreta.
 ///  2. El CLI ya resuelve la detección de drivers libusb/WinUSB para la
 ///     cámara conectada, evitando reimplementar esa capa en C#.
+///
+/// EMPAQUETADO: ver <c>Pack-GPhoto2.ps1</c> en la raíz del repo — genera la
+/// carpeta <c>Tools\gphoto2\</c> (exe + DLLs + camlibs + iolibs) a partir de
+/// una instalación local de MSYS2. El binario compilado tiene rutas de
+/// camlibs/iolibs grabadas en tiempo de compilación apuntando a la
+/// instalación de MSYS2 de origen; por eso <see cref="RunCliAsync"/> fija
+/// las variables de entorno <c>CAMLIBS</c>/<c>IOLIBS</c> en cada invocación,
+/// apuntando a las carpetas bundleadas junto al ejecutable.
 ///
 /// Se incluyen como referencia, sin uso activo, los stubs P/Invoke de
 /// <see cref="NativeGPhoto2"/> por si en el futuro se bundlea un build
@@ -35,202 +45,217 @@ namespace ObservApp.Services;
 /// </summary>
 public sealed class GPhoto2CameraService : ICameraService, IDisposable
 {
-    /// <summary>
-    /// Ruta al ejecutable gphoto2.exe. Por defecto se busca primero un build
-    /// empaquetado junto al ejecutable de ObservApp en "Tools\gphoto2\gphoto2.exe"
-    /// (recomendado para distribución MSIX, sin depender de instalación previa
-    /// del usuario); si no existe, se confía en que esté disponible en el PATH.
-    /// </summary>
-    public string ExecutablePath { get; set; } = ResolveDefaultExecutablePath();
+	/// <summary>
+	/// Ruta al ejecutable gphoto2.exe. Por defecto se busca primero un build
+	/// empaquetado junto al ejecutable de ObservApp en "Tools\gphoto2\gphoto2.exe"
+	/// (recomendado para distribución MSIX, sin depender de instalación previa
+	/// del usuario); si no existe, se confía en que esté disponible en el PATH.
+	/// </summary>
+	public string ExecutablePath { get; set; } = ResolveDefaultExecutablePath();
 
-    // Serializa las llamadas al CLI: gphoto2 no soporta bien comandos
-    // concurrentes sobre la misma cámara USB (un único canal PTP por sesión).
-    private readonly SemaphoreSlim _cliLock = new(1, 1);
+	// Serializa las llamadas al CLI: gphoto2 no soporta bien comandos
+	// concurrentes sobre la misma cámara USB (un único canal PTP por sesión).
+	private readonly SemaphoreSlim _cliLock = new(1, 1);
 
-    private bool _isConnected;
+	private bool _isConnected;
 
-    public bool IsConnected => _isConnected;
-    public string? LastError { get; private set; }
-    public event Action<bool>? ConnectionChanged;
+	public bool IsConnected => _isConnected;
+	public string? LastError { get; private set; }
+	public event Action<bool>? ConnectionChanged;
 
-    public async Task<bool> ConnectAsync(CancellationToken cancellationToken = default)
-    {
-        LastError = null;
-        try
-        {
-            // --auto-detect lista las cámaras USB reconocidas por libgphoto2.
-            // Salida típica cuando hay una cámara:
-            //   Model                          Port
-            //   ----------------------------------------------------------
-            //   Canon EOS 90D                  usb:001,004
-            var (exitCode, stdOut, stdErr) = await RunCliAsync("--auto-detect", cancellationToken);
+	public async Task<bool> ConnectAsync(CancellationToken cancellationToken = default)
+	{
+		LastError = null;
+		try
+		{
+			// --auto-detect lista las cámaras USB reconocidas por libgphoto2.
+			// Salida típica cuando hay una cámara:
+			//   Model                          Port
+			//   ----------------------------------------------------------
+			//   Canon EOS 90D                  usb:001,004
+			var (exitCode, stdOut, stdErr) = await RunCliAsync("--auto-detect", cancellationToken);
 
-            var lineCount = stdOut.Split('\n', StringSplitOptions.RemoveEmptyEntries).Length;
-            var hasCamera = exitCode == 0 && lineCount > 2; // cabecera + separador + ≥1 cámara
+			var lineCount = stdOut.Split('\n', StringSplitOptions.RemoveEmptyEntries).Length;
+			var hasCamera = exitCode == 0 && lineCount > 2; // cabecera + separador + ≥1 cámara
 
-            SetConnected(hasCamera);
+			SetConnected(hasCamera);
 
-            if (!hasCamera)
-                LastError = string.IsNullOrWhiteSpace(stdErr)
-                    ? "No se detectó ninguna cámara por USB (gphoto2 --auto-detect vacío)."
-                    : stdErr;
+			if (!hasCamera)
+				LastError = string.IsNullOrWhiteSpace(stdErr)
+					? "No se detectó ninguna cámara por USB (gphoto2 --auto-detect vacío)."
+					: stdErr;
 
-            return hasCamera;
-        }
-        catch (Exception ex)
-        {
-            LastError = $"Error al detectar cámara: {ex.Message}";
-            SetConnected(false);
-            return false;
-        }
-    }
+			return hasCamera;
+		}
+		catch (Exception ex)
+		{
+			LastError = $"Error al detectar cámara: {ex.Message}";
+			SetConnected(false);
+			return false;
+		}
+	}
 
-    public async Task SetExposureAsync(ExposureSetting settings)
-    {
-        LastError = null;
+	public async Task SetExposureAsync(ExposureSetting settings)
+	{
+		LastError = null;
 
-        // Timeout defensivo: si el proceso gphoto2 se cuelga (p. ej. la
-        // cámara entró en modo de ahorro de energía a media noche), no debe
-        // bloquear indefinidamente el temporizador de eventos del eclipse.
-        using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+		// Timeout defensivo: si el proceso gphoto2 se cuelga (p. ej. la
+		// cámara entró en modo de ahorro de energía a media noche), no debe
+		// bloquear indefinidamente el temporizador de eventos del eclipse.
+		using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
-        // Las claves de configuración (aperture/iso/shutterspeed) son las
-        // habituales que libgphoto2 expone vía PTP para la mayoría de
-        // réflex/mirrorless. --set-config-value evita la confirmación
-        // interactiva que pide --set-config en listas de valores.
-        var aperture = NormalizeApertureValue(settings.Aperture);
-        var args = $"--set-config-value aperture={aperture} " +
-                   $"--set-config-value iso={settings.Iso} " +
-                   $"--set-config-value shutterspeed={settings.Shutter}";
+		// Las claves de configuración (aperture/iso/shutterspeed) son las
+		// habituales que libgphoto2 expone vía PTP para la mayoría de
+		// réflex/mirrorless. --set-config-value evita la confirmación
+		// interactiva que pide --set-config en listas de valores.
+		var aperture = NormalizeApertureValue(settings.Aperture);
+		var args = $"--set-config-value aperture={aperture} " +
+				   $"--set-config-value iso={settings.Iso} " +
+				   $"--set-config-value shutterspeed={settings.Shutter}";
 
-        var (exitCode, _, stdErr) = await RunCliAsync(args, timeoutCts.Token);
+		var (exitCode, _, stdErr) = await RunCliAsync(args, timeoutCts.Token);
 
-        if (exitCode != 0)
-            LastError = $"No se pudieron aplicar los ajustes de exposición: {stdErr}";
-    }
+		if (exitCode != 0)
+			LastError = $"No se pudieron aplicar los ajustes de exposición: {stdErr}";
+	}
 
-    public async Task TriggerCaptureAsync(CancellationToken ct)
-    {
-        LastError = null;
+	public async Task TriggerCaptureAsync(CancellationToken ct)
+	{
+		LastError = null;
 
-        // --trigger-capture dispara SIN descargar el archivo a disco (más
-        // rápido que --capture-image-and-download), ideal para series
-        // rápidas como el bracket de 8 tomas de corona. La imagen queda en
-        // la tarjeta de la cámara, que es justo lo que se quiere durante un
-        // eclipse: cero tiempo perdido en transferencias USB.
-        var (exitCode, _, stdErr) = await RunCliAsync("--trigger-capture", ct);
+		// --trigger-capture dispara SIN descargar el archivo a disco (más
+		// rápido que --capture-image-and-download), ideal para series
+		// rápidas como el bracket de 8 tomas de corona. La imagen queda en
+		// la tarjeta de la cámara, que es justo lo que se quiere durante un
+		// eclipse: cero tiempo perdido en transferencias USB.
+		var (exitCode, _, stdErr) = await RunCliAsync("--trigger-capture", ct);
 
-        if (exitCode != 0)
-            LastError = $"Fallo al disparar: {stdErr}";
-    }
+		if (exitCode != 0)
+			LastError = $"Fallo al disparar: {stdErr}";
+	}
 
-    public Task DisconnectAsync()
-    {
-        SetConnected(false);
-        return Task.CompletedTask;
-    }
+	public Task DisconnectAsync()
+	{
+		SetConnected(false);
+		return Task.CompletedTask;
+	}
 
-    // ── Ejecución del proceso CLI ────────────────────────────────────────────
+	// ── Ejecución del proceso CLI ────────────────────────────────────────────
 
-    private async Task<(int ExitCode, string StdOut, string StdErr)> RunCliAsync(
-        string arguments, CancellationToken cancellationToken)
-    {
-        await _cliLock.WaitAsync(cancellationToken);
-        try
-        {
-            using var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = ExecutablePath,
-                    Arguments = arguments,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            };
+	private async Task<(int ExitCode, string StdOut, string StdErr)> RunCliAsync(
+		string arguments, CancellationToken cancellationToken)
+	{
+		await _cliLock.WaitAsync(cancellationToken);
+		try
+		{
+			using var process = new Process
+			{
+				StartInfo = new ProcessStartInfo
+				{
+					FileName = ExecutablePath,
+					Arguments = arguments,
+					RedirectStandardOutput = true,
+					RedirectStandardError = true,
+					UseShellExecute = false,
+					CreateNoWindow = true,
+				}
+			};
 
-            var stdOut = new StringBuilder();
-            var stdErr = new StringBuilder();
-            process.OutputDataReceived += (_, e) => { if (e.Data != null) stdOut.AppendLine(e.Data); };
-            process.ErrorDataReceived  += (_, e) => { if (e.Data != null) stdErr.AppendLine(e.Data); };
+			// El binario gphoto2.exe empaquetado (vía MSYS2, ver
+			// Pack-GPhoto2.ps1) trae grabadas en compilación las rutas de
+			// camlibs/iolibs de la instalación de MSYS2 de origen. Al
+			// ejecutarlo desde Tools\gphoto2\ esas rutas ya no existen, así
+			// que se sobrescriben aquí para apuntar a las carpetas
+			// bundleadas junto al propio ejecutable.
+			var baseDir = Path.GetDirectoryName(ExecutablePath) ?? AppContext.BaseDirectory;
+			var camlibsDir = Path.Combine(baseDir, "camlibs");
+			var iolibsDir = Path.Combine(baseDir, "iolibs");
 
-            process.Start();
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
+			if (Directory.Exists(camlibsDir))
+				process.StartInfo.EnvironmentVariables["CAMLIBS"] = camlibsDir;
+			if (Directory.Exists(iolibsDir))
+				process.StartInfo.EnvironmentVariables["IOLIBS"] = iolibsDir;
 
-            await process.WaitForExitAsync(cancellationToken);
+			var stdOut = new StringBuilder();
+			var stdErr = new StringBuilder();
+			process.OutputDataReceived += (_, e) => { if (e.Data != null) stdOut.AppendLine(e.Data); };
+			process.ErrorDataReceived += (_, e) => { if (e.Data != null) stdErr.AppendLine(e.Data); };
 
-            return (process.ExitCode, stdOut.ToString(), stdErr.ToString());
-        }
-        catch (OperationCanceledException)
-        {
-            throw;
-        }
-        catch (Exception ex)
-        {
-            // No relanzamos: SetExposureAsync/TriggerCaptureAsync exponen el
-            // fallo vía LastError en lugar de tirar la secuencia del eclipse
-            // por una excepción no controlada en medio de una ráfaga.
-            return (-1, string.Empty, ex.Message);
-        }
-        finally
-        {
-            _cliLock.Release();
-        }
-    }
+			process.Start();
+			process.BeginOutputReadLine();
+			process.BeginErrorReadLine();
 
-    private void SetConnected(bool connected)
-    {
-        if (_isConnected == connected) return;
-        _isConnected = connected;
-        ConnectionChanged?.Invoke(connected);
-    }
+			await process.WaitForExitAsync(cancellationToken);
 
-    /// <summary>"f/8" → "8"; gphoto2 espera solo el número del f-stop.</summary>
-    private static string NormalizeApertureValue(string aperture)
-    {
-        var trimmed = aperture.Trim();
-        var idx = trimmed.IndexOf('/');
-        return idx >= 0 ? trimmed[(idx + 1)..].Trim() : trimmed;
-    }
+			return (process.ExitCode, stdOut.ToString(), stdErr.ToString());
+		}
+		catch (OperationCanceledException)
+		{
+			throw;
+		}
+		catch (Exception ex)
+		{
+			// No relanzamos: SetExposureAsync/TriggerCaptureAsync exponen el
+			// fallo vía LastError en lugar de tirar la secuencia del eclipse
+			// por una excepción no controlada en medio de una ráfaga.
+			return (-1, string.Empty, ex.Message);
+		}
+		finally
+		{
+			_cliLock.Release();
+		}
+	}
 
-    private static string ResolveDefaultExecutablePath()
-    {
-        var bundled = Path.Combine(AppContext.BaseDirectory, "Tools", "gphoto2", "gphoto2.exe");
-        return File.Exists(bundled) ? bundled : "gphoto2.exe"; // confía en el PATH del sistema
-    }
+	private void SetConnected(bool connected)
+	{
+		if (_isConnected == connected) return;
+		_isConnected = connected;
+		ConnectionChanged?.Invoke(connected);
+	}
 
-    public void Dispose() => _cliLock.Dispose();
+	/// <summary>"f/8" → "8"; gphoto2 espera solo el número del f-stop.</summary>
+	private static string NormalizeApertureValue(string aperture)
+	{
+		var trimmed = aperture.Trim();
+		var idx = trimmed.IndexOf('/');
+		return idx >= 0 ? trimmed[(idx + 1)..].Trim() : trimmed;
+	}
 
-    // ── Stubs P/Invoke (no usados por defecto) ──────────────────────────────
-    // Punto de extensión genérico para invocar libgphoto2 de forma nativa si
-    // en el futuro se bundlea un build .dll para Windows. Firmas alineadas
-    // con gphoto2/gphoto2-camera.h y gphoto2/gphoto2-context.h de la librería
-    // oficial. No se invocan desde el flujo actual (que usa el CLI).
-    private static class NativeGPhoto2
-    {
-        private const string LibName = "libgphoto2"; // resolvería a libgphoto2.dll si se bundlea
+	private static string ResolveDefaultExecutablePath()
+	{
+		var bundled = Path.Combine(AppContext.BaseDirectory, "Tools", "gphoto2", "gphoto2.exe");
+		return File.Exists(bundled) ? bundled : "gphoto2.exe"; // confía en el PATH del sistema
+	}
 
-        /// <summary>gp_camera_new(Camera **camera)</summary>
-        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int gp_camera_new(out IntPtr camera);
+	public void Dispose() => _cliLock.Dispose();
 
-        /// <summary>gp_camera_init(Camera *camera, GPContext *context)</summary>
-        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int gp_camera_init(IntPtr camera, IntPtr context);
+	// ── Stubs P/Invoke (no usados por defecto) ──────────────────────────────
+	// Punto de extensión genérico para invocar libgphoto2 de forma nativa si
+	// en el futuro se bundlea un build .dll para Windows. Firmas alineadas
+	// con gphoto2/gphoto2-camera.h y gphoto2/gphoto2-context.h de la librería
+	// oficial. No se invocan desde el flujo actual (que usa el CLI).
+	private static class NativeGPhoto2
+	{
+		private const string LibName = "libgphoto2"; // resolvería a libgphoto2.dll si se bundlea
 
-        /// <summary>gp_camera_set_config(Camera *camera, CameraWidget *window, GPContext *context)</summary>
-        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int gp_camera_set_config(IntPtr camera, IntPtr window, IntPtr context);
+		/// <summary>gp_camera_new(Camera **camera)</summary>
+		[DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int gp_camera_new(out IntPtr camera);
 
-        /// <summary>gp_camera_capture(Camera *camera, CameraCaptureType type, CameraFilePath *path, GPContext *context)</summary>
-        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int gp_camera_capture(IntPtr camera, int captureType, IntPtr path, IntPtr context);
+		/// <summary>gp_camera_init(Camera *camera, GPContext *context)</summary>
+		[DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int gp_camera_init(IntPtr camera, IntPtr context);
 
-        /// <summary>gp_camera_exit(Camera *camera, GPContext *context)</summary>
-        [DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int gp_camera_exit(IntPtr camera, IntPtr context);
-    }
+		/// <summary>gp_camera_set_config(Camera *camera, CameraWidget *window, GPContext *context)</summary>
+		[DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int gp_camera_set_config(IntPtr camera, IntPtr window, IntPtr context);
+
+		/// <summary>gp_camera_capture(Camera *camera, CameraCaptureType type, CameraFilePath *path, GPContext *context)</summary>
+		[DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int gp_camera_capture(IntPtr camera, int captureType, IntPtr path, IntPtr context);
+
+		/// <summary>gp_camera_exit(Camera *camera, GPContext *context)</summary>
+		[DllImport(LibName, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int gp_camera_exit(IntPtr camera, IntPtr context);
+	}
 }
