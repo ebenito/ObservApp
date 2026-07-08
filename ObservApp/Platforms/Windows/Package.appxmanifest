@@ -8,7 +8,7 @@
 
   <Identity Name="64068EstebanBenito.ObservApp" Publisher="CN=861769EB-74FC-4B39-BFED-DFA2CEF5D924" Version="1.1.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="a9e3bf07-c361-4d05-8a3c-ea19df9fceee" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="f89548e6-7a03-4ced-9a2f-cda41e5af7ef" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>ObservApp</DisplayName>
@@ -41,6 +41,7 @@
 
   <Capabilities>
     <rescap:Capability Name="runFullTrust" />
+    <DeviceCapability Name="location"/>
   </Capabilities>
 
 </Package>
