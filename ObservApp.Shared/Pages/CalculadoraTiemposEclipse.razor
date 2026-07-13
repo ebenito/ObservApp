@@ -1,4 +1,4 @@
-﻿@page "/calculadoras/eclipse-solar"
+@page "/calculadoras/eclipse-solar"
 @using CosineKitty
 @using System.Globalization
 @using ObservApp.Shared.Models
@@ -378,11 +378,19 @@
                                 <div class="eclt-event-countdown @(isPast ? "done" : "")">
                                     @FormatCountdown(contact.UtcTime)
                                 </div>
-                                <button class="eclt-test-btn"
-                                        title="@L["EclipseTimer_TestAlert"]"
-                                        @onclick="() => TestEventAlertAsync(contact)">
-                                    🔔
-                                </button>
+                                <div style="display:flex;gap:4px;">
+                                    <button class="eclt-test-btn"
+                                            title="@L["EclipseTimer_TestAlert"]"
+                                            @onclick="() => TestEventAlertAsync(contact)">
+                                        🔔
+                                    </button>
+                                    <button class="eclt-test-btn"
+                                            title="Probar disparo de foto para este evento"
+                                            @onclick="() => TestEventPhotoAsync(contact)"
+                                            disabled="@(_cameraTable is null || !CameraDevice.IsConnected)">
+                                        📸
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     }
@@ -404,6 +412,7 @@
 </div>
 
 @code {
+    private const double SimSpeedFactor = 30.0; // 1s real = 30s simulados
     private string? activePopover;
 
     // ── Estado ────────────────────────────────────────────────────────────────
@@ -1030,6 +1039,46 @@
         await AudioService.AnnounceEventAsync(GetAlertMessage(contact.Kind));
     }
 
+    private async Task TestEventPhotoAsync(EclipseContact contact)
+    {
+        if (_cameraTable is null || !CameraDevice.IsConnected) return;
+
+        if (contact.Kind == EclipseEventKind.C2)
+        {
+            var bracket = EclipseExposureCalculator.GetTotalityBracket(_cameraTable);
+            if (bracket.Count == 0) return;
+
+            _cameraStatusText = $"[Test] Bracket de totalidad iniciado ({bracket.Count} tomas × 1)";
+            StateHasChanged();
+            await CameraManager.RunEclipseSequenceAsync(1, isTotality: true, bracket);
+        }
+        else
+        {
+            var setting = EclipseExposureCalculator.ResolveSingleEventExposure(contact.Kind, _cameraTable);
+            if (setting is null)
+            {
+                // Fallback para pruebas manuales de Maximum y C3 (que no disparan de forma autónoma en el flujo real)
+                var phaseName = contact.Kind switch
+                {
+                    EclipseEventKind.Maximum => "Corona (1.0R☉)",
+                    EclipseEventKind.C3 => "Cromosfera",
+                    _ => null
+                };
+                if (phaseName is not null)
+                {
+                    setting = _cameraTable.FirstOrDefault(p => p.PhaseName == phaseName)?.Setting;
+                }
+            }
+
+            if (setting is not null)
+            {
+                _cameraStatusText = $"[Test] {GetEventLabel(contact.Kind)} → {setting}";
+                StateHasChanged();
+                await CameraManager.RunEclipseSequenceAsync(1, isTotality: false, new[] { setting });
+            }
+        }
+    }
+
     // Extraer el texto de alerta a método para reutilizar
     private string GetAlertMessage(EclipseEventKind kind) => kind switch
     {
@@ -1064,11 +1113,9 @@
         _announcedEvents.Clear();
         _cameraTriggeredEvents.Clear();
 
-        const double speedFactor = 30.0; // 1s real = 30s simulados
-
         _simTimer = new Timer(_ => InvokeAsync(() =>
         {
-            _simNow = _simNow.AddSeconds(speedFactor);
+            _simNow = _simNow.AddSeconds(SimSpeedFactor);
 
             // Avisos: cuando en tiempo simulado falten ≤ 30s para un evento
             if (_audioEnabled)
@@ -1106,7 +1153,13 @@
         // La página ya tiene OnInitializedAsync (carga eclipses + timer) — este
         // OnInitialized() es un método DISTINTO de ComponentBase, no hay conflicto.
         CameraProfile.OnChanged += RebuildCameraTable;
+        CameraDevice.ConnectionChanged += OnCameraConnectionChanged;
         RebuildCameraTable();
+    }
+
+    private void OnCameraConnectionChanged(bool connected)
+    {
+        InvokeAsync(StateHasChanged);
     }
 
     private void RebuildCameraTable()
@@ -1128,17 +1181,27 @@
 
     private async Task CheckAndTriggerCameraAsync(DateTime now)
     {
-        if (!_cameraAutoEnabled || _cameraTable is null || _result is null) return;
+        // El disparo automático se realiza si está explícitamente activado,
+        // o si estamos en simulación y la cámara está conectada.
+        bool active = _cameraAutoEnabled || (_simMode && CameraDevice.IsConnected);
+        if (!active || _cameraTable is null || _result is null) return;
 
         foreach (var contact in _result.Contacts)
         {
             if (_cameraTriggeredEvents.Contains(contact.Kind)) continue;
 
             var diff = (now - contact.UtcTime).TotalSeconds;
-            if (diff < 0 || diff > 2) continue; // aún no llega, o ya pasó de sobra
 
-            _cameraTriggeredEvents.Add(contact.Kind);
-            await FireCameraForEventAsync(contact.Kind);
+            // Si estamos en simulación, adaptamos la ventana de tiempo para el avance rápido
+            bool shouldTrigger = _simMode
+                ? (diff >= 0 && diff <= (SimSpeedFactor + 5))
+                : (diff >= 0 && diff <= 2);
+
+            if (shouldTrigger)
+            {
+                _cameraTriggeredEvents.Add(contact.Kind);
+                await FireCameraForEventAsync(contact.Kind);
+            }
         }
     }
 
@@ -1174,6 +1237,8 @@
     public void Dispose()
     {
         _timer?.Dispose();
+        _simTimer?.Dispose();
         CameraProfile.OnChanged -= RebuildCameraTable;
+        CameraDevice.ConnectionChanged -= OnCameraConnectionChanged;
     }
 }
