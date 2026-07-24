@@ -154,26 +154,49 @@
                 var m = _result.Metrics;
                 var ic = System.Globalization.CultureInfo.InvariantCulture;
 
-                <div class="eclt-metrics-grid">
+                @if (activePopover != null)
+                {
+                    <div class="popover-overlay" @onclick="() => activePopover = null"></div>
+                }
 
+                <div class="eclt-metrics-grid">
                     <!-- Magnitud -->
                     <div class="eclt-metric-item">
-                        <span class="eclt-metric-label">@L["EclipseTimer_Magnitude"]</span>
+                        <span class="eclt-metric-label">
+                            @L["EclipseTimer_Magnitude"]
+                            <span class="info-icon" @onclick='() => TogglePopover("mag")'>ℹ️</span>
+                        </span>
+                        @if (activePopover == "mag")
+                        {
+                            <div class="popover-box">@L["Tooltip_Magnitude"]</div>
+                        }
                         <span class="eclt-metric-value">@m.Magnitude.ToString("F4", ic)</span>
                     </div>
 
                     <!-- Gamma -->
                     <div class="eclt-metric-item">
-                        <span class="eclt-metric-label">@L["EclipseTimer_Gamma"]</span>
+                        <span class="eclt-metric-label">
+                            @L["EclipseTimer_Gamma"]
+                            <span class="info-icon" @onclick='() => TogglePopover("gamma")'>ℹ️</span>
+                        </span>
+                        @if (activePopover == "gamma")
+                        {
+                            <div class="popover-box">@L["Tooltip_Gamma"]</div>
+                        }
                         <span class="eclt-metric-value">@m.Gamma.ToString("F4", ic)</span>
                     </div>
 
-                    <!-- ΔT -->
+                    <!-- ΔT (Delta T) -->
                     <div class="eclt-metric-item">
-                        <span class="eclt-metric-label">@L["EclipseTimer_DeltaT"]</span>
-                        <span class="eclt-metric-value">
-                            @m.DeltaTSeconds.ToString("F1", ic) @L["EclipseTimer_DeltaT_Unit"]
+                        <span class="eclt-metric-label">
+                            @L["EclipseTimer_DeltaT"]
+                            <span class="info-icon" @onclick='() => TogglePopover("delta")'>ℹ️</span>
                         </span>
+                        @if (activePopover == "delta")
+                        {
+                            <div class="popover-box">@L["Tooltip_DeltaT"]</div>
+                        }
+                        <span class="eclt-metric-value">@m.DeltaTSeconds.ToString("F1", ic) s</span>
                     </div>
 
                     <!-- Duración totalidad (solo si C2 y C3 existen) -->
@@ -189,7 +212,14 @@
 
                     <!-- Saros -->
                     <div class="eclt-metric-item eclt-metric-item--wide">
-                        <span class="eclt-metric-label">@L["EclipseTimer_Saros"]</span>
+                        <span class="eclt-metric-label">
+                            @L["EclipseTimer_Saros"]
+                            <span class="info-icon" @onclick='() => TogglePopover("saros")'>ℹ️</span>
+                        </span>
+                        @if (activePopover == "saros")
+                        {
+                            <div class="popover-box">@L["Tooltip_Saros"]</div>
+                        }
                         <span class="eclt-metric-value">
                             @m.SarosNumber
                             <span class="eclt-metric-sub">(@m.SarosMember / @m.SarosTotal)</span>
@@ -309,6 +339,7 @@
 </div>
 
 @code {
+    private string? activePopover;
 
     // ── Estado ────────────────────────────────────────────────────────────────
     private List<EclipseDefinition> _eclipses = new();
@@ -990,6 +1021,13 @@
         _simMode = false;
         _announcedEvents.Clear();
         UpdateNextEvent();
+    }
+
+    private void TogglePopover(string id)
+    {
+        // Si el que clicamos es el que ya está abierto, lo cerramos.
+        // Si no, abrimos el nuevo.
+        activePopover = (activePopover == id) ? null : id;
     }
 
     // ── Dispose ───────────────────────────────────────────────────────────────

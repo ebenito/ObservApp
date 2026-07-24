@@ -985,8 +985,7 @@
   <data name="Signals_Stop" xml:space="preserve">
     <value>Detener</value>
   </data>
-  
-    <data name="Signals_PrevPage" xml:space="preserve">
+  <data name="Signals_PrevPage" xml:space="preserve">
     <value>Anterior</value>
   </data>
   <data name="Signals_NextPage" xml:space="preserve">
@@ -1010,26 +1009,37 @@
   <data name="Signals_PartialError" xml:space="preserve">
     <value>Algunas fuentes no pudieron cargarse.</value>
   </data>
-  <!-- ── Métricas adicionales del eclipse ── -->
-<data name="EclipseTimer_DeltaT" xml:space="preserve">
-  <value>ΔT</value>
-</data>
-<data name="EclipseTimer_DeltaT_Unit" xml:space="preserve">
-  <value>s</value>
-</data>
-<data name="EclipseTimer_Magnitude" xml:space="preserve">
-  <value>Magnitud</value>
-</data>
-<data name="EclipseTimer_Gamma" xml:space="preserve">
-  <value>Gamma</value>
-</data>
-<data name="EclipseTimer_TotalityDuration" xml:space="preserve">
-  <value>Duración totalidad</value>
-</data>
-<data name="EclipseTimer_Saros" xml:space="preserve">
-  <value>Saros</value>
-</data>
-<data name="EclipseTimer_Metrics_Title" xml:space="preserve">
-  <value>Datos del eclipse</value>
-</data>
+  <data name="EclipseTimer_DeltaT" xml:space="preserve">
+    <value>ΔT</value>
+  </data>
+  <data name="EclipseTimer_DeltaT_Unit" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="EclipseTimer_Magnitude" xml:space="preserve">
+    <value>Magnitud</value>
+  </data>
+  <data name="EclipseTimer_Gamma" xml:space="preserve">
+    <value>Gamma</value>
+  </data>
+  <data name="EclipseTimer_TotalityDuration" xml:space="preserve">
+    <value>Duración totalidad</value>
+  </data>
+  <data name="EclipseTimer_Saros" xml:space="preserve">
+    <value>Saros</value>
+  </data>
+  <data name="EclipseTimer_Metrics_Title" xml:space="preserve">
+    <value>Datos del eclipse</value>
+  </data>
+  <data name="Tooltip_Magnitude" xml:space="preserve">
+    <value>Magnitud: Indica cuánto del Sol está oculto. Valor &gt; 1.0 significa eclipse total/anular.</value>
+  </data>
+  <data name="Tooltip_Gamma" xml:space="preserve">
+    <value>Gamma: Distancia del eje de la sombra al centro de la Tierra en radios terrestres.</value>
+  </data>
+  <data name="Tooltip_DeltaT" xml:space="preserve">
+    <value>ΔT (Delta T): Diferencia entre Tiempo Terrestre (TT) y Tiempo Universal (UT) debida a la rotación terrestre.</value>
+  </data>
+  <data name="Tooltip_Saros" xml:space="preserve">
+    <value>Saros: Ciclo astronómico de ~18 años que predice eclipses similares.</value>
+  </data>
 </root>
