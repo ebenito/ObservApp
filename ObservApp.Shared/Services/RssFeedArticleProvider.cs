@@ -35,6 +35,9 @@ public sealed class RssFeedArticleProvider
 
     public string? LastError { get; private set; }
 
+    /// <summary>Diagnóstico: número de artículos cachos en la última carga.</summary>
+    public int CachedItemCount => _cachedItems?.Count ?? 0;
+
     /// <summary>
     /// Obtiene una página de artículos paginando en memoria sobre el feed completo.
     /// Si los datos ya están en caché, no descarga de nuevo el feed.
@@ -51,6 +54,13 @@ public sealed class RssFeedArticleProvider
             var raw = await _rss.GetItemsFromSourceAsync(_source, cancellationToken);
             LastError = _rss.GetLastError(_source.Id);
             _cachedItems = raw.Select(ToArticle).ToList();
+
+            // DEBUG: Log cuántos artículos se cargaron y sus idiomas
+            var langCounts = _cachedItems
+                .GroupBy(a => a.LanguageCode)
+                .ToDictionary(g => g.Key ?? "null", g => g.Count());
+            System.Diagnostics.Debug.WriteLine(
+                $"[RSS] {_source.Name}: Cargados {_cachedItems.Count} artículos. Idiomas: {string.Join(", ", langCounts.Select(kv => $"{kv.Key}={kv.Value}"))}");
         }
 
         if (_cachedItems.Count == 0)
@@ -77,9 +87,10 @@ public sealed class RssFeedArticleProvider
         PublishedDate     = item.PublishedUtc,
         ImageUrl          = item.ImageUrl,
         SourceDisplayName = item.SourceName,
-        // Usar el idioma declarado en el feed si existe; si no, el del constructor
-        LanguageCode      = !string.IsNullOrWhiteSpace(item.LanguageCode)
-                            ? item.LanguageCode
-                            : _languageCode
+        // El languageCode del constructor tiene prioridad (configurado explícitamente);
+        // el idioma declarado en el feed se usa solo como fallback.
+        LanguageCode      = !string.IsNullOrWhiteSpace(_languageCode)
+                            ? _languageCode
+                            : item.LanguageCode
     };
 }

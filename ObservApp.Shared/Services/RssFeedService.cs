@@ -10,7 +10,7 @@ namespace ObservApp.Shared.Services;
 /// Parsea RSS 2.0 (formato WordPress estándar, con content:encoded) y Atom.
 /// No depende de System.ServiceModel.Syndication para mantener el peso bajo en WASM.
 /// </summary>
-public class RssFeedService : IRssFeedService
+public partial class RssFeedService : IRssFeedService
 {
     private readonly HttpClient _http;
     private readonly Dictionary<string, string?> _lastErrors = new();
@@ -50,7 +50,6 @@ public class RssFeedService : IRssFeedService
     {
         const int maxRetries = 3;
         const int initialDelayMs = 1000;
-        const string htmlIndicator = "<!DOCTYPE";
 
         try
         {
@@ -65,8 +64,8 @@ public class RssFeedService : IRssFeedService
             {
                 xml = await _http.GetStringAsync(resolvedUrl, cancellationToken);
 
-                // Verificar si es HTML (página de verificación de Inmunify 360 u otra)
-                if (!xml.TrimStart().StartsWith(htmlIndicator, StringComparison.OrdinalIgnoreCase))
+                // Verificar si es XML válido (no HTML)
+                if (IsValidXml(xml))
                 {
                     break; // Es XML válido, salir del bucle de reintentos
                 }
@@ -80,15 +79,23 @@ public class RssFeedService : IRssFeedService
                 }
             }
 
-            // Si después de reintentos aún es HTML, lanzar excepción con la URL
-            if (xml.TrimStart().StartsWith(htmlIndicator, StringComparison.OrdinalIgnoreCase))
+            // Si después de reintentos aún no es XML válido, lanzar excepción
+            if (!IsValidXml(xml))
             {
                 throw new InvalidOperationException(
                     $"OPEN_BROWSER:{resolvedUrl}|El servidor devolvió HTML en lugar de XML. " +
                     "La URL puede estar protegida por Inmunify 360 u otro sistema de verificación.");
             }
 
-            var doc = XDocument.Parse(xml);
+            XDocument? doc = null;
+            try
+            {
+                doc = XDocument.Parse(xml);
+            }
+            catch (Exception parseEx)
+            {
+                throw new InvalidOperationException($"Error al parsear XML: {parseEx.Message}", parseEx);
+            }
 
             var root = doc.Root;
             if (root is null)
@@ -104,7 +111,13 @@ public class RssFeedService : IRssFeedService
         }
         catch (Exception ex)
         {
-            _lastErrors[source.Id] = ex.Message;
+            var errorMsg = ex.InnerException?.Message ?? ex.Message;
+            _lastErrors[source.Id] = $"{ex.GetType().Name}: {errorMsg}";
+
+            System.Diagnostics.Debug.WriteLine(
+                $"[RSS] {source.Name} ERROR: {ex.GetType().Name}: {ex.Message}" +
+                (ex.InnerException != null ? $" → {ex.InnerException.Message}" : ""));
+
             return new List<RssFeedItem>();
         }
     }
@@ -283,14 +296,22 @@ public class RssFeedService : IRssFeedService
     }
 
     /// <summary>
-    /// Normaliza un código de idioma tipo "es-ES" a "es". Devuelve null si está vacío.
+    /// Normaliza códigos como "es-ES", "es_ES" o "es_ES.UTF-8" a "es".
+    /// Devuelve null si está vacío.
     /// </summary>
     private static string? NormalizeLanguageCode(string? value)
     {
         if (string.IsNullOrWhiteSpace(value)) return null;
+
         var trimmed = value.Trim();
-        var dash = trimmed.IndexOf('-');
-        return dash > 0 ? trimmed[..dash].ToLowerInvariant() : trimmed.ToLowerInvariant();
+        var separators = new[] { '-', '_', '.' };
+        var firstPart = trimmed.Split(separators, StringSplitOptions.RemoveEmptyEntries)
+                               .FirstOrDefault();
+
+        if (string.IsNullOrWhiteSpace(firstPart))
+            return null;
+
+        return firstPart.ToLowerInvariant();
     }
 
     /// <summary>

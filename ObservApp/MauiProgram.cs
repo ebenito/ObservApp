@@ -82,7 +82,14 @@ public static class MauiProgram
         builder.Services.AddSingleton<ITextToSpeechService, MauiTextToSpeechService>();
 
         // ── HttpClient ────────────────────────────────────────────────────────
-        builder.Services.AddHttpClient();
+        // Configurar HttpClient con User-Agent válido para que RSS feeds no rechacen las requests
+        builder.Services.AddHttpClient("default", client =>
+        {
+            client.DefaultRequestHeaders.Add("User-Agent",
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36");
+            client.DefaultRequestHeaders.Add("Accept", "application/rss+xml, application/atom+xml, application/xml, text/xml, */*");
+            client.Timeout = TimeSpan.FromSeconds(10);
+        });
 
         // ── Servicio unificado de artículos (WP API + fuentes RSS) ───────────
         builder.Services.AddSingleton<IArticleService>(sp =>
@@ -95,26 +102,28 @@ public static class MauiProgram
                 sourceName: "Tubkala",
                 languageCode: "es");
 
-            // ── Fuentes RSS — Español ─────────────────────────────────────────
-            var sinc     = new RssSource("sinc",     "SINC",                  "https://www.agenciasinc.es/rss/feed/es_ES/noticias/astronomia", IsBuiltIn: true);
-            var iac      = new RssSource("iac",      "IAC",                   "https://www.iac.es/es/rss.xml",                                 IsBuiltIn: true);
-            var iyc      = new RssSource("iyc",      "Invest. y Ciencia",     "https://www.investigacionyciencia.es/noticias/rss",              IsBuiltIn: true);
-            var astropaf = new RssSource("astropaf", "Astropaf",              "https://astropaf.com/feed/",                                    IsBuiltIn: true);
-            // ── Fuentes RSS — Inglés ──────────────────────────────────────────
-            var jpl      = new RssSource("jpl",      "NASA JPL",              "https://www.jpl.nasa.gov/feeds/news/",                          IsBuiltIn: true);
-            var esa      = new RssSource("esa",      "ESA",                   "https://www.esa.int/rssfeed/RSSFeed/1/Astronomy",               IsBuiltIn: true);
-            var eso      = new RssSource("eso",      "ESO",                   "https://www.eso.org/public/outreach/rss/news/",                 IsBuiltIn: true);
-            var skytel   = new RssSource("skytel",   "Sky & Telescope",       "https://skyandtelescope.org/feed/",                            IsBuiltIn: true);
-            var astromag = new RssSource("astromag", "Astronomy Magazine",    "https://www.astronomy.com/feed/",                              IsBuiltIn: true);
-            var spacecom = new RssSource("spacecom", "Space.com",             "https://www.space.com/feeds/all",                              IsBuiltIn: true);
+			// ── Fuentes RSS — Español ─────────────────────────────────────────
+			var astrobit   = new RssSource("astrobit","Astrobitácora",     "https://www.astrobitacora.com/feed/",	            IsBuiltIn: true);
+			var astrobites = new RssSource(	"astrobites", "Astrobites ES", "https://astrobitos.org/feed/",                      IsBuiltIn: true);
+			var esaes      = new RssSource("esaes", "ESA España",          "https://www.esa.int/rssfeed/Spain",	                IsBuiltIn: true);
+			//var eureka = new RssSource("eureka", "Eureka", "https://danielmarin.naukas.com/feed/", IsBuiltIn: true);
+			//var naukas = new RssSource("naukas", "Naukas", "https://naukas.com/feed/", IsBuiltIn: true);
+			//var csic = new RssSource("csic", "CSIC", "https://www.csic.es/es/actualidad-del-csic/rss.xml", IsBuiltIn: true);
+			//var muyint = new RssSource("muyint", "Muy Interesante", "https://www.muyinteresante.com/feed/", IsBuiltIn: true);
+			// ── Fuentes RSS — Inglés ──────────────────────────────────────────
+			var nasa     = new RssSource("nasa",     "NASA Image of the Day", "https://www.nasa.gov/feeds/iotd-feed/",                    IsBuiltIn: true);
+            var esa      = new RssSource("esa",      "ESA",                   "http://www.esa.int/rssfeed/Our_Activities/Space_Science",  IsBuiltIn: true);
+            var eso      = new RssSource("eso",      "ESO",                   "https://www.eso.org/public/blog/feed/",                    IsBuiltIn: true);
+            var skytel   = new RssSource("skytel",   "Sky & Telescope",       "https://skyandtelescope.org/feed/",                        IsBuiltIn: true);
+            var astromag = new RssSource("astromag", "Astronomy Magazine",    "https://www.astronomy.com/feed/",                          IsBuiltIn: true);
+            var spacecom = new RssSource("spacecom", "Space.com",             "https://feeds.space.com/articles/feed/latest",             IsBuiltIn: true);
 
             var rssProviders = new[]
             {
-                new RssFeedArticleProvider(rss, sinc,     languageCode: "es"),
-                new RssFeedArticleProvider(rss, iac,      languageCode: "es"),
-                new RssFeedArticleProvider(rss, iyc,      languageCode: "es"),
-                new RssFeedArticleProvider(rss, astropaf, languageCode: "es"),
-                new RssFeedArticleProvider(rss, jpl,      languageCode: "en"),
+                new RssFeedArticleProvider(rss, astrobit,     languageCode: "es"),
+                new RssFeedArticleProvider(rss, astrobites,   languageCode: "es"),
+                new RssFeedArticleProvider(rss, esaes,        languageCode: "es"),
+                new RssFeedArticleProvider(rss, nasa,     languageCode: "en"),
                 new RssFeedArticleProvider(rss, esa,      languageCode: "en"),
                 new RssFeedArticleProvider(rss, eso,      languageCode: "en"),
                 new RssFeedArticleProvider(rss, skytel,   languageCode: "en"),

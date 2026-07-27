@@ -139,7 +139,7 @@
 
         @if (_error is not null)
         {
-            <p class="signals-error-partial">⚠️ @L["Signals_PartialError"]</p>
+            <p class="signals-error-partial">⚠️ @L["Signals_PartialError"]<br /><small>@_error</small></p>
         }
     }
 
@@ -198,37 +198,19 @@
 
     private void ApplyFilter()
     {
-        // Aplicar filtro de idioma
         _filteredItems = _langFilter is null
             ? _items
             : _items.Where(a => a.LanguageCode == _langFilter).ToList();
 
-        // CORRECCIÓN: Recalcular total filtrado
-        // Si no hay filtro, mantener el total de la fuente
-        // Si hay filtro, contar solo los artículos que coinciden
         if (_langFilter is null)
         {
             _filteredTotalCount = _totalCount;
-        }
-        else
-        {
-            // Cuando hay filtro, no podemos saber el total real en el servidor
-            // Por eso estimamos que si en esta página hay artículos del idioma filtrado,
-            // hay más páginas (aunque sea un estimado conservador)
-            _filteredTotalCount = _filteredItems.Count > 0 ? -1 : 0;
+            return;
         }
 
-        // CORRECCIÓN: Recalcular _hasNextPage considerando el filtro
-        // Si está filtrando por idioma, solo marcar "tiene próxima" si:
-        // 1. La próxima página tendría contenido (optimista: suponer que sí si _hasNextPage es true)
-        // 2. O si esta página tiene menos items de los solicitados (significa que no hay más en el servidor)
-        if (_langFilter is not null && _filteredItems.Count < PageSize)
-        {
-            // En esta página filtrada hay menos de PageSize elementos
-            // Esto significa: o no hay más en el servidor, o los restantes no son del idioma filtrado
-            _hasNextPage = false;
-        }
-        // Si tiene items completos en esta página y el servidor dice que hay más, confiar en ello
+        // Con filtro por idioma no conocemos el total real sin descargar todas las páginas.
+        // Mantener -1 (desconocido) mientras el servicio indique que puede haber más.
+        _filteredTotalCount = _hasNextPage ? -1 : _filteredItems.Count;
     }
 
     private async Task SetLangFilter(string? lang)
