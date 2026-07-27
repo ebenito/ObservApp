@@ -87,6 +87,21 @@ jobs:
           -p:TargetFramework=net10.0
           -p:DefineConstants=STANDALONE_WASM
 
+      - name: Show publish size
+        run: |
+          echo "===== Total ====="
+          du -sh ./publish/web/wwwroot
+
+          echo
+          echo "===== _framework ====="
+          du -sh ./publish/web/wwwroot/_framework
+
+          echo
+          echo "===== 20 archivos mayores ====="
+          find ./publish/web/wwwroot -type f -printf "%s %p\n" \
+            | sort -nr \
+            | head -20
+
       - name: Verificar estructura
         run: |
           echo "=== wwwroot raíz ==="
