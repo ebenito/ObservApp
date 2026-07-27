@@ -9,8 +9,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ObservApp.Web.Client\ObservApp.Web.Client.csproj" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.9" />
-    <PackageReference Include="Syncfusion.Licensing" Version="34.1.29" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.10" />
+    <PackageReference Include="Syncfusion.Licensing" Version="34.1.32" />
   </ItemGroup>
 
 </Project>

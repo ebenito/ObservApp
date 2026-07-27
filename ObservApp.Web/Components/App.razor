@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="_content/ObservApp.Shared/app.css" />
     <link rel="stylesheet" href="ObservApp.Web.styles.css" />
     <ImportMap />
-    <HeadOutlet @rendermode="InteractiveWebAssembly" />
+    <HeadOutlet @rendermode="@(new InteractiveWebAssemblyRenderMode(prerender: false))" />
 </head>
 
 <body>

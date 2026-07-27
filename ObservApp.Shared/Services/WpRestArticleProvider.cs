@@ -122,15 +122,19 @@ public sealed class WpRestArticleProvider
                 return await GetPageFromRssFallbackAsync(page, pageSize, cancellationToken);
             }
 
-            // El proxy devuelve: { "total": N, "totalPages": M, "posts": [...] }
-            var wrapper = JsonSerializer.Deserialize<WpProxyWrapper>(json, JsonOptions);
-            if (wrapper?.Posts is null || wrapper.Posts.Count == 0)
-                return (new(), false, wrapper?.Total ?? 0);
+            if (!TryParseProxyResponse(json, out var posts, out var total, out var totalPages, out var parseError))
+            {
+                LastError = parseError;
+                return await GetPageFromRssFallbackAsync(page, pageSize, cancellationToken);
+            }
 
-            var articles = wrapper.Posts.Select(ToArticle).ToList();
-            bool hasNext = page < wrapper.TotalPages;
+            if (posts.Count == 0)
+                return (new(), false, total);
 
-            return (articles, hasNext, wrapper.Total);
+            var articles = posts.Select(ToArticle).ToList();
+            bool hasNext = page < totalPages;
+
+            return (articles, hasNext, total);
         }
         catch (Exception ex)
         {
@@ -165,12 +169,149 @@ public sealed class WpRestArticleProvider
             return await GetPageFromRssFallbackAsync(page, pageSize, cancellationToken);
         }
 
-        var posts = JsonSerializer.Deserialize<List<WpPost>>(json, JsonOptions);
-        if (posts is null || posts.Count == 0)
+        if (!TryParsePostsPayload(json, out var posts, out var parseError))
+        {
+            LastError = parseError;
+            return await GetPageFromRssFallbackAsync(page, pageSize, cancellationToken);
+        }
+
+        if (posts.Count == 0)
             return (new(), false, totalCount);
 
         var articles = posts.Select(ToArticle).ToList();
         return (articles, page < totalPages, totalCount);
+    }
+
+    private static bool TryParseProxyResponse(
+        string json,
+        out List<WpPost> posts,
+        out int total,
+        out int totalPages,
+        out string? error)
+    {
+        posts = new();
+        total = 0;
+        totalPages = 1;
+        error = null;
+
+        try
+        {
+            using var doc = JsonDocument.Parse(json);
+            if (doc.RootElement.ValueKind != JsonValueKind.Object)
+            {
+                error = "Proxy WP: respuesta JSON con formato no válido.";
+                return false;
+            }
+
+            var root = doc.RootElement;
+
+            if (root.TryGetProperty("total", out var totalElement) && totalElement.TryGetInt32(out var totalValue))
+                total = totalValue;
+
+            if (root.TryGetProperty("totalPages", out var totalPagesElement) && totalPagesElement.TryGetInt32(out var totalPagesValue))
+                totalPages = totalPagesValue;
+
+            if (!root.TryGetProperty("posts", out var postsElement))
+            {
+                error = "Proxy WP: respuesta sin el campo 'posts'.";
+                return false;
+            }
+
+            return TryParsePostsElement(postsElement, out posts, out error);
+        }
+        catch (JsonException)
+        {
+            error = "Proxy WP: respuesta JSON inválida.";
+            return false;
+        }
+    }
+
+    private static bool TryParsePostsPayload(
+        string json,
+        out List<WpPost> posts,
+        out string? error)
+    {
+        posts = new();
+        error = null;
+
+        try
+        {
+            using var doc = JsonDocument.Parse(json);
+            var root = doc.RootElement;
+
+            if (root.ValueKind == JsonValueKind.Array)
+            {
+                posts = JsonSerializer.Deserialize<List<WpPost>>(json, JsonOptions) ?? new();
+                return true;
+            }
+
+            if (root.ValueKind == JsonValueKind.Object)
+            {
+                if (root.TryGetProperty("posts", out var postsElement))
+                    return TryParsePostsElement(postsElement, out posts, out error);
+
+                if (TryGetWpApiMessage(root, out var apiMessage))
+                {
+                    error = $"WP API: {apiMessage}";
+                    return false;
+                }
+            }
+
+            error = "WP API devolvió un formato JSON no compatible.";
+            return false;
+        }
+        catch (JsonException)
+        {
+            error = "WP API devolvió JSON inválido.";
+            return false;
+        }
+    }
+
+    private static bool TryParsePostsElement(
+        JsonElement postsElement,
+        out List<WpPost> posts,
+        out string? error)
+    {
+        posts = new();
+        error = null;
+
+        if (postsElement.ValueKind == JsonValueKind.Array)
+        {
+            posts = JsonSerializer.Deserialize<List<WpPost>>(postsElement.GetRawText(), JsonOptions) ?? new();
+            return true;
+        }
+
+        if (postsElement.ValueKind == JsonValueKind.Null)
+            return true;
+
+        if (postsElement.ValueKind == JsonValueKind.String)
+        {
+            var text = postsElement.GetString() ?? string.Empty;
+            error = text.TrimStart().StartsWith('<')
+                ? "WP API devolvió HTML. Usando RSS como respaldo."
+                : "WP API devolvió texto en 'posts' en lugar de una lista.";
+            return false;
+        }
+
+        if (postsElement.ValueKind == JsonValueKind.Object && TryGetWpApiMessage(postsElement, out var apiMessage))
+        {
+            error = $"WP API: {apiMessage}";
+            return false;
+        }
+
+        error = "WP API devolvió un objeto 'posts' con formato no compatible.";
+        return false;
+    }
+
+    private static bool TryGetWpApiMessage(JsonElement element, out string message)
+    {
+        message = string.Empty;
+
+        if (!element.TryGetProperty("message", out var messageElement) || messageElement.ValueKind != JsonValueKind.String)
+            return false;
+
+        message = messageElement.GetString() ?? string.Empty;
+        return !string.IsNullOrWhiteSpace(message);
     }
 
     private static void TryAddBrowserHeaders(HttpRequestMessage request)
@@ -368,13 +509,6 @@ public sealed class WpRestArticleProvider
     };
 
     // ── DTOs ──────────────────────────────────────────────────────────────────
-
-    private sealed class WpProxyWrapper
-    {
-        [JsonPropertyName("total")] public int Total { get; set; }
-        [JsonPropertyName("totalPages")] public int TotalPages { get; set; }
-        [JsonPropertyName("posts")] public List<WpPost>? Posts { get; set; }
-    }
 
     private sealed class WpPost
     {
