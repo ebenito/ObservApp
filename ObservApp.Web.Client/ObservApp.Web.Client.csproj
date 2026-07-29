@@ -16,6 +16,14 @@
 	<PackageReference Include="Syncfusion.Licensing" Version="34.1.32" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <PublishTrimmed>true</PublishTrimmed>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebuggerSupport>false</DebuggerSupport>
+  </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\ObservApp.Shared\ObservApp.Shared.csproj" />
   </ItemGroup>

@@ -101,13 +101,18 @@ jobs:
           find ./publish/web/wwwroot -type f -printf "%s %p\n" \
             | sort -nr \
             | head -20
-
-      - name: Verificar estructura
+            
+      - name: Analyze folders
         run: |
-          echo "=== wwwroot raíz ==="
-          ls ./publish/web/wwwroot/
-          echo "=== _framework (primeros 10) ==="
-          ls ./publish/web/wwwroot/_framework/ | head -10
+          echo "=== Top folders ==="
+          du -h -d 3 ./publish/web/wwwroot | sort -h | tail -100
+
+            - name: Verificar estructura
+              run: |
+                echo "=== wwwroot raíz ==="
+                ls ./publish/web/wwwroot/
+                echo "=== _framework (primeros 10) ==="
+                ls ./publish/web/wwwroot/_framework/ | head -10
 
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
