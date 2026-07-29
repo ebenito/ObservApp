@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /ObservApp/appsettings.Local.json
 /Documentacion/Claude
+/ObservApp/Tools/gphoto2/estructura_gphoto2.txt
