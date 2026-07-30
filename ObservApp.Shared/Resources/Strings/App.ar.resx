@@ -1042,4 +1042,85 @@
   <data name="Tooltip_Saros" xml:space="preserve">
     <value>ساروس: دورة فلكية مدتها ~18 عاماً تُستخدم للتنبؤ بكسوفات متشابهة.</value>
   </data>
+  <data name="Eph_Title" xml:space="preserve">
+    <value>النجوميات</value>
+  </data>
+  <data name="Eph_Subtitle" xml:space="preserve">
+    <value>الكواكب المرئية والأحداث الفلكية وجودة السماء الليلية</value>
+  </data>
+  <data name="Eph_Date" xml:space="preserve">
+    <value>التاريخ</value>
+  </data>
+  <data name="Eph_Location" xml:space="preserve">
+    <value>الموقع</value>
+  </data>
+  <data name="Eph_Planets_Title" xml:space="preserve">
+    <value>الكواكب الليلة</value>
+  </data>
+  <data name="Eph_Planets_Empty" xml:space="preserve">
+    <value>تعذّر حساب بيانات الكواكب لهذا التاريخ.</value>
+  </data>
+  <data name="Eph_Planet_Name" xml:space="preserve">
+    <value>الكوكب</value>
+  </data>
+  <data name="Eph_Planet_Status" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="Eph_Planet_Visible" xml:space="preserve">
+    <value>مرئي</value>
+  </data>
+  <data name="Eph_Planet_NotVisible" xml:space="preserve">
+    <value>تحت الأفق</value>
+  </data>
+  <data name="Eph_Planet_Rise" xml:space="preserve">
+    <value>الشروق</value>
+  </data>
+  <data name="Eph_Planet_Set" xml:space="preserve">
+    <value>الغروب</value>
+  </data>
+  <data name="Eph_Planet_MaxAlt" xml:space="preserve">
+    <value>أقصى ارتفاع</value>
+  </data>
+  <data name="Eph_Planet_Azimuth" xml:space="preserve">
+    <value>السمت</value>
+  </data>
+  <data name="Eph_Planet_Distance" xml:space="preserve">
+    <value>المسافة</value>
+  </data>
+  <data name="Eph_Planet_Illumination" xml:space="preserve">
+    <value>الإضاءة</value>
+  </data>
+  <data name="Eph_Events_Title" xml:space="preserve">
+    <value>الأحداث الفلكية القادمة</value>
+  </data>
+  <data name="Eph_Events_Empty" xml:space="preserve">
+    <value>لا توجد أحداث فلكية بارزة في الـ 90 يوماً القادمة.</value>
+  </data>
+  <data name="Eph_Tonight_Title" xml:space="preserve">
+    <value>سماء الليلة</value>
+  </data>
+  <data name="Eph_Tonight_NoAstroNight" xml:space="preserve">
+    <value>لا ليل فلكي (الشمس فوق -18°)</value>
+  </data>
+  <data name="Eph_Tonight_AstroNight" xml:space="preserve">
+    <value>بداية الليل الفلكي</value>
+  </data>
+  <data name="Eph_Tonight_Quality_Good" xml:space="preserve">
+    <value>جيدة للرصد</value>
+  </data>
+  <data name="Eph_Tonight_Quality_Fair" xml:space="preserve">
+    <value>مقبولة</value>
+  </data>
+  <data name="Eph_Tonight_Quality_Poor" xml:space="preserve">
+    <value>قمر مضيء</value>
+  </data>
+  <data name="Eph_Moon_Present" xml:space="preserve">
+    <value>جودة الليلة</value>
+  </data>
+  <data name="Eph_Moon_Phase" xml:space="preserve">
+    <value>طور القمر</value>
+  </data>
+  <data name="Eph_Moon_Illumination" xml:space="preserve">
+    <value>إضاءة القمر</value>
+  </data>
 </root>
