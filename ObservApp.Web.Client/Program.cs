@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http;
 using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
+using ObservApp.Shared.ViewModels;
 using ObservApp.Web.Client.Services;
 using Syncfusion.Blazor;
 
@@ -39,6 +40,17 @@ builder.Services.AddSingleton<ITextToSpeechService, WebTextToSpeechService>();
 builder.Services.AddSingleton<IEclipseCalculatorService, EclipseCalculatorService>();
 builder.Services.AddSingleton<IEclipseAudioService, WebEclipseAudioService>();
 builder.Services.AddSingleton<AppState>();
+
+// ── Autenticación y persistencia con Supabase ────────────────────────────────
+var supabaseUrl = builder.Configuration["SupabaseUrl"] ?? "";
+var supabaseKey = builder.Configuration["SupabaseAnonKey"] ?? "";
+builder.Services.AddSingleton<SupabaseService>(sp =>
+    new SupabaseService(supabaseUrl, supabaseKey));
+builder.Services.AddSingleton<IAuthService>(
+    sp => sp.GetRequiredService<SupabaseService>());
+builder.Services.AddSingleton<IObservationService>(
+    sp => sp.GetRequiredService<SupabaseService>());
+builder.Services.AddTransient<AuthViewModel>();
 
 // ── IRssFeedService vía proxy SSR (evita CORS en WASM) ──────────────────────
 builder.Services.AddHttpClient<IRssFeedService, WebRssFeedService>(client =>

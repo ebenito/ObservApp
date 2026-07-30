@@ -1123,4 +1123,58 @@
   <data name="Eph_Moon_Illumination" xml:space="preserve">
     <value>إضاءة القمر</value>
   </data>
+  <data name="Auth_SignIn" xml:space="preserve">
+    <value>تسجيل الدخول</value>
+  </data>
+  <data name="Auth_SignUp" xml:space="preserve">
+    <value>إنشاء حساب</value>
+  </data>
+  <data name="Auth_SignOut" xml:space="preserve">
+    <value>تسجيل الخروج</value>
+  </data>
+  <data name="Auth_Email" xml:space="preserve">
+    <value>البريد الإلكتروني</value>
+  </data>
+  <data name="Auth_Password" xml:space="preserve">
+    <value>كلمة المرور</value>
+  </data>
+  <data name="Auth_DisplayName" xml:space="preserve">
+    <value>اسم العرض</value>
+  </data>
+  <data name="Auth_SigningIn" xml:space="preserve">
+    <value>جاري تسجيل الدخول...</value>
+  </data>
+  <data name="Auth_Error" xml:space="preserve">
+    <value>خطأ في المصادقة</value>
+  </data>
+  <data name="Obs_Sessions" xml:space="preserve">
+    <value>جلسات الرصد</value>
+  </data>
+  <data name="Obs_NewSession" xml:space="preserve">
+    <value>جلسة جديدة</value>
+  </data>
+  <data name="Obs_Title" xml:space="preserve">
+    <value>العنوان</value>
+  </data>
+  <data name="Obs_Date" xml:space="preserve">
+    <value>التاريخ</value>
+  </data>
+  <data name="Obs_Notes" xml:space="preserve">
+    <value>ملاحظات</value>
+  </data>
+  <data name="Obs_Location" xml:space="preserve">
+    <value>الموقع</value>
+  </data>
+  <data name="Obs_Seeing" xml:space="preserve">
+    <value>الرؤية</value>
+  </data>
+  <data name="Obs_Transparency" xml:space="preserve">
+    <value>الشفافية</value>
+  </data>
+  <data name="Obs_Save" xml:space="preserve">
+    <value>حفظ</value>
+  </data>
+  <data name="Obs_Delete" xml:space="preserve">
+    <value>حذف</value>
+  </data>
 </root>

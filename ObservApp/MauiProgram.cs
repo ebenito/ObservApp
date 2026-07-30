@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using ObservApp.Services;
 using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
+using ObservApp.Shared.ViewModels;
 using Syncfusion.Blazor;
 
 namespace ObservApp;
@@ -60,6 +61,17 @@ public static class MauiProgram
         builder.Services.AddSingleton<ISettingsService, MauiSettingsService>();
         builder.Services.AddSingleton<IAppLifecycleService, MauiAppLifecycleService>();
         builder.Services.AddSingleton<AppState>();
+
+        // ── Autenticación y persistencia con Supabase ──────────────────────────
+        var supabaseUrl = builder.Configuration["SupabaseUrl"] ?? "";
+        var supabaseKey = builder.Configuration["SupabaseAnonKey"] ?? "";
+        builder.Services.AddSingleton<SupabaseService>(sp =>
+            new SupabaseService(supabaseUrl, supabaseKey));
+        builder.Services.AddSingleton<IAuthService>(
+            sp => sp.GetRequiredService<SupabaseService>());
+        builder.Services.AddSingleton<IObservationService>(
+            sp => sp.GetRequiredService<SupabaseService>());
+        builder.Services.AddTransient<AuthViewModel>();
 
         // ── Geolocalización ───────────────────────────────────────────────────
         builder.Services.AddSingleton<IGeolocation>(Geolocation.Default);

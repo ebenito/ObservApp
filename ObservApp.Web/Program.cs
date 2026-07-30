@@ -1,5 +1,6 @@
 using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
+using ObservApp.Shared.ViewModels;
 using ObservApp.Web.Client.Services;
 using ObservApp.Web.Components;
 using ObservApp.Web.Services;
@@ -30,6 +31,9 @@ builder.Services.AddScoped<ITextToSpeechService, SsrTextToSpeechService>();
 builder.Services.AddScoped<IEclipseCalculatorService, EclipseCalculatorService>();
 builder.Services.AddScoped<IEclipseAudioService, SsrEclipseAudioService>();
 builder.Services.AddScoped<IRssFeedService, RssFeedService>();
+builder.Services.AddScoped<IAuthService, SsrAuthService>();
+builder.Services.AddScoped<IObservationService, SsrObservationService>();
+builder.Services.AddTransient<AuthViewModel>();
 builder.Services.AddSingleton<AppState>();
 
 // ── IArticleService — stub SSR (cero artículos en render servidor) ───────────
