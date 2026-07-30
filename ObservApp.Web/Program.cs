@@ -60,17 +60,15 @@ app.MapGet("/api/rss-proxy", async (string url, HttpClient http) =>
     {
         "tubkala.com",
         // Español
-        "agenciasinc.es",
-        "iac.es",
-        "investigacionyciencia.es",
-        "astropaf.com",
-        // Inglés
-        "jpl.nasa.gov",
+        "astrobitacora.com",
+        "astrobitos.org",
+        "megaphone.fm",
         "esa.int",
+        // Inglés
+        "nasa.gov",
         "eso.org",
         "skyandtelescope.org",
         "astronomy.com",
-        "space.com",
         // Legacy (compatibilidad)
         "apod.nasa.gov",
         "spaceweather.com",
