@@ -37,7 +37,9 @@ jobs:
       - name: Restore Android
         run: |
           dotnet restore ObservApp/ObservApp.csproj \
-            -p:TargetFramework=net10.0-android
+            -p:TargetFramework=net10.0-android \
+            -p:TargetFrameworks=net10.0-android \
+            -p:EnableWindowsTargeting=true
 
       - name: Publish Android APK (Release, sin firma)
         run: |
@@ -46,7 +48,9 @@ jobs:
             --configuration Release \
             --output ObservApp/publish/android \
             -p:AndroidPackageFormat=apk \
-            -p:AndroidKeyStore=false
+            -p:AndroidKeyStore=false \
+            -p:TargetFrameworks=net10.0-android \
+            -p:EnableWindowsTargeting=true
 
       - name: Upload Android APK
         uses: actions/upload-artifact@v4
@@ -80,7 +84,9 @@ jobs:
       - name: Restore Web Client
         run: |
           dotnet restore ObservApp.Web.Client/ObservApp.Web.Client.csproj \
-            -p:TargetFramework=net10.0
+            -p:TargetFramework=net10.0 \
+            -p:TargetFrameworks=net10.0 \
+            -p:EnableWindowsTargeting=true
 
       - name: Publish Blazor WASM (optimizado para tamaño)
         run: |
@@ -88,6 +94,7 @@ jobs:
             --configuration Release \
             --output ./publish/web \
             -p:TargetFramework=net10.0 \
+            -p:TargetFrameworks=net10.0 \
             -p:PublishTrimmed=true \
             -p:BlazorWebAssemblyPrecompressed=false \
             -p:DebuggerSupport=false \
