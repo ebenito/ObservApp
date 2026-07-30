@@ -7,6 +7,7 @@
 @inject IStringLocalizer<App> L
 @inject IGeolocationService GeoService
 @inject IFavoriteLocationsService FavLocationsService
+@inject ILocationStateService LocationState
 @inject IEclipseCalculatorService EclipseCalc
 @inject IEclipseAudioService AudioService
 
@@ -353,9 +354,9 @@
     private Timer? _simTimer;
     private string _simBtnLabel = string.Empty;
 
-    private double _lat =  40.4168;
-    private double _lon =  -3.7038;
-    private double _alt =  650;
+    private double _lat;
+    private double _lon;
+    private double _alt;
 
     private bool    _gpsLoading;
     private string? _gpsError;
@@ -370,6 +371,9 @@
     // ── Inicialización ────────────────────────────────────────────────────────
     protected override async Task OnInitializedAsync()
     {
+        // Inyectar el manejador de cambios de ubicación
+        LocationState.LocationChanged += OnLocationStateChanged;
+
         _eclipses = EclipseCalc.GetUpcomingEclipses(6).ToList();
 
         // Seleccionar automáticamente el próximo eclipse futuro
@@ -377,6 +381,12 @@
                         ?? _eclipses.FirstOrDefault();
 
         _favLocations = await FavLocationsService.GetFavoriteLocationsAsync();
+
+        // Inicializar el servicio centralizado (obtiene GPS real o fallback)
+        await LocationState.InitializeAsync();
+
+        // Sincronizar valores locales con el estado compartido
+        SyncFromLocationState();
 
         // Si hay un eclipse seleccionado, calcular directamente
         if (_selectedEclipse != null)
@@ -388,6 +398,35 @@
             UpdateNextEvent();
             StateHasChanged();
         }), null, 0, 1000);
+    }
+
+    void IDisposable.Dispose()
+    {
+        LocationState.LocationChanged -= OnLocationStateChanged;
+        _timer?.Dispose();
+        _simTimer?.Dispose();
+    }
+
+    /// <summary>
+    /// Se dispara cuando cambia la ubicación en el servicio centralizado.
+    /// </summary>
+    private void OnLocationStateChanged(object? sender, LocationStateChangedEventArgs e)
+    {
+        SyncFromLocationState();
+        CalculateEclipse();
+        StateHasChanged();
+    }
+
+    /// <summary>
+    /// Sincroniza los valores locales de ubicación desde el servicio centralizado.
+    /// </summary>
+    private void SyncFromLocationState()
+    {
+        _lat = LocationState.CurrentLocation.Latitude;
+        _lon = LocationState.CurrentLocation.Longitude;
+        _alt = LocationState.CurrentLocation.AltitudeMeters;
+        _gpsSourceLabel = LocationState.CurrentLocation.Label;
+        _gpsError = null;
     }
 
     // ── Selección de eclipse ──────────────────────────────────────────────────
@@ -405,19 +444,8 @@
         _gpsError   = null;
         StateHasChanged();
 
-        var loc = await GeoService.GetCurrentLocationAsync(highAccuracy: true);
-        if (loc != null)
-        {
-            _lat = loc.Latitude;
-            _lon = loc.Longitude;
-            _alt = loc.AltitudeMeters ?? _alt;
-            _gpsSourceLabel = $"{loc.SourceLabel} · {_lat:F4}°, {_lon:F4}°";
-            CalculateEclipse();
-        }
-        else
-        {
-            _gpsError = GeoService.LastError;
-        }
+        await LocationState.SetGpsLocationAsync();
+        _gpsError = LocationState.LastError;
 
         _gpsLoading = false;
         StateHasChanged();
@@ -436,12 +464,7 @@
             var loc = _favLocations?.Find(l => l.Id == id);
             if (loc != null)
             {
-                _lat = loc.Latitude;
-                _lon = loc.Longitude;
-                _alt = loc.AltitudeMeters;
-                _gpsSourceLabel = $"⭐ {loc.Name}";
-                _gpsError = null;
-                CalculateEclipse();
+                LocationState.SetFavoriteLocation(loc);
             }
         }
     }

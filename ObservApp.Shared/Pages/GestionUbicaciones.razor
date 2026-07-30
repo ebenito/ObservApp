@@ -5,6 +5,7 @@
 @using ObservApp.Shared.Services
 @inject IFavoriteLocationsService FavLocationsService
 @inject IGeolocationService GeoService
+@inject ILocationStateService LocationState
 @inject IJSRuntime JS
 @inject HttpClient Http
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
@@ -419,6 +420,9 @@
             AltitudeMeters = _formAlt
         };
         await FavLocationsService.SaveFavoriteLocationAsync(loc);
+
+        // Actualizar el servicio centralizado con la nueva ubicación favorita
+        LocationState.SetFavoriteLocation(loc);
 
         _toastMessage = L["Status_Success"];
 

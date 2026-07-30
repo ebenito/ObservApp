@@ -26,6 +26,7 @@ builder.Services.AddScoped<ISettingsService, SsrSettingsService>();
 builder.Services.AddScoped<IAppLifecycleService, WebAppLifecycleService>();
 builder.Services.AddScoped<IGeolocationService, SsrGeolocationService>();
 builder.Services.AddScoped<IFavoriteLocationsService, SsrFavoriteLocationsService>();
+builder.Services.AddScoped<ILocationStateService, LocationStateService>();
 builder.Services.AddScoped<IExternalLinkService, SsrExternalLinkService>();
 builder.Services.AddScoped<ITextToSpeechService, SsrTextToSpeechService>();
 builder.Services.AddScoped<IEclipseCalculatorService, EclipseCalculatorService>();

@@ -6,6 +6,7 @@
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
 @inject IGeolocationService GeoService
 @inject IFavoriteLocationsService FavLocationsService
+@inject ILocationStateService LocationState
 
 <PageTitle>@L["Eph_Title"] — ObservApp</PageTitle>
 
@@ -339,9 +340,9 @@
 
     // ── Estado ────────────────────────────────────────────────────────────────
     private DateTime _fecha = DateTime.Today;
-    private double _lat = 40.4168;
-    private double _lon = -3.7038;
-    private double _altMetros = 650;
+    private double _lat;
+    private double _lon;
+    private double _altMetros;
 
     private List<FavoriteLocation>? _favLocations;
     private bool _gpsLoading;
@@ -355,8 +356,40 @@
     // ── Ciclo de vida ─────────────────────────────────────────────────────────
     protected override async Task OnInitializedAsync()
     {
+        // Inyectar el manejador de cambios de ubicación
+        LocationState.LocationChanged += OnLocationStateChanged;
+
         _favLocations = await FavLocationsService.GetFavoriteLocationsAsync();
+
+        // Inicializar el servicio centralizado (obtiene GPS real o fallback)
+        await LocationState.InitializeAsync();
+
+        // Sincronizar valores locales con el estado compartido
+        SyncFromLocationState();
+
         Calcular();
+    }
+
+    /// <summary>
+    /// Se dispara cuando cambia la ubicación en el servicio centralizado.
+    /// </summary>
+    private void OnLocationStateChanged(object? sender, LocationStateChangedEventArgs e)
+    {
+        SyncFromLocationState();
+        Calcular();
+        StateHasChanged();
+    }
+
+    /// <summary>
+    /// Sincroniza los valores locales de ubicación desde el servicio centralizado.
+    /// </summary>
+    private void SyncFromLocationState()
+    {
+        _lat = LocationState.CurrentLocation.Latitude;
+        _lon = LocationState.CurrentLocation.Longitude;
+        _altMetros = LocationState.CurrentLocation.AltitudeMeters;
+        _gpsSource = LocationState.CurrentLocation.Label;
+        _gpsError = null;
     }
 
     // ── Handlers de ubicación ─────────────────────────────────────────────────
@@ -376,12 +409,7 @@
             var loc = _favLocations?.Find(l => l.Id == id);
             if (loc != null)
             {
-                _lat = loc.Latitude;
-                _lon = loc.Longitude;
-                _altMetros = loc.AltitudeMeters;
-                _gpsSource = $"⭐ {loc.Name}";
-                _gpsError = null;
-                Calcular();
+                LocationState.SetFavoriteLocation(loc);
             }
         }
     }
@@ -393,21 +421,8 @@
         _gpsSource = null;
         StateHasChanged();
 
-        var loc = await GeoService.GetCurrentLocationAsync(highAccuracy: true);
-
-        if (loc is not null)
-        {
-            _lat = loc.Latitude;
-            _lon = loc.Longitude;
-            _altMetros = loc.AltitudeMeters ?? _altMetros;
-            _gpsSource = $"{loc.SourceLabel} · {loc.Latitude:F4}°, {loc.Longitude:F4}°" +
-                         (loc.AccuracyMeters.HasValue ? $" · ±{loc.AccuracyMeters:F0} m" : "");
-            Calcular();
-        }
-        else
-        {
-            _gpsError = GeoService.LastError;
-        }
+        await LocationState.SetGpsLocationAsync();
+        _gpsError = LocationState.LastError;
 
         _gpsLoading = false;
         StateHasChanged();
