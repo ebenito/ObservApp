@@ -82,9 +82,15 @@ jobs:
       - name: Prepare installable APK
         run: |
           mkdir -p ./artifacts/android
-          APK_PATH=$(find ObservApp/publish/android -type f -name '*.apk' | sort | grep -v 'unsigned' | head -n 1)
+          # Prioridad: APK firmado (-Signed.apk)
+          APK_PATH=$(find ObservApp/publish/android -type f -name '*-Signed.apk' | head -n 1)
+          # Fallback: cualquier APK que no sea unsigned
           if [ -z "$APK_PATH" ]; then
-            APK_PATH=$(find ObservApp/publish/android -type f -name '*.apk' | sort | head -n 1)
+            APK_PATH=$(find ObservApp/publish/android -type f -name '*.apk' | grep -iv 'unsigned' | head -n 1)
+          fi
+          # Último recurso: el primero que haya
+          if [ -z "$APK_PATH" ]; then
+            APK_PATH=$(find ObservApp/publish/android -type f -name '*.apk' | head -n 1)
           fi
           if [ -z "$APK_PATH" ]; then
             echo "::error::No se encontró ningún APK en ObservApp/publish/android"
@@ -92,6 +98,7 @@ jobs:
           fi
           cp "$APK_PATH" ./artifacts/android/ObservApp-Installable.apk
           echo "APK seleccionado: $APK_PATH"
+          echo "Tamaño: $(du -sh ./artifacts/android/ObservApp-Installable.apk | cut -f1)"
 
       - name: Upload Android APK
         uses: actions/upload-artifact@v4
@@ -101,13 +108,18 @@ jobs:
           if-no-files-found: error
 
       - name: Create GitHub Release with APK (direct download link)
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        if: github.event_name == 'push'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: android-latest
-          name: ObservApp Android APK
+          tag_name: ${{ github.ref == 'refs/heads/master' && 'android-latest' || 'android-develop' }}
+          name: ${{ github.ref == 'refs/heads/master' && 'ObservApp Android — Production' || 'ObservApp Android — Develop' }}
+          body: |
+            APK instalable generado automáticamente desde la rama `${{ github.ref_name }}`.
+            Descarga el fichero `ObservApp-Installable.apk` de abajo e instálalo en tu Android.
+            > ⚠️ Deberás activar **"Instalar apps de fuentes desconocidas"** en los ajustes del dispositivo.
           draft: false
-          prerelease: false
+          prerelease: ${{ github.ref != 'refs/heads/master' }}
+          make_latest: ${{ github.ref == 'refs/heads/master' }}
           files: ./artifacts/android/ObservApp-Installable.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
