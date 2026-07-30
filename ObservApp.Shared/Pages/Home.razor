@@ -6,6 +6,7 @@
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
 @inject IGeolocationService GeoService
 @inject IFavoriteLocationsService FavLocationsService
+@inject ILocationStateService LocationState
 @inject IEclipseCalculatorService EclipseCalc
 
 <PageTitle>@L["AppName"] · @L["Home_Title"]</PageTitle>
@@ -329,10 +330,10 @@
     private bool _calculating = true;
 
     // ── Ubicación ────────────────────────────────────────────────────────────
-    private double _lat = 40.4168;   // Madrid por defecto
-    private double _lon = -3.7038;
-    private double _alt = 650;
-    private string _locationLabel = "Madrid (por defecto)";
+    private double _lat;
+    private double _lon;
+    private double _alt;
+    private string _locationLabel = "";
 
     private List<FavoriteLocation>? _favLocations;
     private bool _gpsLoading;
@@ -341,20 +342,42 @@
     // ── Ciclo de vida ────────────────────────────────────────────────────────
     protected override async Task OnInitializedAsync()
     {
+        // Inyectar el manejador de cambios de ubicación
+        LocationState.LocationChanged += OnLocationStateChanged;
+
+        // Cargar favoritas
         _favLocations = await FavLocationsService.GetFavoriteLocationsAsync();
 
-        // Si hay exactamente una favorita, usarla como fallback en lugar de Madrid
-        if (_favLocations?.Count == 1)
-        {
-            var fav = _favLocations[0];
-            _lat = fav.Latitude;
-            _lon = fav.Longitude;
-            _alt = fav.AltitudeMeters;
-            _locationLabel = fav.Name;
-        }
+        // Inicializar el servicio centralizado (obtiene GPS real o fallback)
+        await LocationState.InitializeAsync();
+
+        // Sincronizar valores locales con el estado compartido
+        SyncFromLocationState();
 
         Calcular();
         CargarProximoEclipse();
+    }
+
+    /// <summary>
+    /// Se dispara cuando cambia la ubicación en el servicio centralizado.
+    /// </summary>
+    private void OnLocationStateChanged(object? sender, LocationStateChangedEventArgs e)
+    {
+        SyncFromLocationState();
+        Calcular();
+        StateHasChanged();
+    }
+
+    /// <summary>
+    /// Sincroniza los valores locales de ubicación desde el servicio centralizado.
+    /// </summary>
+    private void SyncFromLocationState()
+    {
+        _lat = LocationState.CurrentLocation.Latitude;
+        _lon = LocationState.CurrentLocation.Longitude;
+        _alt = LocationState.CurrentLocation.AltitudeMeters;
+        _locationLabel = LocationState.CurrentLocation.Label;
+        _gpsError = null;
     }
 
     // ── Geolocalización ──────────────────────────────────────────────────────
@@ -364,20 +387,8 @@
         _gpsError = null;
         StateHasChanged();
 
-        var loc = await GeoService.GetCurrentLocationAsync(highAccuracy: true);
-        if (loc != null)
-        {
-            _lat = loc.Latitude;
-            _lon = loc.Longitude;
-            _alt = loc.AltitudeMeters ?? _alt;
-            _locationLabel = $"GPS · {_lat:F4}°, {_lon:F4}°";
-            _gpsError = null;
-            Calcular();
-        }
-        else
-        {
-            _gpsError = GeoService.LastError;
-        }
+        await LocationState.SetGpsLocationAsync();
+        _gpsError = LocationState.LastError;
 
         _gpsLoading = false;
         StateHasChanged();
@@ -393,12 +404,7 @@
             var loc = _favLocations?.Find(l => l.Id == id);
             if (loc != null)
             {
-                _lat = loc.Latitude;
-                _lon = loc.Longitude;
-                _alt = loc.AltitudeMeters;
-                _locationLabel = loc.Name;
-                _gpsError = null;
-                Calcular();
+                LocationState.SetFavoriteLocation(loc);
             }
         }
     }

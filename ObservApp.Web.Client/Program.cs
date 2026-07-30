@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http;
 using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
+using ObservApp.Shared.ViewModels;
 using ObservApp.Web.Client.Services;
 using Syncfusion.Blazor;
 
@@ -40,6 +41,17 @@ builder.Services.AddSingleton<IEclipseCalculatorService, EclipseCalculatorServic
 builder.Services.AddSingleton<IEclipseAudioService, WebEclipseAudioService>();
 builder.Services.AddSingleton<AppState>();
 
+// ── Autenticación y persistencia con Supabase ────────────────────────────────
+var supabaseUrl = builder.Configuration["SupabaseUrl"] ?? "";
+var supabaseKey = builder.Configuration["SupabaseAnonKey"] ?? "";
+builder.Services.AddSingleton<SupabaseService>(sp =>
+    new SupabaseService(supabaseUrl, supabaseKey));
+builder.Services.AddSingleton<IAuthService>(
+    sp => sp.GetRequiredService<SupabaseService>());
+builder.Services.AddSingleton<IObservationService>(
+    sp => sp.GetRequiredService<SupabaseService>());
+builder.Services.AddTransient<AuthViewModel>();
+
 // ── IRssFeedService vía proxy SSR (evita CORS en WASM) ──────────────────────
 builder.Services.AddHttpClient<IRssFeedService, WebRssFeedService>(client =>
 {
@@ -71,30 +83,31 @@ builder.Services.AddSingleton<IArticleService>(sp =>
         proxyBaseUrl: builder.HostEnvironment.BaseAddress.TrimEnd('/'));
 
     // ── Fuentes RSS — Español ─────────────────────────────────────────────────
-    var sinc = new RssSource("sinc", "SINC", "https://www.agenciasinc.es/rss/feed/es_ES/noticias/astronomia", IsBuiltIn: true);
-    var iac = new RssSource("iac", "IAC", "https://www.iac.es/es/rss.xml", IsBuiltIn: true);
-    var iyc = new RssSource("iyc", "Invest. y Ciencia", "https://www.investigacionyciencia.es/noticias/rss", IsBuiltIn: true);
-    var astropaf = new RssSource("astropaf", "Astropaf", "https://astropaf.com/feed/", IsBuiltIn: true);
+    var astrobit = new RssSource("astrobit", "Astrobitácora", "https://www.astrobitacora.com/feed/", IsBuiltIn: true);
+    var astrobites = new RssSource("astrobites", "Astrobites ES", "https://astrobitos.org/feed/", IsBuiltIn: true);
+    var esaes = new RssSource("esaes", "ESA España", "https://www.esa.int/rssfeed/Spain", IsBuiltIn: true);
+    var nasaes = new RssSource("nasaes", "Universo curioso de la NASA", "https://feeds.megaphone.fm/nationalaeronauticsandspaceadministration5412631684", IsBuiltIn: true);
+
     // ── Fuentes RSS — Inglés ──────────────────────────────────────────────────
-    var jpl = new RssSource("jpl", "NASA JPL", "https://www.jpl.nasa.gov/feeds/news/", IsBuiltIn: true);
-    var esa = new RssSource("esa", "ESA", "https://www.esa.int/rssfeed/RSSFeed/1/Astronomy", IsBuiltIn: true);
-    var eso = new RssSource("eso", "ESO", "https://www.eso.org/public/outreach/rss/news/", IsBuiltIn: true);
+    var nasa = new RssSource("nasa", "NASA", "https://www.nasa.gov/feed/", IsBuiltIn: true);
+    var nasaimg = new RssSource("nasaimg", "NASA Image of the Day", "https://www.nasa.gov/feeds/iotd-feed/", IsBuiltIn: true);
+    var esa = new RssSource("esa", "ESA", "http://www.esa.int/rssfeed/Our_Activities/Space_Science", IsBuiltIn: true);
+    var eso = new RssSource("eso", "ESO", "https://www.eso.org/public/blog/feed/", IsBuiltIn: true);
     var skytel = new RssSource("skytel", "Sky & Telescope", "https://skyandtelescope.org/feed/", IsBuiltIn: true);
     var astromag = new RssSource("astromag", "Astronomy Magazine", "https://www.astronomy.com/feed/", IsBuiltIn: true);
-    var spacecom = new RssSource("spacecom", "Space.com", "https://www.space.com/feeds/all", IsBuiltIn: true);
 
     var rssProviders = new[]
     {
-        new RssFeedArticleProvider(rss, sinc,     languageCode: "es"),
-        new RssFeedArticleProvider(rss, iac,      languageCode: "es"),
-        new RssFeedArticleProvider(rss, iyc,      languageCode: "es"),
-        new RssFeedArticleProvider(rss, astropaf, languageCode: "es"),
-        new RssFeedArticleProvider(rss, jpl,      languageCode: "en"),
-        new RssFeedArticleProvider(rss, esa,      languageCode: "en"),
-        new RssFeedArticleProvider(rss, eso,      languageCode: "en"),
-        new RssFeedArticleProvider(rss, skytel,   languageCode: "en"),
-        new RssFeedArticleProvider(rss, astromag, languageCode: "en"),
-        new RssFeedArticleProvider(rss, spacecom, languageCode: "en"),
+        new RssFeedArticleProvider(rss, astrobit,   languageCode: "es"),
+        new RssFeedArticleProvider(rss, astrobites, languageCode: "es"),
+        new RssFeedArticleProvider(rss, esaes,      languageCode: "es"),
+        new RssFeedArticleProvider(rss, nasaes,     languageCode: "es"),
+        new RssFeedArticleProvider(rss, nasa,       languageCode: "en"),
+        new RssFeedArticleProvider(rss, nasaimg,    languageCode: "en"),
+        new RssFeedArticleProvider(rss, esa,        languageCode: "en"),
+        new RssFeedArticleProvider(rss, eso,        languageCode: "en"),
+        new RssFeedArticleProvider(rss, skytel,     languageCode: "en"),
+        new RssFeedArticleProvider(rss, astromag,   languageCode: "en"),
     };
 
     return new ArticleService(wpProvider, rssProviders);

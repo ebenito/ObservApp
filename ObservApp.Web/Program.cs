@@ -1,5 +1,6 @@
 using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
+using ObservApp.Shared.ViewModels;
 using ObservApp.Web.Client.Services;
 using ObservApp.Web.Components;
 using ObservApp.Web.Services;
@@ -25,11 +26,15 @@ builder.Services.AddScoped<ISettingsService, SsrSettingsService>();
 builder.Services.AddScoped<IAppLifecycleService, WebAppLifecycleService>();
 builder.Services.AddScoped<IGeolocationService, SsrGeolocationService>();
 builder.Services.AddScoped<IFavoriteLocationsService, SsrFavoriteLocationsService>();
+builder.Services.AddScoped<ILocationStateService, LocationStateService>();
 builder.Services.AddScoped<IExternalLinkService, SsrExternalLinkService>();
 builder.Services.AddScoped<ITextToSpeechService, SsrTextToSpeechService>();
 builder.Services.AddScoped<IEclipseCalculatorService, EclipseCalculatorService>();
 builder.Services.AddScoped<IEclipseAudioService, SsrEclipseAudioService>();
 builder.Services.AddScoped<IRssFeedService, RssFeedService>();
+builder.Services.AddScoped<IAuthService, SsrAuthService>();
+builder.Services.AddScoped<IObservationService, SsrObservationService>();
+builder.Services.AddTransient<AuthViewModel>();
 builder.Services.AddSingleton<AppState>();
 
 // ── IArticleService — stub SSR (cero artículos en render servidor) ───────────
@@ -56,17 +61,15 @@ app.MapGet("/api/rss-proxy", async (string url, HttpClient http) =>
     {
         "tubkala.com",
         // Español
-        "agenciasinc.es",
-        "iac.es",
-        "investigacionyciencia.es",
-        "astropaf.com",
-        // Inglés
-        "jpl.nasa.gov",
+        "astrobitacora.com",
+        "astrobitos.org",
+        "megaphone.fm",
         "esa.int",
+        // Inglés
+        "nasa.gov",
         "eso.org",
         "skyandtelescope.org",
         "astronomy.com",
-        "space.com",
         // Legacy (compatibilidad)
         "apod.nasa.gov",
         "spaceweather.com",

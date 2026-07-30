@@ -1123,4 +1123,58 @@
   <data name="Eph_Moon_Illumination" xml:space="preserve">
     <value>Illuminazione lunare</value>
   </data>
+  <data name="Auth_SignIn" xml:space="preserve">
+    <value>Accedi</value>
+  </data>
+  <data name="Auth_SignUp" xml:space="preserve">
+    <value>Registrati</value>
+  </data>
+  <data name="Auth_SignOut" xml:space="preserve">
+    <value>Esci</value>
+  </data>
+  <data name="Auth_Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Auth_Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Auth_DisplayName" xml:space="preserve">
+    <value>Nome visualizzato</value>
+  </data>
+  <data name="Auth_SigningIn" xml:space="preserve">
+    <value>Accesso in corso...</value>
+  </data>
+  <data name="Auth_Error" xml:space="preserve">
+    <value>Errore di autenticazione</value>
+  </data>
+  <data name="Obs_Sessions" xml:space="preserve">
+    <value>Sessioni di osservazione</value>
+  </data>
+  <data name="Obs_NewSession" xml:space="preserve">
+    <value>Nuova sessione</value>
+  </data>
+  <data name="Obs_Title" xml:space="preserve">
+    <value>Titolo</value>
+  </data>
+  <data name="Obs_Date" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="Obs_Notes" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="Obs_Location" xml:space="preserve">
+    <value>Posizione</value>
+  </data>
+  <data name="Obs_Seeing" xml:space="preserve">
+    <value>Seeing</value>
+  </data>
+  <data name="Obs_Transparency" xml:space="preserve">
+    <value>Trasparenza</value>
+  </data>
+  <data name="Obs_Save" xml:space="preserve">
+    <value>Salva</value>
+  </data>
+  <data name="Obs_Delete" xml:space="preserve">
+    <value>Elimina</value>
+  </data>
 </root>
