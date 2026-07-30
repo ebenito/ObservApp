@@ -1,0 +1,730 @@
+@page "/efemerides"
+@using CosineKitty
+@using System.Globalization
+@using ObservApp.Shared.Models
+@using ObservApp.Shared.Services
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+@inject IGeolocationService GeoService
+@inject IFavoriteLocationsService FavLocationsService
+
+<PageTitle>@L["Eph_Title"] — ObservApp</PageTitle>
+
+<div class="eph-page">
+
+    <!-- Cabecera -->
+    <div class="eph-header-back">
+        <a class="eph-back" href="/">← @L["Action_Back"]</a>
+    </div>
+    <div class="eph-header">
+        <span class="eph-header-icon">🔭</span>
+        <div>
+            <h1 class="eph-header-title">@L["Eph_Title"]</h1>
+            <p class="eph-header-subtitle">@L["Eph_Subtitle"]</p>
+        </div>
+    </div>
+
+    <!-- Inputs: Fecha y Ubicación -->
+    <div class="eph-inputs-grid">
+
+        <!-- Fecha -->
+        <div class="eph-card">
+            <div class="eph-card-header">
+                <span class="eph-card-icon">📅</span>
+                <span class="eph-card-title">@L["Eph_Date"]</span>
+            </div>
+            <div class="eph-card-body">
+                <input class="eph-input" type="date"
+                       value="@_fecha.ToString("yyyy-MM-dd")"
+                       min="1901-01-01" max="2099-12-31"
+                       @onchange="OnFechaChanged" />
+            </div>
+        </div>
+
+        <!-- Ubicación -->
+        <div class="eph-card">
+            <div class="eph-card-header eph-location-header">
+                <span class="eph-card-icon">📍</span>
+                <span class="eph-card-title">@L["Eph_Location"]</span>
+                <button class="eph-gps-btn @(_gpsLoading ? "eph-gps-btn--loading" : "")"
+                        @onclick="OnUsarGpsAsync"
+                        disabled="@_gpsLoading"
+                        title="@L["SolLuna_UseGPS"]">
+                    @if (_gpsLoading)
+                    {
+                        <span class="eph-gps-spinner"></span>
+                    }
+                    else
+                    {
+                        <span>📡</span>
+                    }
+                    @L["SolLuna_UseGPS"]
+                </button>
+            </div>
+            <div class="eph-select-wrapper">
+                <select class="eph-input" @onchange="OnFavLocationChanged">
+                    <option value="manual">📍 @L["FavLoc_Select_Manual"]</option>
+                    <option value="gps">📡 @L["FavLoc_Select_GPS"]</option>
+                    @if (_favLocations != null)
+                    {
+                        @foreach (var loc in _favLocations)
+                        {
+                            <option value="@loc.Id">⭐ @loc.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            @if (!string.IsNullOrEmpty(_gpsError))
+            {
+                <div class="eph-gps-error">⚠️ @_gpsError</div>
+            }
+            <div class="eph-card-body eph-location-body">
+                <div class="eph-field">
+                    <label class="eph-label">@L["SolLuna_Latitude"]</label>
+                    <input class="eph-input" type="number" min="-90" max="90" step="0.0001"
+                           value="@_lat.ToString(CultureInfo.InvariantCulture)"
+                           @onchange="OnLatChanged" />
+                </div>
+                <div class="eph-field">
+                    <label class="eph-label">@L["SolLuna_Longitude"]</label>
+                    <input class="eph-input" type="number" min="-180" max="180" step="0.0001"
+                           value="@_lon.ToString(CultureInfo.InvariantCulture)"
+                           @onchange="OnLonChanged" />
+                </div>
+                <div class="eph-field">
+                    <label class="eph-label">@L["SolLuna_Altitude"] (m)</label>
+                    <input class="eph-input" type="number" min="-500" max="8900" step="1"
+                           value="@_altMetros.ToString(CultureInfo.InvariantCulture)"
+                           @onchange="OnAltChanged" />
+                </div>
+            </div>
+            @if (_gpsSource is not null)
+            {
+                <div class="eph-gps-source">📡 @_gpsSource</div>
+            }
+        </div>
+
+    </div>
+
+    <!-- Sección 2: Tabla de planetas -->
+    <div class="eph-card eph-card--full eph-section">
+        <div class="eph-card-header">
+            <span class="eph-card-icon">🪐</span>
+            <span class="eph-card-title">@L["Eph_Planets_Title"]</span>
+        </div>
+        @if (_planetas == null || _planetas.Count == 0)
+        {
+            <div class="eph-empty">@L["Eph_Planets_Empty"]</div>
+        }
+        else
+        {
+            <!-- Vista tabla (≥640px) -->
+            <div class="eph-planets-table-wrapper">
+                <table class="eph-planets-table">
+                    <thead>
+                        <tr>
+                            <th>@L["Eph_Planet_Name"]</th>
+                            <th>@L["Eph_Planet_Status"]</th>
+                            <th>@L["Eph_Planet_MaxAlt"]</th>
+                            <th>@L["Eph_Planet_Rise"]</th>
+                            <th>@L["Eph_Planet_Set"]</th>
+                            <th>@L["Eph_Planet_Azimuth"]</th>
+                            <th>@L["Eph_Planet_Distance"]</th>
+                            <th>@L["Eph_Planet_Illumination"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in _planetas)
+                        {
+                            <tr class="@(p.IsVisible ? "eph-row--visible" : "eph-row--hidden")">
+                                <td class="eph-planet-name">
+                                    <span class="eph-planet-emoji">@p.Emoji</span>
+                                    @p.Name
+                                </td>
+                                <td>
+                                    @if (p.IsVisible)
+                                    {
+                                        <span class="eph-badge eph-badge--visible">@L["Eph_Planet_Visible"]</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="eph-badge eph-badge--hidden">@L["Eph_Planet_NotVisible"]</span>
+                                    }
+                                </td>
+                                <td class="eph-mono">@p.MaxAltitude.ToString("F1", CultureInfo.InvariantCulture)°</td>
+                                <td class="eph-mono">@FormatTimeOpt(p.RiseTime)</td>
+                                <td class="eph-mono">@FormatTimeOpt(p.SetTime)</td>
+                                <td class="eph-mono">@p.AzimuthAtMax.ToString("F1", CultureInfo.InvariantCulture)°</td>
+                                <td class="eph-mono">@p.DistanceAU.ToString("F3", CultureInfo.InvariantCulture) UA</td>
+                                <td class="eph-mono">@p.IlluminationPct.ToString("F0", CultureInfo.InvariantCulture)%</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Vista tarjetas (móvil <640px) -->
+            <div class="eph-planets-cards">
+                @foreach (var p in _planetas)
+                {
+                    <div class="eph-planet-card @(p.IsVisible ? "eph-planet-card--visible" : "eph-planet-card--hidden")">
+                        <div class="eph-planet-card-header">
+                            <span class="eph-planet-emoji-lg">@p.Emoji</span>
+                            <div>
+                                <div class="eph-planet-card-name">@p.Name</div>
+                                @if (p.IsVisible)
+                                {
+                                    <span class="eph-badge eph-badge--visible">@L["Eph_Planet_Visible"]</span>
+                                }
+                                else
+                                {
+                                    <span class="eph-badge eph-badge--hidden">@L["Eph_Planet_NotVisible"]</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="eph-planet-card-body">
+                            <div class="stat-row">
+                                <span class="stat-label">@L["Eph_Planet_MaxAlt"]</span>
+                                <span class="stat-value">@p.MaxAltitude.ToString("F1", CultureInfo.InvariantCulture)°</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">@L["Eph_Planet_Rise"]</span>
+                                <span class="stat-value">@FormatTimeOpt(p.RiseTime)</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">@L["Eph_Planet_Set"]</span>
+                                <span class="stat-value">@FormatTimeOpt(p.SetTime)</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">@L["Eph_Planet_Azimuth"]</span>
+                                <span class="stat-value">@p.AzimuthAtMax.ToString("F1", CultureInfo.InvariantCulture)°</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">@L["Eph_Planet_Distance"]</span>
+                                <span class="stat-value">@p.DistanceAU.ToString("F3", CultureInfo.InvariantCulture) UA</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">@L["Eph_Planet_Illumination"]</span>
+                                <span class="stat-value">@p.IlluminationPct.ToString("F0", CultureInfo.InvariantCulture)%</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Sección 3: Eventos próximos -->
+    <div class="eph-card eph-card--full eph-section">
+        <div class="eph-card-header">
+            <span class="eph-card-icon">🗓️</span>
+            <span class="eph-card-title">@L["Eph_Events_Title"]</span>
+        </div>
+        @if (_eventos == null || _eventos.Count == 0)
+        {
+            <div class="eph-empty">@L["Eph_Events_Empty"]</div>
+        }
+        else
+        {
+            <div class="eph-events-list">
+                @foreach (var ev in _eventos)
+                {
+                    <div class="eph-event-row">
+                        <span class="eph-event-emoji">@ev.Emoji</span>
+                        <span class="eph-event-date">@ev.Date.ToString("dd MMM yyyy", CultureInfo.CurrentCulture)</span>
+                        <span class="eph-event-desc">@ev.Description</span>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Sección 4: Cielo esta noche -->
+    <div class="eph-card eph-card--full eph-section">
+        <div class="eph-card-header">
+            <span class="eph-card-icon">🌌</span>
+            <span class="eph-card-title">@L["Eph_Tonight_Title"]</span>
+        </div>
+        @if (_tonight != null)
+        {
+            <div class="eph-card-body">
+                <div class="eph-tonight-grid">
+                    <div class="eph-tonight-quality @QualityClass(_tonight.Quality)">
+                        <div class="eph-tonight-quality-dot"></div>
+                        <div>
+                            <div class="eph-tonight-quality-label">@QualityLabel(_tonight.Quality)</div>
+                            <div class="eph-tonight-quality-sub">@L["Eph_Moon_Present"]</div>
+                        </div>
+                    </div>
+                    <div class="eph-tonight-info">
+                        <div class="stat-row">
+                            <span class="stat-label">@L["Eph_Moon_Phase"]</span>
+                            <span class="stat-value">@_tonight.MoonPhaseEmoji @_tonight.MoonPhaseName</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">@L["Eph_Moon_Illumination"]</span>
+                            <span class="stat-value">@_tonight.MoonIlluminationPct.ToString("F0", CultureInfo.InvariantCulture)%</span>
+                        </div>
+                        @if (_tonight.AstroNightStart.HasValue)
+                        {
+                            <div class="stat-row">
+                                <span class="stat-label">@L["Eph_Tonight_AstroNight"]</span>
+                                <span class="stat-value eph-aurora">@_tonight.AstroNightStart.Value.ToLocalTime().ToString("HH:mm")</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="stat-row">
+                                <span class="stat-label">@L["Eph_Tonight_AstroNight"]</span>
+                                <span class="stat-value eph-comet">@L["Eph_Tonight_NoAstroNight"]</span>
+                            </div>
+                        }
+                        @if (_tonight.MoonRise.HasValue)
+                        {
+                            <div class="stat-row">
+                                <span class="stat-label">🌙 @L["Eph_Planet_Rise"]</span>
+                                <span class="stat-value">@_tonight.MoonRise.Value.ToLocalTime().ToString("HH:mm")</span>
+                            </div>
+                        }
+                        @if (_tonight.MoonSet.HasValue)
+                        {
+                            <div class="stat-row">
+                                <span class="stat-label">🌙 @L["Eph_Planet_Set"]</span>
+                                <span class="stat-value">@_tonight.MoonSet.Value.ToLocalTime().ToString("HH:mm")</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+@code {
+
+    // ── Modelo local ──────────────────────────────────────────────────────────
+    private sealed class PlanetData
+    {
+        public string Name { get; init; } = "";
+        public string Emoji { get; init; } = "";
+        public Body Body { get; init; }
+        public bool IsVisible { get; init; }
+        public double MaxAltitude { get; init; }
+        public double AzimuthAtMax { get; init; }
+        public DateTime? RiseTime { get; init; }
+        public DateTime? SetTime { get; init; }
+        public double DistanceAU { get; init; }
+        public double IlluminationPct { get; init; }
+    }
+
+    private sealed class EphEvent
+    {
+        public string Emoji { get; init; } = "";
+        public DateTime Date { get; init; }
+        public string Description { get; init; } = "";
+    }
+
+    private sealed class TonightData
+    {
+        public double MoonIlluminationPct { get; init; }
+        public string MoonPhaseName { get; init; } = "";
+        public string MoonPhaseEmoji { get; init; } = "";
+        public DateTime? AstroNightStart { get; init; }
+        public DateTime? MoonRise { get; init; }
+        public DateTime? MoonSet { get; init; }
+        public NightQuality Quality { get; init; }
+    }
+
+    private enum NightQuality { Good, Fair, Poor }
+
+    // ── Estado ────────────────────────────────────────────────────────────────
+    private DateTime _fecha = DateTime.Today;
+    private double _lat = 40.4168;
+    private double _lon = -3.7038;
+    private double _altMetros = 650;
+
+    private List<FavoriteLocation>? _favLocations;
+    private bool _gpsLoading;
+    private string? _gpsError;
+    private string? _gpsSource;
+
+    private List<PlanetData> _planetas = new();
+    private List<EphEvent> _eventos = new();
+    private TonightData? _tonight;
+
+    // ── Ciclo de vida ─────────────────────────────────────────────────────────
+    protected override async Task OnInitializedAsync()
+    {
+        _favLocations = await FavLocationsService.GetFavoriteLocationsAsync();
+        Calcular();
+    }
+
+    // ── Handlers de ubicación ─────────────────────────────────────────────────
+    private async Task OnFavLocationChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        var val = e.Value?.ToString();
+        if (val == "manual")
+        {
+            // el usuario editará manual
+        }
+        else if (val == "gps")
+        {
+            await OnUsarGpsAsync();
+        }
+        else if (Guid.TryParse(val, out var id))
+        {
+            var loc = _favLocations?.Find(l => l.Id == id);
+            if (loc != null)
+            {
+                _lat = loc.Latitude;
+                _lon = loc.Longitude;
+                _altMetros = loc.AltitudeMeters;
+                _gpsSource = $"⭐ {loc.Name}";
+                _gpsError = null;
+                Calcular();
+            }
+        }
+    }
+
+    private async Task OnUsarGpsAsync()
+    {
+        _gpsLoading = true;
+        _gpsError = null;
+        _gpsSource = null;
+        StateHasChanged();
+
+        var loc = await GeoService.GetCurrentLocationAsync(highAccuracy: true);
+
+        if (loc is not null)
+        {
+            _lat = loc.Latitude;
+            _lon = loc.Longitude;
+            _altMetros = loc.AltitudeMeters ?? _altMetros;
+            _gpsSource = $"{loc.SourceLabel} · {loc.Latitude:F4}°, {loc.Longitude:F4}°" +
+                         (loc.AccuracyMeters.HasValue ? $" · ±{loc.AccuracyMeters:F0} m" : "");
+            Calcular();
+        }
+        else
+        {
+            _gpsError = GeoService.LastError;
+        }
+
+        _gpsLoading = false;
+        StateHasChanged();
+    }
+
+    private void OnFechaChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        if (DateTime.TryParse(e.Value?.ToString(), out var d))
+        {
+            _fecha = d;
+            Calcular();
+        }
+    }
+
+    private void OnLatChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        if (double.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var v))
+        {
+            _lat = Math.Clamp(v, -90, 90);
+            Calcular();
+        }
+    }
+
+    private void OnLonChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        if (double.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var v))
+        {
+            _lon = Math.Clamp(v, -180, 180);
+            Calcular();
+        }
+    }
+
+    private void OnAltChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        if (double.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var v))
+        {
+            _altMetros = v;
+            Calcular();
+        }
+    }
+
+    // ── Motor de cálculo ─────────────────────────────────────────────────────
+    private void Calcular()
+    {
+        try
+        {
+            var observer = new Observer(_lat, _lon, _altMetros / 1000.0);
+            var dayTime = new AstroTime(_fecha.Year, _fecha.Month, _fecha.Day, 12, 0, 0);
+
+            _planetas = CalcularPlanetas(observer, dayTime);
+            _eventos = CalcularEventos();
+            _tonight = CalcularTonight(observer, dayTime);
+        }
+        catch
+        {
+            _planetas = new();
+            _eventos = new();
+            _tonight = null;
+        }
+    }
+
+    private List<PlanetData> CalcularPlanetas(Observer observer, AstroTime dayTime)
+    {
+        var definiciones = new[]
+        {
+            (Body.Mercury, "Mercurio", "☿"),
+            (Body.Venus,   "Venus",    "♀"),
+            (Body.Mars,    "Marte",    "♂"),
+            (Body.Jupiter, "Júpiter",  "♃"),
+            (Body.Saturn,  "Saturno",  "♄"),
+            (Body.Uranus,  "Urano",    "⛢"),
+            (Body.Neptune, "Neptuno",  "♆"),
+        };
+
+        var resultado = new List<PlanetData>();
+
+        foreach (var (body, name, emoji) in definiciones)
+        {
+            try
+            {
+                // Altitud máxima: buscar el máximo hora a hora
+                double maxAlt = double.MinValue;
+                double azAtMax = 0;
+
+                for (int h = 0; h < 24; h++)
+                {
+                    var t = new AstroTime(_fecha.Year, _fecha.Month, _fecha.Day, h, 0, 0);
+                    var eq = Astronomy.Equator(body, t, observer, EquatorEpoch.OfDate, Aberration.Corrected);
+                    var hz = Astronomy.Horizon(t, observer, eq.ra, eq.dec, Refraction.Normal);
+                    if (hz.altitude > maxAlt)
+                    {
+                        maxAlt = hz.altitude;
+                        azAtMax = hz.azimuth;
+                    }
+                }
+
+                // Salida y puesta
+                DateTime? riseTime = null;
+                DateTime? setTime = null;
+                try
+                {
+                    var startDay = new AstroTime(_fecha.Year, _fecha.Month, _fecha.Day, 0, 0, 0);
+                    var riseAt = Astronomy.SearchRiseSet(body, observer, Direction.Rise, startDay, 1.0);
+                    if (riseAt != null)
+                        riseTime = riseAt.ToUtcDateTime();
+                }
+                catch { }
+                try
+                {
+                    var startDay = new AstroTime(_fecha.Year, _fecha.Month, _fecha.Day, 0, 0, 0);
+                    var setAt = Astronomy.SearchRiseSet(body, observer, Direction.Set, startDay, 1.0);
+                    if (setAt != null)
+                        setTime = setAt.ToUtcDateTime();
+                }
+                catch { }
+
+                // Distancia en UA
+                double distAU = 0;
+                try
+                {
+                    var vec = Astronomy.GeoVector(body, dayTime, Aberration.Corrected);
+                    distAU = Math.Sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+                }
+                catch { }
+
+                // Iluminación
+                double illum = 0;
+                try
+                {
+                    var ilumData = Astronomy.Illumination(body, dayTime);
+                    illum = ilumData.phase_fraction * 100.0;
+                }
+                catch { }
+
+                resultado.Add(new PlanetData
+                {
+                    Name = name,
+                    Emoji = emoji,
+                    Body = body,
+                    IsVisible = maxAlt > 0,
+                    MaxAltitude = maxAlt,
+                    AzimuthAtMax = azAtMax,
+                    RiseTime = riseTime,
+                    SetTime = setTime,
+                    DistanceAU = distAU,
+                    IlluminationPct = illum
+                });
+            }
+            catch { }
+        }
+
+        resultado.Sort((a, b) => b.MaxAltitude.CompareTo(a.MaxAltitude));
+        return resultado;
+    }
+
+    private List<EphEvent> CalcularEventos()
+    {
+        var eventos = new List<EphEvent>();
+        var now = _fecha;
+        var limit30 = now.AddDays(30);
+        var limit90 = now.AddDays(90);
+
+        // Fases lunares próximas 30 días
+        var faseDefs = new[]
+        {
+            (0.0,   "🌑", "Luna Nueva"),
+            (90.0,  "🌓", "Cuarto Creciente"),
+            (180.0, "🌕", "Luna Llena"),
+            (270.0, "🌗", "Cuarto Menguante"),
+        };
+
+        foreach (var (ang, emoji, nombre) in faseDefs)
+        {
+            try
+            {
+                var start = new AstroTime(now);
+                for (int i = 0; i < 2; i++)
+                {
+                    var fase = Astronomy.SearchMoonPhase(ang, start, 35);
+                    var dt = fase.ToUtcDateTime().Date;
+                    if (dt >= now.Date && dt <= limit30.Date)
+                        eventos.Add(new EphEvent { Emoji = emoji, Date = dt, Description = nombre });
+                    start = new AstroTime(dt.AddDays(25));
+                    if (dt > limit30) break;
+                }
+            }
+            catch { }
+        }
+
+        // Equinoccios y solsticios en los próximos 90 días
+        for (int y = now.Year; y <= now.Year + 1; y++)
+        {
+            try
+            {
+                var seasons = Astronomy.Seasons(y);
+                var seasonDefs = new[]
+                {
+                    (seasons.mar_equinox.ToUtcDateTime(),  "🌸", "Equinoccio de primavera"),
+                    (seasons.jun_solstice.ToUtcDateTime(), "☀️", "Solsticio de verano"),
+                    (seasons.sep_equinox.ToUtcDateTime(),  "🍂", "Equinoccio de otoño"),
+                    (seasons.dec_solstice.ToUtcDateTime(), "❄️", "Solsticio de invierno"),
+                };
+                foreach (var (dt, emoji, desc) in seasonDefs)
+                {
+                    if (dt.Date >= now.Date && dt.Date <= limit90.Date)
+                        eventos.Add(new EphEvent { Emoji = emoji, Date = dt.Date, Description = desc });
+                }
+            }
+            catch { }
+        }
+
+        eventos.Sort((a, b) => a.Date.CompareTo(b.Date));
+        return eventos;
+    }
+
+    private TonightData? CalcularTonight(Observer observer, AstroTime dayTime)
+    {
+        try
+        {
+            // Fase lunar
+            var ilum = Astronomy.Illumination(Body.Moon, dayTime);
+            double moonIllum = ilum.phase_fraction * 100.0;
+            double moonPhaseAngle = Astronomy.MoonPhase(dayTime);
+            string moonPhaseName = MoonPhaseName(moonPhaseAngle);
+            string moonPhaseEmoji = MoonPhaseEmoji(moonPhaseAngle);
+
+            // Noche astronómica: crepúsculo astronómico vespertino (Sol a -18°)
+            DateTime? astroNightStart = null;
+            try
+            {
+                var result = Astronomy.SearchAltitude(Body.Sun, observer, Direction.Set, dayTime, 1.0, -18.0);
+                if (result != null)
+                    astroNightStart = result.ToUtcDateTime();
+            }
+            catch { }
+
+            // Salida y puesta de Luna
+            DateTime? moonRise = null;
+            DateTime? moonSet = null;
+            try
+            {
+                var startDay = new AstroTime(_fecha.Year, _fecha.Month, _fecha.Day, 0, 0, 0);
+                var r = Astronomy.SearchRiseSet(Body.Moon, observer, Direction.Rise, startDay, 1.0);
+                if (r != null) moonRise = r.ToUtcDateTime();
+            }
+            catch { }
+            try
+            {
+                var startDay = new AstroTime(_fecha.Year, _fecha.Month, _fecha.Day, 0, 0, 0);
+                var s = Astronomy.SearchRiseSet(Body.Moon, observer, Direction.Set, startDay, 1.0);
+                if (s != null) moonSet = s.ToUtcDateTime();
+            }
+            catch { }
+
+            // Calidad de la noche basada en iluminación lunar
+            NightQuality quality = moonIllum < 25 ? NightQuality.Good
+                                 : moonIllum < 65 ? NightQuality.Fair
+                                 : NightQuality.Poor;
+
+            return new TonightData
+            {
+                MoonIlluminationPct = moonIllum,
+                MoonPhaseName = moonPhaseName,
+                MoonPhaseEmoji = moonPhaseEmoji,
+                AstroNightStart = astroNightStart,
+                MoonRise = moonRise,
+                MoonSet = moonSet,
+                Quality = quality
+            };
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+    private static string FormatTimeOpt(DateTime? dt)
+        => dt.HasValue ? dt.Value.ToLocalTime().ToString("HH:mm") : "—";
+
+    private static string MoonPhaseName(double angle) => angle switch
+    {
+        < 22.5  => "Luna Nueva",
+        < 67.5  => "Cuarto Creciente",
+        < 112.5 => "Cuarto Creciente",
+        < 157.5 => "Luna Gibosa Creciente",
+        < 202.5 => "Luna Llena",
+        < 247.5 => "Luna Gibosa Menguante",
+        < 292.5 => "Cuarto Menguante",
+        < 337.5 => "Luna Creciente Menguante",
+        _       => "Luna Nueva"
+    };
+
+    private static string MoonPhaseEmoji(double angle) => angle switch
+    {
+        < 22.5  => "🌑",
+        < 67.5  => "🌒",
+        < 112.5 => "🌓",
+        < 157.5 => "🌔",
+        < 202.5 => "🌕",
+        < 247.5 => "🌖",
+        < 292.5 => "🌗",
+        < 337.5 => "🌘",
+        _       => "🌑"
+    };
+
+    private string QualityClass(NightQuality q) => q switch
+    {
+        NightQuality.Good => "eph-quality--good",
+        NightQuality.Fair => "eph-quality--fair",
+        _                 => "eph-quality--poor"
+    };
+
+    private string QualityLabel(NightQuality q) => q switch
+    {
+        NightQuality.Good => L["Eph_Tonight_Quality_Good"],
+        NightQuality.Fair => L["Eph_Tonight_Quality_Fair"],
+        _                 => L["Eph_Tonight_Quality_Poor"]
+    };
+}

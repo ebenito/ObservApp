@@ -72,14 +72,14 @@
         <!-- Syncfusion licensing (el resto de paquetes SF van en Shared) -->
 
         <!-- Supabase — nombre correcto del paquete desde v1.x -->
-        <PackageReference Include="Supabase" Version="1.4.0" />
+        <PackageReference Include="Supabase" Version="1.5.0" />
 
         <!-- Astronomy Engine — cálculos offline de planetas, luna, eclipses -->
         <PackageReference Include="CosineKitty.AstronomyEngine" Version="2.1.19" />
 
         <!-- Community Toolkit MAUI — permisos, share, toast nativo Android -->
         <PackageReference Include="CommunityToolkit.Maui" Version="15.0.0" />
-        <PackageReference Include="Syncfusion.Licensing" Version="34.1.32" />
+        <PackageReference Include="Syncfusion.Licensing" Version="34.1.33" />
     </ItemGroup>
 
 	<ItemGroup>

@@ -1042,4 +1042,85 @@
   <data name="Tooltip_Saros" xml:space="preserve">
     <value>Saros: Ciclo astronomico di ~18 anni usato per prevedere eclissi simili.</value>
   </data>
+  <data name="Eph_Title" xml:space="preserve">
+    <value>Effemeridi</value>
+  </data>
+  <data name="Eph_Subtitle" xml:space="preserve">
+    <value>Pianeti visibili, eventi astronomici e qualità del cielo notturno</value>
+  </data>
+  <data name="Eph_Date" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="Eph_Location" xml:space="preserve">
+    <value>Posizione</value>
+  </data>
+  <data name="Eph_Planets_Title" xml:space="preserve">
+    <value>Pianeti stanotte</value>
+  </data>
+  <data name="Eph_Planets_Empty" xml:space="preserve">
+    <value>Impossibile calcolare i dati planetari per questa data.</value>
+  </data>
+  <data name="Eph_Planet_Name" xml:space="preserve">
+    <value>Pianeta</value>
+  </data>
+  <data name="Eph_Planet_Status" xml:space="preserve">
+    <value>Stato</value>
+  </data>
+  <data name="Eph_Planet_Visible" xml:space="preserve">
+    <value>Visibile</value>
+  </data>
+  <data name="Eph_Planet_NotVisible" xml:space="preserve">
+    <value>Sotto l'orizzonte</value>
+  </data>
+  <data name="Eph_Planet_Rise" xml:space="preserve">
+    <value>Sorgere</value>
+  </data>
+  <data name="Eph_Planet_Set" xml:space="preserve">
+    <value>Tramontare</value>
+  </data>
+  <data name="Eph_Planet_MaxAlt" xml:space="preserve">
+    <value>Alt. max.</value>
+  </data>
+  <data name="Eph_Planet_Azimuth" xml:space="preserve">
+    <value>Azimut</value>
+  </data>
+  <data name="Eph_Planet_Distance" xml:space="preserve">
+    <value>Distanza</value>
+  </data>
+  <data name="Eph_Planet_Illumination" xml:space="preserve">
+    <value>Illuminazione</value>
+  </data>
+  <data name="Eph_Events_Title" xml:space="preserve">
+    <value>Prossimi eventi astronomici</value>
+  </data>
+  <data name="Eph_Events_Empty" xml:space="preserve">
+    <value>Nessun evento astronomico rilevante nei prossimi 90 giorni.</value>
+  </data>
+  <data name="Eph_Tonight_Title" xml:space="preserve">
+    <value>Il cielo stanotte</value>
+  </data>
+  <data name="Eph_Tonight_NoAstroNight" xml:space="preserve">
+    <value>Nessuna notte astronomica (Sole sopra -18°)</value>
+  </data>
+  <data name="Eph_Tonight_AstroNight" xml:space="preserve">
+    <value>Inizio della notte astronomica</value>
+  </data>
+  <data name="Eph_Tonight_Quality_Good" xml:space="preserve">
+    <value>Buona per l'osservazione</value>
+  </data>
+  <data name="Eph_Tonight_Quality_Fair" xml:space="preserve">
+    <value>Accettabile</value>
+  </data>
+  <data name="Eph_Tonight_Quality_Poor" xml:space="preserve">
+    <value>Luna luminosa</value>
+  </data>
+  <data name="Eph_Moon_Present" xml:space="preserve">
+    <value>Qualità della notte</value>
+  </data>
+  <data name="Eph_Moon_Phase" xml:space="preserve">
+    <value>Fase lunare</value>
+  </data>
+  <data name="Eph_Moon_Illumination" xml:space="preserve">
+    <value>Illuminazione lunare</value>
+  </data>
 </root>

@@ -2,16 +2,20 @@ name: Build ObservApp
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: ["main", "master"]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: ["main", "master"]
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  build:
-    runs-on: windows-latest
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # JOB 1 — Android APK (ubuntu: el .csproj excluye Windows TFM en Linux)
+  # ────────────────────────────────────────────────────────────────────────────
+  build-android:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -22,49 +26,44 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-      - name: Install MAUI workload
-        run: dotnet workload install maui
+      - name: Install MAUI Android workload
+        run: dotnet workload install maui-android
 
-      - name: Crear appsettings.Local.json
+      - name: Create appsettings.Local.json
         run: |
-          echo '{"SyncfusionLicenseKey": "${{ secrets.SYNCFUSION_LICENSE_KEY }}"}' > ObservApp/appsettings.Local.json
+          echo '{"SyncfusionLicenseKey":"${{ secrets.SYNCFUSION_LICENSE_KEY }}"}' \
+            > ObservApp/appsettings.Local.json
 
       - name: Restore Android
-        run: dotnet restore ObservApp/ObservApp.csproj -p:TargetFramework=net10.0-android
+        run: |
+          dotnet restore ObservApp/ObservApp.csproj \
+            -p:TargetFramework=net10.0-android
 
-      - name: Restore Windows
-        run: dotnet restore ObservApp/ObservApp.csproj -p:TargetFramework=net10.0-windows10.0.26100.0 -p:RuntimeIdentifier=win-x64
-
-      - name: Build Android
-        run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release
-
-      - name: Publish Android
-        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release --no-restore --output ObservApp/publish/android
-
-      - name: Build Windows
-        run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore
-
-      - name: Publish Windows
-        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore --output ObservApp/publish/windows
+      - name: Publish Android APK (Release, sin firma)
+        run: |
+          dotnet publish ObservApp/ObservApp.csproj \
+            --framework net10.0-android \
+            --configuration Release \
+            --output ObservApp/publish/android \
+            -p:AndroidPackageFormat=apk \
+            -p:AndroidKeyStore=false
 
       - name: Upload Android APK
         uses: actions/upload-artifact@v4
         with:
           name: ObservApp-Android
-          path: ObservApp/publish/android/*.apk
+          path: ObservApp/publish/android/**/*.apk
           if-no-files-found: warn
 
-      - name: Upload Windows MSIX
-        uses: actions/upload-artifact@v4
-        with:
-          name: ObservApp-Windows
-          path: ObservApp/publish/windows/*.msix
-          if-no-files-found: warn
-
+  # ────────────────────────────────────────────────────────────────────────────
+  # JOB 2 — Deploy Blazor WASM → Azure Static Web Apps
+  # Independiente del job Android (no `needs`). Solo en push a main/master.
+  # ────────────────────────────────────────────────────────────────────────────
   deploy-web:
     runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    if: |
+      github.event_name == 'push' &&
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
 
     steps:
       - name: Checkout repository
@@ -75,44 +74,64 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-      - name: Restore Web Client (solo net10.0)
-        run: dotnet restore ObservApp.Web.Client/ObservApp.Web.Client.csproj -p:TargetFramework=net10.0
+      - name: Install WASM workload
+        run: dotnet workload install wasm-tools
 
-      - name: Publish Blazor WASM standalone
-        run: >
-          dotnet publish ObservApp.Web.Client/ObservApp.Web.Client.csproj
-          --configuration Release
-          --output ./publish/web
-          --no-restore
-          -p:TargetFramework=net10.0
-          -p:DefineConstants=STANDALONE_WASM
-
-      - name: Show publish size
+      - name: Restore Web Client
         run: |
-          echo "===== Total ====="
+          dotnet restore ObservApp.Web.Client/ObservApp.Web.Client.csproj \
+            -p:TargetFramework=net10.0
+
+      - name: Publish Blazor WASM (optimizado para tamaño)
+        run: |
+          dotnet publish ObservApp.Web.Client/ObservApp.Web.Client.csproj \
+            --configuration Release \
+            --output ./publish/web \
+            -p:TargetFramework=net10.0 \
+            -p:PublishTrimmed=true \
+            -p:BlazorWebAssemblyPrecompressed=false \
+            -p:DebuggerSupport=false \
+            -p:DebugSymbols=false \
+            -p:DebugType=None
+        # BlazorWebAssemblyPrecompressed=false → Azure SWA usa su propia CDN
+        # para comprimir Brotli/gzip en el edge. Generar las 3 versiones
+        # (.br + .gz + sin comprimir) triplicaría el paquete innecesariamente.
+
+      - name: Strip ficheros innecesarios
+        run: |
+          FW=./publish/web/wwwroot/_framework
+
+          echo "▶ Tamaño ANTES del cleanup:"
           du -sh ./publish/web/wwwroot
 
-          echo
-          echo "===== _framework ====="
-          du -sh ./publish/web/wwwroot/_framework
+          # Símbolos de depuración (no deberían existir en Release, por si acaso)
+          find ./publish/web/wwwroot -name "*.pdb" -delete
 
-          echo
-          echo "===== 20 archivos mayores ====="
-          find ./publish/web/wwwroot -type f -printf "%s %p\n" \
-            | sort -nr \
-            | head -20
-            
-      - name: Analyze folders
+          # Documentación XML de ensamblados en _framework
+          find "$FW" -name "*.xml" -delete
+
+          echo "▶ Tamaño DESPUÉS del cleanup:"
+          du -sh ./publish/web/wwwroot
+
+          echo "▶ Desglose _framework:"
+          du -sh "$FW"
+
+          echo "▶ Top 20 ficheros más grandes:"
+          find ./publish/web/wwwroot -type f -printf "%s\t%p\n" \
+            | sort -rn | head -20 \
+            | awk '{printf "%.1f MB\t%s\n", $1/1048576, $2}'
+
+      - name: Verificar límite 250 MB de Azure Static Web Apps
         run: |
-          echo "=== Top folders ==="
-          du -h -d 3 ./publish/web/wwwroot | sort -h | tail -100
-
-            - name: Verificar estructura
-              run: |
-                echo "=== wwwroot raíz ==="
-                ls ./publish/web/wwwroot/
-                echo "=== _framework (primeros 10) ==="
-                ls ./publish/web/wwwroot/_framework/ | head -10
+          SIZE=$(du -sb ./publish/web/wwwroot | cut -f1)
+          SIZE_MB=$(echo "scale=1; $SIZE/1048576" | bc)
+          echo "Tamaño total del paquete: ${SIZE_MB} MB"
+          if [ "$SIZE" -gt $((250 * 1024 * 1024)) ]; then
+            echo "::error::El paquete supera el límite de 250 MB de Azure Static Web Apps (${SIZE_MB} MB)"
+            exit 1
+          else
+            echo "::notice::Paquete dentro del límite: ${SIZE_MB} MB / 250 MB"
+          fi
 
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1

@@ -1,0 +1,516 @@
+/* ============================================================
+   EFEMÉRIDES — scoped CSS
+   ============================================================ */
+
+.eph-page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 20px 16px 56px;
+}
+
+/* ── Navegación de vuelta ── */
+.eph-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--obs-aurora);
+    text-decoration: none;
+    margin-bottom: 16px;
+    opacity: .8;
+    transition: opacity var(--transition), transform var(--transition);
+}
+
+    .eph-back:hover {
+        opacity: 1;
+        transform: translateX(-3px);
+    }
+
+/* ── Cabecera ── */
+.eph-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.eph-header-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.eph-header-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--obs-moon);
+    margin: 0 0 4px;
+}
+
+.eph-header-subtitle {
+    font-size: 0.84rem;
+    color: var(--obs-comet);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ── Grid inputs ── */
+.eph-inputs-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 540px) {
+    .eph-inputs-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Tarjeta genérica ── */
+.eph-card {
+    background: var(--obs-navy);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.eph-card--full {
+    grid-column: 1 / -1;
+}
+
+.eph-section {
+    margin-bottom: 16px;
+}
+
+.eph-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--obs-deep);
+    border-bottom: 1px solid var(--obs-border);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--obs-moon);
+}
+
+.eph-card-icon {
+    font-size: 1.1rem;
+}
+
+.eph-card-title {
+    color: var(--obs-moon);
+}
+
+.eph-card-body {
+    padding: 14px 16px;
+}
+
+/* ── Inputs ── */
+.eph-input {
+    width: 100%;
+    background: var(--obs-midnight);
+    color: var(--obs-moon);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-md);
+    padding: 8px 10px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color var(--transition);
+}
+
+    .eph-input:focus {
+        outline: none;
+        border-color: var(--obs-aurora);
+    }
+
+/* ── Selector de ubicación ── */
+.eph-location-header {
+    justify-content: space-between;
+}
+
+.eph-select-wrapper {
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--obs-border);
+}
+
+.eph-location-body {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+@media (max-width: 540px) {
+    .eph-location-body {
+        grid-template-columns: 1fr;
+    }
+}
+
+.eph-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.eph-label {
+    font-size: 0.78rem;
+    color: var(--obs-comet);
+    font-weight: 500;
+}
+
+/* ── Botón GPS ── */
+.eph-gps-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    background: transparent;
+    border: 1px solid var(--obs-aurora);
+    border-radius: var(--radius-md);
+    color: var(--obs-aurora);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition);
+    white-space: nowrap;
+}
+
+    .eph-gps-btn:hover:not(:disabled) {
+        background: var(--obs-aurora);
+        color: var(--obs-midnight);
+    }
+
+    .eph-gps-btn:disabled {
+        opacity: .6;
+        cursor: not-allowed;
+    }
+
+.eph-gps-btn--loading {
+    border-color: var(--obs-comet);
+    color: var(--obs-comet);
+}
+
+.eph-gps-spinner {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--obs-comet);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: eph-spin 0.7s linear infinite;
+}
+
+@keyframes eph-spin {
+    to { transform: rotate(360deg); }
+}
+
+.eph-gps-error {
+    padding: 8px 15px;
+    font-size: 0.82rem;
+    color: var(--obs-mars);
+    background: rgba(231,111,81,.08);
+    border-bottom: 1px solid var(--obs-border);
+}
+
+.eph-gps-source {
+    padding: 6px 15px;
+    font-size: 0.78rem;
+    color: var(--obs-aurora);
+    border-top: 1px solid var(--obs-border);
+}
+
+/* ── Vacío ── */
+.eph-empty {
+    padding: 24px 16px;
+    text-align: center;
+    color: var(--obs-comet);
+    font-size: 0.88rem;
+}
+
+/* ── Tabla de planetas (≥640px) ── */
+.eph-planets-table-wrapper {
+    overflow-x: auto;
+}
+
+.eph-planets-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+}
+
+    .eph-planets-table thead tr {
+        background: var(--obs-deep);
+    }
+
+    .eph-planets-table th {
+        padding: 10px 12px;
+        text-align: left;
+        color: var(--obs-comet);
+        font-weight: 600;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        white-space: nowrap;
+    }
+
+    .eph-planets-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid rgba(46,64,87,.5);
+        color: var(--obs-moon);
+        white-space: nowrap;
+    }
+
+    .eph-planets-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .eph-planets-table tbody tr:hover {
+        background: rgba(255,255,255,.03);
+    }
+
+.eph-row--visible td {
+    background: rgba(46,196,182,.03);
+}
+
+.eph-planet-name {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+}
+
+.eph-planet-emoji {
+    font-size: 1rem;
+}
+
+.eph-mono {
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+}
+
+/* ── Badges ── */
+.eph-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.eph-badge--visible {
+    background: rgba(46,196,182,.15);
+    color: var(--obs-aurora);
+    border: 1px solid rgba(46,196,182,.3);
+}
+
+.eph-badge--hidden {
+    background: rgba(148,163,184,.08);
+    color: var(--obs-comet);
+    border: 1px solid rgba(148,163,184,.2);
+}
+
+/* ── Tarjetas planetas (móvil <640px) ── */
+.eph-planets-cards {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+}
+
+.eph-planet-card {
+    background: var(--obs-deep);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.eph-planet-card--visible {
+    border-color: rgba(46,196,182,.3);
+}
+
+.eph-planet-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,.03);
+    border-bottom: 1px solid var(--obs-border);
+}
+
+.eph-planet-emoji-lg {
+    font-size: 1.5rem;
+}
+
+.eph-planet-card-name {
+    font-weight: 700;
+    color: var(--obs-moon);
+    font-size: 0.95rem;
+    margin-bottom: 3px;
+}
+
+.eph-planet-card-body {
+    padding: 10px 12px;
+}
+
+@media (max-width: 639px) {
+    .eph-planets-table-wrapper {
+        display: none;
+    }
+
+    .eph-planets-cards {
+        display: flex;
+    }
+}
+
+/* ── Stat rows (shared) ── */
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(46,64,87,.4);
+    font-size: 0.84rem;
+}
+
+    .stat-row:last-child {
+        border-bottom: none;
+    }
+
+.stat-label {
+    color: var(--obs-comet);
+}
+
+.stat-value {
+    color: var(--obs-moon);
+    font-family: var(--font-mono);
+    font-size: 0.83rem;
+}
+
+/* ── Eventos próximos ── */
+.eph-events-list {
+    padding: 6px 0;
+}
+
+.eph-event-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(46,64,87,.4);
+    font-size: 0.86rem;
+}
+
+    .eph-event-row:last-child {
+        border-bottom: none;
+    }
+
+.eph-event-emoji {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    width: 24px;
+    text-align: center;
+}
+
+.eph-event-date {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--obs-star);
+    white-space: nowrap;
+    min-width: 100px;
+}
+
+.eph-event-desc {
+    color: var(--obs-moon);
+}
+
+/* ── Cielo esta noche ── */
+.eph-tonight-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: start;
+}
+
+@media (max-width: 480px) {
+    .eph-tonight-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.eph-tonight-quality {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--obs-border);
+    min-width: 180px;
+}
+
+.eph-quality--good {
+    background: rgba(46,196,182,.08);
+    border-color: rgba(46,196,182,.3);
+}
+
+.eph-quality--fair {
+    background: rgba(244,196,48,.06);
+    border-color: rgba(244,196,48,.3);
+}
+
+.eph-quality--poor {
+    background: rgba(231,111,81,.07);
+    border-color: rgba(231,111,81,.3);
+}
+
+.eph-tonight-quality-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.eph-quality--good .eph-tonight-quality-dot {
+    background: var(--obs-aurora);
+    box-shadow: 0 0 8px var(--obs-aurora);
+}
+
+.eph-quality--fair .eph-tonight-quality-dot {
+    background: var(--obs-star);
+    box-shadow: 0 0 8px var(--obs-star);
+}
+
+.eph-quality--poor .eph-tonight-quality-dot {
+    background: var(--obs-mars);
+    box-shadow: 0 0 8px var(--obs-mars);
+}
+
+.eph-tonight-quality-label {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--obs-moon);
+}
+
+.eph-tonight-quality-sub {
+    font-size: 0.75rem;
+    color: var(--obs-comet);
+    margin-top: 2px;
+}
+
+.eph-tonight-info {
+    flex: 1;
+}
+
+.eph-aurora {
+    color: var(--obs-aurora);
+}
+
+.eph-comet {
+    color: var(--obs-comet);
+}
