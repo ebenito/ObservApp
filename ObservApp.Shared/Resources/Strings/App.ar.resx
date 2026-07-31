@@ -1123,6 +1123,75 @@
   <data name="Eph_Moon_Illumination" xml:space="preserve">
     <value>إضاءة القمر</value>
   </data>
+  <data name="Eph_Eclipse_BannerTitle" xml:space="preserve">
+    <value>كسوف شمسي قريب في منطقتك</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Total" xml:space="preserve">
+    <value>كسوف كلي</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Annular" xml:space="preserve">
+    <value>كسوف حلقي</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Partial" xml:space="preserve">
+    <value>كسوف جزئي</value>
+  </data>
+  <data name="Eph_Eclipse_Coverage" xml:space="preserve">
+    <value>أقصى نسبة احتجاب من موقعك</value>
+  </data>
+  <data name="Eph_Eclipse_DaysLeft" xml:space="preserve">
+    <value>أيام</value>
+  </data>
+  <data name="Eph_Eclipse_Details" xml:space="preserve">
+    <value>عرض تفاصيل الكسوف →</value>
+  </data>
+  <data name="Eph_Eclipse_NoVisible" xml:space="preserve">
+    <value>لا يوجد أي كسوف مرئي من هذا الموقع خلال العام القادم</value>
+  </data>
+  <data name="Eph_DSO_Title" xml:space="preserve">
+    <value>السماء العميقة الليلة</value>
+  </data>
+  <data name="Eph_DSO_Subtitle" xml:space="preserve">
+    <value>الأجرام المرئية من موقعك (الارتفاع &gt; 10°)</value>
+  </data>
+  <data name="Eph_DSO_Loading" xml:space="preserve">
+    <value>جارٍ حساب الأجرام المرئية…</value>
+  </data>
+  <data name="Eph_DSO_Empty" xml:space="preserve">
+    <value>لا توجد أجرام من السماء العميقة مرئية الليلة من هذا الموقع.</value>
+  </data>
+  <data name="Eph_DSO_MaxAlt" xml:space="preserve">
+    <value>أقصى ارتفاع</value>
+  </data>
+  <data name="Eph_DSO_BestTime" xml:space="preserve">
+    <value>أفضل وقت</value>
+  </data>
+  <data name="Eph_DSO_VisibleFrom" xml:space="preserve">
+    <value>مرئي من</value>
+  </data>
+  <data name="Eph_DSO_VisibleTo" xml:space="preserve">
+    <value>إلى</value>
+  </data>
+  <data name="Eph_DSO_Magnitude" xml:space="preserve">
+    <value>القدر</value>
+  </data>
+  <data name="Eph_DSO_Type_Nebula" xml:space="preserve">
+    <value>سديم</value>
+  </data>
+  <data name="Eph_DSO_Type_OpenCluster" xml:space="preserve">
+    <value>عنقود مفتوح</value>
+  </data>
+  <data name="Eph_DSO_Type_GlobularCluster" xml:space="preserve">
+    <value>عنقود كروي</value>
+  </data>
+  <data name="Eph_DSO_Type_Galaxy" xml:space="preserve">
+    <value>مجرة</value>
+  </data>
+  <data name="Eph_DSO_Constellation" xml:space="preserve">
+    <value>الكوكبة</value>
+  </data>
+  <data name="Eph_DSO_Count" xml:space="preserve">
+    <value>أجرام مرئية</value>
+  </data>
   <data name="Auth_SignIn" xml:space="preserve">
     <value>تسجيل الدخول</value>
   </data>

@@ -1123,6 +1123,75 @@
   <data name="Eph_Moon_Illumination" xml:space="preserve">
     <value>Éclairage lunaire</value>
   </data>
+  <data name="Eph_Eclipse_BannerTitle" xml:space="preserve">
+    <value>Prochaine éclipse solaire dans votre région</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Total" xml:space="preserve">
+    <value>Éclipse totale</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Annular" xml:space="preserve">
+    <value>Éclipse annulaire</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Partial" xml:space="preserve">
+    <value>Éclipse partielle</value>
+  </data>
+  <data name="Eph_Eclipse_Coverage" xml:space="preserve">
+    <value>Occultation maximale depuis votre position</value>
+  </data>
+  <data name="Eph_Eclipse_DaysLeft" xml:space="preserve">
+    <value>jours</value>
+  </data>
+  <data name="Eph_Eclipse_Details" xml:space="preserve">
+    <value>Voir les détails de l’éclipse →</value>
+  </data>
+  <data name="Eph_Eclipse_NoVisible" xml:space="preserve">
+    <value>Aucune éclipse visible depuis cet emplacement dans l’année à venir</value>
+  </data>
+  <data name="Eph_DSO_Title" xml:space="preserve">
+    <value>Ciel profond cette nuit</value>
+  </data>
+  <data name="Eph_DSO_Subtitle" xml:space="preserve">
+    <value>Objets visibles depuis votre position (altitude &gt; 10°)</value>
+  </data>
+  <data name="Eph_DSO_Loading" xml:space="preserve">
+    <value>Calcul des objets visibles…</value>
+  </data>
+  <data name="Eph_DSO_Empty" xml:space="preserve">
+    <value>Aucun objet du ciel profond n’est visible cette nuit depuis cet emplacement.</value>
+  </data>
+  <data name="Eph_DSO_MaxAlt" xml:space="preserve">
+    <value>Alt. max.</value>
+  </data>
+  <data name="Eph_DSO_BestTime" xml:space="preserve">
+    <value>Meilleure heure</value>
+  </data>
+  <data name="Eph_DSO_VisibleFrom" xml:space="preserve">
+    <value>Visible de</value>
+  </data>
+  <data name="Eph_DSO_VisibleTo" xml:space="preserve">
+    <value>à</value>
+  </data>
+  <data name="Eph_DSO_Magnitude" xml:space="preserve">
+    <value>Magnitude</value>
+  </data>
+  <data name="Eph_DSO_Type_Nebula" xml:space="preserve">
+    <value>Nébuleuse</value>
+  </data>
+  <data name="Eph_DSO_Type_OpenCluster" xml:space="preserve">
+    <value>Amas ouvert</value>
+  </data>
+  <data name="Eph_DSO_Type_GlobularCluster" xml:space="preserve">
+    <value>Amas globulaire</value>
+  </data>
+  <data name="Eph_DSO_Type_Galaxy" xml:space="preserve">
+    <value>Galaxie</value>
+  </data>
+  <data name="Eph_DSO_Constellation" xml:space="preserve">
+    <value>Constellation</value>
+  </data>
+  <data name="Eph_DSO_Count" xml:space="preserve">
+    <value>objets visibles</value>
+  </data>
   <data name="Auth_SignIn" xml:space="preserve">
     <value>Se connecter</value>
   </data>

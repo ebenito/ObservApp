@@ -1123,6 +1123,75 @@
   <data name="Eph_Moon_Illumination" xml:space="preserve">
     <value>Iluminación lunar</value>
   </data>
+  <data name="Eph_Eclipse_BannerTitle" xml:space="preserve">
+    <value>Eclipse solar próximo en tu zona</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Total" xml:space="preserve">
+    <value>Eclipse total</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Annular" xml:space="preserve">
+    <value>Eclipse anular</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Partial" xml:space="preserve">
+    <value>Eclipse parcial</value>
+  </data>
+  <data name="Eph_Eclipse_Coverage" xml:space="preserve">
+    <value>Ocultación máxima desde tu ubicación</value>
+  </data>
+  <data name="Eph_Eclipse_DaysLeft" xml:space="preserve">
+    <value>días</value>
+  </data>
+  <data name="Eph_Eclipse_Details" xml:space="preserve">
+    <value>Ver detalles del eclipse →</value>
+  </data>
+  <data name="Eph_Eclipse_NoVisible" xml:space="preserve">
+    <value>No hay eclipses visibles desde esta ubicación en el próximo año</value>
+  </data>
+  <data name="Eph_DSO_Title" xml:space="preserve">
+    <value>Cielo profundo esta noche</value>
+  </data>
+  <data name="Eph_DSO_Subtitle" xml:space="preserve">
+    <value>Objetos visibles desde tu ubicación (altitud &gt; 10°)</value>
+  </data>
+  <data name="Eph_DSO_Loading" xml:space="preserve">
+    <value>Calculando objetos visibles…</value>
+  </data>
+  <data name="Eph_DSO_Empty" xml:space="preserve">
+    <value>No hay objetos de cielo profundo visibles esta noche desde esta ubicación.</value>
+  </data>
+  <data name="Eph_DSO_MaxAlt" xml:space="preserve">
+    <value>Alt. máx.</value>
+  </data>
+  <data name="Eph_DSO_BestTime" xml:space="preserve">
+    <value>Mejor hora</value>
+  </data>
+  <data name="Eph_DSO_VisibleFrom" xml:space="preserve">
+    <value>Visible de</value>
+  </data>
+  <data name="Eph_DSO_VisibleTo" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="Eph_DSO_Magnitude" xml:space="preserve">
+    <value>Magnitud</value>
+  </data>
+  <data name="Eph_DSO_Type_Nebula" xml:space="preserve">
+    <value>Nebulosa</value>
+  </data>
+  <data name="Eph_DSO_Type_OpenCluster" xml:space="preserve">
+    <value>Cúmulo abierto</value>
+  </data>
+  <data name="Eph_DSO_Type_GlobularCluster" xml:space="preserve">
+    <value>Cúmulo globular</value>
+  </data>
+  <data name="Eph_DSO_Type_Galaxy" xml:space="preserve">
+    <value>Galaxia</value>
+  </data>
+  <data name="Eph_DSO_Constellation" xml:space="preserve">
+    <value>Constelación</value>
+  </data>
+  <data name="Eph_DSO_Count" xml:space="preserve">
+    <value>objetos visibles</value>
+  </data>
   <data name="Auth_SignIn" xml:space="preserve">
     <value>Iniciar sesión</value>
   </data>
