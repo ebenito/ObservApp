@@ -3,10 +3,12 @@
 @using System.Globalization
 @using ObservApp.Shared.Models
 @using ObservApp.Shared.Services
+@implements IDisposable
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
 @inject IGeolocationService GeoService
 @inject IFavoriteLocationsService FavLocationsService
 @inject ILocationStateService LocationState
+@inject IEclipseCalculatorService EclipseCalc
 
 <PageTitle>@L["Eph_Title"] — ObservApp</PageTitle>
 
@@ -106,6 +108,27 @@
 
     </div>
 
+    @if (_nextLocalEclipse != null && _nextLocalEclipseResult != null)
+    {
+        <div class="eph-eclipse-banner @EclipseBannerClass(_nextLocalEclipseResult.Type)">
+            <div class="eph-eclipse-banner-icon">@EclipseEmoji(_nextLocalEclipseResult.Type)</div>
+            <div class="eph-eclipse-banner-body">
+                <div class="eph-eclipse-banner-title">@L["Eph_Eclipse_BannerTitle"]</div>
+                <div class="eph-eclipse-banner-main">
+                    <span class="eph-eclipse-banner-type">@EclipseTypeLabel(_nextLocalEclipseResult.Type)</span>
+                    <span class="eph-eclipse-banner-date">@_nextLocalEclipse.Date.ToLocalTime().ToString("dd MMM yyyy", CultureInfo.CurrentCulture)</span>
+                </div>
+                <div class="eph-eclipse-banner-meta">
+                    <span>@L["Eph_Eclipse_Coverage"]</span>
+                    <strong>@((_nextLocalEclipseResult.MaxCoverage * 100.0).ToString("F0", CultureInfo.InvariantCulture))%</strong>
+                    <span class="eph-eclipse-banner-sep">•</span>
+                    <strong>@DaysUntilEclipse(_nextLocalEclipse.Date)</strong>
+                    <span>@L["Eph_Eclipse_DaysLeft"]</span>
+                </div>
+            </div>
+            <a class="eph-eclipse-banner-link" href="/calculadoras/eclipse-solar">@L["Eph_Eclipse_Details"]</a>
+        </div>
+    }
     <!-- Sección 2: Tabla de planetas -->
     <div class="eph-card eph-card--full eph-section">
         <div class="eph-card-header">
@@ -299,6 +322,107 @@
         }
     </div>
 
+    <div class="eph-card eph-card--full eph-section">
+        <div class="eph-card-header eph-dso-header">
+            <span class="eph-card-icon">🌌</span>
+            <div class="eph-dso-header-text">
+                <span class="eph-card-title">@L["Eph_DSO_Title"]</span>
+                <span class="eph-dso-header-subtitle">@L["Eph_DSO_Subtitle"]</span>
+            </div>
+            @if (_dsoVisibles.Count > 0)
+            {
+                <span class="eph-dso-count">@_dsoVisibles.Count @L["Eph_DSO_Count"]</span>
+            }
+        </div>
+
+        @if (_dsoLoading)
+        {
+            <div class="eph-card-body eph-dso-loading-wrap">
+                <SfSpinner CssClass="eph-dso-spinner" Label="@L["Eph_DSO_Loading"]" Visible="true" />
+                <div class="eph-dso-loading-text">@L["Eph_DSO_Loading"]</div>
+            </div>
+        }
+        else if (_dsoVisibles.Count == 0)
+        {
+            <div class="eph-empty">@L["Eph_DSO_Empty"]</div>
+        }
+        else
+        {
+            <div class="eph-dso-list">
+                @foreach (var item in _dsoVisibles)
+                {
+                    <div class="eph-dso-card @DsoAccentClass(item.Dso.Type)">
+                        <div class="eph-dso-media-layout">
+                            <div class="eph-dso-thumb-wrap">
+                                @if (item.ThumbnailFailed)
+                                {
+                                    <div class="eph-dso-thumb-fallback" role="img" aria-label="@DsoThumbnailAltText(item.Dso)">
+                                        <span class="eph-dso-thumb-fallback-emoji">@item.Dso.Emoji</span>
+                                        <span class="eph-dso-thumb-fallback-id">@item.Dso.Id</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <img class="eph-dso-thumb"
+                                         src="@BuildDsoThumbnailUrl(item.Dso)"
+                                         alt="@DsoThumbnailAltText(item.Dso)"
+                                         loading="lazy"
+                                         referrerpolicy="no-referrer"
+                                         @onerror="() => OnDsoImageError(item)" />
+                                }
+                            </div>
+
+                            <div class="eph-dso-main">
+                                <div class="eph-dso-card-top">
+                                    <div class="eph-dso-title-wrap">
+                                        <span class="eph-dso-emoji">@item.Dso.Emoji</span>
+                                        <div>
+                                            <div class="eph-dso-name-line">
+                                                <span class="eph-dso-id">@item.Dso.Id</span>
+                                                <span class="eph-dso-name">@item.Dso.Name</span>
+                                            </div>
+                                            <div class="eph-dso-constellation">@L["Eph_DSO_Constellation"]: @item.Dso.Constellation</div>
+                                        </div>
+                                    </div>
+                                    <div class="eph-dso-type-line">@DsoTypeLabel(item.Dso.Type) · @L["Eph_DSO_Magnitude"] @item.Dso.Magnitude.ToString("F1", CultureInfo.InvariantCulture)</div>
+                                </div>
+
+                                <div class="eph-dso-stats-grid">
+                                    <div class="stat-row">
+                                        <span class="stat-label">@L["Eph_DSO_MaxAlt"]</span>
+                                        <span class="stat-value">@item.MaxAltitude.ToString("F1", CultureInfo.InvariantCulture)°</span>
+                                    </div>
+                                    <div class="stat-row">
+                                        <span class="stat-label">@L["Eph_DSO_BestTime"]</span>
+                                        <span class="stat-value">@FormatTimeOpt(item.BestViewingTime)</span>
+                                    </div>
+                                    <div class="stat-row">
+                                        <span class="stat-label">@L["Eph_DSO_VisibleFrom"]</span>
+                                        <span class="stat-value">@FormatTimeOpt(item.VisibleFrom)</span>
+                                    </div>
+                                    <div class="stat-row">
+                                        <span class="stat-label">@L["Eph_DSO_VisibleTo"]</span>
+                                        <span class="stat-value">@FormatTimeOpt(item.VisibleUntil)</span>
+                                    </div>
+                                </div>
+
+                                <div class="eph-dso-track-wrap">
+                                    <div class="eph-dso-track-labels">
+                                        <span>@FormatTimeOpt(_dsoNightStartUtc)</span>
+                                        <span>@FormatTimeOpt(_dsoNightEndUtc)</span>
+                                    </div>
+                                    <div class="eph-dso-track">
+                                        <div class="eph-dso-track-visible" style="@BuildDsoVisibilityStyle(item)"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
 </div>
 
 @code {
@@ -336,6 +460,37 @@
         public NightQuality Quality { get; init; }
     }
 
+    private sealed record DsoEntry(
+        string Id,
+        string Name,
+        string Constellation,
+        string Type,
+        string Emoji,
+        double RaDeg,
+        double DecDeg,
+        double Magnitude,
+        string Description);
+
+    private sealed class DsoVisibility
+    {
+        public DsoEntry Dso { get; init; } = null!;
+        public bool IsVisibleTonight { get; init; }
+        public double MaxAltitude { get; init; }
+        public double AzimuthAtMax { get; init; }
+        public DateTime? VisibleFrom { get; init; }
+        public DateTime? VisibleUntil { get; init; }
+        public DateTime? BestViewingTime { get; init; }
+        public double VisibleStartPercent { get; init; }
+        public double VisibleWidthPercent { get; init; }
+        public bool ThumbnailFailed { get; set; }
+    }
+
+    private sealed class NightWindow
+    {
+        public DateTime StartUtc { get; init; }
+        public DateTime EndUtc { get; init; }
+    }
+
     private enum NightQuality { Good, Fair, Poor }
 
     // ── Estado ────────────────────────────────────────────────────────────────
@@ -352,6 +507,13 @@
     private List<PlanetData> _planetas = new();
     private List<EphEvent> _eventos = new();
     private TonightData? _tonight;
+    private EclipseDefinition? _nextLocalEclipse;
+    private LocalEclipseResult? _nextLocalEclipseResult;
+    private List<DsoVisibility> _dsoVisibles = new();
+    private bool _dsoLoading;
+    private DateTime? _dsoNightStartUtc;
+    private DateTime? _dsoNightEndUtc;
+    private CancellationTokenSource? _calcCts;
 
     // ── Ciclo de vida ─────────────────────────────────────────────────────────
     protected override async Task OnInitializedAsync()
@@ -378,6 +540,13 @@
         SyncFromLocationState();
         Calcular();
         StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        LocationState.LocationChanged -= OnLocationStateChanged;
+        _calcCts?.Cancel();
+        _calcCts?.Dispose();
     }
 
     /// <summary>
@@ -475,12 +644,20 @@
             _planetas = CalcularPlanetas(observer, dayTime);
             _eventos = CalcularEventos();
             _tonight = CalcularTonight(observer, dayTime);
+            CalcularProximoEclipseLocal();
+            _ = CalcularDsosAsync();
         }
         catch
         {
             _planetas = new();
             _eventos = new();
             _tonight = null;
+            _nextLocalEclipse = null;
+            _nextLocalEclipseResult = null;
+            _dsoVisibles = new();
+            _dsoNightStartUtc = null;
+            _dsoNightEndUtc = null;
+            _dsoLoading = false;
         }
     }
 
@@ -699,6 +876,228 @@
         }
     }
 
+    private void CalcularProximoEclipseLocal()
+    {
+        _nextLocalEclipse = null;
+        _nextLocalEclipseResult = null;
+
+        try
+        {
+            var limit = DateTime.UtcNow.AddDays(365);
+            var eclipses = EclipseCalc.GetUpcomingEclipses(2);
+
+            foreach (var eclipse in eclipses.Where(e => e.Date > DateTime.UtcNow && e.Date <= limit))
+            {
+                var result = EclipseCalc.Calculate(eclipse, _lat, _lon, _altMetros);
+                if (result != null && result.IsVisible && result.Type != LocalEclipseType.None)
+                {
+                    _nextLocalEclipse = eclipse;
+                    _nextLocalEclipseResult = result;
+                    break;
+                }
+            }
+        }
+        catch
+        {
+            _nextLocalEclipse = null;
+            _nextLocalEclipseResult = null;
+        }
+    }
+
+    private async Task CalcularDsosAsync()
+    {
+        _calcCts?.Cancel();
+        _calcCts?.Dispose();
+        _calcCts = new CancellationTokenSource();
+        var token = _calcCts.Token;
+
+        _dsoLoading = true;
+        _dsoVisibles = new();
+        _dsoNightStartUtc = null;
+        _dsoNightEndUtc = null;
+        await InvokeAsync(StateHasChanged);
+
+        var observer = new Observer(_lat, _lon, _altMetros / 1000.0);
+
+        try
+        {
+            await Task.Run(async () =>
+            {
+                token.ThrowIfCancellationRequested();
+
+                var window = TryGetAstronomicalNightWindow(observer);
+                if (window is null)
+                {
+                    return;
+                }
+
+                var visible = new List<DsoVisibility>();
+                var brightObjects = DsoCatalog.Where(d => d.Magnitude < 7.0).OrderBy(d => d.Magnitude).ToList();
+                var faintObjects = DsoCatalog.Where(d => d.Magnitude >= 7.0).OrderBy(d => d.Magnitude).ToList();
+
+                ProcesarDsoGrupo(brightObjects, observer, window, visible, token);
+                visible.Sort((a, b) => b.MaxAltitude.CompareTo(a.MaxAltitude));
+
+                if (!token.IsCancellationRequested)
+                {
+                    await InvokeAsync(() =>
+                    {
+                        if (!IsCurrentCalc(token))
+                            return;
+
+                        _dsoNightStartUtc = window.StartUtc;
+                        _dsoNightEndUtc = window.EndUtc;
+                        _dsoVisibles = visible.ToList();
+                        StateHasChanged();
+                    });
+                }
+
+                ProcesarDsoGrupo(faintObjects, observer, window, visible, token);
+                visible.Sort((a, b) => b.MaxAltitude.CompareTo(a.MaxAltitude));
+
+                if (!token.IsCancellationRequested)
+                {
+                    await InvokeAsync(() =>
+                    {
+                        if (!IsCurrentCalc(token))
+                            return;
+
+                        _dsoNightStartUtc = window.StartUtc;
+                        _dsoNightEndUtc = window.EndUtc;
+                        _dsoVisibles = visible;
+                        StateHasChanged();
+                    });
+                }
+            }, token);
+        }
+        catch (OperationCanceledException)
+        {
+        }
+        finally
+        {
+            if (IsCurrentCalc(token))
+            {
+                _dsoLoading = false;
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+    }
+
+    private void ProcesarDsoGrupo(
+        IEnumerable<DsoEntry> dsos,
+        Observer observer,
+        NightWindow window,
+        List<DsoVisibility> visible,
+        CancellationToken token)
+    {
+        foreach (var dso in dsos)
+        {
+            token.ThrowIfCancellationRequested();
+            var result = CalcularVisibilidadDso(dso, observer, window);
+            if (result is { IsVisibleTonight: true })
+            {
+                visible.Add(result);
+            }
+        }
+    }
+
+    private DsoVisibility? CalcularVisibilidadDso(DsoEntry dso, Observer observer, NightWindow window)
+    {
+        const double minAltitude = 10.0;
+        const int stepMinutes = 15;
+
+        double maxAlt = double.MinValue;
+        double azAtMax = 0;
+        DateTime? bestTime = null;
+        DateTime? visibleFrom = null;
+        DateTime? visibleUntil = null;
+
+        for (var sample = window.StartUtc; sample <= window.EndUtc; sample = sample.AddMinutes(stepMinutes))
+        {
+            var (altitude, azimuth) = GetDsoPosition(dso.RaDeg, dso.DecDeg, observer, new AstroTime(sample));
+            if (altitude > maxAlt)
+            {
+                maxAlt = altitude;
+                azAtMax = azimuth;
+                bestTime = sample;
+            }
+
+            if (altitude > minAltitude)
+            {
+                visibleFrom ??= sample;
+                visibleUntil = sample;
+            }
+        }
+
+        if (!visibleFrom.HasValue || !visibleUntil.HasValue || maxAlt <= minAltitude)
+        {
+            return null;
+        }
+
+        var totalMinutes = Math.Max(1.0, (window.EndUtc - window.StartUtc).TotalMinutes);
+        var startPercent = Math.Clamp((visibleFrom.Value - window.StartUtc).TotalMinutes / totalMinutes * 100.0, 0.0, 100.0);
+        var endPercent = Math.Clamp((visibleUntil.Value - window.StartUtc).TotalMinutes / totalMinutes * 100.0, 0.0, 100.0);
+        var widthPercent = Math.Max(1.5, endPercent - startPercent);
+
+        return new DsoVisibility
+        {
+            Dso = dso,
+            IsVisibleTonight = true,
+            MaxAltitude = maxAlt,
+            AzimuthAtMax = azAtMax,
+            VisibleFrom = visibleFrom,
+            VisibleUntil = visibleUntil,
+            BestViewingTime = bestTime,
+            VisibleStartPercent = startPercent,
+            VisibleWidthPercent = widthPercent
+        };
+    }
+
+    private NightWindow? TryGetAstronomicalNightWindow(Observer observer)
+    {
+        try
+        {
+            var localNoon = new DateTime(_fecha.Year, _fecha.Month, _fecha.Day, 12, 0, 0, DateTimeKind.Local);
+            var duskSearch = new AstroTime(localNoon.ToUniversalTime());
+            var dusk = Astronomy.SearchAltitude(Body.Sun, observer, Direction.Set, duskSearch, 1.0, -18.0);
+            if (dusk is null)
+                return null;
+
+            var dawn = Astronomy.SearchAltitude(Body.Sun, observer, Direction.Rise, dusk, 1.0, -18.0);
+            if (dawn is null)
+                return null;
+
+            var duskUtc = dusk.ToUtcDateTime();
+            var dawnUtc = dawn.ToUtcDateTime();
+            if (dawnUtc <= duskUtc)
+                return null;
+
+            return new NightWindow
+            {
+                StartUtc = duskUtc,
+                EndUtc = dawnUtc
+            };
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private static (double Altitude, double Azimuth) GetDsoPosition(
+        double raDeg,
+        double decDeg,
+        Observer observer,
+        AstroTime time)
+    {
+        double raHours = raDeg / 15.0;
+        var hz = Astronomy.Horizon(time, observer, raHours, decDeg, Refraction.Normal);
+        return (hz.altitude, hz.azimuth);
+    }
+
+    private bool IsCurrentCalc(CancellationToken token)
+        => _calcCts is not null && _calcCts.Token == token;
+
     // ── Helpers ───────────────────────────────────────────────────────────────
     private static string FormatTimeOpt(DateTime? dt)
         => dt.HasValue ? dt.Value.ToLocalTime().ToString("HH:mm") : "—";
@@ -741,5 +1140,160 @@
         NightQuality.Good => L["Eph_Tonight_Quality_Good"],
         NightQuality.Fair => L["Eph_Tonight_Quality_Fair"],
         _                 => L["Eph_Tonight_Quality_Poor"]
+    };
+
+    private string EclipseBannerClass(LocalEclipseType type) => type switch
+    {
+        LocalEclipseType.Total => "eph-eclipse-banner--total",
+        LocalEclipseType.Annular => "eph-eclipse-banner--annular",
+        _ => "eph-eclipse-banner--partial"
+    };
+
+    private string EclipseEmoji(LocalEclipseType type) => type switch
+    {
+        LocalEclipseType.Total => "🌑",
+        LocalEclipseType.Annular => "💍",
+        _ => "🌒"
+    };
+
+    private string EclipseTypeLabel(LocalEclipseType type) => type switch
+    {
+        LocalEclipseType.Total => L["Eph_Eclipse_Type_Total"],
+        LocalEclipseType.Annular => L["Eph_Eclipse_Type_Annular"],
+        _ => L["Eph_Eclipse_Type_Partial"]
+    };
+
+    private static int DaysUntilEclipse(DateTime eclipseDate)
+        => Math.Max(0, (int)Math.Ceiling((eclipseDate - DateTime.UtcNow).TotalDays));
+
+    private string DsoTypeLabel(string type) => type switch
+    {
+        "Nebula" => L["Eph_DSO_Type_Nebula"],
+        "OpenCluster" => L["Eph_DSO_Type_OpenCluster"],
+        "GlobularCluster" => L["Eph_DSO_Type_GlobularCluster"],
+        _ => L["Eph_DSO_Type_Galaxy"]
+    };
+
+    private static string DsoAccentClass(string type) => type switch
+    {
+        "Nebula" => "eph-dso-card--nebula",
+        "OpenCluster" => "eph-dso-card--open",
+        "GlobularCluster" => "eph-dso-card--globular",
+        _ => "eph-dso-card--galaxy"
+    };
+
+    private static string BuildDsoVisibilityStyle(DsoVisibility item)
+        => $"left:{item.VisibleStartPercent.ToString("F2", CultureInfo.InvariantCulture)}%;width:{item.VisibleWidthPercent.ToString("F2", CultureInfo.InvariantCulture)}%;";
+
+    private static string BuildDsoThumbnailUrl(DsoEntry dso)
+    {
+        var fov = DsoFieldOfView(dso).ToString("F3", CultureInfo.InvariantCulture);
+        var ra = dso.RaDeg.ToString("F4", CultureInfo.InvariantCulture);
+        var dec = dso.DecDeg.ToString("F4", CultureInfo.InvariantCulture);
+
+        return $"https://alasky.cds.unistra.fr/hips-image-services/hips2fits?hips=CDS%2FP%2FDSS2%2Fcolor&width=320&height=220&projection=TAN&fov={fov}&ra={ra}&dec={dec}&format=jpg";
+    }
+
+    private static double DsoFieldOfView(DsoEntry dso) => dso.Type switch
+    {
+        "Nebula" => 1.2,
+        "OpenCluster" => 1.5,
+        "GlobularCluster" => 0.6,
+        _ => 0.8
+    };
+
+    private static string DsoThumbnailAltText(DsoEntry dso)
+        => $"{dso.Id} {dso.Name}";
+
+    private void OnDsoImageError(DsoVisibility item)
+    {
+        item.ThumbnailFailed = true;
+        StateHasChanged();
+    }
+
+    private static readonly List<DsoEntry> DsoCatalog = new()
+    {
+        new("M42", "Gran Nebulosa de Orión", "Orion", "Nebula", "🌌", 83.8, -5.4, 4.0, "Nebulosa brillante en la espada de Orión."),
+        new("M43", "De Mairan", "Orion", "Nebula", "🌌", 83.9, -5.3, 9.0, "Pequeña nebulosa unida al complejo de Orión."),
+        new("M1", "Nebulosa del Cangrejo", "Taurus", "Nebula", "🌌", 83.6, 22.0, 8.4, "Resto de supernova histórico en Tauro."),
+        new("M57", "Nebulosa del Anillo", "Lyra", "Nebula", "🌌", 283.4, 33.0, 8.8, "Planetaria icónica con anillo bien definido."),
+        new("M27", "Nebulosa Dumbbell", "Vulpecula", "Nebula", "🌌", 299.9, 22.7, 7.4, "Planetaria extensa y muy agradecida visualmente."),
+        new("M97", "Nebulosa del Búho", "Ursa Major", "Nebula", "🌌", 168.7, 55.0, 9.9, "Planetaria tenue famosa por sus dos cavidades oscuras."),
+        new("M17", "Nebulosa Omega", "Sagittarius", "Nebula", "🌌", 275.2, -16.2, 6.0, "Nebulosa de emisión brillante en Sagitario."),
+        new("M16", "Nebulosa del Águila", "Serpens", "Nebula", "🌌", 274.7, -13.8, 6.0, "Región de formación estelar de los Pilares de la Creación."),
+        new("M20", "Nebulosa Trífida", "Sagittarius", "Nebula", "🌌", 270.6, -23.0, 6.3, "Nebulosa dividida por bandas oscuras muy fotogénicas."),
+        new("M8", "Nebulosa de la Laguna", "Sagittarius", "Nebula", "🌌", 271.0, -24.4, 6.0, "Gran nebulosa estival visible a simple vista en cielos oscuros."),
+        new("NGC 7293", "Nebulosa de la Hélice", "Aquarius", "Nebula", "🌌", 337.4, -20.8, 7.3, "Planetaria cercana y extensa en Acuario."),
+        new("NGC 2244", "Nebulosa Roseta", "Monoceros", "Nebula", "🌌", 98.2, 4.9, 4.8, "Complejo nebular amplio alrededor de un cúmulo joven."),
+        new("NGC 6992", "Velo Oriental", "Cygnus", "Nebula", "🌌", 314.4, 31.7, 7.0, "Filamento brillante del remanente de la Nebulosa del Velo."),
+        new("IC 1805", "Nebulosa del Corazón", "Cassiopeia", "Nebula", "🌌", 38.2, 61.5, 6.5, "Gran región HII del cielo boreal."),
+        new("M45", "Pléyades", "Taurus", "OpenCluster", "✨", 56.8, 24.1, 1.6, "Cúmulo abierto brillante y muy extenso."),
+        new("M44", "La Colmena", "Cancer", "OpenCluster", "✨", 130.0, 19.6, 3.1, "Gran cúmulo visible incluso a simple vista."),
+        new("M36", "M36", "Auriga", "OpenCluster", "✨", 84.1, 34.1, 6.0, "Cúmulo compacto del rico campo de Auriga."),
+        new("M37", "M37", "Auriga", "OpenCluster", "✨", 88.1, 32.6, 5.6, "Cúmulo muy rico y fino para aperturas medias."),
+        new("M38", "M38", "Auriga", "OpenCluster", "✨", 82.8, 35.8, 6.4, "Cúmulo abierto amplio en Auriga."),
+        new("M35", "M35", "Gemini", "OpenCluster", "✨", 92.2, 24.3, 5.1, "Cúmulo brillante cerca del pie de Géminis."),
+        new("M48", "M48", "Hydra", "OpenCluster", "✨", 123.4, -5.8, 5.8, "Cúmulo abierto grande de brillo uniforme."),
+        new("M6", "Cúmulo Mariposa", "Scorpius", "OpenCluster", "✨", 265.1, -32.2, 4.2, "Cúmulo sureño con silueta de alas abiertas."),
+        new("M7", "M7", "Scorpius", "OpenCluster", "✨", 268.5, -34.8, 3.3, "Cúmulo amplio y brillante muy bajo en latitudes medias."),
+        new("M11", "Cúmulo del Pato Salvaje", "Scutum", "OpenCluster", "✨", 282.8, -6.3, 5.8, "Uno de los cúmulos abiertos más ricos del cielo."),
+        new("M18", "M18", "Sagittarius", "OpenCluster", "✨", 274.3, -17.1, 6.9, "Cúmulo abierto pequeño en los campos de Sagitario."),
+        new("M21", "M21", "Sagittarius", "OpenCluster", "✨", 273.0, -22.5, 5.9, "Cúmulo abierto joven próximo a la Trífida."),
+        new("M23", "M23", "Sagittarius", "OpenCluster", "✨", 269.3, -19.0, 5.5, "Cúmulo amplio con muchas estrellas resolubles."),
+        new("M25", "M25", "Sagittarius", "OpenCluster", "✨", 277.9, -19.2, 4.6, "Cúmulo abierto grande sobre la Vía Láctea estival."),
+        new("M39", "M39", "Cygnus", "OpenCluster", "✨", 323.9, 48.4, 4.6, "Cúmulo muy abierto ideal para bajos aumentos."),
+        new("NGC 869", "Doble Cúmulo Norte", "Perseus", "OpenCluster", "✨", 34.7, 57.1, 3.7, "Uno de los dos cúmulos del famoso doble de Perseo."),
+        new("NGC 884", "Doble Cúmulo Sur", "Perseus", "OpenCluster", "✨", 35.9, 57.1, 3.8, "Segundo componente del célebre doble cúmulo."),
+        new("Mel 20", "Alpha Persei", "Perseus", "OpenCluster", "✨", 51.5, 49.0, 1.2, "Asociación estelar amplia alrededor de Mirfak."),
+        new("M41", "M41", "Canis Major", "OpenCluster", "✨", 101.5, -20.7, 4.5, "Cúmulo brillante bajo Sirio."),
+        new("M50", "M50", "Monoceros", "OpenCluster", "✨", 105.7, -8.4, 5.9, "Cúmulo abierto fino en Unicornio."),
+        new("IC 4665", "IC 4665", "Ophiuchus", "OpenCluster", "✨", 266.6, 5.7, 4.2, "Cúmulo abierto muy amplio visible con prismáticos."),
+        new("Mel 111", "Cabellera de Berenice", "Coma Berenices", "OpenCluster", "✨", 186.0, 26.0, 1.8, "Gran cúmulo disperso ideal para campo amplio."),
+        new("M13", "Gran Cúmulo de Hércules", "Hercules", "GlobularCluster", "✨", 250.4, 36.5, 5.8, "Globular brillante y muy popular en verano."),
+        new("M92", "M92", "Hercules", "GlobularCluster", "✨", 259.3, 43.1, 6.4, "Globular compacto rival de M13."),
+        new("M5", "M5", "Serpens", "GlobularCluster", "✨", 229.6, 2.1, 5.6, "Globular grande y ricamente poblado."),
+        new("M3", "M3", "Canes Venatici", "GlobularCluster", "✨", 205.5, 28.4, 6.2, "Globular brillante en la primavera boreal."),
+        new("M10", "M10", "Ophiuchus", "GlobularCluster", "✨", 254.3, -4.1, 6.6, "Globular concentrado en Ofiuco."),
+        new("M12", "M12", "Ophiuchus", "GlobularCluster", "✨", 251.8, -1.9, 6.7, "Globular algo más suelto que M10."),
+        new("M14", "M14", "Ophiuchus", "GlobularCluster", "✨", 264.4, -3.2, 7.6, "Globular tenue pero accesible con telescopio medio."),
+        new("M62", "M62", "Ophiuchus", "GlobularCluster", "✨", 255.3, -30.1, 6.5, "Globular brillante muy bajo desde Europa."),
+        new("M19", "M19", "Ophiuchus", "GlobularCluster", "✨", 255.7, -26.3, 6.8, "Globular notablemente oblongo."),
+        new("M4", "M4", "Scorpius", "GlobularCluster", "✨", 245.9, -26.5, 5.6, "Globular cercano junto a Antares."),
+        new("M80", "M80", "Scorpius", "GlobularCluster", "✨", 244.3, -23.0, 7.3, "Globular denso entre las garras de Escorpio."),
+        new("M22", "M22", "Sagittarius", "GlobularCluster", "✨", 279.1, -23.9, 5.1, "Uno de los globulares más brillantes del cielo."),
+        new("M28", "M28", "Sagittarius", "GlobularCluster", "✨", 276.1, -24.9, 6.8, "Globular compacto en los campos de Sagitario."),
+        new("M9", "M9", "Ophiuchus", "GlobularCluster", "✨", 259.8, -18.5, 7.7, "Globular intermedio con núcleo condensado."),
+        new("M15", "M15", "Pegasus", "GlobularCluster", "✨", 322.5, 12.2, 6.2, "Globular otoñal muy concentrado."),
+        new("M2", "M2", "Aquarius", "GlobularCluster", "✨", 323.4, -0.8, 6.5, "Globular brillante en Acuario."),
+        new("M30", "M30", "Capricornus", "GlobularCluster", "✨", 325.1, -23.2, 7.2, "Globular compacto de Capricornio."),
+        new("M56", "M56", "Lyra", "GlobularCluster", "✨", 289.1, 30.2, 8.3, "Globular pequeño entre Lira y Cisne."),
+        new("M71", "M71", "Sagitta", "GlobularCluster", "✨", 298.4, 18.8, 8.2, "Cúmulo globular laxo en la Flecha."),
+        new("NGC 5139", "Omega Centauri", "Centaurus", "GlobularCluster", "✨", 201.7, -47.5, 3.9, "El mayor cúmulo globular visible desde la Tierra."),
+        new("M79", "M79", "Lepus", "GlobularCluster", "✨", 81.0, -24.5, 7.7, "Globular invernal en la Liebre."),
+        new("NGC 288", "NGC 288", "Sculptor", "GlobularCluster", "✨", 13.2, -26.6, 8.1, "Globular austrial de bajo brillo superficial."),
+        new("M31", "Galaxia de Andrómeda", "Andromeda", "Galaxy", "🌀", 10.7, 41.3, 3.4, "La gran galaxia vecina del Grupo Local."),
+        new("M32", "M32", "Andromeda", "Galaxy", "🌀", 10.7, 40.9, 8.7, "Galaxia satélite compacta de Andrómeda."),
+        new("M110", "M110", "Andromeda", "Galaxy", "🌀", 10.1, 41.7, 8.5, "Segunda compañera destacada de M31."),
+        new("M33", "Galaxia del Triángulo", "Triangulum", "Galaxy", "🌀", 23.5, 30.7, 5.7, "Gran espiral de bajo brillo superficial."),
+        new("M81", "Galaxia de Bode", "Ursa Major", "Galaxy", "🌀", 148.9, 69.1, 6.9, "Espiral brillante emparejada con M82."),
+        new("M82", "Galaxia del Cigarro", "Ursa Major", "Galaxy", "🌀", 148.9, 69.7, 8.4, "Galaxia irregular famosa por su forma alargada."),
+        new("M51", "Galaxia del Remolino", "Canes Venatici", "Galaxy", "🌀", 202.5, 47.2, 8.4, "Espiral con compañero visible en telescopio."),
+        new("M101", "Galaxia del Molinete", "Ursa Major", "Galaxy", "🌀", 210.8, 54.3, 7.9, "Gran espiral de baja densidad superficial."),
+        new("M63", "Galaxia del Girasol", "Canes Venatici", "Galaxy", "🌀", 198.0, 42.0, 8.6, "Espiral brillante con halo granulado."),
+        new("M94", "M94", "Canes Venatici", "Galaxy", "🌀", 192.7, 41.1, 8.2, "Galaxia compacta con núcleo muy luminoso."),
+        new("M64", "Galaxia del Ojo Negro", "Coma Berenices", "Galaxy", "🌀", 194.2, 21.7, 8.5, "Galaxia célebre por su banda oscura."),
+        new("M104", "Galaxia del Sombrero", "Virgo", "Galaxy", "🌀", 190.0, -11.6, 8.0, "Galaxia de perfil con gran bulbo central."),
+        new("M87", "M87", "Virgo", "Galaxy", "🌀", 187.7, 12.4, 8.6, "Gigante elíptica del cúmulo de Virgo."),
+        new("M84", "M84", "Virgo", "Galaxy", "🌀", 186.3, 12.9, 9.1, "Elíptica brillante del corazón de Virgo."),
+        new("M86", "M86", "Virgo", "Galaxy", "🌀", 186.6, 12.9, 8.9, "Otra destacada elíptica del conjunto de Virgo."),
+        new("M49", "M49", "Virgo", "Galaxy", "🌀", 187.4, 8.0, 8.4, "Galaxia elíptica brillante en Virgo."),
+        new("M77", "M77", "Cetus", "Galaxy", "🌀", 37.0, 0.0, 8.9, "Galaxia Seyfert luminosa en Cetus."),
+        new("M74", "M74", "Pisces", "Galaxy", "🌀", 24.2, 15.8, 9.4, "Espiral frontal delicada en Piscis."),
+        new("M106", "M106", "Canes Venatici", "Galaxy", "🌀", 184.7, 47.3, 8.4, "Gran espiral con núcleo activo."),
+        new("NGC 253", "Galaxia del Escultor", "Sculptor", "Galaxy", "🌀", 11.9, -25.3, 7.1, "Galaxia brillante visible desde latitudes templadas del sur."),
+        new("NGC 891", "NGC 891", "Andromeda", "Galaxy", "🌀", 35.6, 42.4, 9.9, "Galaxia de canto con prominente banda de polvo."),
+        new("NGC 4565", "Galaxia de la Aguja", "Coma Berenices", "Galaxy", "🌀", 189.1, 25.9, 9.6, "Una de las galaxias de canto más elegantes."),
+        new("NGC 7331", "NGC 7331", "Pegasus", "Galaxy", "🌀", 339.3, 34.4, 9.5, "Espiral brillante en Pegaso, cercana al Quinteto de Stephan."),
+        new("NGC 6946", "Galaxia de los Fuegos Artificiales", "Cygnus", "Galaxy", "🌀", 308.7, 60.2, 8.8, "Galaxia espiral famosa por sus supernovas.")
     };
 }

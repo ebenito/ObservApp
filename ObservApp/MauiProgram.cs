@@ -72,6 +72,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IObservationService>(
             sp => sp.GetRequiredService<SupabaseService>());
         builder.Services.AddTransient<AuthViewModel>();
+        builder.Services.AddTransient<HistorialViewModel>();
 
         // ── Geolocalización ───────────────────────────────────────────────────
         builder.Services.AddSingleton<IGeolocation>(Geolocation.Default);

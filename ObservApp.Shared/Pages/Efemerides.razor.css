@@ -232,6 +232,99 @@
     font-size: 0.88rem;
 }
 
+/* ── Banner eclipse local ── */
+.eph-eclipse-banner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 16px;
+    padding: 18px;
+    background: var(--obs-navy);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-lg);
+}
+
+.eph-eclipse-banner--total {
+    border-color: var(--obs-aurora);
+    box-shadow: 0 0 0 1px rgba(46,196,182,.12) inset;
+}
+
+.eph-eclipse-banner--annular {
+    border-color: var(--obs-star);
+    box-shadow: 0 0 0 1px rgba(244,196,48,.12) inset;
+}
+
+.eph-eclipse-banner--partial {
+    border-color: var(--obs-comet);
+    box-shadow: 0 0 0 1px rgba(148,163,184,.12) inset;
+}
+
+.eph-eclipse-banner-icon {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.eph-eclipse-banner-title {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--obs-comet);
+    margin-bottom: 6px;
+}
+
+.eph-eclipse-banner-main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.eph-eclipse-banner-type {
+    color: var(--obs-moon);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.eph-eclipse-banner-date,
+.eph-eclipse-banner-meta strong {
+    color: var(--obs-moon);
+    font-family: var(--font-mono);
+}
+
+.eph-eclipse-banner-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    color: var(--obs-comet);
+    font-size: 0.84rem;
+}
+
+.eph-eclipse-banner-sep {
+    color: var(--obs-border);
+}
+
+.eph-eclipse-banner-link {
+    color: var(--obs-aurora);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 700;
+    transition: opacity var(--transition);
+}
+
+    .eph-eclipse-banner-link:hover {
+        opacity: .85;
+    }
+
+@media (max-width: 640px) {
+    .eph-eclipse-banner {
+        grid-template-columns: 1fr;
+        text-align: left;
+    }
+}
+
 /* ── Tabla de planetas (≥640px) ── */
 .eph-planets-table-wrapper {
     overflow-x: auto;
@@ -513,4 +606,247 @@
 
 .eph-comet {
     color: var(--obs-comet);
+}
+
+/* ── Cielo profundo ── */
+.eph-dso-header {
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.eph-dso-header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.eph-dso-header-subtitle {
+    color: var(--obs-comet);
+    font-size: 0.76rem;
+    font-weight: 400;
+}
+
+.eph-dso-count {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(46,196,182,.1);
+    color: var(--obs-aurora);
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.eph-dso-loading-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 180px;
+}
+
+.eph-dso-spinner {
+    color: var(--obs-aurora);
+}
+
+.eph-dso-loading-text {
+    color: var(--obs-comet);
+    font-size: 0.88rem;
+}
+
+.eph-dso-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px;
+}
+
+.eph-dso-card {
+    background: var(--obs-deep);
+    border: 1px solid var(--obs-border);
+    border-left-width: 4px;
+    border-radius: var(--radius-md);
+    padding: 14px;
+}
+
+.eph-dso-media-layout {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+}
+
+.eph-dso-thumb-wrap {
+    width: 100%;
+}
+
+.eph-dso-thumb,
+.eph-dso-thumb-fallback {
+    width: 100%;
+    aspect-ratio: 16 / 11;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--obs-border);
+    background: var(--obs-midnight);
+}
+
+.eph-dso-thumb {
+    display: block;
+    object-fit: cover;
+}
+
+.eph-dso-thumb-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--obs-moon);
+    background:
+        radial-gradient(circle at 30% 25%, rgba(123,94,167,.35), transparent 35%),
+        radial-gradient(circle at 70% 65%, rgba(46,196,182,.22), transparent 32%),
+        var(--obs-midnight);
+}
+
+.eph-dso-thumb-fallback-emoji {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.eph-dso-thumb-fallback-id {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--obs-comet);
+}
+
+.eph-dso-main {
+    min-width: 0;
+}
+
+.eph-dso-card--nebula {
+    border-left-color: var(--obs-aurora);
+}
+
+.eph-dso-card--open {
+    border-left-color: var(--obs-star);
+}
+
+.eph-dso-card--globular {
+    border-left-color: var(--obs-nebula);
+}
+
+.eph-dso-card--galaxy {
+    border-left-color: var(--obs-mars);
+}
+
+.eph-dso-card-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.eph-dso-title-wrap {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.eph-dso-emoji {
+    font-size: 1.4rem;
+    line-height: 1;
+    margin-top: 2px;
+}
+
+.eph-dso-name-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: baseline;
+}
+
+.eph-dso-id {
+    color: var(--obs-star);
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+.eph-dso-name {
+    color: var(--obs-moon);
+    font-size: 0.98rem;
+    font-weight: 700;
+}
+
+.eph-dso-constellation,
+.eph-dso-type-line {
+    color: var(--obs-comet);
+    font-size: 0.82rem;
+}
+
+.eph-dso-type-line {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.eph-dso-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 12px;
+}
+
+.eph-dso-track-wrap {
+    margin-top: 12px;
+}
+
+.eph-dso-track-labels {
+    display: flex;
+    justify-content: space-between;
+    color: var(--obs-comet);
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    margin-bottom: 6px;
+}
+
+.eph-dso-track {
+    position: relative;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--obs-midnight);
+    border: 1px solid var(--obs-border);
+    overflow: hidden;
+}
+
+.eph-dso-track-visible {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--obs-aurora), var(--obs-star));
+}
+
+@media (max-width: 640px) {
+    .eph-dso-media-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .eph-dso-thumb-wrap {
+        max-width: 240px;
+    }
+
+    .eph-dso-card-top {
+        flex-direction: column;
+    }
+
+    .eph-dso-type-line {
+        text-align: left;
+        white-space: normal;
+    }
+
+    .eph-dso-stats-grid {
+        grid-template-columns: 1fr;
+    }
 }

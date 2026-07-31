@@ -159,6 +159,48 @@
   <data name="Nav_Exit" xml:space="preserve">
     <value>خروج</value>
   </data>
+  <data name="Auth_SignIn" xml:space="preserve">
+    <value>تسجيل الدخول</value>
+  </data>
+  <data name="Auth_SignUp" xml:space="preserve">
+    <value>إنشاء حساب</value>
+  </data>
+  <data name="Auth_Email" xml:space="preserve">
+    <value>البريد الإلكتروني</value>
+  </data>
+  <data name="Auth_Password" xml:space="preserve">
+    <value>كلمة المرور</value>
+  </data>
+  <data name="Auth_ConfirmPassword" xml:space="preserve">
+    <value>تأكيد كلمة المرور</value>
+  </data>
+  <data name="Auth_DisplayName" xml:space="preserve">
+    <value>اسم المستخدم</value>
+  </data>
+  <data name="Auth_NoAccount" xml:space="preserve">
+    <value>ليس لديك حساب؟ سجّل الآن</value>
+  </data>
+  <data name="Auth_HasAccount" xml:space="preserve">
+    <value>هل لديك حساب بالفعل؟ سجّل الدخول</value>
+  </data>
+  <data name="Auth_ForgotPassword" xml:space="preserve">
+    <value>هل نسيت كلمة المرور؟</value>
+  </data>
+  <data name="Auth_PasswordMismatch" xml:space="preserve">
+    <value>كلمتا المرور غير متطابقتين</value>
+  </data>
+  <data name="Auth_SigningIn" xml:space="preserve">
+    <value>جارٍ تسجيل الدخول…</value>
+  </data>
+  <data name="Auth_CreatingAccount" xml:space="preserve">
+    <value>جارٍ إنشاء الحساب…</value>
+  </data>
+  <data name="Auth_WelcomeBack" xml:space="preserve">
+    <value>مرحبًا بعودتك</value>
+  </data>
+  <data name="Auth_CreateAccount" xml:space="preserve">
+    <value>إنشاء حساب</value>
+  </data>
   <data name="Nav_Section_Main" xml:space="preserve">
     <value>رئيسي</value>
   </data>
@@ -452,6 +494,27 @@
   </data>
   <data name="Home_Card_Calculators_Desc" xml:space="preserve">
     <value>مجال الرؤية، تعريض الكسوف، التكبير والمزيد</value>
+  </data>
+  <data name="Home_Welcome_User" xml:space="preserve">
+    <value>مرحباً، {0}</value>
+  </data>
+  <data name="Home_Sessions_Count" xml:space="preserve">
+    <value>تم تسجيل {0} جلسة</value>
+  </data>
+  <data name="Home_Recent_Title" xml:space="preserve">
+    <value>آخر عمليات الرصد الخاصة بك</value>
+  </data>
+  <data name="Home_Recent_Empty" xml:space="preserve">
+    <value>ليس لديك جلسات بعد. ابدأ اليوم!</value>
+  </data>
+  <data name="Home_Recent_ViewAll" xml:space="preserve">
+    <value>عرض السجل الكامل</value>
+  </data>
+  <data name="Home_Recent_StartNow" xml:space="preserve">
+    <value>سجّل أول جلسة</value>
+  </data>
+  <data name="Home_Lock_Hint" xml:space="preserve">
+    <value>سجّل الدخول للوصول</value>
   </data>
   <data name="Home_Features_Title" xml:space="preserve">
     <value>ماذا يمكنك أن تفعل؟</value>
@@ -1123,6 +1186,75 @@
   <data name="Eph_Moon_Illumination" xml:space="preserve">
     <value>إضاءة القمر</value>
   </data>
+  <data name="Eph_Eclipse_BannerTitle" xml:space="preserve">
+    <value>كسوف شمسي قريب في منطقتك</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Total" xml:space="preserve">
+    <value>كسوف كلي</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Annular" xml:space="preserve">
+    <value>كسوف حلقي</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Partial" xml:space="preserve">
+    <value>كسوف جزئي</value>
+  </data>
+  <data name="Eph_Eclipse_Coverage" xml:space="preserve">
+    <value>أقصى نسبة احتجاب من موقعك</value>
+  </data>
+  <data name="Eph_Eclipse_DaysLeft" xml:space="preserve">
+    <value>أيام</value>
+  </data>
+  <data name="Eph_Eclipse_Details" xml:space="preserve">
+    <value>عرض تفاصيل الكسوف →</value>
+  </data>
+  <data name="Eph_Eclipse_NoVisible" xml:space="preserve">
+    <value>لا يوجد أي كسوف مرئي من هذا الموقع خلال العام القادم</value>
+  </data>
+  <data name="Eph_DSO_Title" xml:space="preserve">
+    <value>السماء العميقة الليلة</value>
+  </data>
+  <data name="Eph_DSO_Subtitle" xml:space="preserve">
+    <value>الأجرام المرئية من موقعك (الارتفاع &gt; 10°)</value>
+  </data>
+  <data name="Eph_DSO_Loading" xml:space="preserve">
+    <value>جارٍ حساب الأجرام المرئية…</value>
+  </data>
+  <data name="Eph_DSO_Empty" xml:space="preserve">
+    <value>لا توجد أجرام من السماء العميقة مرئية الليلة من هذا الموقع.</value>
+  </data>
+  <data name="Eph_DSO_MaxAlt" xml:space="preserve">
+    <value>أقصى ارتفاع</value>
+  </data>
+  <data name="Eph_DSO_BestTime" xml:space="preserve">
+    <value>أفضل وقت</value>
+  </data>
+  <data name="Eph_DSO_VisibleFrom" xml:space="preserve">
+    <value>مرئي من</value>
+  </data>
+  <data name="Eph_DSO_VisibleTo" xml:space="preserve">
+    <value>إلى</value>
+  </data>
+  <data name="Eph_DSO_Magnitude" xml:space="preserve">
+    <value>القدر</value>
+  </data>
+  <data name="Eph_DSO_Type_Nebula" xml:space="preserve">
+    <value>سديم</value>
+  </data>
+  <data name="Eph_DSO_Type_OpenCluster" xml:space="preserve">
+    <value>عنقود مفتوح</value>
+  </data>
+  <data name="Eph_DSO_Type_GlobularCluster" xml:space="preserve">
+    <value>عنقود كروي</value>
+  </data>
+  <data name="Eph_DSO_Type_Galaxy" xml:space="preserve">
+    <value>مجرة</value>
+  </data>
+  <data name="Eph_DSO_Constellation" xml:space="preserve">
+    <value>الكوكبة</value>
+  </data>
+  <data name="Eph_DSO_Count" xml:space="preserve">
+    <value>أجرام مرئية</value>
+  </data>
   <data name="Auth_SignIn" xml:space="preserve">
     <value>تسجيل الدخول</value>
   </data>
@@ -1176,5 +1308,185 @@
   </data>
   <data name="Obs_Delete" xml:space="preserve">
     <value>حذف</value>
+  </data>
+  <data name="Hist_Title" xml:space="preserve">
+    <value>سجل الرصد</value>
+  </data>
+  <data name="Hist_Subtitle" xml:space="preserve">
+    <value>{0} جلسات مسجلة</value>
+  </data>
+  <data name="Hist_NewSession" xml:space="preserve">
+    <value>جلسة جديدة</value>
+  </data>
+  <data name="Hist_Empty_Title" xml:space="preserve">
+    <value>لا توجد جلسات بعد</value>
+  </data>
+  <data name="Hist_Empty_Desc" xml:space="preserve">
+    <value>لم تسجل أي جلسة رصد بعد.</value>
+  </data>
+  <data name="Hist_FirstSession" xml:space="preserve">
+    <value>سجل الجلسة الأولى</value>
+  </data>
+  <data name="Hist_Objects" xml:space="preserve">
+    <value>{0} أجسام</value>
+  </data>
+  <data name="Hist_Seeing" xml:space="preserve">
+    <value>الرؤية</value>
+  </data>
+  <data name="Hist_Transparency" xml:space="preserve">
+    <value>الشفافية</value>
+  </data>
+  <data name="Hist_ViewDetails" xml:space="preserve">
+    <value>عرض التفاصيل</value>
+  </data>
+  <data name="Hist_Edit" xml:space="preserve">
+    <value>تعديل</value>
+  </data>
+  <data name="Hist_Delete" xml:space="preserve">
+    <value>حذف</value>
+  </data>
+  <data name="Hist_ConfirmDelete" xml:space="preserve">
+    <value>هل تريد حذف هذه الجلسة؟</value>
+  </data>
+  <data name="Hist_ConfirmYes" xml:space="preserve">
+    <value>نعم، احذف</value>
+  </data>
+  <data name="Hist_ConfirmNo" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
+  <data name="Hist_Targets_Title" xml:space="preserve">
+    <value>الأجرام المرصودة</value>
+  </data>
+  <data name="Hist_Target_Eyepiece" xml:space="preserve">
+    <value>العدسة العينية</value>
+  </data>
+  <data name="Hist_Target_Magnification" xml:space="preserve">
+    <value>التكبير</value>
+  </data>
+  <data name="Hist_Target_Rating" xml:space="preserve">
+    <value>التقييم</value>
+  </data>
+  <data name="Hist_Location" xml:space="preserve">
+    <value>الموقع</value>
+  </data>
+  <data name="Hist_Latitude" xml:space="preserve">
+    <value>خط العرض</value>
+  </data>
+  <data name="Hist_Longitude" xml:space="preserve">
+    <value>خط الطول</value>
+  </data>
+  <data name="Hist_Date" xml:space="preserve">
+    <value>التاريخ</value>
+  </data>
+  <data name="Hist_Notes" xml:space="preserve">
+    <value>ملاحظات</value>
+  </data>
+  <data name="Hist_Close" xml:space="preserve">
+    <value>إغلاق</value>
+  </data>
+  <data name="Hist_LoadError" xml:space="preserve">
+    <value>حدث خطأ أثناء تحميل الجلسات.</value>
+  </data>
+  <data name="Plan_Title_New" xml:space="preserve">
+    <value>جلسة جديدة</value>
+  </data>
+  <data name="Plan_Title_Edit" xml:space="preserve">
+    <value>تعديل الجلسة</value>
+  </data>
+  <data name="Plan_Section_Session" xml:space="preserve">
+    <value>بيانات الجلسة</value>
+  </data>
+  <data name="Plan_Section_Targets" xml:space="preserve">
+    <value>الأجرام المرصودة</value>
+  </data>
+  <data name="Plan_SessionTitle" xml:space="preserve">
+    <value>عنوان الجلسة</value>
+  </data>
+  <data name="Plan_SessionTitle_Required" xml:space="preserve">
+    <value>العنوان مطلوب</value>
+  </data>
+  <data name="Plan_Date" xml:space="preserve">
+    <value>التاريخ</value>
+  </data>
+  <data name="Plan_Time" xml:space="preserve">
+    <value>وقت البدء</value>
+  </data>
+  <data name="Plan_Location" xml:space="preserve">
+    <value>الموقع</value>
+  </data>
+  <data name="Plan_LocationName" xml:space="preserve">
+    <value>اسم المكان</value>
+  </data>
+  <data name="Plan_Seeing" xml:space="preserve">
+    <value>جودة الرؤية (1-5)</value>
+  </data>
+  <data name="Plan_Transparency" xml:space="preserve">
+    <value>الشفافية (1-5)</value>
+  </data>
+  <data name="Plan_Notes" xml:space="preserve">
+    <value>ملاحظات</value>
+  </data>
+  <data name="Plan_AddTarget" xml:space="preserve">
+    <value>+ إضافة جرم</value>
+  </data>
+  <data name="Plan_Target_Name" xml:space="preserve">
+    <value>اسم الجرم</value>
+  </data>
+  <data name="Plan_Target_Name_Required" xml:space="preserve">
+    <value>الاسم مطلوب</value>
+  </data>
+  <data name="Plan_Target_Type" xml:space="preserve">
+    <value>النوع</value>
+  </data>
+  <data name="Plan_Target_Constellation" xml:space="preserve">
+    <value>الكوكبة</value>
+  </data>
+  <data name="Plan_Target_Eyepiece" xml:space="preserve">
+    <value>العدسة العينية</value>
+  </data>
+  <data name="Plan_Target_Magnification" xml:space="preserve">
+    <value>التكبير</value>
+  </data>
+  <data name="Plan_Target_Rating" xml:space="preserve">
+    <value>التقييم</value>
+  </data>
+  <data name="Plan_Target_Notes" xml:space="preserve">
+    <value>ملاحظات الجرم</value>
+  </data>
+  <data name="Plan_Save" xml:space="preserve">
+    <value>حفظ الجلسة</value>
+  </data>
+  <data name="Plan_Saving" xml:space="preserve">
+    <value>جارٍ الحفظ…</value>
+  </data>
+  <data name="Plan_Cancel" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
+  <data name="Plan_SaveError" xml:space="preserve">
+    <value>خطأ أثناء حفظ الجلسة.</value>
+  </data>
+  <data name="Plan_LoadError" xml:space="preserve">
+    <value>خطأ أثناء تحميل الجلسة.</value>
+  </data>
+  <data name="Plan_Type_Planet" xml:space="preserve">
+    <value>كوكب</value>
+  </data>
+  <data name="Plan_Type_Moon" xml:space="preserve">
+    <value>القمر</value>
+  </data>
+  <data name="Plan_Type_DeepSkyObject" xml:space="preserve">
+    <value>جرم من أعماق السماء</value>
+  </data>
+  <data name="Plan_Type_DoubleStar" xml:space="preserve">
+    <value>نجم مزدوج</value>
+  </data>
+  <data name="Plan_Type_Asteroid" xml:space="preserve">
+    <value>كويكب</value>
+  </data>
+  <data name="Plan_Type_Comet" xml:space="preserve">
+    <value>مذنب</value>
+  </data>
+  <data name="Plan_Type_Other" xml:space="preserve">
+    <value>أخرى</value>
   </data>
 </root>

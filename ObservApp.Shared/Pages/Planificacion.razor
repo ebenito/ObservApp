@@ -1,0 +1,598 @@
+@page "/planificacion"
+@page "/planificacion/{SessionId}"
+@using System.Globalization
+@using Microsoft.AspNetCore.Components
+@using ObservApp.Shared.Models
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+@inject IObservationService ObservationService
+@inject IGeolocationService GeoService
+@inject IFavoriteLocationsService FavLocationsService
+@inject NavigationManager NavManager
+
+<PageTitle>@(IsEditMode ? L["Plan_Title_Edit"] : L["Plan_Title_New"])</PageTitle>
+
+<AuthGuard>
+    <div class="plan-page">
+        <div class="plan-header">
+            <h1 class="plan-title">@(IsEditMode ? L["Plan_Title_Edit"] : L["Plan_Title_New"])</h1>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(_loadError))
+        {
+            <div class="plan-error-banner">⚠️ @_loadError</div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(_saveError))
+        {
+            <div class="plan-error-banner">⚠️ @_saveError</div>
+        }
+
+        @if (_loading)
+        {
+            <div class="plan-loading">@L["Status_Loading"]</div>
+        }
+        else
+        {
+            <section class="plan-card">
+                <h2 class="plan-section-title">@L["Plan_Section_Session"]</h2>
+
+                <div class="plan-field">
+                    <label>@L["Plan_SessionTitle"]</label>
+                    <input class="plan-input" type="text" @bind="_session.Title" />
+                    @if (_showValidation && _errors.TryGetValue("Title", out var titleError))
+                    {
+                        <div class="plan-field-error">@titleError</div>
+                    }
+                </div>
+
+                <div class="plan-grid-2">
+                    <div class="plan-field">
+                        <label>@L["Plan_Date"]</label>
+                        <input class="plan-input" type="date" value="@_dateValue" @onchange="OnDateChanged" />
+                        @if (_showValidation && _errors.TryGetValue("Date", out var dateError))
+                        {
+                            <div class="plan-field-error">@dateError</div>
+                        }
+                    </div>
+
+                    <div class="plan-field">
+                        <label>@L["Plan_Time"]</label>
+                        <input class="plan-input" type="time" value="@_timeValue" @onchange="OnTimeChanged" />
+                    </div>
+                </div>
+
+                <div class="plan-location-header">
+                    <label>@L["Plan_Location"]</label>
+                    <button class="plan-gps-btn" @onclick="OnUseGpsAsync" disabled="@_gpsLoading">
+                        @if (_gpsLoading)
+                        {
+                            <span class="plan-inline-spinner"></span>
+                        }
+                        else
+                        {
+                            <span>📡</span>
+                        }
+                    </button>
+                </div>
+
+                <div class="plan-field">
+                    <select class="plan-input" @onchange="OnLocationSelectorChanged">
+                        <option value="manual">📍 @L["FavLoc_Select_Manual"]</option>
+                        <option value="gps">📡 @L["FavLoc_Select_GPS"]</option>
+                        @foreach (var location in _favoriteLocations)
+                        {
+                            <option value="@location.Id">⭐ @location.Name</option>
+                        }
+                    </select>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(_gpsError))
+                {
+                    <div class="plan-field-error">@_gpsError</div>
+                }
+
+                <div class="plan-grid-3">
+                    <div class="plan-field">
+                        <label>@L["SolLuna_Latitude"]</label>
+                        <input class="plan-input" type="number" min="-90" max="90" step="0.0001" @bind="_latitude" />
+                    </div>
+                    <div class="plan-field">
+                        <label>@L["SolLuna_Longitude"]</label>
+                        <input class="plan-input" type="number" min="-180" max="180" step="0.0001" @bind="_longitude" />
+                    </div>
+                    <div class="plan-field">
+                        <label>@L["SolLuna_Altitude"] (m)</label>
+                        <input class="plan-input" type="number" min="-500" max="8900" step="1" @bind="_altitude" />
+                    </div>
+                </div>
+
+                <div class="plan-field">
+                    <label>@L["Plan_LocationName"]</label>
+                    <input class="plan-input" type="text" @bind="_session.LocationName" />
+                </div>
+
+                <div class="plan-field">
+                    <label>@L["Plan_Seeing"]</label>
+                    <div class="plan-stars">
+                        @for (var star = 1; star <= 5; star++)
+                        {
+                            var current = star;
+                            <button type="button"
+                                    class="plan-star-btn @(current <= (int)_session.Seeing ? "selected" : string.Empty)"
+                                    @onclick="() => SetSeeing(current)">★</button>
+                        }
+                    </div>
+                </div>
+
+                <div class="plan-field">
+                    <label>@L["Plan_Transparency"]</label>
+                    <div class="plan-stars">
+                        @for (var star = 1; star <= 5; star++)
+                        {
+                            var current = star;
+                            <button type="button"
+                                    class="plan-star-btn @(current <= (int)_session.Transparency ? "selected" : string.Empty)"
+                                    @onclick="() => SetTransparency(current)">★</button>
+                        }
+                    </div>
+                </div>
+
+                <div class="plan-field">
+                    <label>@L["Plan_Notes"]</label>
+                    <textarea class="plan-input plan-textarea" @bind="_session.Notes"></textarea>
+                </div>
+            </section>
+
+            <section class="plan-card">
+                <h2 class="plan-section-title">@L["Plan_Section_Targets"]</h2>
+
+                @for (var i = 0; i < _session.Targets.Count; i++)
+                {
+                    var index = i;
+                    var target = _session.Targets[index];
+                    <article class="plan-target-card">
+                        <div class="plan-target-head">
+                            <strong>@L["Plan_Target_Name"]</strong>
+                            <button class="plan-delete-btn" @onclick="() => RemoveTarget(index)">🗑️</button>
+                        </div>
+
+                        <div class="plan-field">
+                            <label>@L["Plan_Target_Name"]</label>
+                            <input class="plan-input" type="text" @bind="target.Name" />
+                            @if (_showValidation && _errors.TryGetValue($"TargetName_{index}", out var targetNameError))
+                            {
+                                <div class="plan-field-error">@targetNameError</div>
+                            }
+                        </div>
+
+                        <div class="plan-field">
+                            <label>@L["Plan_Target_Type"]</label>
+                            <select class="plan-input" value="@target.Type" @onchange="(e) => OnTargetTypeChanged(index, e)">
+                                <option value="@TargetType.Planet">@L["Plan_Type_Planet"]</option>
+                                <option value="@TargetType.Moon">@L["Plan_Type_Moon"]</option>
+                                <option value="@TargetType.DeepSkyObject">@L["Plan_Type_DeepSkyObject"]</option>
+                                <option value="@TargetType.DoubleStar">@L["Plan_Type_DoubleStar"]</option>
+                                <option value="@TargetType.Asteroid">@L["Plan_Type_Asteroid"]</option>
+                                <option value="@TargetType.Comet">@L["Plan_Type_Comet"]</option>
+                                <option value="@TargetType.Other">@L["Plan_Type_Other"]</option>
+                            </select>
+                        </div>
+
+                        <div class="plan-grid-2">
+                            <div class="plan-field">
+                                <label>@L["Plan_Target_Constellation"]</label>
+                                <input class="plan-input" type="text" @bind="target.Constellation" />
+                            </div>
+                            <div class="plan-field">
+                                <label>@L["Plan_Target_Eyepiece"]</label>
+                                <input class="plan-input" type="text" @bind="target.Eyepiece" />
+                            </div>
+                        </div>
+
+                        <div class="plan-field">
+                            <label>@L["Plan_Target_Magnification"]</label>
+                            <input class="plan-input" type="number" value="@target.Magnification" @onchange="(e) => OnTargetMagnificationChanged(index, e)" />
+                        </div>
+
+                        <div class="plan-field">
+                            <label>@L["Plan_Target_Rating"]</label>
+                            <div class="plan-stars">
+                                @for (var rating = 0; rating <= 5; rating++)
+                                {
+                                    var currentRating = rating;
+                                    <button type="button"
+                                            class="plan-star-btn @(currentRating <= target.Rating ? "selected" : string.Empty)"
+                                            @onclick="() => SetTargetRating(index, currentRating)">★</button>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="plan-field">
+                            <label>@L["Plan_Target_Notes"]</label>
+                            <textarea class="plan-input plan-textarea" @bind="target.Notes"></textarea>
+                        </div>
+                    </article>
+                }
+
+                <button class="plan-secondary-btn" @onclick="AddTarget">@L["Plan_AddTarget"]</button>
+            </section>
+
+            <section class="plan-card">
+                <button class="plan-save-btn" @onclick="SaveAsync" disabled="@_saving">
+                    @if (_saving)
+                    {
+                        <span class="plan-inline-spinner"></span>
+                        <span>@L["Plan_Saving"]</span>
+                    }
+                    else
+                    {
+                        <span>@L["Plan_Save"]</span>
+                    }
+                </button>
+                <button class="plan-cancel-btn" @onclick="Cancel">@L["Plan_Cancel"]</button>
+            </section>
+        }
+    </div>
+</AuthGuard>
+
+@code {
+    [Parameter] public string? SessionId { get; set; }
+
+    [SupplyParameterFromQuery(Name = "id")]
+    public string? SessionIdQuery { get; set; }
+
+    private readonly ObservationSession _session = new();
+    private readonly List<FavoriteLocation> _favoriteLocations = new();
+    private bool _loading;
+    private bool _saving;
+    private bool _gpsLoading;
+    private bool _showValidation;
+    private string? _loadError;
+    private string? _saveError;
+    private string? _gpsError;
+    private DateTime? _date;
+    private TimeSpan _startTime;
+    private double? _latitude;
+    private double? _longitude;
+    private double? _altitude;
+    private Guid? _editingId;
+    private readonly Dictionary<string, string> _errors = new();
+
+    private bool IsEditMode => _editingId.HasValue;
+
+    private string _dateValue => _date?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) ?? string.Empty;
+    private string _timeValue => _startTime.ToString("hh\\:mm", CultureInfo.InvariantCulture);
+
+    protected override async Task OnInitializedAsync()
+    {
+        var favoriteLocations = await FavLocationsService.GetFavoriteLocationsAsync();
+        _favoriteLocations.Clear();
+        _favoriteLocations.AddRange(favoriteLocations);
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _loadError = null;
+
+        var incomingSessionId = string.IsNullOrWhiteSpace(SessionId) ? SessionIdQuery : SessionId;
+        if (string.IsNullOrWhiteSpace(incomingSessionId))
+        {
+            ResetAsNewSession();
+            return;
+        }
+
+        if (!Guid.TryParse(incomingSessionId, out var parsedSessionId))
+        {
+            _loadError = L["Plan_LoadError"];
+            return;
+        }
+
+        if (_editingId == parsedSessionId)
+        {
+            return;
+        }
+
+        await LoadSessionAsync(parsedSessionId);
+    }
+
+    private async Task LoadSessionAsync(Guid sessionId)
+    {
+        _loading = true;
+        _loadError = null;
+
+        var loadedSession = await ObservationService.GetByIdAsync(sessionId);
+
+        if (loadedSession is null)
+        {
+            _loadError = string.IsNullOrWhiteSpace(ObservationService.LastError)
+                ? L["Plan_LoadError"]
+                : ObservationService.LastError;
+            _loading = false;
+            return;
+        }
+
+        _editingId = loadedSession.Id;
+        _session.Id = loadedSession.Id;
+        _session.UserId = loadedSession.UserId;
+        _session.Date = loadedSession.Date;
+        _session.Title = loadedSession.Title;
+        _session.Notes = loadedSession.Notes;
+        _session.Latitude = loadedSession.Latitude;
+        _session.Longitude = loadedSession.Longitude;
+        _session.LocationName = loadedSession.LocationName;
+        _session.Seeing = loadedSession.Seeing;
+        _session.Transparency = loadedSession.Transparency;
+        _session.Targets = loadedSession.Targets
+            .Select(t => new ObservationTarget
+            {
+                Id = t.Id,
+                Name = t.Name,
+                Type = t.Type,
+                Constellation = t.Constellation,
+                Eyepiece = t.Eyepiece,
+                Magnification = t.Magnification,
+                Notes = t.Notes,
+                Rating = t.Rating
+            })
+            .ToList();
+
+        _date = loadedSession.Date.Date;
+        _startTime = loadedSession.Date.TimeOfDay;
+        _latitude = loadedSession.Latitude;
+        _longitude = loadedSession.Longitude;
+        _altitude = null;
+
+        _loading = false;
+    }
+
+    private void ResetAsNewSession()
+    {
+        _editingId = null;
+        _session.Id = Guid.NewGuid();
+        _session.Title = string.Empty;
+        _session.Notes = string.Empty;
+        _session.LocationName = string.Empty;
+        _session.Latitude = null;
+        _session.Longitude = null;
+        _session.Seeing = SeeingCondition.Average;
+        _session.Transparency = TransparencyCondition.Average;
+        _session.Targets.Clear();
+
+        _date = DateTime.Today;
+        _startTime = DateTime.Now.TimeOfDay;
+        _latitude = null;
+        _longitude = null;
+        _altitude = null;
+
+        _loadError = null;
+        _saveError = null;
+        _showValidation = false;
+        _errors.Clear();
+    }
+
+    private void OnDateChanged(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        if (DateTime.TryParse(args.Value?.ToString(), out var parsedDate))
+        {
+            _date = parsedDate.Date;
+        }
+    }
+
+    private void OnTimeChanged(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        if (TimeSpan.TryParse(args.Value?.ToString(), out var parsedTime))
+        {
+            _startTime = parsedTime;
+        }
+    }
+
+    private async Task OnLocationSelectorChanged(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        var selected = args.Value?.ToString();
+        if (selected == "gps")
+        {
+            await OnUseGpsAsync();
+            return;
+        }
+
+        if (selected == "manual" || string.IsNullOrWhiteSpace(selected))
+        {
+            return;
+        }
+
+        if (!Guid.TryParse(selected, out var locationId))
+        {
+            return;
+        }
+
+        var favorite = _favoriteLocations.FirstOrDefault(x => x.Id == locationId);
+        if (favorite is null)
+        {
+            return;
+        }
+
+        _latitude = favorite.Latitude;
+        _longitude = favorite.Longitude;
+        _altitude = favorite.AltitudeMeters;
+        _session.LocationName = favorite.Name;
+        _session.Latitude = favorite.Latitude;
+        _session.Longitude = favorite.Longitude;
+    }
+
+    private async Task OnUseGpsAsync()
+    {
+        _gpsLoading = true;
+        _gpsError = null;
+
+        var gpsLocation = await GeoService.GetCurrentLocationAsync(highAccuracy: true);
+
+        if (gpsLocation is null)
+        {
+            _gpsError = GeoService.LastError;
+            _gpsLoading = false;
+            return;
+        }
+
+        _latitude = gpsLocation.Latitude;
+        _longitude = gpsLocation.Longitude;
+        _altitude = gpsLocation.AltitudeMeters;
+        _session.Latitude = gpsLocation.Latitude;
+        _session.Longitude = gpsLocation.Longitude;
+
+        if (string.IsNullOrWhiteSpace(_session.LocationName))
+        {
+            _session.LocationName = gpsLocation.SourceLabel;
+        }
+
+        _gpsLoading = false;
+    }
+
+    private void SetSeeing(int value)
+    {
+        if (value < 1 || value > 5)
+        {
+            return;
+        }
+
+        _session.Seeing = (SeeingCondition)value;
+    }
+
+    private void SetTransparency(int value)
+    {
+        if (value < 1 || value > 5)
+        {
+            return;
+        }
+
+        _session.Transparency = (TransparencyCondition)value;
+    }
+
+    private void AddTarget()
+    {
+        _session.Targets.Add(new ObservationTarget
+        {
+            Type = TargetType.Other,
+            Rating = 0
+        });
+    }
+
+    private void RemoveTarget(int index)
+    {
+        if (index < 0 || index >= _session.Targets.Count)
+        {
+            return;
+        }
+
+        _session.Targets.RemoveAt(index);
+    }
+
+    private void OnTargetTypeChanged(int index, Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        if (index < 0 || index >= _session.Targets.Count)
+        {
+            return;
+        }
+
+        if (!Enum.TryParse<TargetType>(args.Value?.ToString(), out var parsedType))
+        {
+            return;
+        }
+
+        _session.Targets[index].Type = parsedType;
+    }
+
+    private void OnTargetMagnificationChanged(int index, Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        if (index < 0 || index >= _session.Targets.Count)
+        {
+            return;
+        }
+
+        var rawValue = args.Value?.ToString();
+        if (string.IsNullOrWhiteSpace(rawValue))
+        {
+            _session.Targets[index].Magnification = null;
+            return;
+        }
+
+        if (int.TryParse(rawValue, out var parsedMagnification))
+        {
+            _session.Targets[index].Magnification = parsedMagnification;
+        }
+    }
+
+    private void SetTargetRating(int index, int value)
+    {
+        if (index < 0 || index >= _session.Targets.Count)
+        {
+            return;
+        }
+
+        if (value < 0 || value > 5)
+        {
+            return;
+        }
+
+        _session.Targets[index].Rating = value;
+    }
+
+    private async Task SaveAsync()
+    {
+        _showValidation = true;
+        _saveError = null;
+
+        if (!Validate())
+        {
+            return;
+        }
+
+        _saving = true;
+
+        _session.Date = (_date ?? DateTime.Today).Date.Add(_startTime);
+        _session.Latitude = _latitude;
+        _session.Longitude = _longitude;
+
+        var saved = await ObservationService.SaveAsync(_session);
+        if (saved)
+        {
+            NavManager.NavigateTo("/historial");
+            return;
+        }
+
+        _saveError = string.IsNullOrWhiteSpace(ObservationService.LastError)
+            ? L["Plan_SaveError"]
+            : ObservationService.LastError;
+
+        _saving = false;
+    }
+
+    private bool Validate()
+    {
+        _errors.Clear();
+
+        if (string.IsNullOrWhiteSpace(_session.Title))
+        {
+            _errors["Title"] = L["Plan_SessionTitle_Required"];
+        }
+
+        if (_date is null)
+        {
+            _errors["Date"] = L["Plan_Date"];
+        }
+
+        for (var i = 0; i < _session.Targets.Count; i++)
+        {
+            if (string.IsNullOrWhiteSpace(_session.Targets[i].Name))
+            {
+                _errors[$"TargetName_{i}"] = L["Plan_Target_Name_Required"];
+            }
+        }
+
+        return _errors.Count == 0;
+    }
+
+    private void Cancel()
+    {
+        NavManager.NavigateTo("/historial");
+    }
+}

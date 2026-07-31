@@ -32,7 +32,7 @@
     <PackageReference Include="Supabase" Version="1.5.0" />
 
     <!-- MVVM Community Toolkit -->
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 
     <!-- Astronomy Engine — cálculos offline de planetas, luna, eclipses -->
     <PackageReference Include="CosineKitty.AstronomyEngine" Version="2.1.19" />

@@ -1,0 +1,347 @@
+@page "/historial"
+@using System.Globalization
+@using System.Text
+@using ObservApp.Shared.Models
+@using ObservApp.Shared.ViewModels
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+@inject IObservationService ObservationService
+@inject HistorialViewModel VM
+@inject NavigationManager NavManager
+
+<PageTitle>@L["Hist_Title"]</PageTitle>
+
+<AuthGuard>
+    <div class="hist-page">
+        <div class="hist-header">
+            <div class="hist-header-copy">
+                <span class="hist-header-icon">📜</span>
+                <div>
+                    <h1 class="hist-title">@L["Hist_Title"]</h1>
+                    <p class="hist-subtitle">@L["Hist_Subtitle", _sessions.Count]</p>
+                </div>
+            </div>
+            <button class="hist-primary-btn" @onclick="GoToNewSession">
+                + @L["Hist_NewSession"]
+            </button>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(_loadError))
+        {
+            <div class="hist-error-banner">⚠️ @_loadError</div>
+        }
+
+        @if (_isLoading)
+        {
+            <div class="hist-loading">
+                <span class="hist-spinner"></span>
+            </div>
+        }
+        else if (_sessions.Count == 0)
+        {
+            <section class="hist-empty-state">
+                <div class="hist-empty-illustration" aria-hidden="true">@((MarkupString)_emptyStateSvg)</div>
+                <h2 class="hist-empty-title">@L["Hist_Empty_Title"]</h2>
+                <p class="hist-empty-desc">@L["Hist_Empty_Desc"]</p>
+                <button class="hist-primary-btn" @onclick="GoToNewSession">@L["Hist_FirstSession"]</button>
+            </section>
+        }
+        else
+        {
+            <section class="hist-list" aria-label="@L["Hist_Title"]">
+                @foreach (var session in _sessions)
+                {
+                    var pendingDelete = _pendingDeleteId == session.Id;
+                    <article class="hist-card">
+                        <div class="hist-card-top">
+                            <span class="hist-date">@session.Date.ToString("dd MMM yyyy", CultureInfo.CurrentCulture)</span>
+                            <button class="hist-delete-btn"
+                                    @onclick="() => ToggleDeleteConfirmation(session.Id)"
+                                    aria-label="@L["Hist_Delete"]">
+                                🗑️
+                            </button>
+                        </div>
+
+                        <h2 class="hist-card-title">@GetSessionTitle(session)</h2>
+                        <p class="hist-location">@GetLocationText(session)</p>
+                        <p class="hist-objects">@L["Hist_Objects", session.Targets.Count]</p>
+
+                        <div class="hist-metrics">
+                            <div class="hist-metric">
+                                <span class="hist-metric-label">@L["Hist_Seeing"]</span>
+                                <span class="hist-stars">@((MarkupString)RenderStars((int)session.Seeing))</span>
+                            </div>
+                            <div class="hist-metric">
+                                <span class="hist-metric-label">@L["Hist_Transparency"]</span>
+                                <span class="hist-stars">@((MarkupString)RenderStars((int)session.Transparency))</span>
+                            </div>
+                        </div>
+
+                        <div class="hist-actions">
+                            <button class="hist-secondary-btn" @onclick="() => OpenDetails(session)">
+                                @L["Hist_ViewDetails"]
+                            </button>
+                        </div>
+
+                        @if (pendingDelete)
+                        {
+                            <div class="hist-delete-confirm">
+                                <span>@L["Hist_ConfirmDelete"]</span>
+                                <div class="hist-delete-confirm-actions">
+                                    <button class="hist-confirm-yes" @onclick="() => ConfirmDeleteAsync(session)">@L["Hist_ConfirmYes"]</button>
+                                    <button class="hist-confirm-no" @onclick="CancelDelete">@L["Hist_ConfirmNo"]</button>
+                                </div>
+                            </div>
+                        }
+                    </article>
+                }
+            </section>
+        }
+    </div>
+
+    @if (_showDetail && _selectedSession is not null)
+    {
+        var detailSession = _selectedSession;
+        <div class="hist-detail-backdrop" @onclick="CloseDetails"></div>
+        <aside class="hist-detail-panel" aria-label="@L["Hist_ViewDetails"]">
+            <div class="hist-detail-header">
+                <div>
+                    <h2 class="hist-detail-title">@GetSessionTitle(detailSession)</h2>
+                    <p class="hist-detail-subtitle">@detailSession.Date.ToString("dd MMM yyyy", CultureInfo.CurrentCulture)</p>
+                </div>
+                <button class="hist-detail-close-icon" @onclick="CloseDetails" aria-label="@L["Hist_Close"]">✕</button>
+            </div>
+
+            <div class="hist-detail-body">
+                <div class="hist-detail-field">
+                    <span class="hist-detail-label">@L["Hist_Date"]</span>
+                    <span class="hist-detail-value">@detailSession.Date.ToString("f", CultureInfo.CurrentCulture)</span>
+                </div>
+                <div class="hist-detail-field">
+                    <span class="hist-detail-label">@L["Obs_Title"]</span>
+                    <span class="hist-detail-value">@GetSessionTitle(detailSession)</span>
+                </div>
+                <div class="hist-detail-field">
+                    <span class="hist-detail-label">@L["Hist_Location"]</span>
+                    <span class="hist-detail-value">@GetLocationText(detailSession)</span>
+                </div>
+                <div class="hist-detail-field">
+                    <span class="hist-detail-label">@L["Hist_Latitude"]</span>
+                    <span class="hist-detail-value">@FormatCoordinate(detailSession.Latitude)</span>
+                </div>
+                <div class="hist-detail-field">
+                    <span class="hist-detail-label">@L["Hist_Longitude"]</span>
+                    <span class="hist-detail-value">@FormatCoordinate(detailSession.Longitude)</span>
+                </div>
+                <div class="hist-detail-field">
+                    <span class="hist-detail-label">@L["Hist_Seeing"]</span>
+                    <span class="hist-detail-value">@((int)detailSession.Seeing) · @((MarkupString)RenderStars((int)detailSession.Seeing))</span>
+                </div>
+                <div class="hist-detail-field">
+                    <span class="hist-detail-label">@L["Hist_Transparency"]</span>
+                    <span class="hist-detail-value">@((int)detailSession.Transparency) · @((MarkupString)RenderStars((int)detailSession.Transparency))</span>
+                </div>
+                <div class="hist-detail-field hist-detail-field--notes">
+                    <span class="hist-detail-label">@L["Hist_Notes"]</span>
+                    <span class="hist-detail-value">@GetNotesText(detailSession)</span>
+                </div>
+
+                <section class="hist-targets">
+                    <h3 class="hist-targets-title">@L["Hist_Targets_Title"]</h3>
+
+                    @if (detailSession.Targets.Count == 0)
+                    {
+                        <p class="hist-targets-empty">@L["Status_NoData"]</p>
+                    }
+                    else
+                    {
+                        @foreach (var target in detailSession.Targets)
+                        {
+                            <article class="hist-target-card">
+                                <div class="hist-target-header">
+                                    <div>
+                                        <h4 class="hist-target-name">@target.Name</h4>
+                                        <p class="hist-target-meta">@target.Type · @target.Constellation</p>
+                                    </div>
+                                    <span class="hist-target-rating">@((MarkupString)RenderStars(target.Rating))</span>
+                                </div>
+
+                                <div class="hist-target-grid">
+                                    <div class="hist-detail-field">
+                                        <span class="hist-detail-label">@L["Hist_Target_Eyepiece"]</span>
+                                        <span class="hist-detail-value">@GetTextOrDash(target.Eyepiece)</span>
+                                    </div>
+                                    <div class="hist-detail-field">
+                                        <span class="hist-detail-label">@L["Hist_Target_Magnification"]</span>
+                                        <span class="hist-detail-value">@(target.Magnification?.ToString(CultureInfo.CurrentCulture) ?? "—")</span>
+                                    </div>
+                                    <div class="hist-detail-field">
+                                        <span class="hist-detail-label">@L["Hist_Target_Rating"]</span>
+                                        <span class="hist-detail-value">@target.Rating</span>
+                                    </div>
+                                    <div class="hist-detail-field">
+                                        <span class="hist-detail-label">@L["Hist_Notes"]</span>
+                                        <span class="hist-detail-value">@GetTextOrDash(target.Notes)</span>
+                                    </div>
+                                </div>
+                            </article>
+                        }
+                    }
+                </section>
+            </div>
+
+            <div class="hist-detail-actions">
+                <button class="hist-primary-btn" @onclick="EditSelectedSession">@L["Hist_Edit"]</button>
+                <button class="hist-secondary-btn" @onclick="CloseDetails">@L["Hist_Close"]</button>
+            </div>
+        </aside>
+    }
+</AuthGuard>
+
+@code {
+    private readonly string _emptyStateSvg = BuildEmptyStateSvg();
+    private readonly List<ObservationSession> _sessions = new();
+    private bool _isLoading = true;
+    private string? _loadError;
+    private Guid? _pendingDeleteId;
+    private bool _showDetail;
+    private ObservationSession? _selectedSession;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSessionsAsync();
+    }
+
+    private async Task LoadSessionsAsync()
+    {
+        _isLoading = true;
+        _loadError = null;
+
+        await VM.LoadSessionsCommand.ExecuteAsync(null);
+
+        List<ObservationSession> serviceSessions;
+        try
+        {
+            serviceSessions = await ObservationService.GetAllAsync();
+        }
+        catch
+        {
+            serviceSessions = new List<ObservationSession>();
+        }
+
+        _sessions.Clear();
+        _sessions.AddRange(serviceSessions
+            .OrderByDescending(x => x.Date)
+            .ToList());
+
+        if (!string.IsNullOrWhiteSpace(VM.ErrorMessage))
+        {
+            _loadError = VM.ErrorMessage;
+        }
+        else if (!string.IsNullOrWhiteSpace(ObservationService.LastError))
+        {
+            _loadError = L["Hist_LoadError"];
+        }
+
+        _isLoading = false;
+    }
+
+    private void GoToNewSession() => NavManager.NavigateTo("/planificacion");
+
+    private void OpenDetails(ObservationSession session)
+    {
+        _selectedSession = session;
+        _showDetail = true;
+        VM.SelectSessionCommand.Execute(session);
+    }
+
+    private void CloseDetails()
+    {
+        _showDetail = false;
+        _selectedSession = null;
+        VM.ClearSelectionCommand.Execute(null);
+    }
+
+    private void EditSelectedSession()
+    {
+        if (_selectedSession is not { } selectedSession)
+        {
+            return;
+        }
+
+        NavManager.NavigateTo($"/planificacion?id={selectedSession.Id}");
+    }
+
+    private void ToggleDeleteConfirmation(Guid id)
+    {
+        _pendingDeleteId = _pendingDeleteId == id ? null : id;
+    }
+
+    private void CancelDelete()
+    {
+        _pendingDeleteId = null;
+    }
+
+    private async Task ConfirmDeleteAsync(ObservationSession session)
+    {
+        var deleted = await ObservationService.DeleteAsync(session.Id);
+        if (!deleted)
+        {
+            _loadError = ObservationService.LastError ?? L["Hist_LoadError"];
+            _pendingDeleteId = null;
+            return;
+        }
+
+        _sessions.Remove(session);
+        _pendingDeleteId = null;
+
+        if (_selectedSession?.Id == session.Id)
+        {
+            CloseDetails();
+        }
+    }
+
+    private static string GetSessionTitle(ObservationSession session)
+        => string.IsNullOrWhiteSpace(session.Title) ? "—" : session.Title;
+
+    private static string GetNotesText(ObservationSession session)
+        => string.IsNullOrWhiteSpace(session.Notes) ? "—" : session.Notes;
+
+    private static string GetTextOrDash(string? text)
+        => string.IsNullOrWhiteSpace(text) ? "—" : text;
+
+    private static string FormatCoordinate(double? value)
+        => value.HasValue ? value.Value.ToString("F4", CultureInfo.CurrentCulture) : "—";
+
+    private static string GetLocationText(ObservationSession session)
+    {
+        if (!string.IsNullOrWhiteSpace(session.LocationName))
+        {
+            return session.LocationName;
+        }
+
+        if (session.Latitude.HasValue && session.Longitude.HasValue)
+        {
+            return $"{session.Latitude.Value.ToString("F4", CultureInfo.CurrentCulture)}, {session.Longitude.Value.ToString("F4", CultureInfo.CurrentCulture)}";
+        }
+
+        return "—";
+    }
+
+    private static string RenderStars(int value)
+    {
+        var normalized = Math.Clamp(value, 0, 5);
+        var builder = new StringBuilder();
+        for (var i = 1; i <= 5; i++)
+        {
+            var css = i <= normalized ? "hist-star hist-star--active" : "hist-star";
+            builder.Append($"<span class=\"{css}\">★</span>");
+        }
+
+        return builder.ToString();
+    }
+
+    private static string BuildEmptyStateSvg()
+    {
+        return "<svg viewBox=\"0 0 240 180\" xmlns=\"http://www.w3.org/2000/svg\" class=\"hist-empty-svg\"><rect width=\"240\" height=\"180\" rx=\"24\" fill=\"none\"/><g fill=\"#e2e8f0\"><circle cx=\"34\" cy=\"30\" r=\"2\"/><circle cx=\"182\" cy=\"24\" r=\"2.5\"/><circle cx=\"208\" cy=\"52\" r=\"1.8\"/><circle cx=\"58\" cy=\"50\" r=\"1.6\"/></g><g stroke=\"#94a3b8\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\"><path d=\"M84 124 L58 156\"/><path d=\"M112 124 L112 160\"/><path d=\"M140 124 L166 156\"/><path d=\"M72 142 H152\"/></g><g transform=\"translate(86 60)\"><rect x=\"0\" y=\"24\" width=\"62\" height=\"20\" rx=\"6\" fill=\"#243447\" stroke=\"#2ec4b6\" stroke-width=\"3\"/><ellipse cx=\"61\" cy=\"34\" rx=\"7\" ry=\"12\" fill=\"#1b2a3b\" stroke=\"#2ec4b6\" stroke-width=\"3\"/><rect x=\"-14\" y=\"27\" width=\"12\" height=\"14\" rx=\"3\" fill=\"#1b2a3b\" stroke=\"#f4c430\" stroke-width=\"2\"/><circle cx=\"26\" cy=\"54\" r=\"7\" fill=\"#243447\" stroke=\"#94a3b8\" stroke-width=\"3\"/></g></svg>";
+    }
+}

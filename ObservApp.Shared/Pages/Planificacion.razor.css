@@ -1,0 +1,208 @@
+.plan-page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px 16px 56px;
+    color: var(--obs-moon);
+}
+
+.plan-header {
+    margin-bottom: 14px;
+}
+
+.plan-title {
+    margin: 0;
+    font-size: 1.45rem;
+    font-weight: 700;
+}
+
+.plan-card {
+    background: var(--obs-navy);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-lg);
+    padding: 14px;
+    margin-bottom: 14px;
+}
+
+.plan-section-title {
+    margin: 0 0 12px;
+    font-size: 1rem;
+}
+
+.plan-field {
+    margin-bottom: 10px;
+}
+
+.plan-field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    color: var(--obs-comet);
+}
+
+.plan-input {
+    width: 100%;
+    border: 1px solid var(--obs-border);
+    background: var(--obs-midnight);
+    color: var(--obs-moon);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    box-sizing: border-box;
+}
+
+.plan-textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.plan-grid-2,
+.plan-grid-3 {
+    display: grid;
+    gap: 10px;
+}
+
+.plan-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.plan-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.plan-location-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.plan-gps-btn {
+    border: 1px solid var(--obs-border);
+    background: var(--obs-midnight);
+    color: var(--obs-moon);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+}
+
+.plan-stars {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.plan-star-btn {
+    border: 1px solid var(--obs-border);
+    background: transparent;
+    color: var(--obs-comet);
+    border-radius: var(--radius-sm);
+    min-width: 34px;
+    height: 34px;
+    font-size: 1.05rem;
+}
+
+.plan-star-btn:hover,
+.plan-star-btn.selected {
+    color: var(--obs-star);
+    border-color: var(--obs-star);
+}
+
+.plan-target-card {
+    background: var(--obs-deep);
+    border: 1px solid var(--obs-border);
+    border-left: 3px solid var(--obs-nebula);
+    border-radius: var(--radius-md);
+    padding: 10px;
+    margin-bottom: 12px;
+}
+
+.plan-target-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.plan-delete-btn {
+    border: 1px solid var(--obs-border);
+    background: transparent;
+    color: var(--obs-moon);
+    border-radius: var(--radius-sm);
+    padding: 4px 8px;
+}
+
+.plan-save-btn {
+    width: 100%;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    background: var(--obs-star);
+    color: var(--obs-midnight);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.plan-secondary-btn,
+.plan-cancel-btn {
+    border: 1px solid var(--obs-border);
+    background: transparent;
+    color: var(--obs-moon);
+    border-radius: var(--radius-md);
+    padding: 9px 12px;
+}
+
+.plan-cancel-btn {
+    width: 100%;
+}
+
+.plan-field-error {
+    color: var(--obs-mars);
+    font-size: 0.78rem;
+    margin-top: 4px;
+}
+
+.plan-error-banner {
+    background: rgba(231, 111, 81, 0.14);
+    border: 1px solid var(--obs-mars);
+    color: var(--obs-mars);
+    border-radius: var(--radius-md);
+    padding: 8px 10px;
+    margin-bottom: 10px;
+}
+
+.plan-loading {
+    color: var(--obs-comet);
+}
+
+.plan-inline-spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(226, 232, 240, 0.3);
+    border-top-color: var(--obs-moon);
+    border-radius: 50%;
+    display: inline-block;
+    animation: plan-spin 0.9s linear infinite;
+}
+
+@keyframes plan-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 700px) {
+    .plan-grid-2,
+    .plan-grid-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .plan-stars {
+        width: 100%;
+    }
+
+    .plan-star-btn {
+        flex: 1 1 calc(20% - 6px);
+    }
+}

@@ -1,5 +1,6 @@
 namespace ObservApp.Shared.Models;
 
+using System.Collections.Generic;
 using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
 
@@ -21,7 +22,7 @@ public class ObservationSession : BaseModel
 
 	/// <summary>Fecha y hora de la observación.</summary>
 	[Column("date")]
-	public DateTime Date { get; set; } = DateTime.UtcNow;
+	public DateTime Date { get; set; } = DateTime.Now;
 
 	/// <summary>Título de la sesión.</summary>
 	[Column("title")]
@@ -29,7 +30,7 @@ public class ObservationSession : BaseModel
 
 	/// <summary>Notas adicionales sobre la observación.</summary>
 	[Column("notes")]
-	public string? Notes { get; set; }
+	public string Notes { get; set; } = string.Empty;
 
 	/// <summary>Latitud del lugar de observación.</summary>
 	[Column("latitude")]
@@ -41,15 +42,18 @@ public class ObservationSession : BaseModel
 
 	/// <summary>Nombre del lugar de observación.</summary>
 	[Column("location_name")]
-	public string? LocationName { get; set; }
+	public string LocationName { get; set; } = string.Empty;
 
 	/// <summary>Índice de seeing (1-5, siendo 5 excelente).</summary>
 	[Column("seeing")]
-	public int? Seeing { get; set; }
+	public SeeingCondition Seeing { get; set; } = SeeingCondition.Average;
 
 	/// <summary>Índice de transparencia (1-5, siendo 5 excelente).</summary>
 	[Column("transparency")]
-	public int? Transparency { get; set; }
+	public TransparencyCondition Transparency { get; set; } = TransparencyCondition.Average;
+
+	/// <summary>Objetos observados durante la sesión.</summary>
+	public List<ObservationTarget> Targets { get; set; } = new();
 
 	/// <summary>Fecha de creación (timestamp en servidor).</summary>
 	[Column("created_at")]
@@ -58,4 +62,22 @@ public class ObservationSession : BaseModel
 	/// <summary>Fecha de actualización.</summary>
 	[Column("updated_at")]
 	public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+}
+
+public enum SeeingCondition
+{
+	Poor = 1,
+	BelowAverage = 2,
+	Average = 3,
+	Good = 4,
+	Excellent = 5
+}
+
+public enum TransparencyCondition
+{
+	Poor = 1,
+	BelowAverage = 2,
+	Average = 3,
+	Good = 4,
+	Excellent = 5
 }

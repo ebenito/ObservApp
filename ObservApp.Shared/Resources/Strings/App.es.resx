@@ -159,6 +159,18 @@
   <data name="Nav_Exit" xml:space="preserve">
     <value>Salir</value>
   </data>
+  <data name="Nav_SignIn" xml:space="preserve">
+    <value>Iniciar sesión</value>
+  </data>
+  <data name="Nav_SignOut" xml:space="preserve">
+    <value>Cerrar sesión</value>
+  </data>
+  <data name="Action_Show" xml:space="preserve">
+    <value>Mostrar</value>
+  </data>
+  <data name="Action_Hide" xml:space="preserve">
+    <value>Ocultar</value>
+  </data>
   <data name="Nav_Section_Main" xml:space="preserve">
     <value>Principal</value>
   </data>
@@ -452,6 +464,27 @@
   </data>
   <data name="Home_Card_Calculators_Desc" xml:space="preserve">
     <value>FOV, exposición para eclipses, aumentos y más</value>
+  </data>
+  <data name="Home_Welcome_User" xml:space="preserve">
+    <value>Bienvenido, {0}</value>
+  </data>
+  <data name="Home_Sessions_Count" xml:space="preserve">
+    <value>{0} sesiones registradas</value>
+  </data>
+  <data name="Home_Recent_Title" xml:space="preserve">
+    <value>Tus últimas observaciones</value>
+  </data>
+  <data name="Home_Recent_Empty" xml:space="preserve">
+    <value>Aún no tienes sesiones. ¡Empieza hoy!</value>
+  </data>
+  <data name="Home_Recent_ViewAll" xml:space="preserve">
+    <value>Ver todo el historial</value>
+  </data>
+  <data name="Home_Recent_StartNow" xml:space="preserve">
+    <value>Registrar primera sesión</value>
+  </data>
+  <data name="Home_Lock_Hint" xml:space="preserve">
+    <value>Inicia sesión para acceder</value>
   </data>
   <data name="Home_Features_Title" xml:space="preserve">
     <value>¿Qué puedes hacer?</value>
@@ -1123,6 +1156,75 @@
   <data name="Eph_Moon_Illumination" xml:space="preserve">
     <value>Iluminación lunar</value>
   </data>
+  <data name="Eph_Eclipse_BannerTitle" xml:space="preserve">
+    <value>Eclipse solar próximo en tu zona</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Total" xml:space="preserve">
+    <value>Eclipse total</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Annular" xml:space="preserve">
+    <value>Eclipse anular</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Partial" xml:space="preserve">
+    <value>Eclipse parcial</value>
+  </data>
+  <data name="Eph_Eclipse_Coverage" xml:space="preserve">
+    <value>Ocultación máxima desde tu ubicación</value>
+  </data>
+  <data name="Eph_Eclipse_DaysLeft" xml:space="preserve">
+    <value>días</value>
+  </data>
+  <data name="Eph_Eclipse_Details" xml:space="preserve">
+    <value>Ver detalles del eclipse →</value>
+  </data>
+  <data name="Eph_Eclipse_NoVisible" xml:space="preserve">
+    <value>No hay eclipses visibles desde esta ubicación en el próximo año</value>
+  </data>
+  <data name="Eph_DSO_Title" xml:space="preserve">
+    <value>Cielo profundo esta noche</value>
+  </data>
+  <data name="Eph_DSO_Subtitle" xml:space="preserve">
+    <value>Objetos visibles desde tu ubicación (altitud &gt; 10°)</value>
+  </data>
+  <data name="Eph_DSO_Loading" xml:space="preserve">
+    <value>Calculando objetos visibles…</value>
+  </data>
+  <data name="Eph_DSO_Empty" xml:space="preserve">
+    <value>No hay objetos de cielo profundo visibles esta noche desde esta ubicación.</value>
+  </data>
+  <data name="Eph_DSO_MaxAlt" xml:space="preserve">
+    <value>Alt. máx.</value>
+  </data>
+  <data name="Eph_DSO_BestTime" xml:space="preserve">
+    <value>Mejor hora</value>
+  </data>
+  <data name="Eph_DSO_VisibleFrom" xml:space="preserve">
+    <value>Visible de</value>
+  </data>
+  <data name="Eph_DSO_VisibleTo" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="Eph_DSO_Magnitude" xml:space="preserve">
+    <value>Magnitud</value>
+  </data>
+  <data name="Eph_DSO_Type_Nebula" xml:space="preserve">
+    <value>Nebulosa</value>
+  </data>
+  <data name="Eph_DSO_Type_OpenCluster" xml:space="preserve">
+    <value>Cúmulo abierto</value>
+  </data>
+  <data name="Eph_DSO_Type_GlobularCluster" xml:space="preserve">
+    <value>Cúmulo globular</value>
+  </data>
+  <data name="Eph_DSO_Type_Galaxy" xml:space="preserve">
+    <value>Galaxia</value>
+  </data>
+  <data name="Eph_DSO_Constellation" xml:space="preserve">
+    <value>Constelación</value>
+  </data>
+  <data name="Eph_DSO_Count" xml:space="preserve">
+    <value>objetos visibles</value>
+  </data>
   <data name="Auth_SignIn" xml:space="preserve">
     <value>Iniciar sesión</value>
   </data>
@@ -1146,6 +1248,30 @@
   </data>
   <data name="Auth_Error" xml:space="preserve">
     <value>Error de autenticación</value>
+  </data>
+  <data name="Auth_WelcomeBack" xml:space="preserve">
+    <value>Bienvenido de nuevo</value>
+  </data>
+  <data name="Auth_ForgotPassword" xml:space="preserve">
+    <value>¿Olvidaste tu contraseña?</value>
+  </data>
+  <data name="Auth_CreateAccount" xml:space="preserve">
+    <value>Crear cuenta</value>
+  </data>
+  <data name="Auth_CreatingAccount" xml:space="preserve">
+    <value>Creando cuenta…</value>
+  </data>
+  <data name="Auth_ConfirmPassword" xml:space="preserve">
+    <value>Confirmar contraseña</value>
+  </data>
+  <data name="Auth_PasswordMismatch" xml:space="preserve">
+    <value>Las contraseñas no coinciden</value>
+  </data>
+  <data name="Auth_HasAccount" xml:space="preserve">
+    <value>¿Ya tienes cuenta? Inicia sesión</value>
+  </data>
+  <data name="Auth_NoAccount" xml:space="preserve">
+    <value>¿No tienes cuenta? Regístrate</value>
   </data>
   <data name="Obs_Sessions" xml:space="preserve">
     <value>Sesiones de observación</value>
@@ -1176,5 +1302,185 @@
   </data>
   <data name="Obs_Delete" xml:space="preserve">
     <value>Eliminar</value>
+  </data>
+  <data name="Hist_Title" xml:space="preserve">
+    <value>Historial de observaciones</value>
+  </data>
+  <data name="Hist_Subtitle" xml:space="preserve">
+    <value>{0} sesiones registradas</value>
+  </data>
+  <data name="Hist_NewSession" xml:space="preserve">
+    <value>Nueva sesión</value>
+  </data>
+  <data name="Hist_Empty_Title" xml:space="preserve">
+    <value>Sin sesiones aún</value>
+  </data>
+  <data name="Hist_Empty_Desc" xml:space="preserve">
+    <value>Aún no has registrado ninguna sesión de observación.</value>
+  </data>
+  <data name="Hist_FirstSession" xml:space="preserve">
+    <value>Registrar primera sesión</value>
+  </data>
+  <data name="Hist_Objects" xml:space="preserve">
+    <value>{0} objetos</value>
+  </data>
+  <data name="Hist_Seeing" xml:space="preserve">
+    <value>Seeing</value>
+  </data>
+  <data name="Hist_Transparency" xml:space="preserve">
+    <value>Transparencia</value>
+  </data>
+  <data name="Hist_ViewDetails" xml:space="preserve">
+    <value>Ver detalles</value>
+  </data>
+  <data name="Hist_Edit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="Hist_Delete" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+  <data name="Hist_ConfirmDelete" xml:space="preserve">
+    <value>¿Eliminar esta sesión?</value>
+  </data>
+  <data name="Hist_ConfirmYes" xml:space="preserve">
+    <value>Sí, eliminar</value>
+  </data>
+  <data name="Hist_ConfirmNo" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Hist_Targets_Title" xml:space="preserve">
+    <value>Objetos observados</value>
+  </data>
+  <data name="Hist_Target_Eyepiece" xml:space="preserve">
+    <value>Ocular</value>
+  </data>
+  <data name="Hist_Target_Magnification" xml:space="preserve">
+    <value>Aumentos</value>
+  </data>
+  <data name="Hist_Target_Rating" xml:space="preserve">
+    <value>Valoración</value>
+  </data>
+  <data name="Hist_Location" xml:space="preserve">
+    <value>Ubicación</value>
+  </data>
+  <data name="Hist_Latitude" xml:space="preserve">
+    <value>Latitud</value>
+  </data>
+  <data name="Hist_Longitude" xml:space="preserve">
+    <value>Longitud</value>
+  </data>
+  <data name="Hist_Date" xml:space="preserve">
+    <value>Fecha</value>
+  </data>
+  <data name="Hist_Notes" xml:space="preserve">
+    <value>Notas</value>
+  </data>
+  <data name="Hist_Close" xml:space="preserve">
+    <value>Cerrar</value>
+  </data>
+  <data name="Hist_LoadError" xml:space="preserve">
+    <value>Error al cargar las sesiones.</value>
+  </data>
+  <data name="Plan_Title_New" xml:space="preserve">
+    <value>Nueva sesión</value>
+  </data>
+  <data name="Plan_Title_Edit" xml:space="preserve">
+    <value>Editar sesión</value>
+  </data>
+  <data name="Plan_Section_Session" xml:space="preserve">
+    <value>Datos de la sesión</value>
+  </data>
+  <data name="Plan_Section_Targets" xml:space="preserve">
+    <value>Objetos observados</value>
+  </data>
+  <data name="Plan_SessionTitle" xml:space="preserve">
+    <value>Título de la sesión</value>
+  </data>
+  <data name="Plan_SessionTitle_Required" xml:space="preserve">
+    <value>El título es obligatorio</value>
+  </data>
+  <data name="Plan_Date" xml:space="preserve">
+    <value>Fecha</value>
+  </data>
+  <data name="Plan_Time" xml:space="preserve">
+    <value>Hora de inicio</value>
+  </data>
+  <data name="Plan_Location" xml:space="preserve">
+    <value>Ubicación</value>
+  </data>
+  <data name="Plan_LocationName" xml:space="preserve">
+    <value>Nombre del lugar</value>
+  </data>
+  <data name="Plan_Seeing" xml:space="preserve">
+    <value>Seeing (1-5)</value>
+  </data>
+  <data name="Plan_Transparency" xml:space="preserve">
+    <value>Transparencia (1-5)</value>
+  </data>
+  <data name="Plan_Notes" xml:space="preserve">
+    <value>Notas</value>
+  </data>
+  <data name="Plan_AddTarget" xml:space="preserve">
+    <value>+ Añadir objeto</value>
+  </data>
+  <data name="Plan_Target_Name" xml:space="preserve">
+    <value>Nombre del objeto</value>
+  </data>
+  <data name="Plan_Target_Name_Required" xml:space="preserve">
+    <value>El nombre es obligatorio</value>
+  </data>
+  <data name="Plan_Target_Type" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="Plan_Target_Constellation" xml:space="preserve">
+    <value>Constelación</value>
+  </data>
+  <data name="Plan_Target_Eyepiece" xml:space="preserve">
+    <value>Ocular</value>
+  </data>
+  <data name="Plan_Target_Magnification" xml:space="preserve">
+    <value>Aumentos</value>
+  </data>
+  <data name="Plan_Target_Rating" xml:space="preserve">
+    <value>Valoración</value>
+  </data>
+  <data name="Plan_Target_Notes" xml:space="preserve">
+    <value>Notas del objeto</value>
+  </data>
+  <data name="Plan_Save" xml:space="preserve">
+    <value>Guardar sesión</value>
+  </data>
+  <data name="Plan_Saving" xml:space="preserve">
+    <value>Guardando…</value>
+  </data>
+  <data name="Plan_Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Plan_SaveError" xml:space="preserve">
+    <value>Error al guardar la sesión.</value>
+  </data>
+  <data name="Plan_LoadError" xml:space="preserve">
+    <value>Error al cargar la sesión.</value>
+  </data>
+  <data name="Plan_Type_Planet" xml:space="preserve">
+    <value>Planeta</value>
+  </data>
+  <data name="Plan_Type_Moon" xml:space="preserve">
+    <value>Luna</value>
+  </data>
+  <data name="Plan_Type_DeepSkyObject" xml:space="preserve">
+    <value>Objeto de cielo profundo</value>
+  </data>
+  <data name="Plan_Type_DoubleStar" xml:space="preserve">
+    <value>Estrella doble</value>
+  </data>
+  <data name="Plan_Type_Asteroid" xml:space="preserve">
+    <value>Asteroide</value>
+  </data>
+  <data name="Plan_Type_Comet" xml:space="preserve">
+    <value>Cometa</value>
+  </data>
+  <data name="Plan_Type_Other" xml:space="preserve">
+    <value>Otro</value>
   </data>
 </root>

@@ -3,11 +3,14 @@
 @using System.Globalization
 @using ObservApp.Shared.Models
 @using ObservApp.Shared.Services
+@implements IDisposable
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
 @inject IGeolocationService GeoService
 @inject IFavoriteLocationsService FavLocationsService
 @inject ILocationStateService LocationState
 @inject IEclipseCalculatorService EclipseCalc
+@inject IObservationService ObservationService
+@inject AppState AppState
 
 <PageTitle>@L["AppName"] · @L["Home_Title"]</PageTitle>
 
@@ -97,6 +100,51 @@
             <p class="home-hero-subtitle">@L["Home_Subtitle"]</p>
         </div>
     </section>
+
+    @if (AppState.IsAuthenticated)
+    {
+        <section class="home-section">
+            <div class="home-welcome-card">
+                <div class="home-welcome-row">
+                    <span class="home-welcome-icon" aria-hidden="true">👤</span>
+                    <h2 class="home-welcome-title">@L["Home_Welcome_User", AppState.UserDisplayName]</h2>
+                </div>
+                <p class="home-welcome-count">@L["Home_Sessions_Count", _sessionCount]</p>
+                <div class="home-welcome-links">
+                    <a class="home-inline-link" href="/historial">@L["Nav_History"]</a>
+                    <a class="home-inline-link" href="/planificacion">@L["Nav_Planning"]</a>
+                </div>
+            </div>
+        </section>
+
+        @if (_showRecentSessions)
+        {
+            <section class="home-section">
+                <h2 class="home-section-title">@L["Home_Recent_Title"]</h2>
+
+                @if (_recentSessions.Count > 0)
+                {
+                    <div class="home-recent-list">
+                        @foreach (var session in _recentSessions)
+                        {
+                            <a class="home-recent-item" href="/historial">
+                                <span class="home-recent-date">@session.Date.ToLocalTime().ToString("d")</span>
+                                <span class="home-recent-title">@session.Title</span>
+                            </a>
+                        }
+                    </div>
+                    <a class="home-inline-link" href="/historial">@L["Home_Recent_ViewAll"]</a>
+                }
+                else
+                {
+                    <div class="home-recent-empty">
+                        <p>@L["Home_Recent_Empty"]</p>
+                        <a class="home-inline-link" href="/planificacion">@L["Home_Recent_StartNow"]</a>
+                    </div>
+                }
+            </section>
+        }
+    }
 
     <!-- ══ PANEL SITUACIÓN ASTRONÓMICA ════════════════════════════════════ -->
     <section class="home-section">
@@ -260,10 +308,16 @@
                 </div>
                 <span class="home-qcard-arrow">→</span>
             </a>
-            <a class="home-qcard home-qcard--planning" href="/planificacion">
+            <a class="home-qcard home-qcard--planning @(AppState.IsAuthenticated ? string.Empty : "home-qcard--locked")" href="@(AppState.IsAuthenticated ? "/planificacion" : "/login")" title="@(AppState.IsAuthenticated ? null : L["Home_Lock_Hint"])">
                 <div class="home-qcard-icon">📅</div>
                 <div class="home-qcard-body">
-                    <span class="home-qcard-title">@L["Nav_Planning"]</span>
+                    <span class="home-qcard-title">
+                        @L["Nav_Planning"]
+                        @if (!AppState.IsAuthenticated)
+                        {
+                            <span class="home-qcard-lock" aria-hidden="true">🔒</span>
+                        }
+                    </span>
                     <span class="home-qcard-desc">@L["Home_Card_Planning_Desc"]</span>
                 </div>
                 <span class="home-qcard-arrow">→</span>
@@ -276,11 +330,17 @@
                 </div>
                 <span class="home-qcard-arrow">→</span>
             </a>
-            <a class="home-qcard home-qcard--calc" href="/calculadoras">
+            <a class="home-qcard home-qcard--calc @(AppState.IsAuthenticated ? string.Empty : "home-qcard--locked")" href="@(AppState.IsAuthenticated ? "/historial" : "/login")" title="@(AppState.IsAuthenticated ? null : L["Home_Lock_Hint"])">
                 <div class="home-qcard-icon">🧮</div>
                 <div class="home-qcard-body">
-                    <span class="home-qcard-title">@L["Nav_Calculators"]</span>
-                    <span class="home-qcard-desc">@L["Home_Card_Calculators_Desc"]</span>
+                    <span class="home-qcard-title">
+                        @L["Nav_History"]
+                        @if (!AppState.IsAuthenticated)
+                        {
+                            <span class="home-qcard-lock" aria-hidden="true">🔒</span>
+                        }
+                    </span>
+                    <span class="home-qcard-desc">@L["Home_Recent_ViewAll"]</span>
                 </div>
                 <span class="home-qcard-arrow">→</span>
             </a>
@@ -339,11 +399,17 @@
     private bool _gpsLoading;
     private string? _gpsError;
 
+    // ── Sesiones autenticadas ─────────────────────────────────────────────────
+    private int _sessionCount;
+    private bool _showRecentSessions;
+    private List<ObservationSession> _recentSessions = new();
+
     // ── Ciclo de vida ────────────────────────────────────────────────────────
     protected override async Task OnInitializedAsync()
     {
         // Inyectar el manejador de cambios de ubicación
         LocationState.LocationChanged += OnLocationStateChanged;
+        AppState.OnStateChanged += OnAppStateChanged;
 
         // Cargar favoritas
         _favLocations = await FavLocationsService.GetFavoriteLocationsAsync();
@@ -356,6 +422,8 @@
 
         Calcular();
         CargarProximoEclipse();
+
+        _ = LoadRecentSessionsAsync();
     }
 
     /// <summary>
@@ -366,6 +434,15 @@
         SyncFromLocationState();
         Calcular();
         StateHasChanged();
+    }
+
+    private void OnAppStateChanged()
+    {
+        _ = InvokeAsync(async () =>
+        {
+            await LoadRecentSessionsAsync();
+            StateHasChanged();
+        });
     }
 
     /// <summary>
@@ -407,6 +484,42 @@
                 LocationState.SetFavoriteLocation(loc);
             }
         }
+    }
+
+    private async Task LoadRecentSessionsAsync()
+    {
+        _showRecentSessions = false;
+        _recentSessions = new List<ObservationSession>();
+        _sessionCount = 0;
+
+        if (!AppState.IsAuthenticated)
+            return;
+
+        try
+        {
+            await Task.Yield();
+
+            var sessions = await ObservationService.GetAllAsync();
+
+            _sessionCount = sessions.Count;
+            _recentSessions = sessions
+                .OrderByDescending(s => s.Date)
+                .Take(3)
+                .ToList();
+            _showRecentSessions = true;
+
+            await InvokeAsync(StateHasChanged);
+        }
+        catch
+        {
+            _showRecentSessions = false;
+        }
+    }
+
+    public void Dispose()
+    {
+        LocationState.LocationChanged -= OnLocationStateChanged;
+        AppState.OnStateChanged -= OnAppStateChanged;
     }
 
     // ── Cálculo astronómico ──────────────────────────────────────────────────

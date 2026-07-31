@@ -187,6 +187,21 @@
     opacity:    .5;
 }
 
+/* Bloque de usuario */
+.obs-user-block {
+    display: grid;
+    gap: 8px;
+    padding: 4px 8px 8px;
+}
+
+.obs-user-name {
+    color: var(--obs-moon);
+    font-size: .9rem;
+    font-weight: 700;
+    padding: 6px 8px 2px;
+    word-break: break-word;
+}
+
 /* Botón Salir */
 .obs-nav-exit {
     width:      100%;
