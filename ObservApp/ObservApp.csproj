@@ -62,26 +62,26 @@
 
     <ItemGroup>
         <!-- MAUI core -->
-        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.9" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.9" />
-        <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.9" />
-        <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.80" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.80" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.9" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.10" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.10" />
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.10" />
+        <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.90" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.90" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.10" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.10" />
         <PackageReference Include="Plugin.Maui.Audio" Version="4.0.0" />
 
         <!-- Syncfusion licensing (el resto de paquetes SF van en Shared) -->
 
         <!-- Supabase — nombre correcto del paquete desde v1.x -->
-        <PackageReference Include="Supabase" Version="1.1.1" />
+        <PackageReference Include="Supabase" Version="1.5.0" />
 
         <!-- Astronomy Engine — cálculos offline de planetas, luna, eclipses -->
         <PackageReference Include="CosineKitty.AstronomyEngine" Version="2.1.19" />
 
         <!-- Community Toolkit MAUI — permisos, share, toast nativo Android -->
-        <PackageReference Include="CommunityToolkit.Maui" Version="14.2.0" />
-        <PackageReference Include="Syncfusion.Licensing" Version="34.1.30" />
+        <PackageReference Include="CommunityToolkit.Maui" Version="15.0.0" />
+        <PackageReference Include="Syncfusion.Licensing" Version="34.1.33" />
     </ItemGroup>
 
   <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">
