@@ -1249,6 +1249,30 @@
   <data name="Auth_Error" xml:space="preserve">
     <value>Authentication error</value>
   </data>
+  <data name="Auth_WelcomeBack" xml:space="preserve">
+    <value>Welcome back</value>
+  </data>
+  <data name="Auth_ForgotPassword" xml:space="preserve">
+    <value>Forgot your password?</value>
+  </data>
+  <data name="Auth_CreateAccount" xml:space="preserve">
+    <value>Create account</value>
+  </data>
+  <data name="Auth_CreatingAccount" xml:space="preserve">
+    <value>Creating account…</value>
+  </data>
+  <data name="Auth_ConfirmPassword" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="Auth_PasswordMismatch" xml:space="preserve">
+    <value>Passwords do not match</value>
+  </data>
+  <data name="Auth_HasAccount" xml:space="preserve">
+    <value>Already have an account? Sign in</value>
+  </data>
+  <data name="Auth_NoAccount" xml:space="preserve">
+    <value>Don't have an account? Sign up</value>
+  </data>
   <data name="Obs_Sessions" xml:space="preserve">
     <value>Observation Sessions</value>
   </data>
