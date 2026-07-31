@@ -1366,4 +1366,106 @@
   <data name="Hist_LoadError" xml:space="preserve">
     <value>حدث خطأ أثناء تحميل الجلسات.</value>
   </data>
+  <data name="Plan_Title_New" xml:space="preserve">
+    <value>جلسة جديدة</value>
+  </data>
+  <data name="Plan_Title_Edit" xml:space="preserve">
+    <value>تعديل الجلسة</value>
+  </data>
+  <data name="Plan_Section_Session" xml:space="preserve">
+    <value>بيانات الجلسة</value>
+  </data>
+  <data name="Plan_Section_Targets" xml:space="preserve">
+    <value>الأجرام المرصودة</value>
+  </data>
+  <data name="Plan_SessionTitle" xml:space="preserve">
+    <value>عنوان الجلسة</value>
+  </data>
+  <data name="Plan_SessionTitle_Required" xml:space="preserve">
+    <value>العنوان مطلوب</value>
+  </data>
+  <data name="Plan_Date" xml:space="preserve">
+    <value>التاريخ</value>
+  </data>
+  <data name="Plan_Time" xml:space="preserve">
+    <value>وقت البدء</value>
+  </data>
+  <data name="Plan_Location" xml:space="preserve">
+    <value>الموقع</value>
+  </data>
+  <data name="Plan_LocationName" xml:space="preserve">
+    <value>اسم المكان</value>
+  </data>
+  <data name="Plan_Seeing" xml:space="preserve">
+    <value>جودة الرؤية (1-5)</value>
+  </data>
+  <data name="Plan_Transparency" xml:space="preserve">
+    <value>الشفافية (1-5)</value>
+  </data>
+  <data name="Plan_Notes" xml:space="preserve">
+    <value>ملاحظات</value>
+  </data>
+  <data name="Plan_AddTarget" xml:space="preserve">
+    <value>+ إضافة جرم</value>
+  </data>
+  <data name="Plan_Target_Name" xml:space="preserve">
+    <value>اسم الجرم</value>
+  </data>
+  <data name="Plan_Target_Name_Required" xml:space="preserve">
+    <value>الاسم مطلوب</value>
+  </data>
+  <data name="Plan_Target_Type" xml:space="preserve">
+    <value>النوع</value>
+  </data>
+  <data name="Plan_Target_Constellation" xml:space="preserve">
+    <value>الكوكبة</value>
+  </data>
+  <data name="Plan_Target_Eyepiece" xml:space="preserve">
+    <value>العدسة العينية</value>
+  </data>
+  <data name="Plan_Target_Magnification" xml:space="preserve">
+    <value>التكبير</value>
+  </data>
+  <data name="Plan_Target_Rating" xml:space="preserve">
+    <value>التقييم</value>
+  </data>
+  <data name="Plan_Target_Notes" xml:space="preserve">
+    <value>ملاحظات الجرم</value>
+  </data>
+  <data name="Plan_Save" xml:space="preserve">
+    <value>حفظ الجلسة</value>
+  </data>
+  <data name="Plan_Saving" xml:space="preserve">
+    <value>جارٍ الحفظ…</value>
+  </data>
+  <data name="Plan_Cancel" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
+  <data name="Plan_SaveError" xml:space="preserve">
+    <value>خطأ أثناء حفظ الجلسة.</value>
+  </data>
+  <data name="Plan_LoadError" xml:space="preserve">
+    <value>خطأ أثناء تحميل الجلسة.</value>
+  </data>
+  <data name="Plan_Type_Planet" xml:space="preserve">
+    <value>كوكب</value>
+  </data>
+  <data name="Plan_Type_Moon" xml:space="preserve">
+    <value>القمر</value>
+  </data>
+  <data name="Plan_Type_DeepSkyObject" xml:space="preserve">
+    <value>جرم من أعماق السماء</value>
+  </data>
+  <data name="Plan_Type_DoubleStar" xml:space="preserve">
+    <value>نجم مزدوج</value>
+  </data>
+  <data name="Plan_Type_Asteroid" xml:space="preserve">
+    <value>كويكب</value>
+  </data>
+  <data name="Plan_Type_Comet" xml:space="preserve">
+    <value>مذنب</value>
+  </data>
+  <data name="Plan_Type_Other" xml:space="preserve">
+    <value>أخرى</value>
+  </data>
 </root>

@@ -1336,4 +1336,106 @@
   <data name="Hist_LoadError" xml:space="preserve">
     <value>Error loading sessions.</value>
   </data>
+  <data name="Plan_Title_New" xml:space="preserve">
+    <value>New session</value>
+  </data>
+  <data name="Plan_Title_Edit" xml:space="preserve">
+    <value>Edit session</value>
+  </data>
+  <data name="Plan_Section_Session" xml:space="preserve">
+    <value>Session data</value>
+  </data>
+  <data name="Plan_Section_Targets" xml:space="preserve">
+    <value>Observed objects</value>
+  </data>
+  <data name="Plan_SessionTitle" xml:space="preserve">
+    <value>Session title</value>
+  </data>
+  <data name="Plan_SessionTitle_Required" xml:space="preserve">
+    <value>Title is required</value>
+  </data>
+  <data name="Plan_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Plan_Time" xml:space="preserve">
+    <value>Start time</value>
+  </data>
+  <data name="Plan_Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="Plan_LocationName" xml:space="preserve">
+    <value>Location name</value>
+  </data>
+  <data name="Plan_Seeing" xml:space="preserve">
+    <value>Seeing (1-5)</value>
+  </data>
+  <data name="Plan_Transparency" xml:space="preserve">
+    <value>Transparency (1-5)</value>
+  </data>
+  <data name="Plan_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="Plan_AddTarget" xml:space="preserve">
+    <value>+ Add object</value>
+  </data>
+  <data name="Plan_Target_Name" xml:space="preserve">
+    <value>Object name</value>
+  </data>
+  <data name="Plan_Target_Name_Required" xml:space="preserve">
+    <value>Name is required</value>
+  </data>
+  <data name="Plan_Target_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Plan_Target_Constellation" xml:space="preserve">
+    <value>Constellation</value>
+  </data>
+  <data name="Plan_Target_Eyepiece" xml:space="preserve">
+    <value>Eyepiece</value>
+  </data>
+  <data name="Plan_Target_Magnification" xml:space="preserve">
+    <value>Magnification</value>
+  </data>
+  <data name="Plan_Target_Rating" xml:space="preserve">
+    <value>Rating</value>
+  </data>
+  <data name="Plan_Target_Notes" xml:space="preserve">
+    <value>Object notes</value>
+  </data>
+  <data name="Plan_Save" xml:space="preserve">
+    <value>Save session</value>
+  </data>
+  <data name="Plan_Saving" xml:space="preserve">
+    <value>Saving…</value>
+  </data>
+  <data name="Plan_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Plan_SaveError" xml:space="preserve">
+    <value>Error saving session.</value>
+  </data>
+  <data name="Plan_LoadError" xml:space="preserve">
+    <value>Error loading session.</value>
+  </data>
+  <data name="Plan_Type_Planet" xml:space="preserve">
+    <value>Planet</value>
+  </data>
+  <data name="Plan_Type_Moon" xml:space="preserve">
+    <value>Moon</value>
+  </data>
+  <data name="Plan_Type_DeepSkyObject" xml:space="preserve">
+    <value>Deep sky object</value>
+  </data>
+  <data name="Plan_Type_DoubleStar" xml:space="preserve">
+    <value>Double star</value>
+  </data>
+  <data name="Plan_Type_Asteroid" xml:space="preserve">
+    <value>Asteroid</value>
+  </data>
+  <data name="Plan_Type_Comet" xml:space="preserve">
+    <value>Comet</value>
+  </data>
+  <data name="Plan_Type_Other" xml:space="preserve">
+    <value>Other</value>
+  </data>
 </root>

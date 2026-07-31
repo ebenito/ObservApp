@@ -57,9 +57,12 @@
             </a>
 
             <div class="obs-nav-group-label">@L["Nav_Section_Planning"]</div>
-            <a class="obs-nav-link @IsActive("/planificacion")" href="/planificacion" @onclick="CloseSidebar">
-                <span class="obs-nav-icon">📅</span> @L["Nav_Planning"]
-            </a>
+            @if (AppState.IsAuthenticated)
+            {
+                <a class="obs-nav-link @IsActive("/planificacion")" href="/planificacion" @onclick="CloseSidebar">
+                    <span class="obs-nav-icon">📅</span> @L["Nav_Planning"]
+                </a>
+            }
             <a class="obs-nav-link @IsActive("/efemerides")" href="/efemerides" @onclick="CloseSidebar">
                 <span class="obs-nav-icon">🌙</span> @L["Nav_Ephemeris"]
             </a>
