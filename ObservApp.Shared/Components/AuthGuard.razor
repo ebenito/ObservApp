@@ -1,0 +1,25 @@
+@inject AppState AppState
+@inject NavigationManager NavManager
+
+@if (AppState.IsAuthenticated)
+{
+    @ChildContent
+}
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public string RedirectTo { get; set; } = "/login";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!AppState.IsAuthenticated)
+        {
+            NavManager.NavigateTo(RedirectTo, forceLoad: true);
+        }
+
+        await Task.CompletedTask;
+    }
+}

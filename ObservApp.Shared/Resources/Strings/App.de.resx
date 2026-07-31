@@ -159,6 +159,48 @@
   <data name="Nav_Exit" xml:space="preserve">
     <value>Beenden</value>
   </data>
+  <data name="Auth_SignIn" xml:space="preserve">
+    <value>Anmelden</value>
+  </data>
+  <data name="Auth_SignUp" xml:space="preserve">
+    <value>Registrieren</value>
+  </data>
+  <data name="Auth_Email" xml:space="preserve">
+    <value>E-Mail</value>
+  </data>
+  <data name="Auth_Password" xml:space="preserve">
+    <value>Passwort</value>
+  </data>
+  <data name="Auth_ConfirmPassword" xml:space="preserve">
+    <value>Passwort bestätigen</value>
+  </data>
+  <data name="Auth_DisplayName" xml:space="preserve">
+    <value>Benutzername</value>
+  </data>
+  <data name="Auth_NoAccount" xml:space="preserve">
+    <value>Noch kein Konto? Registrieren</value>
+  </data>
+  <data name="Auth_HasAccount" xml:space="preserve">
+    <value>Sie haben bereits ein Konto? Anmelden</value>
+  </data>
+  <data name="Auth_ForgotPassword" xml:space="preserve">
+    <value>Passwort vergessen?</value>
+  </data>
+  <data name="Auth_PasswordMismatch" xml:space="preserve">
+    <value>Passwörter stimmen nicht überein</value>
+  </data>
+  <data name="Auth_SigningIn" xml:space="preserve">
+    <value>Anmeldung läuft…</value>
+  </data>
+  <data name="Auth_CreatingAccount" xml:space="preserve">
+    <value>Konto wird erstellt…</value>
+  </data>
+  <data name="Auth_WelcomeBack" xml:space="preserve">
+    <value>Willkommen zurück</value>
+  </data>
+  <data name="Auth_CreateAccount" xml:space="preserve">
+    <value>Konto erstellen</value>
+  </data>
   <data name="Nav_Section_Main" xml:space="preserve">
     <value>Hauptmenü</value>
   </data>

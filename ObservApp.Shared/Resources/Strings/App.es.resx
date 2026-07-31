@@ -159,6 +159,18 @@
   <data name="Nav_Exit" xml:space="preserve">
     <value>Salir</value>
   </data>
+  <data name="Nav_SignIn" xml:space="preserve">
+    <value>Iniciar sesión</value>
+  </data>
+  <data name="Nav_SignOut" xml:space="preserve">
+    <value>Cerrar sesión</value>
+  </data>
+  <data name="Action_Show" xml:space="preserve">
+    <value>Mostrar</value>
+  </data>
+  <data name="Action_Hide" xml:space="preserve">
+    <value>Ocultar</value>
+  </data>
   <data name="Nav_Section_Main" xml:space="preserve">
     <value>Principal</value>
   </data>

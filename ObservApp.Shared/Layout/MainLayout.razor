@@ -5,6 +5,8 @@
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
 @inject ILocalizationService Localization
 @inject IAppLifecycleService AppLifecycle
+@inject IAuthService AuthService
+@inject AppState AppState
 @inject IJSRuntime JS
 @implements IDisposable
 
@@ -77,6 +79,23 @@
             <a class="obs-nav-link @IsActive("/configuracion")" href="/configuracion" @onclick="CloseSidebar">
                 <span class="obs-nav-icon">⚙️</span> @L["Nav_Settings"]
             </a>
+
+            @if (AppState.IsAuthenticated)
+            {
+                <div class="obs-user-block">
+                    <div class="obs-user-name">@AppState.UserDisplayName</div>
+                    <button class="obs-nav-link obs-nav-exit" @onclick="SignOutAsync">
+                        <span class="obs-nav-icon">🚪</span> @L["Nav_SignOut"]
+                    </button>
+                </div>
+            }
+            else
+            {
+                <a class="obs-nav-link @IsActive("/login")" href="/login" @onclick="CloseSidebar">
+                    <span class="obs-nav-icon">🔑</span> @L["Nav_SignIn"]
+                </a>
+            }
+
             <a class="obs-nav-link @IsActive("/about")" href="/about" @onclick="CloseSidebar">
                 <span class="obs-nav-icon">ℹ️</span> @L["Nav_About"]
             </a>
@@ -113,6 +132,8 @@
     {
         NavManager.LocationChanged += OnLocationChanged;
         Localization.OnLanguageChanged += OnLanguageChanged;
+        AppState.OnStateChanged += OnAppStateChanged;
+        AuthService.OnAuthStateChanged += OnAuthStateChanged;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -125,6 +146,14 @@
     {
         await ApplyHtmlLangAsync();
         await InvokeAsync(StateHasChanged);
+    }
+
+    private void OnAppStateChanged() => InvokeAsync(StateHasChanged);
+
+    private void OnAuthStateChanged(UserProfile? userProfile)
+    {
+        AppState.CurrentUser = userProfile;
+        _ = InvokeAsync(StateHasChanged);
     }
 
     private async Task ApplyHtmlLangAsync()
@@ -155,12 +184,22 @@
     {
         NavManager.LocationChanged -= OnLocationChanged;
         Localization.OnLanguageChanged -= OnLanguageChanged;
+        AppState.OnStateChanged -= OnAppStateChanged;
+        AuthService.OnAuthStateChanged -= OnAuthStateChanged;
     }
 
     private async Task ExitAppAsync()
     {
         await CloseSidebarAsync();
         await AppLifecycle.ExitApplicationAsync();
+    }
+
+    private async Task SignOutAsync()
+    {
+        await CloseSidebarAsync();
+        await AuthService.SignOutAsync();
+        AppState.CurrentUser = null;
+        NavManager.NavigateTo("/login");
     }
 
     private async Task CloseSidebarAsync()

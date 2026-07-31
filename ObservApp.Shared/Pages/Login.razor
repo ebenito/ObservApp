@@ -1,0 +1,211 @@
+@page "/login"
+@using Microsoft.AspNetCore.Components
+@using ObservApp.Shared.ViewModels
+@implements IDisposable
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+@inject AuthViewModel AuthViewModel
+@inject AppState AppState
+@inject NavigationManager NavManager
+
+<PageTitle>@L["AppName"] · @(_isSignInMode ? L["Auth_SignIn"] : L["Auth_SignUp"])</PageTitle>
+
+<div class="login-page">
+    <div class="login-shell">
+        <header class="login-header">
+            <span class="login-star">★</span>
+            <h1 class="login-brand">@L["AppName"]</h1>
+        </header>
+
+        <section class="login-card">
+            <div class="login-card__intro">
+                <p class="login-kicker">@(_isSignInMode ? L["Auth_WelcomeBack"] : L["Auth_CreateAccount"])</p>
+                <h2 class="login-title">@(_isSignInMode ? L["Auth_SignIn"] : L["Auth_SignUp"])</h2>
+            </div>
+
+            @if (AuthViewModel.ErrorMessage is not null)
+            {
+                <div class="login-error" role="alert">@AuthViewModel.ErrorMessage</div>
+            }
+
+            @if (AuthViewModel.IsLoading)
+            {
+                <div class="login-loading" aria-live="polite">
+                    <span class="login-spinner" aria-hidden="true"></span>
+                    <span>@(_isSignInMode ? L["Auth_SigningIn"] : L["Auth_CreatingAccount"])</span>
+                </div>
+            }
+
+            <div class="login-fields">
+                @if (!_isSignInMode)
+                {
+                    <div class="login-field">
+                        <label class="login-label" for="display-name">@L["Auth_DisplayName"]</label>
+                        <input id="display-name"
+                               class="login-input"
+                               type="text"
+                               autocomplete="nickname"
+                               value="@AuthViewModel.DisplayName"
+                               @oninput="OnDisplayNameInput" />
+                    </div>
+                }
+
+                <div class="login-field">
+                    <label class="login-label" for="email">@L["Auth_Email"]</label>
+                    <input id="email"
+                           class="login-input"
+                           type="email"
+                           autocomplete="email"
+                           value="@AuthViewModel.Email"
+                           @oninput="OnEmailInput" />
+                </div>
+
+                <div class="login-field">
+                    <label class="login-label" for="password">@L["Auth_Password"]</label>
+                    <div class="login-password-row">
+                        <input id="password"
+                               class="login-input login-input--password"
+                               type="@(_showPassword ? "text" : "password")"
+                               autocomplete="current-password"
+                               value="@AuthViewModel.Password"
+                               @oninput="OnPasswordInput" />
+                        <button type="button"
+                                class="login-password-toggle"
+                                @onclick="TogglePassword"
+                                aria-label="@(_showPassword ? L["Action_Hide"] : L["Action_Show"])">
+                            @(_showPassword ? "🙈" : "👁️")
+                        </button>
+                    </div>
+                </div>
+
+                @if (!_isSignInMode)
+                {
+                    <div class="login-field">
+                        <label class="login-label" for="confirm-password">@L["Auth_ConfirmPassword"]</label>
+                        <div class="login-password-row">
+                            <input id="confirm-password"
+                                   class="login-input login-input--password"
+                                   type="@(_showConfirmPassword ? "text" : "password")"
+                                   autocomplete="new-password"
+                                   value="@_confirmPassword"
+                                   @oninput="OnConfirmPasswordInput" />
+                            <button type="button"
+                                    class="login-password-toggle"
+                                    @onclick="ToggleConfirmPassword"
+                                    aria-label="@(_showConfirmPassword ? L["Action_Hide"] : L["Action_Show"])">
+                                @(_showConfirmPassword ? "🙈" : "👁️")
+                            </button>
+                        </div>
+                    </div>
+
+                    @if (!PasswordsMatch)
+                    {
+                        <div class="login-inline-error">@L["Auth_PasswordMismatch"]</div>
+                    }
+                }
+            </div>
+
+            <button type="button"
+                    class="login-primary"
+                    @onclick="SubmitAsync"
+                    disabled="@IsSubmitDisabled">
+                @(_isSignInMode ? L["Auth_SignIn"] : L["Auth_CreateAccount"])
+            </button>
+
+            @if (_isSignInMode)
+            {
+                <p class="login-forgot">@L["Auth_ForgotPassword"]</p>
+            }
+
+            <button type="button" class="login-toggle" @onclick="ToggleMode">
+                @(_isSignInMode ? L["Auth_NoAccount"] : L["Auth_HasAccount"])
+            </button>
+        </section>
+    </div>
+</div>
+
+@code {
+    private bool _isSignInMode = true;
+    private bool _showPassword;
+    private bool _showConfirmPassword;
+    private string _confirmPassword = string.Empty;
+
+    private bool PasswordsMatch => _isSignInMode || string.Equals(AuthViewModel.Password, _confirmPassword, StringComparison.Ordinal);
+
+    private bool IsSubmitDisabled => AuthViewModel.IsLoading || string.IsNullOrWhiteSpace(AuthViewModel.Email) || string.IsNullOrWhiteSpace(AuthViewModel.Password) || (!_isSignInMode && string.IsNullOrWhiteSpace(AuthViewModel.DisplayName)) || (!_isSignInMode && !PasswordsMatch);
+
+    protected override void OnInitialized()
+    {
+        if (AppState.IsAuthenticated)
+        {
+            NavManager.NavigateTo("/");
+            return;
+        }
+
+        AppState.OnStateChanged += HandleAppStateChanged;
+    }
+
+    private void HandleAppStateChanged()
+    {
+        if (AppState.IsAuthenticated)
+        {
+            InvokeAsync(() => NavManager.NavigateTo("/"));
+            return;
+        }
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void ToggleMode()
+    {
+        _isSignInMode = !_isSignInMode;
+        _showConfirmPassword = false;
+        _confirmPassword = string.Empty;
+    }
+
+    private void TogglePassword() => _showPassword = !_showPassword;
+    private void ToggleConfirmPassword() => _showConfirmPassword = !_showConfirmPassword;
+
+    private void OnEmailInput(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+        => AuthViewModel.Email = e.Value?.ToString() ?? string.Empty;
+
+    private void OnPasswordInput(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+        => AuthViewModel.Password = e.Value?.ToString() ?? string.Empty;
+
+    private void OnDisplayNameInput(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+        => AuthViewModel.DisplayName = e.Value?.ToString() ?? string.Empty;
+
+    private void OnConfirmPasswordInput(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+        => _confirmPassword = e.Value?.ToString() ?? string.Empty;
+
+    private async Task SubmitAsync()
+    {
+        if (AuthViewModel.IsLoading)
+        {
+            return;
+        }
+
+        if (!_isSignInMode && !PasswordsMatch)
+        {
+            return;
+        }
+
+        if (_isSignInMode)
+        {
+            await AuthViewModel.SignInCommand.ExecuteAsync(null);
+        }
+        else
+        {
+            await AuthViewModel.SignUpCommand.ExecuteAsync(null);
+        }
+
+        if (AppState.IsAuthenticated)
+        {
+            NavManager.NavigateTo("/");
+        }
+    }
+
+    public void Dispose()
+    {
+        AppState.OnStateChanged -= HandleAppStateChanged;
+    }
+}
