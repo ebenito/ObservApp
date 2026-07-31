@@ -495,6 +495,27 @@
   <data name="Home_Card_Calculators_Desc" xml:space="preserve">
     <value>Campo visivo, esposizione eclissi, ingrandimento e altro</value>
   </data>
+  <data name="Home_Welcome_User" xml:space="preserve">
+    <value>Benvenuto, {0}</value>
+  </data>
+  <data name="Home_Sessions_Count" xml:space="preserve">
+    <value>{0} sessioni registrate</value>
+  </data>
+  <data name="Home_Recent_Title" xml:space="preserve">
+    <value>Le tue ultime osservazioni</value>
+  </data>
+  <data name="Home_Recent_Empty" xml:space="preserve">
+    <value>Non hai ancora sessioni. Inizia oggi!</value>
+  </data>
+  <data name="Home_Recent_ViewAll" xml:space="preserve">
+    <value>Visualizza tutta la cronologia</value>
+  </data>
+  <data name="Home_Recent_StartNow" xml:space="preserve">
+    <value>Registra la prima sessione</value>
+  </data>
+  <data name="Home_Lock_Hint" xml:space="preserve">
+    <value>Accedi per continuare</value>
+  </data>
   <data name="Home_Features_Title" xml:space="preserve">
     <value>Cosa puoi fare?</value>
   </data>

@@ -495,6 +495,27 @@
   <data name="Home_Card_Calculators_Desc" xml:space="preserve">
     <value>Champ de vision, exposition éclipse, grossissement et plus</value>
   </data>
+  <data name="Home_Welcome_User" xml:space="preserve">
+    <value>Bienvenue, {0}</value>
+  </data>
+  <data name="Home_Sessions_Count" xml:space="preserve">
+    <value>{0} sessions enregistrées</value>
+  </data>
+  <data name="Home_Recent_Title" xml:space="preserve">
+    <value>Vos dernières observations</value>
+  </data>
+  <data name="Home_Recent_Empty" xml:space="preserve">
+    <value>Vous n'avez pas encore de sessions. Commencez aujourd'hui !</value>
+  </data>
+  <data name="Home_Recent_ViewAll" xml:space="preserve">
+    <value>Voir tout l'historique</value>
+  </data>
+  <data name="Home_Recent_StartNow" xml:space="preserve">
+    <value>Enregistrer la première session</value>
+  </data>
+  <data name="Home_Lock_Hint" xml:space="preserve">
+    <value>Connectez-vous pour accéder</value>
+  </data>
   <data name="Home_Features_Title" xml:space="preserve">
     <value>Que pouvez-vous faire ?</value>
   </data>

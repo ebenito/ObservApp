@@ -495,6 +495,27 @@
   <data name="Home_Card_Calculators_Desc" xml:space="preserve">
     <value>مجال الرؤية، تعريض الكسوف، التكبير والمزيد</value>
   </data>
+  <data name="Home_Welcome_User" xml:space="preserve">
+    <value>مرحباً، {0}</value>
+  </data>
+  <data name="Home_Sessions_Count" xml:space="preserve">
+    <value>تم تسجيل {0} جلسة</value>
+  </data>
+  <data name="Home_Recent_Title" xml:space="preserve">
+    <value>آخر عمليات الرصد الخاصة بك</value>
+  </data>
+  <data name="Home_Recent_Empty" xml:space="preserve">
+    <value>ليس لديك جلسات بعد. ابدأ اليوم!</value>
+  </data>
+  <data name="Home_Recent_ViewAll" xml:space="preserve">
+    <value>عرض السجل الكامل</value>
+  </data>
+  <data name="Home_Recent_StartNow" xml:space="preserve">
+    <value>سجّل أول جلسة</value>
+  </data>
+  <data name="Home_Lock_Hint" xml:space="preserve">
+    <value>سجّل الدخول للوصول</value>
+  </data>
   <data name="Home_Features_Title" xml:space="preserve">
     <value>ماذا يمكنك أن تفعل؟</value>
   </data>

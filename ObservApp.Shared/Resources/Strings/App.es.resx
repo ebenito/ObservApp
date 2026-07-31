@@ -465,6 +465,27 @@
   <data name="Home_Card_Calculators_Desc" xml:space="preserve">
     <value>FOV, exposición para eclipses, aumentos y más</value>
   </data>
+  <data name="Home_Welcome_User" xml:space="preserve">
+    <value>Bienvenido, {0}</value>
+  </data>
+  <data name="Home_Sessions_Count" xml:space="preserve">
+    <value>{0} sesiones registradas</value>
+  </data>
+  <data name="Home_Recent_Title" xml:space="preserve">
+    <value>Tus últimas observaciones</value>
+  </data>
+  <data name="Home_Recent_Empty" xml:space="preserve">
+    <value>Aún no tienes sesiones. ¡Empieza hoy!</value>
+  </data>
+  <data name="Home_Recent_ViewAll" xml:space="preserve">
+    <value>Ver todo el historial</value>
+  </data>
+  <data name="Home_Recent_StartNow" xml:space="preserve">
+    <value>Registrar primera sesión</value>
+  </data>
+  <data name="Home_Lock_Hint" xml:space="preserve">
+    <value>Inicia sesión para acceder</value>
+  </data>
   <data name="Home_Features_Title" xml:space="preserve">
     <value>¿Qué puedes hacer?</value>
   </data>
