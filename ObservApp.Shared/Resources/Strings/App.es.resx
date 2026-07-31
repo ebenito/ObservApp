@@ -1258,4 +1258,82 @@
   <data name="Obs_Delete" xml:space="preserve">
     <value>Eliminar</value>
   </data>
+  <data name="Hist_Title" xml:space="preserve">
+    <value>Historial de observaciones</value>
+  </data>
+  <data name="Hist_Subtitle" xml:space="preserve">
+    <value>{0} sesiones registradas</value>
+  </data>
+  <data name="Hist_NewSession" xml:space="preserve">
+    <value>Nueva sesión</value>
+  </data>
+  <data name="Hist_Empty_Title" xml:space="preserve">
+    <value>Sin sesiones aún</value>
+  </data>
+  <data name="Hist_Empty_Desc" xml:space="preserve">
+    <value>Aún no has registrado ninguna sesión de observación.</value>
+  </data>
+  <data name="Hist_FirstSession" xml:space="preserve">
+    <value>Registrar primera sesión</value>
+  </data>
+  <data name="Hist_Objects" xml:space="preserve">
+    <value>{0} objetos</value>
+  </data>
+  <data name="Hist_Seeing" xml:space="preserve">
+    <value>Seeing</value>
+  </data>
+  <data name="Hist_Transparency" xml:space="preserve">
+    <value>Transparencia</value>
+  </data>
+  <data name="Hist_ViewDetails" xml:space="preserve">
+    <value>Ver detalles</value>
+  </data>
+  <data name="Hist_Edit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="Hist_Delete" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+  <data name="Hist_ConfirmDelete" xml:space="preserve">
+    <value>¿Eliminar esta sesión?</value>
+  </data>
+  <data name="Hist_ConfirmYes" xml:space="preserve">
+    <value>Sí, eliminar</value>
+  </data>
+  <data name="Hist_ConfirmNo" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Hist_Targets_Title" xml:space="preserve">
+    <value>Objetos observados</value>
+  </data>
+  <data name="Hist_Target_Eyepiece" xml:space="preserve">
+    <value>Ocular</value>
+  </data>
+  <data name="Hist_Target_Magnification" xml:space="preserve">
+    <value>Aumentos</value>
+  </data>
+  <data name="Hist_Target_Rating" xml:space="preserve">
+    <value>Valoración</value>
+  </data>
+  <data name="Hist_Location" xml:space="preserve">
+    <value>Ubicación</value>
+  </data>
+  <data name="Hist_Latitude" xml:space="preserve">
+    <value>Latitud</value>
+  </data>
+  <data name="Hist_Longitude" xml:space="preserve">
+    <value>Longitud</value>
+  </data>
+  <data name="Hist_Date" xml:space="preserve">
+    <value>Fecha</value>
+  </data>
+  <data name="Hist_Notes" xml:space="preserve">
+    <value>Notas</value>
+  </data>
+  <data name="Hist_Close" xml:space="preserve">
+    <value>Cerrar</value>
+  </data>
+  <data name="Hist_LoadError" xml:space="preserve">
+    <value>Error al cargar las sesiones.</value>
+  </data>
 </root>

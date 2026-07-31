@@ -73,9 +73,12 @@
             </a>
 
             <div class="obs-nav-group-label">@L["Nav_Section_Personal"]</div>
-            <a class="obs-nav-link @IsActive("/historial")" href="/historial" @onclick="CloseSidebar">
-                <span class="obs-nav-icon">📜</span> @L["Nav_History"]
-            </a>
+            @if (AppState.IsAuthenticated)
+            {
+                <a class="obs-nav-link @IsActive("/historial")" href="/historial" @onclick="CloseSidebar">
+                    <span class="obs-nav-icon">📜</span> @L["Nav_History"]
+                </a>
+            }
             <a class="obs-nav-link @IsActive("/configuracion")" href="/configuracion" @onclick="CloseSidebar">
                 <span class="obs-nav-icon">⚙️</span> @L["Nav_Settings"]
             </a>

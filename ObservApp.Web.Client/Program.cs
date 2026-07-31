@@ -51,6 +51,7 @@ builder.Services.AddSingleton<IAuthService>(
 builder.Services.AddSingleton<IObservationService>(
     sp => sp.GetRequiredService<SupabaseService>());
 builder.Services.AddTransient<AuthViewModel>();
+builder.Services.AddTransient<HistorialViewModel>();
 
 // ── IRssFeedService vía proxy SSR (evita CORS en WASM) ──────────────────────
 builder.Services.AddHttpClient<IRssFeedService, WebRssFeedService>(client =>

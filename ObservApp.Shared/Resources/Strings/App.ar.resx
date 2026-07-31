@@ -1288,4 +1288,82 @@
   <data name="Obs_Delete" xml:space="preserve">
     <value>حذف</value>
   </data>
+  <data name="Hist_Title" xml:space="preserve">
+    <value>سجل الرصد</value>
+  </data>
+  <data name="Hist_Subtitle" xml:space="preserve">
+    <value>{0} جلسات مسجلة</value>
+  </data>
+  <data name="Hist_NewSession" xml:space="preserve">
+    <value>جلسة جديدة</value>
+  </data>
+  <data name="Hist_Empty_Title" xml:space="preserve">
+    <value>لا توجد جلسات بعد</value>
+  </data>
+  <data name="Hist_Empty_Desc" xml:space="preserve">
+    <value>لم تسجل أي جلسة رصد بعد.</value>
+  </data>
+  <data name="Hist_FirstSession" xml:space="preserve">
+    <value>سجل الجلسة الأولى</value>
+  </data>
+  <data name="Hist_Objects" xml:space="preserve">
+    <value>{0} أجسام</value>
+  </data>
+  <data name="Hist_Seeing" xml:space="preserve">
+    <value>الرؤية</value>
+  </data>
+  <data name="Hist_Transparency" xml:space="preserve">
+    <value>الشفافية</value>
+  </data>
+  <data name="Hist_ViewDetails" xml:space="preserve">
+    <value>عرض التفاصيل</value>
+  </data>
+  <data name="Hist_Edit" xml:space="preserve">
+    <value>تعديل</value>
+  </data>
+  <data name="Hist_Delete" xml:space="preserve">
+    <value>حذف</value>
+  </data>
+  <data name="Hist_ConfirmDelete" xml:space="preserve">
+    <value>هل تريد حذف هذه الجلسة؟</value>
+  </data>
+  <data name="Hist_ConfirmYes" xml:space="preserve">
+    <value>نعم، احذف</value>
+  </data>
+  <data name="Hist_ConfirmNo" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
+  <data name="Hist_Targets_Title" xml:space="preserve">
+    <value>الأجرام المرصودة</value>
+  </data>
+  <data name="Hist_Target_Eyepiece" xml:space="preserve">
+    <value>العدسة العينية</value>
+  </data>
+  <data name="Hist_Target_Magnification" xml:space="preserve">
+    <value>التكبير</value>
+  </data>
+  <data name="Hist_Target_Rating" xml:space="preserve">
+    <value>التقييم</value>
+  </data>
+  <data name="Hist_Location" xml:space="preserve">
+    <value>الموقع</value>
+  </data>
+  <data name="Hist_Latitude" xml:space="preserve">
+    <value>خط العرض</value>
+  </data>
+  <data name="Hist_Longitude" xml:space="preserve">
+    <value>خط الطول</value>
+  </data>
+  <data name="Hist_Date" xml:space="preserve">
+    <value>التاريخ</value>
+  </data>
+  <data name="Hist_Notes" xml:space="preserve">
+    <value>ملاحظات</value>
+  </data>
+  <data name="Hist_Close" xml:space="preserve">
+    <value>إغلاق</value>
+  </data>
+  <data name="Hist_LoadError" xml:space="preserve">
+    <value>حدث خطأ أثناء تحميل الجلسات.</value>
+  </data>
 </root>

@@ -35,6 +35,7 @@ builder.Services.AddScoped<IRssFeedService, RssFeedService>();
 builder.Services.AddScoped<IAuthService, SsrAuthService>();
 builder.Services.AddScoped<IObservationService, SsrObservationService>();
 builder.Services.AddTransient<AuthViewModel>();
+builder.Services.AddTransient<HistorialViewModel>();
 builder.Services.AddSingleton<AppState>();
 
 // ── IArticleService — stub SSR (cero artículos en render servidor) ───────────

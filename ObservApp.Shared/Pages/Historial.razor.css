@@ -1,0 +1,419 @@
+.hist-page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 20px 16px 56px;
+}
+
+.hist-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.hist-header-copy {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.hist-header-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+}
+
+.hist-title {
+    margin: 0;
+    font-size: 1.6rem;
+    color: var(--obs-moon);
+}
+
+.hist-subtitle {
+    margin: 6px 0 0;
+    color: var(--obs-comet);
+}
+
+.hist-primary-btn,
+.hist-secondary-btn,
+.hist-delete-btn,
+.hist-confirm-yes,
+.hist-confirm-no,
+.hist-detail-close-icon {
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-md);
+    background: var(--obs-deep);
+    color: var(--obs-moon);
+    cursor: pointer;
+    transition: transform var(--transition), border-color var(--transition), background var(--transition), color var(--transition), box-shadow var(--transition);
+}
+
+.hist-primary-btn,
+.hist-secondary-btn,
+.hist-confirm-yes,
+.hist-confirm-no {
+    padding: 10px 14px;
+    font-weight: 600;
+}
+
+.hist-primary-btn {
+    background: rgba(46, 196, 182, .15);
+    border-color: var(--obs-aurora);
+    color: var(--obs-aurora);
+}
+
+.hist-primary-btn:hover,
+.hist-secondary-btn:hover,
+.hist-confirm-yes:hover,
+.hist-confirm-no:hover,
+.hist-detail-close-icon:hover,
+.hist-delete-btn:hover {
+    transform: translateY(-2px);
+}
+
+.hist-error-banner {
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    border: 1px solid var(--obs-mars);
+    border-radius: var(--radius-md);
+    background: rgba(231, 111, 81, .12);
+    color: var(--obs-mars);
+}
+
+.hist-loading {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hist-spinner {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 3px solid rgba(244, 196, 48, .2);
+    border-top-color: var(--obs-star);
+    animation: hist-spin 850ms linear infinite;
+}
+
+.hist-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 420px;
+    gap: 12px;
+}
+
+.hist-empty-illustration {
+    width: min(280px, 80vw);
+    opacity: .6;
+}
+
+.hist-empty-svg {
+    width: 100%;
+    height: auto;
+}
+
+.hist-empty-title {
+    margin: 0;
+    color: var(--obs-moon);
+}
+
+.hist-empty-desc {
+    margin: 0;
+    max-width: 420px;
+    color: var(--obs-comet);
+    line-height: 1.6;
+}
+
+.hist-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    animation: hist-fade-in 260ms ease;
+}
+
+.hist-card {
+    background: var(--obs-navy);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    box-shadow: var(--shadow-card);
+    transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+.hist-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+}
+
+.hist-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.hist-date,
+.hist-location,
+.hist-objects,
+.hist-metric-label {
+    color: var(--obs-comet);
+}
+
+.hist-date {
+    font-size: .85rem;
+}
+
+.hist-card-title {
+    margin: 12px 0 8px;
+    color: var(--obs-moon);
+    font-size: 1.05rem;
+}
+
+.hist-location,
+.hist-objects {
+    margin: 0 0 8px;
+}
+
+.hist-metrics {
+    display: grid;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.hist-metric {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.hist-stars {
+    display: inline-flex;
+    gap: 3px;
+}
+
+.hist-star {
+    color: var(--obs-border);
+}
+
+.hist-star--active {
+    color: var(--obs-star);
+}
+
+.hist-actions {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.hist-delete-btn {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.hist-delete-btn:hover {
+    color: var(--obs-mars);
+    border-color: var(--obs-mars);
+}
+
+.hist-delete-confirm {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--obs-border);
+    display: grid;
+    gap: 12px;
+    color: var(--obs-moon);
+}
+
+.hist-delete-confirm-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.hist-confirm-yes {
+    background: rgba(231, 111, 81, .12);
+    border-color: var(--obs-mars);
+    color: var(--obs-mars);
+}
+
+.hist-confirm-no {
+    color: var(--obs-comet);
+}
+
+.hist-detail-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 27, 42, .7);
+    z-index: 1190;
+}
+
+.hist-detail-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    background: var(--obs-midnight);
+    display: flex;
+    flex-direction: column;
+    padding: 20px 16px calc(24px + var(--safe-area-bottom));
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.hist-detail-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.hist-detail-title {
+    margin: 0;
+    color: var(--obs-moon);
+}
+
+.hist-detail-subtitle {
+    margin: 6px 0 0;
+    color: var(--obs-comet);
+}
+
+.hist-detail-close-icon {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.hist-detail-body {
+    display: grid;
+    gap: 14px;
+}
+
+.hist-detail-field {
+    display: grid;
+    gap: 6px;
+    padding: 12px 14px;
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-md);
+    background: var(--obs-navy);
+}
+
+.hist-detail-label {
+    font-size: .78rem;
+    color: var(--obs-comet);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+.hist-detail-value {
+    color: var(--obs-moon);
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.hist-detail-field--notes .hist-detail-value {
+    white-space: pre-wrap;
+}
+
+.hist-targets {
+    display: grid;
+    gap: 14px;
+    margin-top: 8px;
+}
+
+.hist-targets-title {
+    margin: 0;
+    color: var(--obs-moon);
+}
+
+.hist-targets-empty {
+    margin: 0;
+    color: var(--obs-comet);
+}
+
+.hist-target-card {
+    display: grid;
+    gap: 12px;
+    padding: 14px;
+    background: var(--obs-navy);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-lg);
+}
+
+.hist-target-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.hist-target-name {
+    margin: 0;
+    color: var(--obs-moon);
+}
+
+.hist-target-meta {
+    margin: 6px 0 0;
+    color: var(--obs-comet);
+}
+
+.hist-target-rating {
+    white-space: nowrap;
+}
+
+.hist-target-grid {
+    display: grid;
+    gap: 10px;
+}
+
+.hist-detail-actions {
+    margin-top: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+@media (min-width: 640px) {
+    .hist-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 960px) {
+    .hist-detail-panel {
+        inset: 0 0 0 auto;
+        width: 320px;
+        border-left: 1px solid var(--obs-border);
+        box-shadow: -8px 0 32px rgba(0, 0, 0, .35);
+    }
+}
+
+@media (max-width: 639.98px) {
+    .hist-header {
+        flex-direction: column;
+    }
+
+    .hist-primary-btn {
+        width: 100%;
+    }
+}
+
+@keyframes hist-fade-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hist-spin {
+    to { transform: rotate(360deg); }
+}
