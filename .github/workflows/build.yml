@@ -86,13 +86,22 @@ jobs:
           --no-restore
           -p:TargetFramework=net10.0
           -p:DefineConstants=STANDALONE_WASM
+          -p:DebuggerSupport=false
+          -p:CopyOutputSymbolsToPublishDirectory=false
 
-      - name: Verificar estructura
+      - name: Limpiar artefactos no necesarios para Azure Static Web Apps
+        run: |
+          find ./publish/web/wwwroot -type f \( -name "*.pdb" -o -name "*.dbg" -o -name "*.xml" -o -name "*.map" \) -print -delete
+
+      - name: Verificar estructura y tamaño
         run: |
           echo "=== wwwroot raíz ==="
           ls ./publish/web/wwwroot/
           echo "=== _framework (primeros 10) ==="
           ls ./publish/web/wwwroot/_framework/ | head -10
+          SIZE=$(du -sb ./publish/web/wwwroot | cut -f1)
+          SIZE_MB=$(awk "BEGIN { printf \"%.1f\", $SIZE/1024/1024 }")
+          echo "Tamaño total del paquete: ${SIZE_MB} MB"
 
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
