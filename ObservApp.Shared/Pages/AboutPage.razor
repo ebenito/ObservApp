@@ -1,0 +1,305 @@
+﻿@page "/about"
+@using System.Reflection
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+
+<PageTitle>@L["AppName"] · @L["Nav_About"]</PageTitle>
+
+<div class="about-container">
+
+    <!-- ABOUT CARD -->
+    <div class="about-card">
+        <div class="card-header">
+            <span class="header-icon">ℹ️</span>
+            <h2 class="header-title">Acerca de esta aplicación</h2>
+        </div>
+
+        <div class="info-row">
+            <span class="info-icon">📦</span>
+            <div>
+                <span class="info-label">Versión:</span>
+                <span class="info-value">@VersionNumber</span>
+            </div>
+        </div>
+
+        <div class="info-row">
+            <span class="info-icon">👤</span>
+            <div>
+                <span class="info-label">Desarrollador:</span>
+                <span class="info-value">Esteban Benito</span>
+            </div>
+        </div>
+
+        <div class="info-row">
+            <span class="info-icon">✉️</span>
+            <div>
+                <span class="info-label">Email:</span>
+                <a href="mailto:info@tubkala.com" class="info-link">info@tubkala.com</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- TECHNOLOGIES CARD -->
+    <div class="about-card">
+        <h3 class="section-title">Tecnologías utilizadas:</h3>
+
+        <div class="tech-container">
+            <span class="tech-badge">.NET 10</span>
+            <span class="tech-badge">MAUI Blazor Hybrid</span>
+            <span class="tech-badge">Syncfusion Blazor</span>
+            <span class="tech-badge">Material Design 3</span>
+        </div>
+
+        <a href="https://github.com/ebenito/ObservApp" target="_blank" class="github-link">
+            🔗 VER EN GITHUB
+        </a>
+    </div>
+
+    <!-- DOWNLOAD CARD -->
+    <div class="about-card">
+        <div class="card-header">
+            <span class="header-icon">⬇️</span>
+            <h2 class="header-title">Descargar y valorar</h2>
+        </div>
+
+        <p class="description">
+            Descarga la app gratis desde tu tienda preferida y, si te resulta útil, ¡déjanos una valoración!
+        </p>
+
+        <!-- Microsoft Store -->
+        <div class="store-card store-card--available">
+            <div class="store-content">
+                <span class="store-icon">💻</span>
+                <div>
+                    <div class="store-label">DISPONIBLE EN</div>
+                    <div class="store-name">Microsoft Store</div>
+                </div>
+            </div>
+            <span class="store-arrow">→</span>
+        </div>
+
+        <!-- Google Play -->
+        <div class="store-card store-card--coming" style="opacity: 0.6;">
+            <div class="store-content">
+                <span class="store-icon">🔍</span>
+                <div>
+                    <div class="store-label">PRÓXIMAMENTE EN</div>
+                    <div class="store-name">Google Play</div>
+                </div>
+            </div>
+            <span class="store-badge">Próximamente</span>
+        </div>
+
+        <!-- Amazon Appstore -->
+        <div class="store-card store-card--coming" style="opacity: 0.6;">
+            <div class="store-content">
+                <span class="store-icon">📦</span>
+                <div>
+                    <div class="store-label">PRÓXIMAMENTE EN</div>
+                    <div class="store-name">Amazon Appstore</div>
+                </div>
+            </div>
+            <span class="store-badge">Próximamente</span>
+        </div>
+    </div>
+
+</div>
+
+<style>
+:root {
+    /* Colores del tema */
+    --ce-midnight: #0d1b2a;
+    --ce-navy: #1b2a3b;
+    --ce-deep: #243447;
+    --ce-border: #2e4057;
+    --ce-aurora: #2ec4b6;
+    --ce-moon: #e2e8f0;
+    --ce-comet: #94a3b8;
+}
+
+.about-container {
+    max-width: 600px;
+    margin: 32px auto;
+    padding: 0 16px 48px;
+}
+
+.about-card {
+    background: var(--ce-navy);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    padding: 24px;
+    margin-bottom: 20px;
+    border: 1px solid var(--ce-border);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--ce-border);
+}
+
+.header-icon {
+    font-size: 24px;
+    display: inline-block;
+}
+
+.header-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ce-aurora);
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    color: var(--ce-moon);
+}
+
+.info-row:last-child {
+    margin-bottom: 0;
+}
+
+.info-icon {
+    font-size: 18px;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.info-label {
+    font-weight: 600;
+    color: var(--ce-comet);
+    margin-right: 8px;
+}
+
+.info-value {
+    color: var(--ce-moon);
+}
+
+.info-link {
+    color: var(--ce-aurora);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 200ms ease;
+}
+
+.info-link:hover {
+    color: #3dd4c4;
+    text-decoration: underline;
+}
+
+.section-title {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ce-moon);
+}
+
+.tech-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.tech-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    background: var(--ce-aurora);
+    color: var(--ce-midnight);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background-color 200ms ease;
+}
+
+.tech-badge:hover {
+    background-color: #3dd4c4;
+}
+
+.github-link {
+    display: inline-block;
+    padding: 8px 12px;
+    color: var(--ce-aurora);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    transition: color 200ms ease;
+}
+
+.github-link:hover {
+    color: #3dd4c4;
+    text-decoration: underline;
+}
+
+.description {
+    color: var(--ce-comet);
+    margin: 0 0 20px 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.store-card {
+    border: 1px solid var(--ce-border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 200ms ease, border-color 200ms ease;
+}
+
+.store-card--available:hover {
+    background-color: rgba(46, 196, 182, 0.08);
+    border-color: var(--ce-aurora);
+}
+
+.store-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.store-icon {
+    font-size: 28px;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.store-label {
+    font-size: 11px;
+    color: var(--ce-comet);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.store-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ce-moon);
+}
+
+.store-arrow {
+    font-size: 18px;
+    color: var(--ce-aurora);
+}
+
+.store-badge {
+    font-size: 12px;
+    padding: 4px 8px;
+    background: rgba(46, 196, 182, 0.12);
+    color: var(--ce-comet);
+    border-radius: 4px;
+}
+</style>
+
+@code {
+    private string VersionNumber => $"v{Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "1.0.0"}";
+}

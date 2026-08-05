@@ -93,17 +93,17 @@ jobs:
         run: |
           find ./publish/web/wwwroot -type f \( -name "*.pdb" -o -name "*.dbg" -o -name "*.xml" -o -name "*.map" \) -print -delete
 
-      - name: Reducir assets pesados para web (imágenes > 1 MB)
+      - name: Reducir tamaño de artefactos web para Azure SWA
         run: |
           LIMIT_BYTES=$((250*1024*1024))
           TARGET_BYTES=$((248*1024*1024))
 
-          echo "=== Imágenes > 1 MB candidatas a recorte ==="
-          find ./publish/web/wwwroot -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" -o -iname "*.gif" -o -iname "*.svg" \) -size +1024k -printf '%s\t%p\n' | sort -nr || true
-
           SIZE=$(du -sb ./publish/web/wwwroot | cut -f1)
+          SIZE_MB=$(awk "BEGIN { printf \"%.1f\", $SIZE/1024/1024 }")
+          echo "Tamaño inicial: ${SIZE_MB} MB"
+
           if [ "$SIZE" -gt "$LIMIT_BYTES" ]; then
-            echo "Paquete por encima de límite, eliminando imágenes > 1 MB hasta acercarnos a 248 MB..."
+            echo "=== Recorte 1: imágenes > 1 MB ==="
             while [ "$SIZE" -gt "$TARGET_BYTES" ]; do
               CANDIDATE=$(find ./publish/web/wwwroot -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" -o -iname "*.gif" -o -iname "*.svg" \) -size +1024k -printf '%s\t%p\n' | sort -nr | head -n 1)
               if [ -z "$CANDIDATE" ]; then
@@ -114,15 +114,24 @@ jobs:
               FILE=$(echo "$CANDIDATE" | cut -f2-)
               BYTES=$(echo "$CANDIDATE" | cut -f1)
               FILE_MB=$(awk "BEGIN { printf \"%.2f\", $BYTES/1024/1024 }")
-              echo "Eliminando: $FILE (${FILE_MB} MB)"
+              echo "Eliminando imagen: $FILE (${FILE_MB} MB)"
               rm -f "$FILE"
-
               SIZE=$(du -sb ./publish/web/wwwroot | cut -f1)
             done
           fi
 
+          if [ "$SIZE" -gt "$LIMIT_BYTES" ]; then
+            echo "=== Recorte 2: ficheros precomprimidos (*.br, *.gz) ==="
+            find ./publish/web/wwwroot -type f \( -name "*.br" -o -name "*.gz" \) -print -delete || true
+            SIZE=$(du -sb ./publish/web/wwwroot | cut -f1)
+          fi
+
+          SIZE_MB=$(awk "BEGIN { printf \"%.1f\", $SIZE/1024/1024 }")
+          echo "Tamaño tras recortes: ${SIZE_MB} MB"
+
       - name: Verificar estructura y tamaño
         run: |
+          LIMIT_BYTES=$((250*1024*1024))
           echo "=== wwwroot raíz ==="
           ls ./publish/web/wwwroot/
           echo "=== _framework (primeros 10) ==="
@@ -132,6 +141,11 @@ jobs:
           SIZE=$(du -sb ./publish/web/wwwroot | cut -f1)
           SIZE_MB=$(awk "BEGIN { printf \"%.1f\", $SIZE/1024/1024 }")
           echo "Tamaño total del paquete: ${SIZE_MB} MB"
+
+          if [ "$SIZE" -gt "$LIMIT_BYTES" ]; then
+            echo "Error: El paquete supera el límite de 250 MB de Azure Static Web Apps (${SIZE_MB} MB)"
+            exit 1
+          fi
 
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1

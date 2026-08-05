@@ -86,7 +86,7 @@
                 <span class="obs-nav-icon">⚙️</span> @L["Nav_Settings"]
             </a>
 
-            @if (AppState.IsAuthenticated)
+            @* @if (AppState.IsAuthenticated)
             {
                 <div class="obs-user-block">
                     <div class="obs-user-name">@AppState.UserDisplayName</div>
@@ -100,7 +100,7 @@
                 <a class="obs-nav-link @IsActive("/login")" href="/login" @onclick="CloseSidebar">
                     <span class="obs-nav-icon">🔑</span> @L["Nav_SignIn"]
                 </a>
-            }
+            } *@
 
             <a class="obs-nav-link @IsActive("/about")" href="/about" @onclick="CloseSidebar">
                 <span class="obs-nav-icon">ℹ️</span> @L["Nav_About"]

@@ -31,6 +31,8 @@
         <GenerateTestArtifacts>True</GenerateTestArtifacts>
       <UserSecretsId>64ae768e-41f7-46bd-98b9-e21a8e9dae93</UserSecretsId>
       <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
+      <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+      <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
 
     <ItemGroup>
