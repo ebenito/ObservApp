@@ -138,7 +138,7 @@
     {
         NavManager.LocationChanged += OnLocationChanged;
         Localization.OnLanguageChanged += OnLanguageChanged;
-        AppState.OnStateChanged += OnAppStateChanged;
+        AppState.OnAuthChanged += OnAppStateChanged;
         AuthService.OnAuthStateChanged += OnAuthStateChanged;
     }
 
@@ -190,7 +190,7 @@
     {
         NavManager.LocationChanged -= OnLocationChanged;
         Localization.OnLanguageChanged -= OnLanguageChanged;
-        AppState.OnStateChanged -= OnAppStateChanged;
+        AppState.OnAuthChanged -= OnAppStateChanged;
         AuthService.OnAuthStateChanged -= OnAuthStateChanged;
     }
 

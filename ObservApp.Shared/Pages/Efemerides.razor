@@ -44,42 +44,15 @@
         </div>
 
         <!-- Ubicación -->
-        <div class="eph-card">
-            <div class="eph-card-header eph-location-header">
-                <span class="eph-card-icon">📍</span>
-                <span class="eph-card-title">@L["Eph_Location"]</span>
-                <button class="eph-gps-btn @(_gpsLoading ? "eph-gps-btn--loading" : "")"
-                        @onclick="OnUsarGpsAsync"
-                        disabled="@_gpsLoading"
-                        title="@L["SolLuna_UseGPS"]">
-                    @if (_gpsLoading)
-                    {
-                        <span class="eph-gps-spinner"></span>
-                    }
-                    else
-                    {
-                        <span>📡</span>
-                    }
-                    @L["SolLuna_UseGPS"]
-                </button>
-            </div>
-            <div class="eph-select-wrapper">
-                <select class="eph-input" @onchange="OnFavLocationChanged">
-                    <option value="manual">📍 @L["FavLoc_Select_Manual"]</option>
-                    <option value="gps">📡 @L["FavLoc_Select_GPS"]</option>
-                    @if (_favLocations != null)
-                    {
-                        @foreach (var loc in _favLocations)
-                        {
-                            <option value="@loc.Id">⭐ @loc.Name</option>
-                        }
-                    }
-                </select>
-            </div>
-            @if (!string.IsNullOrEmpty(_gpsError))
-            {
-                <div class="eph-gps-error">⚠️ @_gpsError</div>
-            }
+        <LocationPicker CssPrefix="eph"
+                        TitleKey="Eph_Location"
+                        GpsBtnKey="SolLuna_UseGPS"
+                        Locations="_favLocations"
+                        IsLoading="_gpsLoading"
+                        GpsError="_gpsError"
+                        GpsSource="_gpsSource"
+                        OnGpsRequested="OnUsarGpsAsync"
+                        OnFavoriteSelected="OnFavLocationSelected">
             <div class="eph-card-body eph-location-body">
                 <div class="eph-field">
                     <label class="eph-label">@L["SolLuna_Latitude"]</label>
@@ -100,11 +73,7 @@
                            @onchange="OnAltChanged" />
                 </div>
             </div>
-            @if (_gpsSource is not null)
-            {
-                <div class="eph-gps-source">📡 @_gpsSource</div>
-            }
-        </div>
+        </LocationPicker>
 
     </div>
 
@@ -562,9 +531,8 @@
     }
 
     // ── Handlers de ubicación ─────────────────────────────────────────────────
-    private async Task OnFavLocationChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    private async Task OnFavLocationSelected(string val)
     {
-        var val = e.Value?.ToString();
         if (val == "manual")
         {
             // el usuario editará manual

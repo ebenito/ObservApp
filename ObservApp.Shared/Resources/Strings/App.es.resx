@@ -1273,6 +1273,21 @@
   <data name="Auth_NoAccount" xml:space="preserve">
     <value>¿No tienes cuenta? Regístrate</value>
   </data>
+  <data name="Auth_SignIn_Error" xml:space="preserve">
+    <value>Error al iniciar sesión</value>
+  </data>
+  <data name="Auth_SignUp_Error" xml:space="preserve">
+    <value>Error al registrarse</value>
+  </data>
+  <data name="Auth_DisplayName_Required" xml:space="preserve">
+    <value>El nombre mostrado es requerido</value>
+  </data>
+  <data name="Auth_SignOut_Error" xml:space="preserve">
+    <value>Error al cerrar sesión: {0}</value>
+  </data>
+  <data name="Error_Unexpected" xml:space="preserve">
+    <value>Error inesperado: {0}</value>
+  </data>
   <data name="Obs_Sessions" xml:space="preserve">
     <value>Sesiones de observación</value>
   </data>

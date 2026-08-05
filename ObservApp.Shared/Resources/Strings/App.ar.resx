@@ -180,6 +180,21 @@
   <data name="Auth_NoAccount" xml:space="preserve">
     <value>ليس لديك حساب؟ سجّل الآن</value>
   </data>
+  <data name="Auth_SignIn_Error" xml:space="preserve">
+    <value>خطأ في تسجيل الدخول</value>
+  </data>
+  <data name="Auth_SignUp_Error" xml:space="preserve">
+    <value>خطأ في التسجيل</value>
+  </data>
+  <data name="Auth_DisplayName_Required" xml:space="preserve">
+    <value>اسم العرض مطلوب</value>
+  </data>
+  <data name="Auth_SignOut_Error" xml:space="preserve">
+    <value>خطأ في تسجيل الخروج: {0}</value>
+  </data>
+  <data name="Error_Unexpected" xml:space="preserve">
+    <value>خطأ غير متوقع: {0}</value>
+  </data>
   <data name="Auth_HasAccount" xml:space="preserve">
     <value>هل لديك حساب بالفعل؟ سجّل الدخول</value>
   </data>

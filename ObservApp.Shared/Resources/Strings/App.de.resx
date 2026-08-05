@@ -180,6 +180,21 @@
   <data name="Auth_NoAccount" xml:space="preserve">
     <value>Noch kein Konto? Registrieren</value>
   </data>
+  <data name="Auth_SignIn_Error" xml:space="preserve">
+    <value>Anmeldefehler</value>
+  </data>
+  <data name="Auth_SignUp_Error" xml:space="preserve">
+    <value>Registrierungsfehler</value>
+  </data>
+  <data name="Auth_DisplayName_Required" xml:space="preserve">
+    <value>Anzeigename ist erforderlich</value>
+  </data>
+  <data name="Auth_SignOut_Error" xml:space="preserve">
+    <value>Abmeldefehler: {0}</value>
+  </data>
+  <data name="Error_Unexpected" xml:space="preserve">
+    <value>Unerwarteter Fehler: {0}</value>
+  </data>
   <data name="Auth_HasAccount" xml:space="preserve">
     <value>Sie haben bereits ein Konto? Anmelden</value>
   </data>

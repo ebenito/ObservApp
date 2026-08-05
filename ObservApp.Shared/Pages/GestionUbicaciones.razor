@@ -11,6 +11,8 @@
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
 @implements IDisposable
 <PageTitle>@L["FavLoc_Title"] — ObservApp</PageTitle>
+
+<AuthGuard>
 <div class="fav-page">
     <!-- Cabecera -->
     <div class="fav-header-back">
@@ -184,6 +186,8 @@
         </div>
     </div>
 </div>
+</AuthGuard>
+
 @code {
     private List<FavoriteLocation>? _locations;
     private DotNetObjectReference<GestionUbicaciones>? _dotNetRef;

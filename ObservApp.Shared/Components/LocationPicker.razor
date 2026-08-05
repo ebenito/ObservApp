@@ -1,0 +1,90 @@
+@using ObservApp.Shared.Models
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+
+<div class="@CssPrefix-card">
+    <div class="@CssPrefix-card-header @CssPrefix-location-header">
+        <span class="@CssPrefix-card-icon">📍</span>
+        <span class="@CssPrefix-card-title">@L[TitleKey]</span>
+        <button class="@CssPrefix-gps-btn @(IsLoading ? $"{CssPrefix}-gps-btn--loading" : string.Empty)"
+                @onclick="OnGpsRequested"
+                disabled="@IsLoading"
+                title="@L[GpsBtnKey]">
+            @if (IsLoading)
+            {
+                <span class="@CssPrefix-gps-spinner"></span>
+            }
+            else
+            {
+                <span>📡</span>
+            }
+            @L[GpsBtnKey]
+        </button>
+    </div>
+
+    <div class="@CssPrefix-select-wrapper">
+        <select class="@CssPrefix-input" @onchange="HandleSelectChange">
+            <option value="manual">📍 @L["FavLoc_Select_Manual"]</option>
+            <option value="gps">📡 @L["FavLoc_Select_GPS"]</option>
+            @if (Locations != null)
+            {
+                @foreach (var loc in Locations)
+                {
+                    <option value="@loc.Id">⭐ @loc.Name</option>
+                }
+            }
+        </select>
+    </div>
+
+    @if (!string.IsNullOrEmpty(GpsError))
+    {
+        <div class="@CssPrefix-gps-error">⚠️ @GpsError</div>
+    }
+
+    @if (ChildContent != null)
+    {
+        @ChildContent
+    }
+
+    @if (GpsSource != null)
+    {
+        <div class="@CssPrefix-gps-source">📡 @GpsSource</div>
+    }
+</div>
+
+@code {
+    /// <summary>Prefijo CSS de la página padre (ej: "eph", "soluna", "eclt").</summary>
+    [Parameter, EditorRequired] public string CssPrefix { get; set; } = string.Empty;
+
+    /// <summary>Lista de ubicaciones favoritas del usuario.</summary>
+    [Parameter] public List<FavoriteLocation>? Locations { get; set; }
+
+    /// <summary>Indica si el GPS está cargando.</summary>
+    [Parameter] public bool IsLoading { get; set; }
+
+    /// <summary>Mensaje de error GPS, si lo hay.</summary>
+    [Parameter] public string? GpsError { get; set; }
+
+    /// <summary>Etiqueta del origen GPS activo.</summary>
+    [Parameter] public string? GpsSource { get; set; }
+
+    /// <summary>Clave de localización para el título de la sección.</summary>
+    [Parameter] public string TitleKey { get; set; } = "Eph_Location";
+
+    /// <summary>Clave de localización para el texto del botón GPS.</summary>
+    [Parameter] public string GpsBtnKey { get; set; } = "SolLuna_UseGPS";
+
+    /// <summary>Callback al pulsar el botón GPS.</summary>
+    [Parameter] public EventCallback OnGpsRequested { get; set; }
+
+    /// <summary>Callback al cambiar el selector (valor: "manual", "gps" o Guid de favorita).</summary>
+    [Parameter] public EventCallback<string> OnFavoriteSelected { get; set; }
+
+    /// <summary>Contenido adicional (entradas lat/lon/alt específicas de cada página).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private async Task HandleSelectChange(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        var val = e.Value?.ToString() ?? string.Empty;
+        await OnFavoriteSelected.InvokeAsync(val);
+    }
+}

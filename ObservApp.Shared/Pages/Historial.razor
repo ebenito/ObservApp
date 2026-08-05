@@ -4,7 +4,6 @@
 @using ObservApp.Shared.Models
 @using ObservApp.Shared.ViewModels
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
-@inject IObservationService ObservationService
 @inject HistorialViewModel VM
 @inject NavigationManager NavManager
 
@@ -17,7 +16,7 @@
                 <span class="hist-header-icon">📜</span>
                 <div>
                     <h1 class="hist-title">@L["Hist_Title"]</h1>
-                    <p class="hist-subtitle">@L["Hist_Subtitle", _sessions.Count]</p>
+                    <p class="hist-subtitle">@L["Hist_Subtitle", VM.Sessions.Count]</p>
                 </div>
             </div>
             <button class="hist-primary-btn" @onclick="GoToNewSession">
@@ -25,18 +24,18 @@
             </button>
         </div>
 
-        @if (!string.IsNullOrWhiteSpace(_loadError))
+        @if (!string.IsNullOrWhiteSpace(VM.ErrorMessage))
         {
-            <div class="hist-error-banner">⚠️ @_loadError</div>
+            <div class="hist-error-banner">⚠️ @VM.ErrorMessage</div>
         }
 
-        @if (_isLoading)
+        @if (VM.IsBusy)
         {
             <div class="hist-loading">
                 <span class="hist-spinner"></span>
             </div>
         }
-        else if (_sessions.Count == 0)
+        else if (VM.Sessions.Count == 0)
         {
             <section class="hist-empty-state">
                 <div class="hist-empty-illustration" aria-hidden="true">@((MarkupString)_emptyStateSvg)</div>
@@ -48,7 +47,7 @@
         else
         {
             <section class="hist-list" aria-label="@L["Hist_Title"]">
-                @foreach (var session in _sessions)
+                @foreach (var session in VM.Sessions)
                 {
                     var pendingDelete = _pendingDeleteId == session.Id;
                     <article class="hist-card">
@@ -199,50 +198,13 @@
 
 @code {
     private readonly string _emptyStateSvg = BuildEmptyStateSvg();
-    private readonly List<ObservationSession> _sessions = new();
-    private bool _isLoading = true;
-    private string? _loadError;
     private Guid? _pendingDeleteId;
     private bool _showDetail;
     private ObservationSession? _selectedSession;
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadSessionsAsync();
-    }
-
-    private async Task LoadSessionsAsync()
-    {
-        _isLoading = true;
-        _loadError = null;
-
         await VM.LoadSessionsCommand.ExecuteAsync(null);
-
-        List<ObservationSession> serviceSessions;
-        try
-        {
-            serviceSessions = await ObservationService.GetAllAsync();
-        }
-        catch
-        {
-            serviceSessions = new List<ObservationSession>();
-        }
-
-        _sessions.Clear();
-        _sessions.AddRange(serviceSessions
-            .OrderByDescending(x => x.Date)
-            .ToList());
-
-        if (!string.IsNullOrWhiteSpace(VM.ErrorMessage))
-        {
-            _loadError = VM.ErrorMessage;
-        }
-        else if (!string.IsNullOrWhiteSpace(ObservationService.LastError))
-        {
-            _loadError = L["Hist_LoadError"];
-        }
-
-        _isLoading = false;
     }
 
     private void GoToNewSession() => NavManager.NavigateTo("/planificacion");
@@ -283,15 +245,7 @@
 
     private async Task ConfirmDeleteAsync(ObservationSession session)
     {
-        var deleted = await ObservationService.DeleteAsync(session.Id);
-        if (!deleted)
-        {
-            _loadError = ObservationService.LastError ?? L["Hist_LoadError"];
-            _pendingDeleteId = null;
-            return;
-        }
-
-        _sessions.Remove(session);
+        await VM.DeleteSessionCommand.ExecuteAsync(session);
         _pendingDeleteId = null;
 
         if (_selectedSession?.Id == session.Id)

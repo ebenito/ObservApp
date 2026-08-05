@@ -180,6 +180,21 @@
   <data name="Auth_NoAccount" xml:space="preserve">
     <value>Vous n'avez pas de compte ? Inscrivez-vous</value>
   </data>
+  <data name="Auth_SignIn_Error" xml:space="preserve">
+    <value>Erreur de connexion</value>
+  </data>
+  <data name="Auth_SignUp_Error" xml:space="preserve">
+    <value>Erreur d'inscription</value>
+  </data>
+  <data name="Auth_DisplayName_Required" xml:space="preserve">
+    <value>Le nom d'affichage est obligatoire</value>
+  </data>
+  <data name="Auth_SignOut_Error" xml:space="preserve">
+    <value>Erreur de déconnexion : {0}</value>
+  </data>
+  <data name="Error_Unexpected" xml:space="preserve">
+    <value>Erreur inattendue : {0}</value>
+  </data>
   <data name="Auth_HasAccount" xml:space="preserve">
     <value>Vous avez déjà un compte ? Connectez-vous</value>
   </data>
