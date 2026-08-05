@@ -30,12 +30,16 @@ builder.Services.AddScoped<ILocationStateService, LocationStateService>();
 builder.Services.AddScoped<IExternalLinkService, SsrExternalLinkService>();
 builder.Services.AddScoped<ITextToSpeechService, SsrTextToSpeechService>();
 builder.Services.AddScoped<IEclipseCalculatorService, EclipseCalculatorService>();
+builder.Services.AddScoped<IHomeAstronomyService, HomeAstronomyService>();
+builder.Services.AddScoped<IEfemeridesAstronomyService, EfemeridesAstronomyService>();
 builder.Services.AddScoped<IEclipseAudioService, SsrEclipseAudioService>();
 builder.Services.AddScoped<IRssFeedService, RssFeedService>();
 builder.Services.AddScoped<IAuthService, SsrAuthService>();
 builder.Services.AddScoped<IObservationService, SsrObservationService>();
 builder.Services.AddTransient<AuthViewModel>();
 builder.Services.AddTransient<HistorialViewModel>();
+builder.Services.AddTransient<HomeViewModel>();
+builder.Services.AddTransient<EfemeridesViewModel>();
 builder.Services.AddSingleton<AppState>();
 
 // ── IArticleService — stub SSR (cero artículos en render servidor) ───────────

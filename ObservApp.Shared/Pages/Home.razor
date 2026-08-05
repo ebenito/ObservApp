@@ -3,14 +3,13 @@
 @using System.Globalization
 @using ObservApp.Shared.Models
 @using ObservApp.Shared.Services
+@using ObservApp.Shared.ViewModels
 @implements IDisposable
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
-@inject IGeolocationService GeoService
-@inject IFavoriteLocationsService FavLocationsService
-@inject ILocationStateService LocationState
 @inject IEclipseCalculatorService EclipseCalc
-@inject IObservationService ObservationService
+@inject IHomeAstronomyService HomeAstronomyService
 @inject AppState AppState
+@inject HomeViewModel HomeVM
 
 <PageTitle>@L["AppName"] · @L["Home_Title"]</PageTitle>
 
@@ -389,137 +388,51 @@
     private int _daysToEclipse;
     private bool _calculating = true;
 
-    // ── Ubicación ────────────────────────────────────────────────────────────
-    private double _lat;
-    private double _lon;
-    private double _alt;
-    private string _locationLabel = "";
+    // ── Ubicación / sesiones (vía ViewModel) ───────────────────────────────
+    private double _lat => HomeVM.Latitude;
+    private double _lon => HomeVM.Longitude;
+    private double _alt => HomeVM.AltitudeMeters;
+    private string _locationLabel => HomeVM.LocationLabel;
+    private IReadOnlyList<FavoriteLocation> _favLocations => HomeVM.FavoriteLocations;
+    private bool _gpsLoading => HomeVM.GpsLoading;
+    private string? _gpsError => HomeVM.GpsError;
 
-    private List<FavoriteLocation>? _favLocations;
-    private bool _gpsLoading;
-    private string? _gpsError;
-
-    // ── Sesiones autenticadas ─────────────────────────────────────────────────
-    private int _sessionCount;
-    private bool _showRecentSessions;
-    private List<ObservationSession> _recentSessions = new();
+    private int _sessionCount => HomeVM.SessionCount;
+    private bool _showRecentSessions => HomeVM.ShowRecentSessions;
+    private IReadOnlyList<ObservationSession> _recentSessions => HomeVM.RecentSessions;
 
     // ── Ciclo de vida ────────────────────────────────────────────────────────
     protected override async Task OnInitializedAsync()
     {
-        // Inyectar el manejador de cambios de ubicación
-        LocationState.LocationChanged += OnLocationStateChanged;
-        AppState.OnStateChanged += OnAppStateChanged;
+        HomeVM.OnStateChanged += OnHomeVmStateChanged;
 
-        // Cargar favoritas
-        _favLocations = await FavLocationsService.GetFavoriteLocationsAsync();
-
-        // Inicializar el servicio centralizado (obtiene GPS real o fallback)
-        await LocationState.InitializeAsync();
-
-        // Sincronizar valores locales con el estado compartido
-        SyncFromLocationState();
+        await HomeVM.InitializeAsync();
 
         Calcular();
         CargarProximoEclipse();
-
-        _ = LoadRecentSessionsAsync();
     }
 
-    /// <summary>
-    /// Se dispara cuando cambia la ubicación en el servicio centralizado.
-    /// </summary>
-    private void OnLocationStateChanged(object? sender, LocationStateChangedEventArgs e)
+    private void OnHomeVmStateChanged()
     {
-        SyncFromLocationState();
         Calcular();
-        StateHasChanged();
-    }
-
-    private void OnAppStateChanged()
-    {
-        _ = InvokeAsync(async () =>
-        {
-            await LoadRecentSessionsAsync();
-            StateHasChanged();
-        });
-    }
-
-    /// <summary>
-    /// Sincroniza los valores locales de ubicación desde el servicio centralizado.
-    /// </summary>
-    private void SyncFromLocationState()
-    {
-        _lat = LocationState.CurrentLocation.Latitude;
-        _lon = LocationState.CurrentLocation.Longitude;
-        _alt = LocationState.CurrentLocation.AltitudeMeters;
-        _locationLabel = LocationState.CurrentLocation.Label;
-        _gpsError = null;
+        _ = InvokeAsync(StateHasChanged);
     }
 
     // ── Geolocalización ──────────────────────────────────────────────────────
     private async Task OnUsarGpsAsync()
     {
-        _gpsLoading = true;
-        _gpsError = null;
-        StateHasChanged();
-
-        await LocationState.SetGpsLocationAsync();
-        _gpsError = LocationState.LastError;
-
-        _gpsLoading = false;
-        StateHasChanged();
+        await HomeVM.UseGpsAsync();
     }
 
-    private void OnFavLocationChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    private async Task OnFavLocationChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
     {
-        var val = e.Value?.ToString();
-        if (string.IsNullOrEmpty(val) || val == "manual") return;
-
-        if (Guid.TryParse(val, out var id))
-        {
-            var loc = _favLocations?.Find(l => l.Id == id);
-            if (loc != null)
-            {
-                LocationState.SetFavoriteLocation(loc);
-            }
-        }
-    }
-
-    private async Task LoadRecentSessionsAsync()
-    {
-        _showRecentSessions = false;
-        _recentSessions = new List<ObservationSession>();
-        _sessionCount = 0;
-
-        if (!AppState.IsAuthenticated)
-            return;
-
-        try
-        {
-            await Task.Yield();
-
-            var sessions = await ObservationService.GetAllAsync();
-
-            _sessionCount = sessions.Count;
-            _recentSessions = sessions
-                .OrderByDescending(s => s.Date)
-                .Take(3)
-                .ToList();
-            _showRecentSessions = true;
-
-            await InvokeAsync(StateHasChanged);
-        }
-        catch
-        {
-            _showRecentSessions = false;
-        }
+        await HomeVM.SelectLocationAsync(e.Value?.ToString());
     }
 
     public void Dispose()
     {
-        LocationState.LocationChanged -= OnLocationStateChanged;
-        AppState.OnStateChanged -= OnAppStateChanged;
+        HomeVM.OnStateChanged -= OnHomeVmStateChanged;
+        HomeVM.Dispose();
     }
 
     // ── Cálculo astronómico ──────────────────────────────────────────────────
@@ -529,73 +442,28 @@
         _astroData = null;
         StateHasChanged();
 
-        try
+        var snapshot = HomeAstronomyService.CalculateSnapshot(_lat, _lon, _alt, DateTime.UtcNow);
+        if (snapshot != null)
         {
-            var observer = new Observer(_lat, _lon, _alt / 1000.0);
-            var now = DateTime.UtcNow;
-            var today = new AstroTime(now.Year, now.Month, now.Day, 12, 0, 0);
-            var nowTime = new AstroTime(now);
-
-            // ── Sol ──────────────────────────────────────────────────────────
-            var sunrise = RiseSetTime(observer, today, Body.Sun, Direction.Rise);
-            var sunset  = RiseSetTime(observer, today, Body.Sun, Direction.Set);
-
-            TimeSpan? dayLength = null;
-            if (sunrise.HasValue && sunset.HasValue)
-                dayLength = sunset.Value - sunrise.Value;
-
-            var astroTwilightEnd   = TwilightTime(observer, today, -18.0, Direction.Set);
-            var astroTwilightStart = TwilightTime(observer, today, -18.0, Direction.Rise);
-
-            // Noche astronómica activa si es después del crepúsculo astronómico del atardecer
-            // o antes del crepúsculo astronómico del amanecer
-            bool isAstroNight = false;
-            if (astroTwilightEnd.HasValue && now.ToLocalTime() > astroTwilightEnd.Value.ToLocalTime())
-                isAstroNight = true;
-            if (astroTwilightStart.HasValue && now.ToLocalTime() < astroTwilightStart.Value.ToLocalTime())
-                isAstroNight = true;
-
-            // Es de día si el Sol está sobre el horizonte
-            var eqSun = Astronomy.Equator(Body.Sun, nowTime, observer,
-                EquatorEpoch.OfDate, Aberration.Corrected);
-            var hzSun = Astronomy.Horizon(nowTime, observer,
-                eqSun.ra, eqSun.dec, Refraction.Normal);
-            bool isDaytime = hzSun.altitude > 0;
-
-            // ── Luna ─────────────────────────────────────────────────────────
-            var moonrise = RiseSetTime(observer, today, Body.Moon, Direction.Rise);
-            var moonset  = RiseSetTime(observer, today, Body.Moon, Direction.Set);
-
-            double moonPhase = Astronomy.MoonPhase(nowTime);
-            var ilum = Astronomy.Illumination(Body.Moon, nowTime);
-            double moonIllum = ilum.phase_fraction * 100.0;
-            double moonAge = (moonPhase / 360.0) * 29.53058770576;
-
-            string moonPhaseName = MoonPhaseName(moonPhase);
-            string moonEmoji     = MoonPhaseEmoji(moonPhase);
-
-            var nextFull = Astronomy.SearchMoonPhase(180, nowTime, 30).ToUtcDateTime();
+            var moonPhaseName = MoonPhaseName(snapshot.MoonPhaseAngle);
+            var moonEmoji = MoonPhaseEmoji(snapshot.MoonPhaseAngle);
 
             _astroData = new AstroSnapshot
             {
-                Sunrise        = sunrise,
-                Sunset         = sunset,
-                DayLength      = FormatDuration(dayLength),
-                AstroTwilightEnd = astroTwilightEnd,
-                IsAstroNight   = isAstroNight,
-                IsDaytime      = isDaytime,
-                Moonrise       = moonrise,
-                Moonset        = moonset,
-                MoonPhaseName  = moonPhaseName,
-                MoonEmoji      = moonEmoji,
-                MoonIllumination = moonIllum,
-                MoonAge        = moonAge,
-                NextFullMoon   = nextFull.ToLocalTime().ToString("d MMM")
+                Sunrise = snapshot.Sunrise,
+                Sunset = snapshot.Sunset,
+                DayLength = FormatDuration(snapshot.DayLength),
+                AstroTwilightEnd = snapshot.AstroTwilightEnd,
+                IsAstroNight = snapshot.IsAstroNight,
+                IsDaytime = snapshot.IsDaytime,
+                Moonrise = snapshot.Moonrise,
+                Moonset = snapshot.Moonset,
+                MoonPhaseName = moonPhaseName,
+                MoonEmoji = moonEmoji,
+                MoonIllumination = snapshot.MoonIllumination,
+                MoonAge = snapshot.MoonAge,
+                NextFullMoon = snapshot.NextFullMoonUtc?.ToLocalTime().ToString("d MMM") ?? ""
             };
-        }
-        catch
-        {
-            // Si falla el cálculo, dejamos _astroData en null — la UI lo gestiona
         }
 
         _calculating = false;
@@ -617,31 +485,6 @@
                     (_nextEclipse.Date - DateTime.UtcNow).TotalDays);
         }
         catch { }
-    }
-
-    // ── Helpers AstronomyEngine ──────────────────────────────────────────────
-    private static DateTime? RiseSetTime(Observer obs, AstroTime day, Body body, Direction dir)
-    {
-        try
-        {
-            var start = new AstroTime(day.ToUtcDateTime().Date);
-            var evt = Astronomy.SearchRiseSet(body, obs, dir, start, 1.0);
-            return evt?.ToUtcDateTime();
-        }
-        catch { return null; }
-    }
-
-    private DateTime? TwilightTime(Observer obs, AstroTime day, double altitude, Direction dir)
-    {
-        try
-        {
-            var now = DateTime.UtcNow;
-            var start = new AstroTime(now.Year, now.Month, now.Day,
-                dir == Direction.Rise ? 0 : 12, 0, 0);
-            var result = Astronomy.SearchAltitude(Body.Sun, obs, dir, start, 1.0, altitude);
-            return result?.ToUtcDateTime();
-        }
-        catch { return null; }
     }
 
     // ── Helpers de formato ───────────────────────────────────────────────────

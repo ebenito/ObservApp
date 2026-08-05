@@ -3,12 +3,11 @@
 @using System.Globalization
 @using ObservApp.Shared.Models
 @using ObservApp.Shared.Services
+@using ObservApp.Shared.ViewModels
 @implements IDisposable
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
-@inject IGeolocationService GeoService
-@inject IFavoriteLocationsService FavLocationsService
-@inject ILocationStateService LocationState
-@inject IEclipseCalculatorService EclipseCalc
+@inject IEfemeridesAstronomyService EphAstronomyService
+@inject EfemeridesViewModel VM
 
 <PageTitle>@L["Eph_Title"] — ObservApp</PageTitle>
 
@@ -463,15 +462,34 @@
     private enum NightQuality { Good, Fair, Poor }
 
     // ── Estado ────────────────────────────────────────────────────────────────
-    private DateTime _fecha = DateTime.Today;
-    private double _lat;
-    private double _lon;
-    private double _altMetros;
+    private DateTime _fecha
+    {
+        get => VM.Fecha;
+        set => VM.Fecha = value;
+    }
 
-    private List<FavoriteLocation>? _favLocations;
-    private bool _gpsLoading;
-    private string? _gpsError;
-    private string? _gpsSource;
+    private double _lat
+    {
+        get => VM.Latitude;
+        set => VM.Latitude = value;
+    }
+
+    private double _lon
+    {
+        get => VM.Longitude;
+        set => VM.Longitude = value;
+    }
+
+    private double _altMetros
+    {
+        get => VM.AltitudeMeters;
+        set => VM.AltitudeMeters = value;
+    }
+
+    private IReadOnlyList<FavoriteLocation> _favLocations => VM.FavoriteLocations;
+    private bool _gpsLoading => VM.GpsLoading;
+    private string? _gpsError => VM.GpsError;
+    private string? _gpsSource => VM.GpsSource;
 
     private List<PlanetData> _planetas = new();
     private List<EphEvent> _eventos = new();
@@ -487,82 +505,34 @@
     // ── Ciclo de vida ─────────────────────────────────────────────────────────
     protected override async Task OnInitializedAsync()
     {
-        // Inyectar el manejador de cambios de ubicación
-        LocationState.LocationChanged += OnLocationStateChanged;
-
-        _favLocations = await FavLocationsService.GetFavoriteLocationsAsync();
-
-        // Inicializar el servicio centralizado (obtiene GPS real o fallback)
-        await LocationState.InitializeAsync();
-
-        // Sincronizar valores locales con el estado compartido
-        SyncFromLocationState();
-
+        VM.OnStateChanged += OnVmStateChanged;
+        await VM.InitializeAsync();
         Calcular();
     }
 
-    /// <summary>
-    /// Se dispara cuando cambia la ubicación en el servicio centralizado.
-    /// </summary>
-    private void OnLocationStateChanged(object? sender, LocationStateChangedEventArgs e)
+    private void OnVmStateChanged()
     {
-        SyncFromLocationState();
         Calcular();
-        StateHasChanged();
+        _ = InvokeAsync(StateHasChanged);
     }
 
     public void Dispose()
     {
-        LocationState.LocationChanged -= OnLocationStateChanged;
+        VM.OnStateChanged -= OnVmStateChanged;
+        VM.Dispose();
         _calcCts?.Cancel();
         _calcCts?.Dispose();
-    }
-
-    /// <summary>
-    /// Sincroniza los valores locales de ubicación desde el servicio centralizado.
-    /// </summary>
-    private void SyncFromLocationState()
-    {
-        _lat = LocationState.CurrentLocation.Latitude;
-        _lon = LocationState.CurrentLocation.Longitude;
-        _altMetros = LocationState.CurrentLocation.AltitudeMeters;
-        _gpsSource = LocationState.CurrentLocation.Label;
-        _gpsError = null;
     }
 
     // ── Handlers de ubicación ─────────────────────────────────────────────────
     private async Task OnFavLocationSelected(string val)
     {
-        if (val == "manual")
-        {
-            // el usuario editará manual
-        }
-        else if (val == "gps")
-        {
-            await OnUsarGpsAsync();
-        }
-        else if (Guid.TryParse(val, out var id))
-        {
-            var loc = _favLocations?.Find(l => l.Id == id);
-            if (loc != null)
-            {
-                LocationState.SetFavoriteLocation(loc);
-            }
-        }
+        await VM.SelectLocationAsync(val);
     }
 
     private async Task OnUsarGpsAsync()
     {
-        _gpsLoading = true;
-        _gpsError = null;
-        _gpsSource = null;
-        StateHasChanged();
-
-        await LocationState.SetGpsLocationAsync();
-        _gpsError = LocationState.LastError;
-
-        _gpsLoading = false;
-        StateHasChanged();
+        await VM.UseGpsAsync();
     }
 
     private void OnFechaChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
@@ -579,6 +549,7 @@
         if (double.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var v))
         {
             _lat = Math.Clamp(v, -90, 90);
+            VM.SetManualLocation(_lat, _lon, _altMetros);
             Calcular();
         }
     }
@@ -588,6 +559,7 @@
         if (double.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var v))
         {
             _lon = Math.Clamp(v, -180, 180);
+            VM.SetManualLocation(_lat, _lon, _altMetros);
             Calcular();
         }
     }
@@ -597,6 +569,7 @@
         if (double.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var v))
         {
             _altMetros = v;
+            VM.SetManualLocation(_lat, _lon, _altMetros);
             Calcular();
         }
     }
@@ -606,12 +579,45 @@
     {
         try
         {
-            var observer = new Observer(_lat, _lon, _altMetros / 1000.0);
-            var dayTime = new AstroTime(_fecha.Year, _fecha.Month, _fecha.Day, 12, 0, 0);
+            var computation = EphAstronomyService.Compute(_fecha, _lat, _lon, _altMetros);
+            _planetas = computation.Planets
+                .Select(p => new PlanetData
+                {
+                    Name = p.Name,
+                    Emoji = p.Emoji,
+                    Body = p.Body,
+                    IsVisible = p.IsVisible,
+                    MaxAltitude = p.MaxAltitude,
+                    AzimuthAtMax = p.AzimuthAtMax,
+                    RiseTime = p.RiseTime,
+                    SetTime = p.SetTime,
+                    DistanceAU = p.DistanceAU,
+                    IlluminationPct = p.IlluminationPct
+                })
+                .ToList();
 
-            _planetas = CalcularPlanetas(observer, dayTime);
-            _eventos = CalcularEventos();
-            _tonight = CalcularTonight(observer, dayTime);
+            _eventos = computation.Events
+                .Select(e => new EphEvent { Emoji = e.Emoji, Date = e.Date, Description = e.Description })
+                .ToList();
+
+            _tonight = computation.Tonight is null
+                ? null
+                : new TonightData
+                {
+                    MoonIlluminationPct = computation.Tonight.MoonIlluminationPct,
+                    MoonPhaseName = MoonPhaseName(computation.Tonight.MoonPhaseAngle),
+                    MoonPhaseEmoji = MoonPhaseEmoji(computation.Tonight.MoonPhaseAngle),
+                    AstroNightStart = computation.Tonight.AstroNightStart,
+                    MoonRise = computation.Tonight.MoonRise,
+                    MoonSet = computation.Tonight.MoonSet,
+                    Quality = computation.Tonight.Quality switch
+                    {
+                        EphNightQuality.Good => NightQuality.Good,
+                        EphNightQuality.Fair => NightQuality.Fair,
+                        _ => NightQuality.Poor
+                    }
+                };
+
             CalcularProximoEclipseLocal();
             _ = CalcularDsosAsync();
         }
@@ -629,247 +635,17 @@
         }
     }
 
-    private List<PlanetData> CalcularPlanetas(Observer observer, AstroTime dayTime)
-    {
-        var definiciones = new[]
-        {
-            (Body.Mercury, "Mercurio", "☿"),
-            (Body.Venus,   "Venus",    "♀"),
-            (Body.Mars,    "Marte",    "♂"),
-            (Body.Jupiter, "Júpiter",  "♃"),
-            (Body.Saturn,  "Saturno",  "♄"),
-            (Body.Uranus,  "Urano",    "⛢"),
-            (Body.Neptune, "Neptuno",  "♆"),
-        };
-
-        var resultado = new List<PlanetData>();
-
-        foreach (var (body, name, emoji) in definiciones)
-        {
-            try
-            {
-                // Altitud máxima: buscar el máximo hora a hora
-                double maxAlt = double.MinValue;
-                double azAtMax = 0;
-
-                for (int h = 0; h < 24; h++)
-                {
-                    var t = new AstroTime(_fecha.Year, _fecha.Month, _fecha.Day, h, 0, 0);
-                    var eq = Astronomy.Equator(body, t, observer, EquatorEpoch.OfDate, Aberration.Corrected);
-                    var hz = Astronomy.Horizon(t, observer, eq.ra, eq.dec, Refraction.Normal);
-                    if (hz.altitude > maxAlt)
-                    {
-                        maxAlt = hz.altitude;
-                        azAtMax = hz.azimuth;
-                    }
-                }
-
-                // Salida y puesta
-                DateTime? riseTime = null;
-                DateTime? setTime = null;
-                try
-                {
-                    var startDay = new AstroTime(_fecha.Year, _fecha.Month, _fecha.Day, 0, 0, 0);
-                    var riseAt = Astronomy.SearchRiseSet(body, observer, Direction.Rise, startDay, 1.0);
-                    if (riseAt != null)
-                        riseTime = riseAt.ToUtcDateTime();
-                }
-                catch { }
-                try
-                {
-                    var startDay = new AstroTime(_fecha.Year, _fecha.Month, _fecha.Day, 0, 0, 0);
-                    var setAt = Astronomy.SearchRiseSet(body, observer, Direction.Set, startDay, 1.0);
-                    if (setAt != null)
-                        setTime = setAt.ToUtcDateTime();
-                }
-                catch { }
-
-                // Distancia en UA
-                double distAU = 0;
-                try
-                {
-                    var vec = Astronomy.GeoVector(body, dayTime, Aberration.Corrected);
-                    distAU = Math.Sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
-                }
-                catch { }
-
-                // Iluminación
-                double illum = 0;
-                try
-                {
-                    var ilumData = Astronomy.Illumination(body, dayTime);
-                    illum = ilumData.phase_fraction * 100.0;
-                }
-                catch { }
-
-                resultado.Add(new PlanetData
-                {
-                    Name = name,
-                    Emoji = emoji,
-                    Body = body,
-                    IsVisible = maxAlt > 0,
-                    MaxAltitude = maxAlt,
-                    AzimuthAtMax = azAtMax,
-                    RiseTime = riseTime,
-                    SetTime = setTime,
-                    DistanceAU = distAU,
-                    IlluminationPct = illum
-                });
-            }
-            catch { }
-        }
-
-        resultado.Sort((a, b) => b.MaxAltitude.CompareTo(a.MaxAltitude));
-        return resultado;
-    }
-
-    private List<EphEvent> CalcularEventos()
-    {
-        var eventos = new List<EphEvent>();
-        var now = _fecha;
-        var limit30 = now.AddDays(30);
-        var limit90 = now.AddDays(90);
-
-        // Fases lunares próximas 30 días
-        var faseDefs = new[]
-        {
-            (0.0,   "🌑", "Luna Nueva"),
-            (90.0,  "🌓", "Cuarto Creciente"),
-            (180.0, "🌕", "Luna Llena"),
-            (270.0, "🌗", "Cuarto Menguante"),
-        };
-
-        foreach (var (ang, emoji, nombre) in faseDefs)
-        {
-            try
-            {
-                var start = new AstroTime(now);
-                for (int i = 0; i < 2; i++)
-                {
-                    var fase = Astronomy.SearchMoonPhase(ang, start, 35);
-                    var dt = fase.ToUtcDateTime().Date;
-                    if (dt >= now.Date && dt <= limit30.Date)
-                        eventos.Add(new EphEvent { Emoji = emoji, Date = dt, Description = nombre });
-                    start = new AstroTime(dt.AddDays(25));
-                    if (dt > limit30) break;
-                }
-            }
-            catch { }
-        }
-
-        // Equinoccios y solsticios en los próximos 90 días
-        for (int y = now.Year; y <= now.Year + 1; y++)
-        {
-            try
-            {
-                var seasons = Astronomy.Seasons(y);
-                var seasonDefs = new[]
-                {
-                    (seasons.mar_equinox.ToUtcDateTime(),  "🌸", "Equinoccio de primavera"),
-                    (seasons.jun_solstice.ToUtcDateTime(), "☀️", "Solsticio de verano"),
-                    (seasons.sep_equinox.ToUtcDateTime(),  "🍂", "Equinoccio de otoño"),
-                    (seasons.dec_solstice.ToUtcDateTime(), "❄️", "Solsticio de invierno"),
-                };
-                foreach (var (dt, emoji, desc) in seasonDefs)
-                {
-                    if (dt.Date >= now.Date && dt.Date <= limit90.Date)
-                        eventos.Add(new EphEvent { Emoji = emoji, Date = dt.Date, Description = desc });
-                }
-            }
-            catch { }
-        }
-
-        eventos.Sort((a, b) => a.Date.CompareTo(b.Date));
-        return eventos;
-    }
-
-    private TonightData? CalcularTonight(Observer observer, AstroTime dayTime)
-    {
-        try
-        {
-            // Fase lunar
-            var ilum = Astronomy.Illumination(Body.Moon, dayTime);
-            double moonIllum = ilum.phase_fraction * 100.0;
-            double moonPhaseAngle = Astronomy.MoonPhase(dayTime);
-            string moonPhaseName = MoonPhaseName(moonPhaseAngle);
-            string moonPhaseEmoji = MoonPhaseEmoji(moonPhaseAngle);
-
-            // Noche astronómica: crepúsculo astronómico vespertino (Sol a -18°)
-            DateTime? astroNightStart = null;
-            try
-            {
-                var result = Astronomy.SearchAltitude(Body.Sun, observer, Direction.Set, dayTime, 1.0, -18.0);
-                if (result != null)
-                    astroNightStart = result.ToUtcDateTime();
-            }
-            catch { }
-
-            // Salida y puesta de Luna
-            DateTime? moonRise = null;
-            DateTime? moonSet = null;
-            try
-            {
-                var startDay = new AstroTime(_fecha.Year, _fecha.Month, _fecha.Day, 0, 0, 0);
-                var r = Astronomy.SearchRiseSet(Body.Moon, observer, Direction.Rise, startDay, 1.0);
-                if (r != null) moonRise = r.ToUtcDateTime();
-            }
-            catch { }
-            try
-            {
-                var startDay = new AstroTime(_fecha.Year, _fecha.Month, _fecha.Day, 0, 0, 0);
-                var s = Astronomy.SearchRiseSet(Body.Moon, observer, Direction.Set, startDay, 1.0);
-                if (s != null) moonSet = s.ToUtcDateTime();
-            }
-            catch { }
-
-            // Calidad de la noche basada en iluminación lunar
-            NightQuality quality = moonIllum < 25 ? NightQuality.Good
-                                 : moonIllum < 65 ? NightQuality.Fair
-                                 : NightQuality.Poor;
-
-            return new TonightData
-            {
-                MoonIlluminationPct = moonIllum,
-                MoonPhaseName = moonPhaseName,
-                MoonPhaseEmoji = moonPhaseEmoji,
-                AstroNightStart = astroNightStart,
-                MoonRise = moonRise,
-                MoonSet = moonSet,
-                Quality = quality
-            };
-        }
-        catch
-        {
-            return null;
-        }
-    }
-
     private void CalcularProximoEclipseLocal()
     {
-        _nextLocalEclipse = null;
-        _nextLocalEclipseResult = null;
+        var (eclipse, result) = EphAstronomyService.FindNextVisibleEclipse(
+            DateTime.UtcNow,
+            _lat,
+            _lon,
+            _altMetros,
+            yearsAhead: 2);
 
-        try
-        {
-            var limit = DateTime.UtcNow.AddDays(365);
-            var eclipses = EclipseCalc.GetUpcomingEclipses(2);
-
-            foreach (var eclipse in eclipses.Where(e => e.Date > DateTime.UtcNow && e.Date <= limit))
-            {
-                var result = EclipseCalc.Calculate(eclipse, _lat, _lon, _altMetros);
-                if (result != null && result.IsVisible && result.Type != LocalEclipseType.None)
-                {
-                    _nextLocalEclipse = eclipse;
-                    _nextLocalEclipseResult = result;
-                    break;
-                }
-            }
-        }
-        catch
-        {
-            _nextLocalEclipse = null;
-            _nextLocalEclipseResult = null;
-        }
+        _nextLocalEclipse = eclipse;
+        _nextLocalEclipseResult = result;
     }
 
     private async Task CalcularDsosAsync()
@@ -885,57 +661,63 @@
         _dsoNightEndUtc = null;
         await InvokeAsync(StateHasChanged);
 
-        var observer = new Observer(_lat, _lon, _altMetros / 1000.0);
-
         try
         {
-            await Task.Run(async () =>
+            await Task.Run(() =>
             {
+                var catalog = DsoCatalog.Select(d => new EphDsoCoordinate
+                {
+                    Id = d.Id,
+                    RaDeg = d.RaDeg,
+                    DecDeg = d.DecDeg,
+                    Magnitude = d.Magnitude
+                }).ToList();
+
+                var (window, visible) = EphAstronomyService.ComputeDsoVisibility(
+                    _fecha,
+                    _lat,
+                    _lon,
+                    _altMetros,
+                    catalog,
+                    token);
+
                 token.ThrowIfCancellationRequested();
 
-                var window = TryGetAstronomicalNightWindow(observer);
-                if (window is null)
-                {
-                    return;
-                }
-
-                var visible = new List<DsoVisibility>();
-                var brightObjects = DsoCatalog.Where(d => d.Magnitude < 7.0).OrderBy(d => d.Magnitude).ToList();
-                var faintObjects = DsoCatalog.Where(d => d.Magnitude >= 7.0).OrderBy(d => d.Magnitude).ToList();
-
-                ProcesarDsoGrupo(brightObjects, observer, window, visible, token);
-                visible.Sort((a, b) => b.MaxAltitude.CompareTo(a.MaxAltitude));
-
-                if (!token.IsCancellationRequested)
-                {
-                    await InvokeAsync(() =>
+                var mapped = visible
+                    .Select(v =>
                     {
-                        if (!IsCurrentCalc(token))
-                            return;
+                        var dso = DsoCatalog.FirstOrDefault(x => x.Id == v.Id);
+                        return dso is null
+                            ? null
+                            : new DsoVisibility
+                            {
+                                Dso = dso,
+                                IsVisibleTonight = v.IsVisibleTonight,
+                                MaxAltitude = v.MaxAltitude,
+                                AzimuthAtMax = v.AzimuthAtMax,
+                                VisibleFrom = v.VisibleFrom,
+                                VisibleUntil = v.VisibleUntil,
+                                BestViewingTime = v.BestViewingTime,
+                                VisibleStartPercent = v.VisibleStartPercent,
+                                VisibleWidthPercent = v.VisibleWidthPercent
+                            };
+                    })
+                    .Where(v => v is not null)
+                    .Cast<DsoVisibility>()
+                    .ToList();
 
-                        _dsoNightStartUtc = window.StartUtc;
-                        _dsoNightEndUtc = window.EndUtc;
-                        _dsoVisibles = visible.ToList();
-                        StateHasChanged();
-                    });
-                }
-
-                ProcesarDsoGrupo(faintObjects, observer, window, visible, token);
-                visible.Sort((a, b) => b.MaxAltitude.CompareTo(a.MaxAltitude));
-
-                if (!token.IsCancellationRequested)
+                InvokeAsync(() =>
                 {
-                    await InvokeAsync(() =>
+                    if (!IsCurrentCalc(token))
                     {
-                        if (!IsCurrentCalc(token))
-                            return;
+                        return;
+                    }
 
-                        _dsoNightStartUtc = window.StartUtc;
-                        _dsoNightEndUtc = window.EndUtc;
-                        _dsoVisibles = visible;
-                        StateHasChanged();
-                    });
-                }
+                    _dsoNightStartUtc = window?.StartUtc;
+                    _dsoNightEndUtc = window?.EndUtc;
+                    _dsoVisibles = mapped;
+                    StateHasChanged();
+                });
             }, token);
         }
         catch (OperationCanceledException)
@@ -949,118 +731,6 @@
                 await InvokeAsync(StateHasChanged);
             }
         }
-    }
-
-    private void ProcesarDsoGrupo(
-        IEnumerable<DsoEntry> dsos,
-        Observer observer,
-        NightWindow window,
-        List<DsoVisibility> visible,
-        CancellationToken token)
-    {
-        foreach (var dso in dsos)
-        {
-            token.ThrowIfCancellationRequested();
-            var result = CalcularVisibilidadDso(dso, observer, window);
-            if (result is { IsVisibleTonight: true })
-            {
-                visible.Add(result);
-            }
-        }
-    }
-
-    private DsoVisibility? CalcularVisibilidadDso(DsoEntry dso, Observer observer, NightWindow window)
-    {
-        const double minAltitude = 10.0;
-        const int stepMinutes = 15;
-
-        double maxAlt = double.MinValue;
-        double azAtMax = 0;
-        DateTime? bestTime = null;
-        DateTime? visibleFrom = null;
-        DateTime? visibleUntil = null;
-
-        for (var sample = window.StartUtc; sample <= window.EndUtc; sample = sample.AddMinutes(stepMinutes))
-        {
-            var (altitude, azimuth) = GetDsoPosition(dso.RaDeg, dso.DecDeg, observer, new AstroTime(sample));
-            if (altitude > maxAlt)
-            {
-                maxAlt = altitude;
-                azAtMax = azimuth;
-                bestTime = sample;
-            }
-
-            if (altitude > minAltitude)
-            {
-                visibleFrom ??= sample;
-                visibleUntil = sample;
-            }
-        }
-
-        if (!visibleFrom.HasValue || !visibleUntil.HasValue || maxAlt <= minAltitude)
-        {
-            return null;
-        }
-
-        var totalMinutes = Math.Max(1.0, (window.EndUtc - window.StartUtc).TotalMinutes);
-        var startPercent = Math.Clamp((visibleFrom.Value - window.StartUtc).TotalMinutes / totalMinutes * 100.0, 0.0, 100.0);
-        var endPercent = Math.Clamp((visibleUntil.Value - window.StartUtc).TotalMinutes / totalMinutes * 100.0, 0.0, 100.0);
-        var widthPercent = Math.Max(1.5, endPercent - startPercent);
-
-        return new DsoVisibility
-        {
-            Dso = dso,
-            IsVisibleTonight = true,
-            MaxAltitude = maxAlt,
-            AzimuthAtMax = azAtMax,
-            VisibleFrom = visibleFrom,
-            VisibleUntil = visibleUntil,
-            BestViewingTime = bestTime,
-            VisibleStartPercent = startPercent,
-            VisibleWidthPercent = widthPercent
-        };
-    }
-
-    private NightWindow? TryGetAstronomicalNightWindow(Observer observer)
-    {
-        try
-        {
-            var localNoon = new DateTime(_fecha.Year, _fecha.Month, _fecha.Day, 12, 0, 0, DateTimeKind.Local);
-            var duskSearch = new AstroTime(localNoon.ToUniversalTime());
-            var dusk = Astronomy.SearchAltitude(Body.Sun, observer, Direction.Set, duskSearch, 1.0, -18.0);
-            if (dusk is null)
-                return null;
-
-            var dawn = Astronomy.SearchAltitude(Body.Sun, observer, Direction.Rise, dusk, 1.0, -18.0);
-            if (dawn is null)
-                return null;
-
-            var duskUtc = dusk.ToUtcDateTime();
-            var dawnUtc = dawn.ToUtcDateTime();
-            if (dawnUtc <= duskUtc)
-                return null;
-
-            return new NightWindow
-            {
-                StartUtc = duskUtc,
-                EndUtc = dawnUtc
-            };
-        }
-        catch
-        {
-            return null;
-        }
-    }
-
-    private static (double Altitude, double Azimuth) GetDsoPosition(
-        double raDeg,
-        double decDeg,
-        Observer observer,
-        AstroTime time)
-    {
-        double raHours = raDeg / 15.0;
-        var hz = Astronomy.Horizon(time, observer, raHours, decDeg, Refraction.Normal);
-        return (hz.altitude, hz.azimuth);
     }
 
     private bool IsCurrentCalc(CancellationToken token)
