@@ -2,6 +2,8 @@
 @using CosineKitty
 @using System.Globalization
 @using ObservApp.Shared.Models
+@using ObservApp.Shared.Formatters
+@using ObservApp.Shared.Models.PageModels
 @using ObservApp.Shared.Services
 @using ObservApp.Shared.ViewModels
 @implements IDisposable
@@ -78,19 +80,19 @@
 
     @if (_nextLocalEclipse != null && _nextLocalEclipseResult != null)
     {
-        <div class="eph-eclipse-banner @EclipseBannerClass(_nextLocalEclipseResult.Type)">
-            <div class="eph-eclipse-banner-icon">@EclipseEmoji(_nextLocalEclipseResult.Type)</div>
+        <div class="eph-eclipse-banner @EfemeridesUiFormatter.EclipseBannerClass(_nextLocalEclipseResult.Type)">
+            <div class="eph-eclipse-banner-icon">@EfemeridesUiFormatter.EclipseEmoji(_nextLocalEclipseResult.Type)</div>
             <div class="eph-eclipse-banner-body">
                 <div class="eph-eclipse-banner-title">@L["Eph_Eclipse_BannerTitle"]</div>
                 <div class="eph-eclipse-banner-main">
-                    <span class="eph-eclipse-banner-type">@EclipseTypeLabel(_nextLocalEclipseResult.Type)</span>
+                    <span class="eph-eclipse-banner-type">@EfemeridesUiFormatter.EclipseTypeLabel(L, _nextLocalEclipseResult.Type)</span>
                     <span class="eph-eclipse-banner-date">@_nextLocalEclipse.Date.ToLocalTime().ToString("dd MMM yyyy", CultureInfo.CurrentCulture)</span>
                 </div>
                 <div class="eph-eclipse-banner-meta">
                     <span>@L["Eph_Eclipse_Coverage"]</span>
                     <strong>@((_nextLocalEclipseResult.MaxCoverage * 100.0).ToString("F0", CultureInfo.InvariantCulture))%</strong>
                     <span class="eph-eclipse-banner-sep">•</span>
-                    <strong>@DaysUntilEclipse(_nextLocalEclipse.Date)</strong>
+                    <strong>@EfemeridesUiFormatter.DaysUntilEclipse(_nextLocalEclipse.Date)</strong>
                     <span>@L["Eph_Eclipse_DaysLeft"]</span>
                 </div>
             </div>
@@ -143,8 +145,8 @@
                                     }
                                 </td>
                                 <td class="eph-mono">@p.MaxAltitude.ToString("F1", CultureInfo.InvariantCulture)°</td>
-                                <td class="eph-mono">@FormatTimeOpt(p.RiseTime)</td>
-                                <td class="eph-mono">@FormatTimeOpt(p.SetTime)</td>
+                                <td class="eph-mono">@EfemeridesUiFormatter.FormatTimeOpt(p.RiseTime)</td>
+                                <td class="eph-mono">@EfemeridesUiFormatter.FormatTimeOpt(p.SetTime)</td>
                                 <td class="eph-mono">@p.AzimuthAtMax.ToString("F1", CultureInfo.InvariantCulture)°</td>
                                 <td class="eph-mono">@p.DistanceAU.ToString("F3", CultureInfo.InvariantCulture) UA</td>
                                 <td class="eph-mono">@p.IlluminationPct.ToString("F0", CultureInfo.InvariantCulture)%</td>
@@ -180,11 +182,11 @@
                             </div>
                             <div class="stat-row">
                                 <span class="stat-label">@L["Eph_Planet_Rise"]</span>
-                                <span class="stat-value">@FormatTimeOpt(p.RiseTime)</span>
+                                <span class="stat-value">@EfemeridesUiFormatter.FormatTimeOpt(p.RiseTime)</span>
                             </div>
                             <div class="stat-row">
                                 <span class="stat-label">@L["Eph_Planet_Set"]</span>
-                                <span class="stat-value">@FormatTimeOpt(p.SetTime)</span>
+                                <span class="stat-value">@EfemeridesUiFormatter.FormatTimeOpt(p.SetTime)</span>
                             </div>
                             <div class="stat-row">
                                 <span class="stat-label">@L["Eph_Planet_Azimuth"]</span>
@@ -240,10 +242,10 @@
         {
             <div class="eph-card-body">
                 <div class="eph-tonight-grid">
-                    <div class="eph-tonight-quality @QualityClass(_tonight.Quality)">
+                    <div class="eph-tonight-quality @EfemeridesUiFormatter.QualityClass(_tonight.Quality)">
                         <div class="eph-tonight-quality-dot"></div>
                         <div>
-                            <div class="eph-tonight-quality-label">@QualityLabel(_tonight.Quality)</div>
+                            <div class="eph-tonight-quality-label">@EfemeridesUiFormatter.QualityLabel(L, _tonight.Quality)</div>
                             <div class="eph-tonight-quality-sub">@L["Eph_Moon_Present"]</div>
                         </div>
                     </div>
@@ -319,12 +321,12 @@
             <div class="eph-dso-list">
                 @foreach (var item in _dsoVisibles)
                 {
-                    <div class="eph-dso-card @DsoAccentClass(item.Dso.Type)">
+                    <div class="eph-dso-card @EfemeridesUiFormatter.DsoAccentClass(item.Dso.Type)">
                         <div class="eph-dso-media-layout">
                             <div class="eph-dso-thumb-wrap">
                                 @if (item.ThumbnailFailed)
                                 {
-                                    <div class="eph-dso-thumb-fallback" role="img" aria-label="@DsoThumbnailAltText(item.Dso)">
+                                    <div class="eph-dso-thumb-fallback" role="img" aria-label="@EfemeridesUiFormatter.DsoThumbnailAltText(item.Dso)">
                                         <span class="eph-dso-thumb-fallback-emoji">@item.Dso.Emoji</span>
                                         <span class="eph-dso-thumb-fallback-id">@item.Dso.Id</span>
                                     </div>
@@ -332,8 +334,8 @@
                                 else
                                 {
                                     <img class="eph-dso-thumb"
-                                         src="@BuildDsoThumbnailUrl(item.Dso)"
-                                         alt="@DsoThumbnailAltText(item.Dso)"
+                                         src="@EfemeridesUiFormatter.BuildDsoThumbnailUrl(item.Dso)"
+                                         alt="@EfemeridesUiFormatter.DsoThumbnailAltText(item.Dso)"
                                          loading="lazy"
                                          referrerpolicy="no-referrer"
                                          @onerror="() => OnDsoImageError(item)" />
@@ -352,7 +354,7 @@
                                             <div class="eph-dso-constellation">@L["Eph_DSO_Constellation"]: @item.Dso.Constellation</div>
                                         </div>
                                     </div>
-                                    <div class="eph-dso-type-line">@DsoTypeLabel(item.Dso.Type) · @L["Eph_DSO_Magnitude"] @item.Dso.Magnitude.ToString("F1", CultureInfo.InvariantCulture)</div>
+                                    <div class="eph-dso-type-line">@EfemeridesUiFormatter.DsoTypeLabel(L, item.Dso.Type) · @L["Eph_DSO_Magnitude"] @item.Dso.Magnitude.ToString("F1", CultureInfo.InvariantCulture)</div>
                                 </div>
 
                                 <div class="eph-dso-stats-grid">
@@ -362,25 +364,25 @@
                                     </div>
                                     <div class="stat-row">
                                         <span class="stat-label">@L["Eph_DSO_BestTime"]</span>
-                                        <span class="stat-value">@FormatTimeOpt(item.BestViewingTime)</span>
+                                        @EfemeridesUiFormatter.FormatTimeOpt(item.BestViewingTime)
                                     </div>
                                     <div class="stat-row">
                                         <span class="stat-label">@L["Eph_DSO_VisibleFrom"]</span>
-                                        <span class="stat-value">@FormatTimeOpt(item.VisibleFrom)</span>
+                                        @EfemeridesUiFormatter.FormatTimeOpt(item.VisibleFrom)
                                     </div>
                                     <div class="stat-row">
                                         <span class="stat-label">@L["Eph_DSO_VisibleTo"]</span>
-                                        <span class="stat-value">@FormatTimeOpt(item.VisibleUntil)</span>
+                                        @EfemeridesUiFormatter.FormatTimeOpt(item.VisibleUntil)
                                     </div>
                                 </div>
 
                                 <div class="eph-dso-track-wrap">
                                     <div class="eph-dso-track-labels">
-                                        <span>@FormatTimeOpt(_dsoNightStartUtc)</span>
-                                        <span>@FormatTimeOpt(_dsoNightEndUtc)</span>
+                                        @EfemeridesUiFormatter.FormatTimeOpt(_dsoNightStartUtc)
+                                        @EfemeridesUiFormatter.FormatTimeOpt(_dsoNightEndUtc)
                                     </div>
                                     <div class="eph-dso-track">
-                                        <div class="eph-dso-track-visible" style="@BuildDsoVisibilityStyle(item)"></div>
+                                        <div class="eph-dso-track-visible" style="@EfemeridesUiFormatter.BuildDsoVisibilityStyle(item)"></div>
                                     </div>
                                 </div>
                             </div>
@@ -394,72 +396,6 @@
 </div>
 
 @code {
-
-    // ── Modelo local ──────────────────────────────────────────────────────────
-    private sealed class PlanetData
-    {
-        public string Name { get; init; } = "";
-        public string Emoji { get; init; } = "";
-        public Body Body { get; init; }
-        public bool IsVisible { get; init; }
-        public double MaxAltitude { get; init; }
-        public double AzimuthAtMax { get; init; }
-        public DateTime? RiseTime { get; init; }
-        public DateTime? SetTime { get; init; }
-        public double DistanceAU { get; init; }
-        public double IlluminationPct { get; init; }
-    }
-
-    private sealed class EphEvent
-    {
-        public string Emoji { get; init; } = "";
-        public DateTime Date { get; init; }
-        public string Description { get; init; } = "";
-    }
-
-    private sealed class TonightData
-    {
-        public double MoonIlluminationPct { get; init; }
-        public string MoonPhaseName { get; init; } = "";
-        public string MoonPhaseEmoji { get; init; } = "";
-        public DateTime? AstroNightStart { get; init; }
-        public DateTime? MoonRise { get; init; }
-        public DateTime? MoonSet { get; init; }
-        public NightQuality Quality { get; init; }
-    }
-
-    private sealed record DsoEntry(
-        string Id,
-        string Name,
-        string Constellation,
-        string Type,
-        string Emoji,
-        double RaDeg,
-        double DecDeg,
-        double Magnitude,
-        string Description);
-
-    private sealed class DsoVisibility
-    {
-        public DsoEntry Dso { get; init; } = null!;
-        public bool IsVisibleTonight { get; init; }
-        public double MaxAltitude { get; init; }
-        public double AzimuthAtMax { get; init; }
-        public DateTime? VisibleFrom { get; init; }
-        public DateTime? VisibleUntil { get; init; }
-        public DateTime? BestViewingTime { get; init; }
-        public double VisibleStartPercent { get; init; }
-        public double VisibleWidthPercent { get; init; }
-        public bool ThumbnailFailed { get; set; }
-    }
-
-    private sealed class NightWindow
-    {
-        public DateTime StartUtc { get; init; }
-        public DateTime EndUtc { get; init; }
-    }
-
-    private enum NightQuality { Good, Fair, Poor }
 
     // ── Estado ────────────────────────────────────────────────────────────────
     private DateTime _fecha
@@ -605,8 +541,8 @@
                 : new TonightData
                 {
                     MoonIlluminationPct = computation.Tonight.MoonIlluminationPct,
-                    MoonPhaseName = MoonPhaseName(computation.Tonight.MoonPhaseAngle),
-                    MoonPhaseEmoji = MoonPhaseEmoji(computation.Tonight.MoonPhaseAngle),
+                    MoonPhaseName = EfemeridesUiFormatter.MoonPhaseName(computation.Tonight.MoonPhaseAngle),
+                    MoonPhaseEmoji = EfemeridesUiFormatter.MoonPhaseEmoji(computation.Tonight.MoonPhaseAngle),
                     AstroNightStart = computation.Tonight.AstroNightStart,
                     MoonRise = computation.Tonight.MoonRise,
                     MoonSet = computation.Tonight.MoonSet,
@@ -736,112 +672,6 @@
     private bool IsCurrentCalc(CancellationToken token)
         => _calcCts is not null && _calcCts.Token == token;
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
-    private static string FormatTimeOpt(DateTime? dt)
-        => dt.HasValue ? dt.Value.ToLocalTime().ToString("HH:mm") : "—";
-
-    private static string MoonPhaseName(double angle) => angle switch
-    {
-        < 22.5  => "Luna Nueva",
-        < 67.5  => "Cuarto Creciente",
-        < 112.5 => "Cuarto Creciente",
-        < 157.5 => "Luna Gibosa Creciente",
-        < 202.5 => "Luna Llena",
-        < 247.5 => "Luna Gibosa Menguante",
-        < 292.5 => "Cuarto Menguante",
-        < 337.5 => "Luna Creciente Menguante",
-        _       => "Luna Nueva"
-    };
-
-    private static string MoonPhaseEmoji(double angle) => angle switch
-    {
-        < 22.5  => "🌑",
-        < 67.5  => "🌒",
-        < 112.5 => "🌓",
-        < 157.5 => "🌔",
-        < 202.5 => "🌕",
-        < 247.5 => "🌖",
-        < 292.5 => "🌗",
-        < 337.5 => "🌘",
-        _       => "🌑"
-    };
-
-    private string QualityClass(NightQuality q) => q switch
-    {
-        NightQuality.Good => "eph-quality--good",
-        NightQuality.Fair => "eph-quality--fair",
-        _                 => "eph-quality--poor"
-    };
-
-    private string QualityLabel(NightQuality q) => q switch
-    {
-        NightQuality.Good => L["Eph_Tonight_Quality_Good"],
-        NightQuality.Fair => L["Eph_Tonight_Quality_Fair"],
-        _                 => L["Eph_Tonight_Quality_Poor"]
-    };
-
-    private string EclipseBannerClass(LocalEclipseType type) => type switch
-    {
-        LocalEclipseType.Total => "eph-eclipse-banner--total",
-        LocalEclipseType.Annular => "eph-eclipse-banner--annular",
-        _ => "eph-eclipse-banner--partial"
-    };
-
-    private string EclipseEmoji(LocalEclipseType type) => type switch
-    {
-        LocalEclipseType.Total => "🌑",
-        LocalEclipseType.Annular => "💍",
-        _ => "🌒"
-    };
-
-    private string EclipseTypeLabel(LocalEclipseType type) => type switch
-    {
-        LocalEclipseType.Total => L["Eph_Eclipse_Type_Total"],
-        LocalEclipseType.Annular => L["Eph_Eclipse_Type_Annular"],
-        _ => L["Eph_Eclipse_Type_Partial"]
-    };
-
-    private static int DaysUntilEclipse(DateTime eclipseDate)
-        => Math.Max(0, (int)Math.Ceiling((eclipseDate - DateTime.UtcNow).TotalDays));
-
-    private string DsoTypeLabel(string type) => type switch
-    {
-        "Nebula" => L["Eph_DSO_Type_Nebula"],
-        "OpenCluster" => L["Eph_DSO_Type_OpenCluster"],
-        "GlobularCluster" => L["Eph_DSO_Type_GlobularCluster"],
-        _ => L["Eph_DSO_Type_Galaxy"]
-    };
-
-    private static string DsoAccentClass(string type) => type switch
-    {
-        "Nebula" => "eph-dso-card--nebula",
-        "OpenCluster" => "eph-dso-card--open",
-        "GlobularCluster" => "eph-dso-card--globular",
-        _ => "eph-dso-card--galaxy"
-    };
-
-    private static string BuildDsoVisibilityStyle(DsoVisibility item)
-        => $"left:{item.VisibleStartPercent.ToString("F2", CultureInfo.InvariantCulture)}%;width:{item.VisibleWidthPercent.ToString("F2", CultureInfo.InvariantCulture)}%;";
-
-    private static string BuildDsoThumbnailUrl(DsoEntry dso)
-    {
-        var fov = DsoFieldOfView(dso).ToString("F3", CultureInfo.InvariantCulture);
-        var ra = dso.RaDeg.ToString("F4", CultureInfo.InvariantCulture);
-        var dec = dso.DecDeg.ToString("F4", CultureInfo.InvariantCulture);
-
-        return $"https://alasky.cds.unistra.fr/hips-image-services/hips2fits?hips=CDS%2FP%2FDSS2%2Fcolor&width=320&height=220&projection=TAN&fov={fov}&ra={ra}&dec={dec}&format=jpg";
-    }
-
-    private static double DsoFieldOfView(DsoEntry dso) => dso.Type switch
-    {
-        "Nebula" => 1.2,
-        "OpenCluster" => 1.5,
-        "GlobularCluster" => 0.6,
-        _ => 0.8
-    };
-
-    private static string DsoThumbnailAltText(DsoEntry dso)
-        => $"{dso.Id} {dso.Name}";
 
     private void OnDsoImageError(DsoVisibility item)
     {

@@ -2,6 +2,8 @@
 @using CosineKitty
 @using System.Globalization
 @using ObservApp.Shared.Models
+@using ObservApp.Shared.Formatters
+@using ObservApp.Shared.Models.PageModels
 @using ObservApp.Shared.Services
 @using ObservApp.Shared.ViewModels
 @implements IDisposable
@@ -206,16 +208,16 @@
                     <div class="home-astro-rows">
                         <div class="home-astro-row">
                             <span class="home-astro-row-label">🌅 @L["SolLuna_Sunrise"]</span>
-                            <span class="home-astro-row-value">@FormatTime(_astroData.Sunrise)</span>
+                            <span class="home-astro-row-value">@HomeUiFormatter.FormatTime(_astroData.Sunrise)</span>
                         </div>
                         <div class="home-astro-row">
                             <span class="home-astro-row-label">🌇 @L["SolLuna_Sunset"]</span>
-                            <span class="home-astro-row-value">@FormatTime(_astroData.Sunset)</span>
+                            <span class="home-astro-row-value">@HomeUiFormatter.FormatTime(_astroData.Sunset)</span>
                         </div>
                         <div class="home-astro-row">
                             <span class="home-astro-row-label">🌃 @L["Home_AstroNight"]</span>
                             <span class="home-astro-row-value @(_astroData.IsAstroNight ? "value--active" : "")">
-                                @(_astroData.IsAstroNight ? L["Home_AstroNight_Active"] : FormatTime(_astroData.AstroTwilightEnd))
+                                @(_astroData.IsAstroNight ? L["Home_AstroNight_Active"] : HomeUiFormatter.FormatTime(_astroData.AstroTwilightEnd))
                             </span>
                         </div>
                         <div class="home-astro-row">
@@ -246,11 +248,11 @@
                     <div class="home-astro-rows">
                         <div class="home-astro-row">
                             <span class="home-astro-row-label">🌕 @L["SolLuna_Moonrise"]</span>
-                            <span class="home-astro-row-value">@FormatTime(_astroData.Moonrise)</span>
+                            <span class="home-astro-row-value">@HomeUiFormatter.FormatTime(_astroData.Moonrise)</span>
                         </div>
                         <div class="home-astro-row">
                             <span class="home-astro-row-label">🌑 @L["SolLuna_Moonset"]</span>
-                            <span class="home-astro-row-value">@FormatTime(_astroData.Moonset)</span>
+                            <span class="home-astro-row-value">@HomeUiFormatter.FormatTime(_astroData.Moonset)</span>
                         </div>
                         <div class="home-astro-row">
                             <span class="home-astro-row-label">📅 @L["SolLuna_LunarAge"]</span>
@@ -274,7 +276,7 @@
                         <span class="home-eclipse-label">@L["Home_NextEclipse"]</span>
                         <span class="home-eclipse-name">
                             @_nextEclipse.Date.ToString("d MMM yyyy") —
-                            @GetEclipseTypeName(_nextEclipse.MaxType)
+                            @HomeUiFormatter.EclipseTypeName(L, _nextEclipse.MaxType)
                         </span>
                         <span class="home-eclipse-region">@_nextEclipse.RegionLabel</span>
                     </div>
@@ -488,14 +490,14 @@
         var snapshot = HomeAstronomyService.CalculateSnapshot(_lat, _lon, _alt, DateTime.UtcNow);
         if (snapshot != null)
         {
-            var moonPhaseName = MoonPhaseName(snapshot.MoonPhaseAngle);
-            var moonEmoji = MoonPhaseEmoji(snapshot.MoonPhaseAngle);
+            var moonPhaseName = HomeUiFormatter.MoonPhaseName(L, snapshot.MoonPhaseAngle);
+            var moonEmoji = HomeUiFormatter.MoonPhaseEmoji(snapshot.MoonPhaseAngle);
 
             _astroData = new AstroSnapshot
             {
                 Sunrise = snapshot.Sunrise,
                 Sunset = snapshot.Sunset,
-                DayLength = FormatDuration(snapshot.DayLength),
+                DayLength = HomeUiFormatter.FormatDuration(snapshot.DayLength),
                 AstroTwilightEnd = snapshot.AstroTwilightEnd,
                 IsAstroNight = snapshot.IsAstroNight,
                 IsDaytime = snapshot.IsDaytime,
@@ -530,56 +532,4 @@
         catch { }
     }
 
-    // ── Helpers de formato ───────────────────────────────────────────────────
-    private static string FormatTime(DateTime? dt)
-        => dt.HasValue ? dt.Value.ToLocalTime().ToString("HH:mm") : "—";
-
-    private static string FormatDuration(TimeSpan? ts)
-        => ts.HasValue ? $"{(int)ts.Value.TotalHours}h {ts.Value.Minutes:D2}m" : "—";
-
-    private string MoonPhaseName(double angle) => angle switch
-    {
-        < 22.5  => L["SolLuna_Phase_New"],
-        < 67.5  => L["SolLuna_Phase_WaxCrescent"],
-        < 112.5 => L["SolLuna_Phase_FirstQuarter"],
-        < 157.5 => L["SolLuna_Phase_WaxGibbous"],
-        < 202.5 => L["SolLuna_Phase_Full"],
-        < 247.5 => L["SolLuna_Phase_WanGibbous"],
-        < 292.5 => L["SolLuna_Phase_LastQuarter"],
-        < 337.5 => L["SolLuna_Phase_WanCrescent"],
-        _       => L["SolLuna_Phase_New"]
-    };
-
-    private static string MoonPhaseEmoji(double angle) => angle switch
-    {
-        < 22.5  => "🌑", < 67.5  => "🌒", < 112.5 => "🌓", < 157.5 => "🌔",
-        < 202.5 => "🌕", < 247.5 => "🌖", < 292.5 => "🌗", < 337.5 => "🌘",
-        _       => "🌑"
-    };
-
-    private string GetEclipseTypeName(EclipseType t) => t switch
-    {
-        EclipseType.Total   => L["SolLuna_Eclipse_Total"],
-        EclipseType.Annular => L["SolLuna_Eclipse_Annular"],
-        EclipseType.Hybrid  => L["SolLuna_Eclipse_Annular"],
-        _                   => L["SolLuna_Eclipse_Partial"]
-    };
-
-    // ── Modelo de datos local ────────────────────────────────────────────────
-    private sealed class AstroSnapshot
-    {
-        public DateTime? Sunrise         { get; init; }
-        public DateTime? Sunset          { get; init; }
-        public string    DayLength       { get; init; } = "—";
-        public DateTime? AstroTwilightEnd{ get; init; }
-        public bool      IsAstroNight    { get; init; }
-        public bool      IsDaytime       { get; init; }
-        public DateTime? Moonrise        { get; init; }
-        public DateTime? Moonset         { get; init; }
-        public string    MoonPhaseName   { get; init; } = "";
-        public string    MoonEmoji       { get; init; } = "🌑";
-        public double    MoonIllumination{ get; init; }
-        public double    MoonAge         { get; init; }
-        public string    NextFullMoon    { get; init; } = "";
     }
-}

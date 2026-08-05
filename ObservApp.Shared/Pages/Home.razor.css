@@ -104,7 +104,7 @@
     border-radius: var(--radius-sm);
     padding: 5px 8px;
     font-size: 0.78rem;
-    max-width: 160px;
+    max-width: 500px;
 }
 
 /* Botón GPS */
