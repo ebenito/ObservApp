@@ -15,10 +15,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup .NET 10
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.0.x
 
@@ -48,14 +48,14 @@ jobs:
         run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore --output ObservApp/publish/windows
 
       - name: Upload Android APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ObservApp-Android
           path: ObservApp/publish/android/*.apk
           if-no-files-found: warn
 
       - name: Upload Windows MSIX
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ObservApp-Windows
           path: ObservApp/publish/windows/*.msix
@@ -64,14 +64,14 @@ jobs:
   deploy-web:
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop')
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup .NET 10
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.0.x
 
@@ -93,12 +93,42 @@ jobs:
         run: |
           find ./publish/web/wwwroot -type f \( -name "*.pdb" -o -name "*.dbg" -o -name "*.xml" -o -name "*.map" \) -print -delete
 
+      - name: Reducir assets pesados para web (imágenes > 1 MB)
+        run: |
+          LIMIT_BYTES=$((250*1024*1024))
+          TARGET_BYTES=$((248*1024*1024))
+
+          echo "=== Imágenes > 1 MB candidatas a recorte ==="
+          find ./publish/web/wwwroot -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" -o -iname "*.gif" -o -iname "*.svg" \) -size +1024k -printf '%s\t%p\n' | sort -nr || true
+
+          SIZE=$(du -sb ./publish/web/wwwroot | cut -f1)
+          if [ "$SIZE" -gt "$LIMIT_BYTES" ]; then
+            echo "Paquete por encima de límite, eliminando imágenes > 1 MB hasta acercarnos a 248 MB..."
+            while [ "$SIZE" -gt "$TARGET_BYTES" ]; do
+              CANDIDATE=$(find ./publish/web/wwwroot -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" -o -iname "*.gif" -o -iname "*.svg" \) -size +1024k -printf '%s\t%p\n' | sort -nr | head -n 1)
+              if [ -z "$CANDIDATE" ]; then
+                echo "No quedan imágenes > 1 MB para recortar."
+                break
+              fi
+
+              FILE=$(echo "$CANDIDATE" | cut -f2-)
+              BYTES=$(echo "$CANDIDATE" | cut -f1)
+              FILE_MB=$(awk "BEGIN { printf \"%.2f\", $BYTES/1024/1024 }")
+              echo "Eliminando: $FILE (${FILE_MB} MB)"
+              rm -f "$FILE"
+
+              SIZE=$(du -sb ./publish/web/wwwroot | cut -f1)
+            done
+          fi
+
       - name: Verificar estructura y tamaño
         run: |
           echo "=== wwwroot raíz ==="
           ls ./publish/web/wwwroot/
           echo "=== _framework (primeros 10) ==="
           ls ./publish/web/wwwroot/_framework/ | head -10
+          echo "=== Top 20 ficheros más grandes ==="
+          find ./publish/web/wwwroot -type f -printf '%s\t%p\n' | sort -nr | head -20
           SIZE=$(du -sb ./publish/web/wwwroot | cut -f1)
           SIZE_MB=$(awk "BEGIN { printf \"%.1f\", $SIZE/1024/1024 }")
           echo "Tamaño total del paquete: ${SIZE_MB} MB"
