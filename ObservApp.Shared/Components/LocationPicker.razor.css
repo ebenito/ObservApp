@@ -26,6 +26,46 @@
     font-size: 0.95rem;
 }
 
+.loc-picker-gps-btn {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 11px;
+    border-radius: 8px;
+    border: 1px solid var(--obs-aurora);
+    background: rgba(46,196,182,.1);
+    color: var(--obs-aurora);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--transition), opacity var(--transition);
+    white-space: nowrap;
+}
+
+.loc-picker-gps-btn:hover:not(:disabled) {
+    background: rgba(46,196,182,.2);
+}
+
+.loc-picker-gps-btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.loc-picker-gps-spinner {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(46,196,182,.35);
+    border-top-color: var(--obs-aurora);
+    border-radius: 50%;
+    animation: loc-picker-spin 0.7s linear infinite;
+}
+
+@keyframes loc-picker-spin {
+    to { transform: rotate(360deg); }
+}
+
 .loc-picker-select-wrapper {
     padding: 10px 14px;
     border-bottom: 1px solid var(--obs-border);
@@ -47,8 +87,9 @@
     border-color: var(--obs-aurora);
 }
 
-.loc-picker-gps-btn {
-    margin-left: auto;
+.loc-picker-select option {
+    background: var(--obs-midnight);
+    color: var(--obs-moon);
 }
 
 .loc-picker-gps-error {

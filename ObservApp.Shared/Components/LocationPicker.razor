@@ -56,7 +56,7 @@
     [Parameter, EditorRequired] public string CssPrefix { get; set; } = string.Empty;
 
     /// <summary>Lista de ubicaciones favoritas del usuario.</summary>
-    [Parameter] public List<FavoriteLocation>? Locations { get; set; }
+    [Parameter] public IEnumerable<FavoriteLocation>? Locations { get; set; }
 
     /// <summary>Indica si el GPS está cargando.</summary>
     [Parameter] public bool IsLoading { get; set; }
