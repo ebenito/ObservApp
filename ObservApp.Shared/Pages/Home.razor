@@ -403,11 +403,6 @@
     private bool _showRecentSessions => HomeVM.ShowRecentSessions;
     private IReadOnlyList<ObservationSession> _recentSessions => HomeVM.RecentSessions;
 
-    // ── Sesiones autenticadas ─────────────────────────────────────────────────
-    private int _sessionCount;
-    private bool _showRecentSessions;
-    private List<ObservationSession> _recentSessions = new();
-
     // ── Ciclo de vida ────────────────────────────────────────────────────────
     protected override async Task OnInitializedAsync()
     {
@@ -417,8 +412,6 @@
 
         Calcular();
         CargarProximoEclipse();
-
-        _ = LoadRecentSessionsAsync();
     }
 
     private void OnHomeVmStateChanged()
@@ -442,42 +435,6 @@
     {
         HomeVM.OnStateChanged -= OnHomeVmStateChanged;
         HomeVM.Dispose();
-    }
-
-    private async Task LoadRecentSessionsAsync()
-    {
-        _showRecentSessions = false;
-        _recentSessions = new List<ObservationSession>();
-        _sessionCount = 0;
-
-        if (!AppState.IsAuthenticated)
-            return;
-
-        try
-        {
-            await Task.Yield();
-
-            var sessions = await ObservationService.GetAllAsync();
-
-            _sessionCount = sessions.Count;
-            _recentSessions = sessions
-                .OrderByDescending(s => s.Date)
-                .Take(3)
-                .ToList();
-            _showRecentSessions = true;
-
-            await InvokeAsync(StateHasChanged);
-        }
-        catch
-        {
-            _showRecentSessions = false;
-        }
-    }
-
-    public void Dispose()
-    {
-        LocationState.LocationChanged -= OnLocationStateChanged;
-        AppState.OnStateChanged -= OnAppStateChanged;
     }
 
     // ── Cálculo astronómico ──────────────────────────────────────────────────

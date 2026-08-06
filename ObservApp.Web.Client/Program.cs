@@ -35,6 +35,7 @@ builder.Services.AddSingleton<ISettingsService, WebSettingsService>();
 builder.Services.AddSingleton<IAppLifecycleService, WebClientAppLifecycleService>();
 builder.Services.AddSingleton<IGeolocationService, WebGeolocationService>();
 builder.Services.AddSingleton<IFavoriteLocationsService, WebFavoriteLocationsService>();
+builder.Services.AddSingleton<IDsoCatalogProvider, DsoCatalogProvider>();
 builder.Services.AddSingleton<ILocationStateService, LocationStateService>();
 builder.Services.AddSingleton<IExternalLinkService, WebExternalLinkService>();
 builder.Services.AddSingleton<ITextToSpeechService, WebTextToSpeechService>();

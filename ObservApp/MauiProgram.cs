@@ -82,6 +82,7 @@ public static class MauiProgram
 
         // ── Ubicaciones Favoritas ─────────────────────────────────────────────
         builder.Services.AddSingleton<IFavoriteLocationsService, MauiFavoriteLocationsService>();
+        builder.Services.AddSingleton<IDsoCatalogProvider, DsoCatalogProvider>();
 
         // ── Estado compartido de ubicación ────────────────────────────────────
         builder.Services.AddSingleton<ILocationStateService, LocationStateService>();
