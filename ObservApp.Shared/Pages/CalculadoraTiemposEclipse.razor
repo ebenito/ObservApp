@@ -58,66 +58,41 @@
     </div>
 
     <!-- SELECTOR DE UBICACIÓN -->
-    <div class="eclt-card">
-        <div class="eclt-card-header eclt-location-header">
-            <span>📍</span> @L["EclipseTimer_Location"]
-            <button class="eclt-gps-btn @(_gpsLoading ? "loading" : "")"
-                    @onclick="OnUseGpsAsync" disabled="@_gpsLoading">
-                @if (_gpsLoading)
-                { <span class="eclt-spinner"></span> }
-                else
-                { <span>📡</span> }
-                @L["EclipseTimer_UseGPS"]
-            </button>
-        </div>
-        <div class="eclt-card-body">
-            <!-- Selector de favoritas -->
-            <select class="eclt-select" @onchange="OnFavLocationChanged">
-                <option value="manual">📍 @L["FavLoc_Select_Manual"]</option>
-                <option value="gps">📡 @L["FavLoc_Select_GPS"]</option>
-                @if (_favLocations != null)
-                {
-                    @foreach (var loc in _favLocations)
-                    {
-                        <option value="@loc.Id">⭐ @loc.Name</option>
-                    }
-                }
-            </select>
-
-            @if (!string.IsNullOrEmpty(_gpsError))
-            {
-                <div class="eclt-error">⚠️ @_gpsError</div>
-            }
-
-            <!-- Coordenadas manuales -->
-            <div class="eclt-coords-row">
-                <div class="eclt-field">
-                    <label class="eclt-label">@L["SolLuna_Latitude"]</label>
-                    <input class="eclt-input" type="number" min="-90" max="90" step="0.0001"
-                           @bind="_lat" />
-                </div>
-                <div class="eclt-field">
-                    <label class="eclt-label">@L["SolLuna_Longitude"]</label>
-                    <input class="eclt-input" type="number" min="-180" max="180" step="0.0001"
-                           @bind="_lon" />
-                </div>
-                <div class="eclt-field">
-                    <label class="eclt-label">@L["SolLuna_Altitude"] (m)</label>
-                    <input class="eclt-input" type="number" @bind="_alt" />
-                </div>
+    <LocationPicker CssPrefix="eclt"
+                    TitleKey="EclipseTimer_Location"
+                    GpsBtnKey="EclipseTimer_UseGPS"
+                    Locations="_favLocations"
+                    IsLoading="_gpsLoading"
+                    GpsError="_gpsError"
+                    OnGpsRequested="OnUseGpsAsync"
+                    OnFavoriteSelected="OnFavLocationSelected">
+        <div class="eclt-coords-row">
+            <div class="eclt-field">
+                <label class="eclt-label">@L["SolLuna_Latitude"]</label>
+                <input class="eclt-input" type="number" min="-90" max="90" step="0.0001"
+                       @bind="_lat" />
             </div>
-
-            @if (_gpsSourceLabel != null)
-            {
-                <div class="eclt-gps-source">📡 @_gpsSourceLabel</div>
-            }
-
-            <button class="eclt-calc-btn" @onclick="CalculateEclipse"
-                    disabled="@(_selectedEclipse == null)">
-                @L["EclipseTimer_Calculate"]
-            </button>
+            <div class="eclt-field">
+                <label class="eclt-label">@L["SolLuna_Longitude"]</label>
+                <input class="eclt-input" type="number" min="-180" max="180" step="0.0001"
+                       @bind="_lon" />
+            </div>
+            <div class="eclt-field">
+                <label class="eclt-label">@L["SolLuna_Altitude"] (m)</label>
+                <input class="eclt-input" type="number" @bind="_alt" />
+            </div>
         </div>
-    </div>
+
+        @if (_gpsSourceLabel != null)
+        {
+            <div class="eclt-gps-source">📡 @_gpsSourceLabel</div>
+        }
+
+        <button class="eclt-calc-btn" @onclick="CalculateEclipse"
+                disabled="@(_selectedEclipse == null)">
+            @L["EclipseTimer_Calculate"]
+        </button>
+    </LocationPicker>
 
     <!-- RESULTADOS -->
     @if (_result != null)
@@ -451,9 +426,8 @@
         StateHasChanged();
     }
 
-    private async Task OnFavLocationChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    private async Task OnFavLocationSelected(string val)
     {
-        var val = e.Value?.ToString();
         if (val == "gps")
         {
             await OnUseGpsAsync();

@@ -4,22 +4,33 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ObservApp.Shared.Models;
+using ObservApp.Shared.Services;
 
 public partial class HistorialViewModel : BaseViewModel
 {
+    private readonly IObservationService _observationService;
+
     [ObservableProperty]
     private ObservableCollection<ObservationSession> sessions = new();
 
     [ObservableProperty]
     private ObservationSession? selectedSession;
 
+    public HistorialViewModel(IObservationService observationService)
+    {
+        _observationService = observationService;
+    }
+
     [RelayCommand]
-    public async Task LoadSessions()
+    public async Task LoadSessionsAsync(CancellationToken cancellationToken = default)
     {
         IsBusy = true;
+        ErrorMessage = null;
         try
         {
-            Sessions = new ObservableCollection<ObservationSession>();
+            var list = await _observationService.GetAllAsync(cancellationToken);
+            Sessions = new ObservableCollection<ObservationSession>(
+                list.OrderByDescending(s => s.Date));
         }
         catch (Exception ex)
         {
@@ -29,8 +40,30 @@ public partial class HistorialViewModel : BaseViewModel
         {
             IsBusy = false;
         }
+    }
 
-        await Task.CompletedTask;
+    [RelayCommand]
+    public async Task DeleteSessionAsync(ObservationSession session)
+    {
+        if (session is null) return;
+        IsBusy = true;
+        ErrorMessage = null;
+        try
+        {
+            var ok = await _observationService.DeleteAsync(session.Id);
+            if (ok)
+                Sessions.Remove(session);
+            else
+                ErrorMessage = _observationService.LastError;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
     [RelayCommand]

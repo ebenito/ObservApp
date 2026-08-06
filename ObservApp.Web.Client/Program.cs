@@ -35,9 +35,13 @@ builder.Services.AddSingleton<ISettingsService, WebSettingsService>();
 builder.Services.AddSingleton<IAppLifecycleService, WebClientAppLifecycleService>();
 builder.Services.AddSingleton<IGeolocationService, WebGeolocationService>();
 builder.Services.AddSingleton<IFavoriteLocationsService, WebFavoriteLocationsService>();
+builder.Services.AddSingleton<IDsoCatalogProvider, DsoCatalogProvider>();
+builder.Services.AddSingleton<ILocationStateService, LocationStateService>();
 builder.Services.AddSingleton<IExternalLinkService, WebExternalLinkService>();
 builder.Services.AddSingleton<ITextToSpeechService, WebTextToSpeechService>();
 builder.Services.AddSingleton<IEclipseCalculatorService, EclipseCalculatorService>();
+builder.Services.AddSingleton<IHomeAstronomyService, HomeAstronomyService>();
+builder.Services.AddSingleton<IEfemeridesAstronomyService, EfemeridesAstronomyService>();
 builder.Services.AddSingleton<IEclipseAudioService, WebEclipseAudioService>();
 builder.Services.AddSingleton<AppState>();
 
@@ -52,6 +56,8 @@ builder.Services.AddSingleton<IObservationService>(
     sp => sp.GetRequiredService<SupabaseService>());
 builder.Services.AddTransient<AuthViewModel>();
 builder.Services.AddTransient<HistorialViewModel>();
+builder.Services.AddTransient<HomeViewModel>();
+builder.Services.AddTransient<EfemeridesViewModel>();
 
 // ── IRssFeedService vía proxy SSR (evita CORS en WASM) ──────────────────────
 builder.Services.AddHttpClient<IRssFeedService, WebRssFeedService>(client =>

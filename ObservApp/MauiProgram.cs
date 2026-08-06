@@ -73,6 +73,8 @@ public static class MauiProgram
             sp => sp.GetRequiredService<SupabaseService>());
         builder.Services.AddTransient<AuthViewModel>();
         builder.Services.AddTransient<HistorialViewModel>();
+        builder.Services.AddTransient<HomeViewModel>();
+        builder.Services.AddTransient<EfemeridesViewModel>();
 
         // ── Geolocalización ───────────────────────────────────────────────────
         builder.Services.AddSingleton<IGeolocation>(Geolocation.Default);
@@ -80,12 +82,15 @@ public static class MauiProgram
 
         // ── Ubicaciones Favoritas ─────────────────────────────────────────────
         builder.Services.AddSingleton<IFavoriteLocationsService, MauiFavoriteLocationsService>();
+        builder.Services.AddSingleton<IDsoCatalogProvider, DsoCatalogProvider>();
 
         // ── Estado compartido de ubicación ────────────────────────────────────
         builder.Services.AddSingleton<ILocationStateService, LocationStateService>();
 
         // ── Calculadora de tiempos de eclipses ────────────────────────────────
         builder.Services.AddSingleton<IEclipseCalculatorService, EclipseCalculatorService>();
+        builder.Services.AddSingleton<IHomeAstronomyService, HomeAstronomyService>();
+        builder.Services.AddSingleton<IEfemeridesAstronomyService, EfemeridesAstronomyService>();
         builder.Services.AddSingleton<IEclipseAudioService, MauiEclipseAudioService>();
 
         // ── Servicio de lectura de fuentes RSS (parser base) ─────────────────

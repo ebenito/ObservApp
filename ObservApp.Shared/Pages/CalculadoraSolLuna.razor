@@ -40,41 +40,15 @@
         </div>
 
         <!-- Ubicación -->
-        <div class="soluna-card">
-            <div class="soluna-card-header soluna-location-header">
-                <span>📍</span> @L["SolLuna_Location"]
-                <button class="soluna-gps-btn @(_gpsLoading ? "soluna-gps-btn--loading" : "")"
-                        @onclick="OnUsarGpsAsync"
-                        disabled="@_gpsLoading"
-                        title="@L["SolLuna_UseGPS"]">
-                    @if (_gpsLoading)
-                    {
-                        <span class="soluna-gps-spinner"></span>
-                    }
-                    else
-                    {
-                        <span>📡</span>
-                    }
-                    @L["SolLuna_UseGPS"]
-                </button>
-            </div>
-            <div style="padding: 10px 15px; border-bottom: 1px solid var(--obs-border);">
-                <select class="soluna-input" @onchange="OnFavLocationChanged" style="width: 100%; background-color: var(--obs-midnight); color: var(--obs-moon); border: 1px solid var(--obs-border); border-radius: var(--radius-sm); padding: 8px; font-size: 0.9rem;">
-                    <option value="manual">📍 @L["FavLoc_Select_Manual"]</option>
-                    <option value="gps">📡 @L["FavLoc_Select_GPS"]</option>
-                    @if (_favLocations != null)
-                    {
-                        @foreach (var loc in _favLocations)
-                        {
-                            <option value="@loc.Id">⭐ @loc.Name</option>
-                        }
-                    }
-                </select>
-            </div>
-            @if (!string.IsNullOrEmpty(_gpsError))
-            {
-                <div class="soluna-gps-error">⚠️ @_gpsError</div>
-            }
+        <LocationPicker CssPrefix="soluna"
+                        TitleKey="SolLuna_Location"
+                        GpsBtnKey="SolLuna_UseGPS"
+                        Locations="_favLocations"
+                        IsLoading="_gpsLoading"
+                        GpsError="_gpsError"
+                        GpsSource="_gpsSource"
+                        OnGpsRequested="OnUsarGpsAsync"
+                        OnFavoriteSelected="OnFavLocationSelected">
             <div class="soluna-card-body soluna-location-body">
                 <div class="soluna-field">
                     <label class="soluna-label">@L["SolLuna_Latitude"]</label>
@@ -92,11 +66,7 @@
                            @bind="Altitude" />
                 </div>
             </div>
-            @if (_gpsSource is not null)
-            {
-                <div class="soluna-gps-source">📡 @_gpsSource</div>
-            }
-        </div>
+        </LocationPicker>
 
     </div>
 
@@ -544,9 +514,8 @@
         _gpsError = null;
     }
 
-    private async Task OnFavLocationChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    private async Task OnFavLocationSelected(string val)
     {
-        var val = e.Value?.ToString();
         if (val == "manual")
         {
             // Deja que edite manual

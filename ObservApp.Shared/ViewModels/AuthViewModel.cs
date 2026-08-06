@@ -2,6 +2,7 @@ namespace ObservApp.Shared.ViewModels;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Localization;
 using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
 
@@ -14,6 +15,7 @@ public partial class AuthViewModel : ObservableObject
 {
 	private readonly IAuthService _authService;
 	private readonly AppState _appState;
+	private readonly IStringLocalizer<ObservApp.Resources.Strings.App> _l;
 
 	[ObservableProperty]
 	private string email = string.Empty;
@@ -30,10 +32,12 @@ public partial class AuthViewModel : ObservableObject
 	[ObservableProperty]
 	private string? errorMessage;
 
-	public AuthViewModel(IAuthService authService, AppState appState)
+	public AuthViewModel(IAuthService authService, AppState appState,
+		IStringLocalizer<ObservApp.Resources.Strings.App> localizer)
 	{
 		_authService = authService;
 		_appState = appState;
+		_l = localizer;
 
 		_authService.OnAuthStateChanged += OnAuthStateChanged;
 	}
@@ -49,7 +53,7 @@ public partial class AuthViewModel : ObservableObject
 			var result = await _authService.SignInWithEmailAsync(Email, Password);
 			if (!result.Success)
 			{
-				ErrorMessage = result.ErrorMessage ?? "Error al iniciar sesión";
+				ErrorMessage = result.ErrorMessage ?? _l["Auth_SignIn_Error"];
 				return;
 			}
 
@@ -59,7 +63,7 @@ public partial class AuthViewModel : ObservableObject
 		}
 		catch (Exception ex)
 		{
-			ErrorMessage = $"Error inesperado: {ex.Message}";
+			ErrorMessage = string.Format(_l["Error_Unexpected"], ex.Message);
 		}
 		finally
 		{
@@ -77,14 +81,14 @@ public partial class AuthViewModel : ObservableObject
 
 			if (string.IsNullOrWhiteSpace(DisplayName))
 			{
-				ErrorMessage = "El nombre mostrado es requerido";
+				ErrorMessage = _l["Auth_DisplayName_Required"];
 				return;
 			}
 
 			var result = await _authService.SignUpWithEmailAsync(Email, Password, DisplayName);
 			if (!result.Success)
 			{
-				ErrorMessage = result.ErrorMessage ?? "Error al registrarse";
+				ErrorMessage = result.ErrorMessage ?? _l["Auth_SignUp_Error"];
 				return;
 			}
 
@@ -95,7 +99,7 @@ public partial class AuthViewModel : ObservableObject
 		}
 		catch (Exception ex)
 		{
-			ErrorMessage = $"Error inesperado: {ex.Message}";
+			ErrorMessage = string.Format(_l["Error_Unexpected"], ex.Message);
 		}
 		finally
 		{
@@ -116,7 +120,7 @@ public partial class AuthViewModel : ObservableObject
 		}
 		catch (Exception ex)
 		{
-			ErrorMessage = $"Error al cerrar sesión: {ex.Message}";
+			ErrorMessage = string.Format(_l["Auth_SignOut_Error"], ex.Message);
 		}
 		finally
 		{

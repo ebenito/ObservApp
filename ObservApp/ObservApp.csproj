@@ -31,6 +31,8 @@
         <GenerateTestArtifacts>True</GenerateTestArtifacts>
       <UserSecretsId>64ae768e-41f7-46bd-98b9-e21a8e9dae93</UserSecretsId>
       <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
+      <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+      <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
 
     <ItemGroup>
@@ -79,7 +81,7 @@
 
         <!-- Community Toolkit MAUI — permisos, share, toast nativo Android -->
         <PackageReference Include="CommunityToolkit.Maui" Version="15.0.0" />
-        <PackageReference Include="Syncfusion.Licensing" Version="34.1.33" />
+        <PackageReference Include="Syncfusion.Licensing" Version="34.2.2" />
     </ItemGroup>
 
 	<ItemGroup>

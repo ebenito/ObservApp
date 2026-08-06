@@ -2,213 +2,149 @@ name: Build ObservApp
 
 on:
   push:
-    branches: ["master", "develop"]
+    branches: [ "develop", "master" ]
   pull_request:
-    branches: ["master", "develop"]
+    branches: [ "develop", "master" ]
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-
-  # ────────────────────────────────────────────────────────────────────────────
-  # JOB 1 — Android APK (ubuntu: el .csproj excluye Windows TFM en Linux)
-  # ────────────────────────────────────────────────────────────────────────────
-  build-android:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: windows-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup .NET 10
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.0.x
 
-      - name: Install MAUI Android workload
-        run: dotnet workload install maui-android
+      - name: Install MAUI workload
+        run: dotnet workload install maui
 
-      - name: Setup Java 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-
-      - name: Create appsettings.Local.json
+      - name: Crear appsettings.Local.json
         run: |
-          echo '{"SyncfusionLicenseKey":"${{ secrets.SYNCFUSION_LICENSE_KEY }}"}' \
-            > ObservApp/appsettings.Local.json
-
-      - name: Create Android debug keystore
-        run: |
-          mkdir -p ./.android
-          keytool -genkeypair -v \
-            -keystore ./.android/debug.keystore \
-            -storepass android \
-            -alias androiddebugkey \
-            -keypass android \
-            -keyalg RSA \
-            -keysize 2048 \
-            -validity 10000 \
-            -dname "CN=Android Debug,O=Android,C=US"
+          echo '{"SyncfusionLicenseKey": "${{ secrets.SYNCFUSION_LICENSE_KEY }}"}' > ObservApp/appsettings.Local.json
 
       - name: Restore Android
-        run: |
-          dotnet restore ObservApp/ObservApp.csproj \
-            -p:TargetFramework=net10.0-android \
-            -p:TargetFrameworks=net10.0-android \
-            -p:EnableWindowsTargeting=true
+        run: dotnet restore ObservApp/ObservApp.csproj -p:TargetFramework=net10.0-android
 
-      - name: Publish Android APK (Release, firmado para instalar)
-        run: |
-          dotnet publish ObservApp/ObservApp.csproj \
-            --framework net10.0-android \
-            --configuration Release \
-            --output ObservApp/publish/android \
-            -p:AndroidPackageFormat=apk \
-            -p:AndroidKeyStore=true \
-            -p:AndroidSigningKeyStoreFile=$GITHUB_WORKSPACE/.android/debug.keystore \
-            -p:AndroidSigningStorePass=android \
-            -p:AndroidSigningKeyAlias=androiddebugkey \
-            -p:AndroidSigningKeyPass=android \
-            -p:AndroidCreatePackagePerAbi=false \
-            -p:PublishTrimmed=true \
-            -p:RunAOTCompilation=false \
-            -p:AndroidLinkMode=SdkOnly \
-            -p:TargetFrameworks=net10.0-android \
-            -p:EnableWindowsTargeting=true
+      - name: Restore Windows
+        run: dotnet restore ObservApp/ObservApp.csproj -p:TargetFramework=net10.0-windows10.0.26100.0 -p:RuntimeIdentifier=win-x64
 
-      - name: Prepare installable APK
-        run: |
-          mkdir -p ./artifacts/android
-          # Prioridad: APK firmado (-Signed.apk)
-          APK_PATH=$(find ObservApp/publish/android -type f -name '*-Signed.apk' | head -n 1)
-          # Fallback: cualquier APK que no sea unsigned
-          if [ -z "$APK_PATH" ]; then
-            APK_PATH=$(find ObservApp/publish/android -type f -name '*.apk' | grep -iv 'unsigned' | head -n 1)
-          fi
-          # Último recurso: el primero que haya
-          if [ -z "$APK_PATH" ]; then
-            APK_PATH=$(find ObservApp/publish/android -type f -name '*.apk' | head -n 1)
-          fi
-          if [ -z "$APK_PATH" ]; then
-            echo "::error::No se encontró ningún APK en ObservApp/publish/android"
-            exit 1
-          fi
-          cp "$APK_PATH" ./artifacts/android/ObservApp-Installable.apk
-          echo "APK seleccionado: $APK_PATH"
-          echo "Tamaño: $(du -sh ./artifacts/android/ObservApp-Installable.apk | cut -f1)"
-            -p:AndroidKeyStore=false \
-            -p:TargetFrameworks=net10.0-android \
-            -p:EnableWindowsTargeting=true
+      - name: Build Android
+        run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release
+
+      - name: Publish Android
+        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release --no-restore --output ObservApp/publish/android
+
+      - name: Build Windows
+        run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore
+
+      - name: Publish Windows
+        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore --output ObservApp/publish/windows
 
       - name: Upload Android APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ObservApp-Android
-          path: ./artifacts/android/ObservApp-Installable.apk
-          if-no-files-found: error
+          path: ObservApp/publish/android/*.apk
+          if-no-files-found: warn
 
-      - name: Create GitHub Release with APK (direct download link)
-        if: github.event_name == 'push'
-        uses: softprops/action-gh-release@v2
+      - name: Upload Windows MSIX
+        uses: actions/upload-artifact@v5
         with:
-          tag_name: ${{ github.ref == 'refs/heads/master' && 'android-latest' || 'android-develop' }}
-          name: ${{ github.ref == 'refs/heads/master' && 'ObservApp Android — Production' || 'ObservApp Android — Develop' }}
-          body: |
-            APK instalable generado automáticamente desde la rama `${{ github.ref_name }}`.
-            Descarga el fichero `ObservApp-Installable.apk` de abajo e instálalo en tu Android.
-            > ⚠️ Deberás activar **"Instalar apps de fuentes desconocidas"** en los ajustes del dispositivo.
-          draft: false
-          prerelease: ${{ github.ref != 'refs/heads/master' }}
-          make_latest: ${{ github.ref == 'refs/heads/master' }}
-          files: ./artifacts/android/ObservApp-Installable.apk
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: ObservApp-Windows
+          path: ObservApp/publish/windows/*.msix
+          if-no-files-found: warn
 
-  # ────────────────────────────────────────────────────────────────────────────
-  # JOB 2 — Deploy Blazor WASM → Azure Static Web Apps
-  # Independiente del job Android (no `needs`). Solo en push a main/master.
-  # ────────────────────────────────────────────────────────────────────────────
   deploy-web:
     runs-on: ubuntu-latest
-    if: |
-      github.event_name == 'push' &&
-      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    needs: build
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop')
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup .NET 10
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.0.x
 
-      - name: Install WASM workload
-        run: dotnet workload install wasm-tools
+      - name: Restore Web Client (solo net10.0)
+        run: dotnet restore ObservApp.Web.Client/ObservApp.Web.Client.csproj -p:TargetFramework=net10.0
 
-      - name: Restore Web Client
+      - name: Publish Blazor WASM standalone
+        run: >
+          dotnet publish ObservApp.Web.Client/ObservApp.Web.Client.csproj
+          --configuration Release
+          --output ./publish/web
+          --no-restore
+          -p:TargetFramework=net10.0
+          -p:DefineConstants=STANDALONE_WASM
+          -p:DebuggerSupport=false
+          -p:CopyOutputSymbolsToPublishDirectory=false
+
+      - name: Limpiar artefactos no necesarios para Azure Static Web Apps
         run: |
-          dotnet restore ObservApp.Web.Client/ObservApp.Web.Client.csproj \
-            -p:TargetFramework=net10.0 \
-            -p:TargetFrameworks=net10.0 \
-            -p:EnableWindowsTargeting=true
+          find ./publish/web/wwwroot -type f \( -name "*.pdb" -o -name "*.dbg" -o -name "*.xml" -o -name "*.map" \) -print -delete
 
-      - name: Publish Blazor WASM (optimizado para tamaño)
+      - name: Reducir tamaño de artefactos web para Azure SWA
         run: |
-          dotnet publish ObservApp.Web.Client/ObservApp.Web.Client.csproj \
-            --configuration Release \
-            --output ./publish/web \
-            -p:TargetFramework=net10.0 \
-            -p:TargetFrameworks=net10.0 \
-            -p:PublishTrimmed=true \
-            -p:TrimMode=partial \
-            -p:InvariantGlobalization=true \
-            -p:BlazorWebAssemblyLoadAllGlobalizationData=false \
-            -p:BlazorWebAssemblyPrecompressed=false \
-            -p:DebuggerSupport=false \
-            -p:DebugSymbols=false \
-            -p:DebugType=None
-        # BlazorWebAssemblyPrecompressed=false → Azure SWA usa su propia CDN
-        # para comprimir Brotli/gzip en el edge. Generar las 3 versiones
-        # (.br + .gz + sin comprimir) triplicaría el paquete innecesariamente.
+          LIMIT_BYTES=$((250*1024*1024))
+          TARGET_BYTES=$((248*1024*1024))
 
-      - name: Strip ficheros innecesarios
-        run: |
-          FW=./publish/web/wwwroot/_framework
-
-          echo "▶ Tamaño ANTES del cleanup:"
-          du -sh ./publish/web/wwwroot
-
-          # Símbolos de depuración (no deberían existir en Release, por si acaso)
-          find ./publish/web/wwwroot -name "*.pdb" -delete
-
-          # Documentación XML de ensamblados en _framework
-          find "$FW" -name "*.xml" -delete
-
-          echo "▶ Tamaño DESPUÉS del cleanup:"
-          du -sh ./publish/web/wwwroot
-
-          echo "▶ Desglose _framework:"
-          du -sh "$FW"
-
-          echo "▶ Top 20 ficheros más grandes:"
-          find ./publish/web/wwwroot -type f -printf "%s\t%p\n" \
-            | sort -rn | head -20 \
-            | awk '{printf "%.1f MB\t%s\n", $1/1048576, $2}'
-
-      - name: Verificar límite 250 MB de Azure Static Web Apps
-        run: |
           SIZE=$(du -sb ./publish/web/wwwroot | cut -f1)
-          SIZE_MB=$(echo "scale=1; $SIZE/1048576" | bc)
+          SIZE_MB=$(awk "BEGIN { printf \"%.1f\", $SIZE/1024/1024 }")
+          echo "Tamaño inicial: ${SIZE_MB} MB"
+
+          if [ "$SIZE" -gt "$LIMIT_BYTES" ]; then
+            echo "=== Recorte 1: imágenes > 1 MB ==="
+            while [ "$SIZE" -gt "$TARGET_BYTES" ]; do
+              CANDIDATE=$(find ./publish/web/wwwroot -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" -o -iname "*.gif" -o -iname "*.svg" \) -size +1024k -printf '%s\t%p\n' | sort -nr | head -n 1)
+              if [ -z "$CANDIDATE" ]; then
+                echo "No quedan imágenes > 1 MB para recortar."
+                break
+              fi
+
+              FILE=$(echo "$CANDIDATE" | cut -f2-)
+              BYTES=$(echo "$CANDIDATE" | cut -f1)
+              FILE_MB=$(awk "BEGIN { printf \"%.2f\", $BYTES/1024/1024 }")
+              echo "Eliminando imagen: $FILE (${FILE_MB} MB)"
+              rm -f "$FILE"
+              SIZE=$(du -sb ./publish/web/wwwroot | cut -f1)
+            done
+          fi
+
+          if [ "$SIZE" -gt "$LIMIT_BYTES" ]; then
+            echo "=== Recorte 2: ficheros precomprimidos (*.br, *.gz) ==="
+            find ./publish/web/wwwroot -type f \( -name "*.br" -o -name "*.gz" \) -print -delete || true
+            SIZE=$(du -sb ./publish/web/wwwroot | cut -f1)
+          fi
+
+          SIZE_MB=$(awk "BEGIN { printf \"%.1f\", $SIZE/1024/1024 }")
+          echo "Tamaño tras recortes: ${SIZE_MB} MB"
+
+      - name: Verificar estructura y tamaño
+        run: |
+          LIMIT_BYTES=$((250*1024*1024))
+          echo "=== wwwroot raíz ==="
+          ls ./publish/web/wwwroot/
+          echo "=== _framework (primeros 10) ==="
+          ls ./publish/web/wwwroot/_framework/ | head -10
+          echo "=== Top 20 ficheros más grandes ==="
+          find ./publish/web/wwwroot -type f -printf '%s\t%p\n' | sort -nr | head -20
+          SIZE=$(du -sb ./publish/web/wwwroot | cut -f1)
+          SIZE_MB=$(awk "BEGIN { printf \"%.1f\", $SIZE/1024/1024 }")
           echo "Tamaño total del paquete: ${SIZE_MB} MB"
-          if [ "$SIZE" -gt $((250 * 1024 * 1024)) ]; then
-            echo "::error::El paquete supera el límite de 250 MB de Azure Static Web Apps (${SIZE_MB} MB)"
+
+          if [ "$SIZE" -gt "$LIMIT_BYTES" ]; then
+            echo "Error: El paquete supera el límite de 250 MB de Azure Static Web Apps (${SIZE_MB} MB)"
             exit 1
-          else
-            echo "::notice::Paquete dentro del límite: ${SIZE_MB} MB / 250 MB"
           fi
 
       - name: Deploy to Azure Static Web Apps

@@ -1273,6 +1273,21 @@
   <data name="Auth_NoAccount" xml:space="preserve">
     <value>Don't have an account? Sign up</value>
   </data>
+  <data name="Auth_SignIn_Error" xml:space="preserve">
+    <value>Sign in error</value>
+  </data>
+  <data name="Auth_SignUp_Error" xml:space="preserve">
+    <value>Sign up error</value>
+  </data>
+  <data name="Auth_DisplayName_Required" xml:space="preserve">
+    <value>Display name is required</value>
+  </data>
+  <data name="Auth_SignOut_Error" xml:space="preserve">
+    <value>Sign out error: {0}</value>
+  </data>
+  <data name="Error_Unexpected" xml:space="preserve">
+    <value>Unexpected error: {0}</value>
+  </data>
   <data name="Obs_Sessions" xml:space="preserve">
     <value>Observation Sessions</value>
   </data>

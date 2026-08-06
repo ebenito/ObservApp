@@ -506,6 +506,33 @@
     to { transform: rotate(360deg); }
 }
 
+.soluna-select-wrapper {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--obs-border);
+}
+
+.soluna-select-wrapper select {
+    width: 100%;
+    background: var(--obs-deep);
+    border: 1px solid var(--obs-border);
+    color: var(--obs-moon);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color var(--transition);
+}
+
+    .soluna-select-wrapper select:focus {
+        outline: none;
+        border-color: var(--obs-aurora);
+    }
+
+    .soluna-select-wrapper select option {
+        background: var(--obs-deep);
+        color: var(--obs-moon);
+    }
+
 .soluna-gps-error {
     padding: 6px 14px;
     font-size: 0.78rem;
