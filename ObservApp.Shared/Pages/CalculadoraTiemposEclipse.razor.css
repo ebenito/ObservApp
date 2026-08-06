@@ -88,6 +88,33 @@
     flex-wrap: wrap;
 }
 
+.eclt-select-wrapper {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--obs-border);
+}
+
+.eclt-select-wrapper select {
+    width: 100%;
+    background: var(--obs-deep);
+    border: 1px solid var(--obs-border);
+    color: var(--obs-moon);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color var(--transition);
+}
+
+    .eclt-select-wrapper select:focus {
+        outline: none;
+        border-color: var(--obs-aurora);
+    }
+
+    .eclt-select-wrapper select option {
+        background: var(--obs-deep);
+        color: var(--obs-moon);
+    }
+
 .eclt-card-body {
     padding: 14px;
 }

@@ -1,17 +1,17 @@
 @using ObservApp.Shared.Models
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
 
-<div class="@CssPrefix-card">
-    <div class="@CssPrefix-card-header @CssPrefix-location-header">
-        <span class="@CssPrefix-card-icon">📍</span>
-        <span class="@CssPrefix-card-title">@L[TitleKey]</span>
-        <button class="@CssPrefix-gps-btn @(IsLoading ? $"{CssPrefix}-gps-btn--loading" : string.Empty)"
+<div class="loc-picker-card @($"{CssPrefix}-card")">
+    <div class="loc-picker-header @($"{CssPrefix}-card-header") @($"{CssPrefix}-location-header")">
+        <span class="loc-picker-icon @($"{CssPrefix}-card-icon")">📍</span>
+        <span class="loc-picker-title @($"{CssPrefix}-card-title")">@L[TitleKey]</span>
+        <button class="loc-picker-gps-btn @($"{CssPrefix}-gps-btn") @(IsLoading ? $"{CssPrefix}-gps-btn--loading" : string.Empty)"
                 @onclick="OnGpsRequested"
                 disabled="@IsLoading"
                 title="@L[GpsBtnKey]">
             @if (IsLoading)
             {
-                <span class="@CssPrefix-gps-spinner"></span>
+                <span class="loc-picker-gps-spinner @($"{CssPrefix}-gps-spinner")"></span>
             }
             else
             {
@@ -21,8 +21,8 @@
         </button>
     </div>
 
-    <div class="@CssPrefix-select-wrapper">
-        <select class="@CssPrefix-input" @onchange="HandleSelectChange">
+    <div class="loc-picker-select-wrapper @($"{CssPrefix}-select-wrapper")">
+        <select class="loc-picker-select @($"{CssPrefix}-input")" @onchange="HandleSelectChange">
             <option value="manual">📍 @L["FavLoc_Select_Manual"]</option>
             <option value="gps">📡 @L["FavLoc_Select_GPS"]</option>
             @if (Locations != null)
@@ -37,7 +37,7 @@
 
     @if (!string.IsNullOrEmpty(GpsError))
     {
-        <div class="@CssPrefix-gps-error">⚠️ @GpsError</div>
+        <div class="loc-picker-gps-error @($"{CssPrefix}-gps-error")">⚠️ @GpsError</div>
     }
 
     @if (ChildContent != null)
@@ -47,7 +47,7 @@
 
     @if (GpsSource != null)
     {
-        <div class="@CssPrefix-gps-source">📡 @GpsSource</div>
+        <div class="loc-picker-gps-source @($"{CssPrefix}-gps-source")">📡 @GpsSource</div>
     }
 </div>
 

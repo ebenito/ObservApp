@@ -139,6 +139,28 @@
     border-bottom: 1px solid var(--obs-border);
 }
 
+.eph-select-wrapper select {
+    width: 100%;
+    background: var(--obs-midnight);
+    border: 1px solid var(--obs-border);
+    color: var(--obs-moon);
+    border-radius: var(--radius-md);
+    padding: 8px 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color var(--transition);
+}
+
+    .eph-select-wrapper select:focus {
+        outline: none;
+        border-color: var(--obs-aurora);
+    }
+
+    .eph-select-wrapper select option {
+        background: var(--obs-midnight);
+        color: var(--obs-moon);
+    }
+
 .eph-location-body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

@@ -38,4 +38,10 @@
     <PackageReference Include="CosineKitty.AstronomyEngine" Version="2.1.19" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\dso-catalog.json">
+      <LogicalName>ObservApp.Shared.Resources.dso-catalog.json</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

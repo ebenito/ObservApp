@@ -1,0 +1,67 @@
+.loc-picker-card {
+    background: var(--obs-navy);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-lg, 14px);
+    overflow: hidden;
+}
+
+.loc-picker-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--obs-deep);
+    border-bottom: 1px solid var(--obs-border);
+    color: var(--obs-moon);
+}
+
+.loc-picker-icon {
+    font-size: 1.05rem;
+    line-height: 1;
+}
+
+.loc-picker-title {
+    color: var(--obs-moon);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.loc-picker-select-wrapper {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--obs-border);
+}
+
+.loc-picker-select {
+    width: 100%;
+    background: var(--obs-midnight);
+    border: 1px solid var(--obs-border);
+    color: var(--obs-moon);
+    border-radius: var(--radius-md, 10px);
+    padding: 8px 10px;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+.loc-picker-select:focus {
+    outline: none;
+    border-color: var(--obs-aurora);
+}
+
+.loc-picker-gps-btn {
+    margin-left: auto;
+}
+
+.loc-picker-gps-error {
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    color: var(--obs-mars);
+    background: rgba(231,111,81,.08);
+    border-bottom: 1px solid var(--obs-border);
+}
+
+.loc-picker-gps-source {
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    color: var(--obs-aurora);
+    border-top: 1px solid var(--obs-border);
+}
