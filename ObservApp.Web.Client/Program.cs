@@ -32,6 +32,7 @@ builder.Services.AddSyncfusionBlazor();
 builder.Services.AddLocalization();
 builder.Services.AddSingleton<ILocalizationService, WebLocalizationService>();
 builder.Services.AddSingleton<ISettingsService, WebSettingsService>();
+builder.Services.AddSingleton<INavigationHistoryService, NavigationHistoryService>();
 builder.Services.AddSingleton<IAppLifecycleService, WebClientAppLifecycleService>();
 builder.Services.AddSingleton<IGeolocationService, WebGeolocationService>();
 builder.Services.AddSingleton<IFavoriteLocationsService, WebFavoriteLocationsService>();

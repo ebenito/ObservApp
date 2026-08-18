@@ -175,7 +175,7 @@
     <value>تأكيد كلمة المرور</value>
   </data>
   <data name="Auth_DisplayName" xml:space="preserve">
-    <value>اسم المستخدم</value>
+    <value>اسم العرض</value>
   </data>
   <data name="Auth_NoAccount" xml:space="preserve">
     <value>ليس لديك حساب؟ سجّل الآن</value>
@@ -205,7 +205,7 @@
     <value>كلمتا المرور غير متطابقتين</value>
   </data>
   <data name="Auth_SigningIn" xml:space="preserve">
-    <value>جارٍ تسجيل الدخول…</value>
+    <value>جاري تسجيل الدخول...</value>
   </data>
   <data name="Auth_CreatingAccount" xml:space="preserve">
     <value>جارٍ إنشاء الحساب…</value>
@@ -1270,26 +1270,8 @@
   <data name="Eph_DSO_Count" xml:space="preserve">
     <value>أجرام مرئية</value>
   </data>
-  <data name="Auth_SignIn" xml:space="preserve">
-    <value>تسجيل الدخول</value>
-  </data>
-  <data name="Auth_SignUp" xml:space="preserve">
-    <value>إنشاء حساب</value>
-  </data>
   <data name="Auth_SignOut" xml:space="preserve">
     <value>تسجيل الخروج</value>
-  </data>
-  <data name="Auth_Email" xml:space="preserve">
-    <value>البريد الإلكتروني</value>
-  </data>
-  <data name="Auth_Password" xml:space="preserve">
-    <value>كلمة المرور</value>
-  </data>
-  <data name="Auth_DisplayName" xml:space="preserve">
-    <value>اسم العرض</value>
-  </data>
-  <data name="Auth_SigningIn" xml:space="preserve">
-    <value>جاري تسجيل الدخول...</value>
   </data>
   <data name="Auth_Error" xml:space="preserve">
     <value>خطأ في المصادقة</value>
@@ -1503,5 +1485,17 @@
   </data>
   <data name="Plan_Type_Other" xml:space="preserve">
     <value>أخرى</value>
+  </data>
+  <data name="Nav_SignIn" xml:space="preserve">
+    <value>تسجيل الدخول</value>
+  </data>
+  <data name="Nav_SignOut" xml:space="preserve">
+    <value>تسجيل الخروج</value>
+  </data>
+  <data name="Action_Show" xml:space="preserve">
+    <value>إظهار</value>
+  </data>
+  <data name="Action_Hide" xml:space="preserve">
+    <value>إخفاء</value>
   </data>
 </root>

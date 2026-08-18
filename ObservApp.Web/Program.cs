@@ -23,6 +23,7 @@ builder.Services.AddSyncfusionBlazor();
 builder.Services.AddLocalization();
 builder.Services.AddScoped<ILocalizationService, SsrLocalizationService>();
 builder.Services.AddScoped<ISettingsService, SsrSettingsService>();
+builder.Services.AddScoped<INavigationHistoryService, NavigationHistoryService>();
 builder.Services.AddScoped<IAppLifecycleService, WebAppLifecycleService>();
 builder.Services.AddScoped<IGeolocationService, SsrGeolocationService>();
 builder.Services.AddScoped<IFavoriteLocationsService, SsrFavoriteLocationsService>();

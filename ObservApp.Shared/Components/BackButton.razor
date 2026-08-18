@@ -1,0 +1,46 @@
+@using Microsoft.AspNetCore.Components
+@using ObservApp.Shared.Services
+@inject NavigationManager NavManager
+@inject INavigationHistoryService HistoryService
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+
+@* Botón de volver que navega a la página anterior en el historial *@
+<a class="back-button-default @CssClass" @onclick="GoBack" role="button" tabindex="0" aria-label="@L[@Text]">← @L[@Text]</a>
+
+@code {
+    [Parameter]
+    public string Text { get; set; } = "Action_Back";
+
+    [Parameter]
+    public string CssClass { get; set; } = "";
+
+    [Parameter]
+    public string DefaultUrl { get; set; } = "/";
+
+    private void GoBack()
+    {
+        var previousUrl = HistoryService.PopUrl(DefaultUrl);
+        NavManager.NavigateTo(previousUrl);
+    }
+}
+
+<style>
+    .back-button-default {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--obs-aurora);
+        text-decoration: none;
+        margin-bottom: 16px;
+        opacity: .8;
+        transition: opacity var(--transition), transform var(--transition);
+        cursor: pointer;
+    }
+
+    .back-button-default:hover {
+        opacity: 1;
+        transform: translateX(-3px);
+    }
+</style>

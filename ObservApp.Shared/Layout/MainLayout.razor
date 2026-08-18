@@ -1,6 +1,7 @@
 @inherits LayoutComponentBase
 @using Syncfusion.Blazor.Navigations
 @using Microsoft.Extensions.Localization
+@using ObservApp.Shared.Services
 @inject NavigationManager NavManager
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
 @inject ILocalizationService Localization
@@ -8,6 +9,7 @@
 @inject IAuthService AuthService
 @inject AppState AppState
 @inject IJSRuntime JS
+@inject INavigationHistoryService HistoryService
 @implements IDisposable
 
 <!-- AppBar -->
@@ -140,6 +142,10 @@
         Localization.OnLanguageChanged += OnLanguageChanged;
         AppState.OnAuthChanged += OnAppStateChanged;
         AuthService.OnAuthStateChanged += OnAuthStateChanged;
+
+        // Registrar la URL actual en el historial de navegación
+        var currentUri = new Uri(NavManager.Uri);
+        HistoryService.PushUrl(currentUri.PathAndQuery);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -172,6 +178,11 @@
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         _sidebarOpen = false;
+
+        // Registrar la nueva URL en el historial de navegación
+        var uri = new Uri(e.Location);
+        HistoryService.PushUrl(uri.PathAndQuery);
+
         InvokeAsync(StateHasChanged);
     }
 

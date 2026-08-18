@@ -12,9 +12,11 @@ public class WebLocalizationService : ILocalizationService
             new("es", "Español",  "🇪🇸"),
             new("en", "English",  "🇬🇧"),
             new("fr", "Français", "🇫🇷"),
+            new("pt", "Português", "🇵🇹"),
             new("de", "Deutsch",  "🇩🇪"),
             new("it", "Italiano", "🇮🇹"),
             new("ar", "العربية",  "🇸🇦"),
+            new("ru", "Русский",  "🇷🇺"),
         };
 
     private readonly IJSRuntime _js;
