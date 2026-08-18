@@ -22,11 +22,26 @@ CREATE INDEX IF NOT EXISTS idx_observation_sessions_date ON public.observation_s
 -- 3. Row Level Security
 ALTER TABLE public.observation_sessions ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Users see own sessions" ON public.observation_sessions FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "Users can insert own sessions" ON public.observation_sessions FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can update own sessions" ON public.observation_sessions FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can delete own sessions" ON public.observation_sessions FOR DELETE USING (auth.uid() = user_id);
+-- Eliminar políticas previas si existen antes de crearlas
+DROP POLICY IF EXISTS "Users see own sessions" ON public.observation_sessions;
+DROP POLICY IF EXISTS "Users can insert own sessions" ON public.observation_sessions;
+DROP POLICY IF EXISTS "Users can update own sessions" ON public.observation_sessions;
+DROP POLICY IF EXISTS "Users can delete own sessions" ON public.observation_sessions;
 
--- 4. Permisos de tabla
-GRANT ALL ON TABLE public.observation_sessions TO authenticated;
-GRANT ALL ON TABLE public.observation_sessions TO service_role;
+-- Crear políticas
+CREATE POLICY "Users see own sessions" 
+  ON public.observation_sessions FOR SELECT 
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own sessions" 
+  ON public.observation_sessions FOR INSERT 
+  WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own sessions" 
+  ON public.observation_sessions FOR UPDATE 
+  USING (auth.uid() = user_id) 
+  WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete own sessions" 
+  ON public.observation_sessions FOR DELETE 
+  USING (auth.uid() = user_id);
