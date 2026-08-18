@@ -53,6 +53,7 @@ public class ObservationSession : BaseModel
 	public TransparencyCondition Transparency { get; set; } = TransparencyCondition.Average;
 
 	/// <summary>Objetos observados durante la sesión.</summary>
+	[Column("targets")]
 	public List<ObservationTarget> Targets { get; set; } = new();
 
 	/// <summary>Fecha de creación (timestamp en servidor).</summary>
