@@ -175,7 +175,7 @@
     <value>Passwort bestätigen</value>
   </data>
   <data name="Auth_DisplayName" xml:space="preserve">
-    <value>Benutzername</value>
+    <value>Anzeigename</value>
   </data>
   <data name="Auth_NoAccount" xml:space="preserve">
     <value>Noch kein Konto? Registrieren</value>
@@ -205,7 +205,7 @@
     <value>Passwörter stimmen nicht überein</value>
   </data>
   <data name="Auth_SigningIn" xml:space="preserve">
-    <value>Anmeldung läuft…</value>
+    <value>Wird angemeldet...</value>
   </data>
   <data name="Auth_CreatingAccount" xml:space="preserve">
     <value>Konto wird erstellt…</value>
@@ -1270,26 +1270,8 @@
   <data name="Eph_DSO_Count" xml:space="preserve">
     <value>sichtbare Objekte</value>
   </data>
-  <data name="Auth_SignIn" xml:space="preserve">
-    <value>Anmelden</value>
-  </data>
-  <data name="Auth_SignUp" xml:space="preserve">
-    <value>Registrieren</value>
-  </data>
   <data name="Auth_SignOut" xml:space="preserve">
     <value>Abmelden</value>
-  </data>
-  <data name="Auth_Email" xml:space="preserve">
-    <value>E-Mail</value>
-  </data>
-  <data name="Auth_Password" xml:space="preserve">
-    <value>Passwort</value>
-  </data>
-  <data name="Auth_DisplayName" xml:space="preserve">
-    <value>Anzeigename</value>
-  </data>
-  <data name="Auth_SigningIn" xml:space="preserve">
-    <value>Wird angemeldet...</value>
   </data>
   <data name="Auth_Error" xml:space="preserve">
     <value>Authentifizierungsfehler</value>
@@ -1503,5 +1485,17 @@
   </data>
   <data name="Plan_Type_Other" xml:space="preserve">
     <value>Andere</value>
+  </data>
+  <data name="Nav_SignIn" xml:space="preserve">
+    <value>Einloggen</value>
+  </data>
+  <data name="Nav_SignOut" xml:space="preserve">
+    <value>Ausloggen</value>
+  </data>
+  <data name="Action_Show" xml:space="preserve">
+    <value>Einblenden</value>
+  </data>
+  <data name="Action_Hide" xml:space="preserve">
+    <value>Ausblenden </value>
   </data>
 </root>

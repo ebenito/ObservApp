@@ -59,6 +59,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<ILocalizationService>(
             sp => sp.GetRequiredService<LocalizationService>());
         builder.Services.AddSingleton<ISettingsService, MauiSettingsService>();
+        builder.Services.AddSingleton<INavigationHistoryService, NavigationHistoryService>();
         builder.Services.AddSingleton<IAppLifecycleService, MauiAppLifecycleService>();
         builder.Services.AddSingleton<AppState>();
 

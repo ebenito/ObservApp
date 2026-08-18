@@ -10,9 +10,11 @@ public class SsrLocalizationService : ILocalizationService
         new("es", "Español",  "🇪🇸"),
         new("en", "English",  "🇬🇧"),
         new("fr", "Français", "🇫🇷"),
+        new("pt", "Português", "🇵🇹"),
         new("de", "Deutsch",  "🇩🇪"),
         new("it", "Italiano", "🇮🇹"),
         new("ar", "العربية",  "🇸🇦"),
+        new("ru", "Русский",  "🇷🇺"),
     ];
 
     public IReadOnlyList<LanguageOption> SupportedLanguages => _supportedLanguages;
