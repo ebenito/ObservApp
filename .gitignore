@@ -362,5 +362,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /ObservApp/appsettings.Local.json
+/ObservApp.Web/appsettings.Local.json
+/ObservApp.Web.Client/appsettings.Local.json
 /Documentacion/Claude
 /ObservApp/Tools/gphoto2/estructura_gphoto2.txt
+/ObservApp.Web.Client/wwwroot/appsettings.Local.json
