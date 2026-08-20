@@ -1,17 +1,16 @@
 namespace ObservApp.Shared.Services;
 
 using ObservApp.Shared.Models;
-using SupabaseClient = Supabase.Client;
-using Supabase.Gotrue;
+using Supabase;
 
 /// <summary>
-/// Implementación de autenticación y persistencia usando Supabase.
-/// Implementa IAuthService e IObservationService.
-/// Se registra como singleton y se inyecta como dos interfaces.
+/// Implementación de persistencia de sesiones de observación usando Supabase.
 /// </summary>
-public class SupabaseService : IAuthService, IObservationService
+public class SupabaseService : IObservationService
 {
-	private readonly SupabaseClient _supabase;
+	private readonly Client _supabase;
+	private readonly SemaphoreSlim _initializeLock = new(1, 1);
+	private bool _initialized;
 	private string? _lastError;
 
 	public string? LastError
@@ -20,154 +19,18 @@ public class SupabaseService : IAuthService, IObservationService
 		private set => _lastError = value;
 	}
 
-	public event Action<UserProfile?>? OnAuthStateChanged;
-
-	/// <summary>
-	/// Constructor. Inicializa el cliente Supabase con URL y clave anónima.
-	/// </summary>
-	public SupabaseService(string supabaseUrl, string supabaseAnonKey)
+	public SupabaseService(Client supabase)
 	{
-		_supabase = new SupabaseClient(supabaseUrl, supabaseAnonKey);
+		_supabase = supabase;
 	}
-
-	/// <summary>
-	/// Inicializa el cliente Supabase de forma asincrónica.
-	/// Debe llamarse desde Program.cs antes de usar los servicios.
-	/// </summary>
-	public async Task InitializeAsync()
-	{
-		try
-		{
-			await _supabase.InitializeAsync();
-		}
-		catch (Exception ex)
-		{
-			LastError = $"Error al inicializar Supabase: {ex.Message}";
-			throw;
-		}
-	}
-
-	#region IAuthService Implementation
-
-	public async Task<AuthResult> SignInWithEmailAsync(string email, string password)
-	{
-		try
-		{
-			LastError = null;
-			var session = await _supabase.Auth.SignInWithPassword(email, password);
-
-			if (session?.User == null)
-				return new AuthResult(false, "No se obtuvo usuario de Supabase", null);
-
-			var userProfile = new UserProfile(
-				session.User.Id,
-				session.User.Email ?? email,
-				session.User.UserMetadata?.ContainsKey("display_name") == true
-					? session.User.UserMetadata["display_name"]?.ToString()
-					: null
-			);
-
-			OnAuthStateChanged?.Invoke(userProfile);
-			return new AuthResult(true, null, userProfile);
-		}
-		catch (Exception ex)
-		{
-			LastError = ex.Message;
-			return new AuthResult(false, ex.Message, null);
-		}
-	}
-
-	public async Task<AuthResult> SignUpWithEmailAsync(string email, string password, string displayName)
-	{
-		try
-		{
-			LastError = null;
-			var session = await _supabase.Auth.SignUp(email, password, new SignUpOptions
-			{
-				Data = new Dictionary<string, object> { { "display_name", displayName } }
-			});
-
-			if (session?.User == null)
-				return new AuthResult(false, "No se obtuvo usuario de Supabase", null);
-
-			var userProfile = new UserProfile(
-				session.User.Id,
-				session.User.Email ?? email,
-				displayName
-			);
-
-			OnAuthStateChanged?.Invoke(userProfile);
-			return new AuthResult(true, null, userProfile);
-		}
-		catch (Exception ex)
-		{
-			LastError = ex.Message;
-			return new AuthResult(false, ex.Message, null);
-		}
-	}
-
-	public async Task SignOutAsync()
-	{
-		try
-		{
-			LastError = null;
-			await _supabase.Auth.SignOut();
-			OnAuthStateChanged?.Invoke(null);
-		}
-		catch (Exception ex)
-		{
-			LastError = ex.Message;
-			throw;
-		}
-	}
-
-	public async Task<UserProfile?> GetCurrentUserAsync()
-	{
-		try
-		{
-			LastError = null;
-			var user = _supabase.Auth.CurrentUser;
-			if (user == null)
-				return null;
-
-			return new UserProfile(
-				user.Id,
-				user.Email ?? string.Empty,
-				user.UserMetadata?.ContainsKey("display_name") == true
-					? user.UserMetadata["display_name"]?.ToString()
-					: null
-			);
-		}
-		catch (Exception ex)
-		{
-			LastError = ex.Message;
-			return null;
-		}
-	}
-
-	public async Task<bool> IsAuthenticatedAsync()
-	{
-		try
-		{
-			LastError = null;
-			return _supabase.Auth.CurrentUser != null;
-		}
-		catch (Exception ex)
-		{
-			LastError = ex.Message;
-			return false;
-		}
-	}
-
-	#endregion
-
-	#region IObservationService Implementation
 
 	public async Task<List<ObservationSession>> GetAllAsync(CancellationToken cancellationToken = default)
 	{
 		try
 		{
 			LastError = null;
+			await EnsureInitializedAsync();
+
 			var userId = _supabase.Auth.CurrentUser?.Id;
 			if (string.IsNullOrEmpty(userId))
 			{
@@ -178,7 +41,7 @@ public class SupabaseService : IAuthService, IObservationService
 			var result = await _supabase
 				.From<ObservationSession>()
 				.Where(o => o.UserId == userId)
-				.Get();
+				.Get(cancellationToken: cancellationToken);
 
 			return result?.Models ?? new List<ObservationSession>();
 		}
@@ -194,6 +57,8 @@ public class SupabaseService : IAuthService, IObservationService
 		try
 		{
 			LastError = null;
+			await EnsureInitializedAsync();
+
 			var userId = _supabase.Auth.CurrentUser?.Id;
 			if (string.IsNullOrEmpty(userId))
 			{
@@ -220,6 +85,8 @@ public class SupabaseService : IAuthService, IObservationService
 		try
 		{
 			LastError = null;
+			await EnsureInitializedAsync();
+
 			var userId = _supabase.Auth.CurrentUser?.Id;
 			if (string.IsNullOrEmpty(userId))
 			{
@@ -230,7 +97,9 @@ public class SupabaseService : IAuthService, IObservationService
 			session.UserId = userId;
 
 			if (session.Id == Guid.Empty)
+			{
 				session.Id = Guid.NewGuid();
+			}
 
 			var existing = await _supabase
 				.From<ObservationSession>()
@@ -265,6 +134,8 @@ public class SupabaseService : IAuthService, IObservationService
 		try
 		{
 			LastError = null;
+			await EnsureInitializedAsync();
+
 			var userId = _supabase.Auth.CurrentUser?.Id;
 			if (string.IsNullOrEmpty(userId))
 			{
@@ -286,5 +157,27 @@ public class SupabaseService : IAuthService, IObservationService
 		}
 	}
 
-	#endregion
+	private async Task EnsureInitializedAsync()
+	{
+		if (_initialized)
+		{
+			return;
+		}
+
+		await _initializeLock.WaitAsync();
+		try
+		{
+			if (_initialized)
+			{
+				return;
+			}
+
+			await _supabase.InitializeAsync();
+			_initialized = true;
+		}
+		finally
+		{
+			_initializeLock.Release();
+		}
+	}
 }

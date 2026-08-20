@@ -2,6 +2,7 @@
 @using Syncfusion.Blazor.Navigations
 @using Microsoft.Extensions.Localization
 @using ObservApp.Shared.Services
+@using Supabase.Gotrue
 @inject NavigationManager NavManager
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
 @inject ILocalizationService Localization
@@ -136,12 +137,19 @@
     private SfSidebar _sidebar = default!;
     private bool _sidebarOpen = false;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         NavManager.LocationChanged += OnLocationChanged;
         Localization.OnLanguageChanged += OnLanguageChanged;
         AppState.OnAuthChanged += OnAppStateChanged;
         AuthService.OnAuthStateChanged += OnAuthStateChanged;
+
+        if (!AuthService.IsAuthenticated)
+        {
+            await AuthService.TryRestoreSessionAsync();
+        }
+
+        AppState.CurrentUser = AuthService.CurrentUser;
 
         // Registrar la URL actual en el historial de navegación
         var currentUri = new Uri(NavManager.Uri);
@@ -162,9 +170,9 @@
 
     private void OnAppStateChanged() => InvokeAsync(StateHasChanged);
 
-    private void OnAuthStateChanged(UserProfile? userProfile)
+    private void OnAuthStateChanged(User? user)
     {
-        AppState.CurrentUser = userProfile;
+        AppState.CurrentUser = user;
         _ = InvokeAsync(StateHasChanged);
     }
 
@@ -214,7 +222,7 @@
     private async Task SignOutAsync()
     {
         await CloseSidebarAsync();
-        await AuthService.SignOutAsync();
+        await AuthService.LogoutAsync();
         AppState.CurrentUser = null;
         NavManager.NavigateTo("/login");
     }

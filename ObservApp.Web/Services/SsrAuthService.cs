@@ -1,39 +1,43 @@
 namespace ObservApp.Web.Services;
 
 using ObservApp.Shared.Services;
+using Supabase.Gotrue;
 
 /// <summary>
 /// Implementación stub de IAuthService para ASP.NET Core SSR.
-/// No realiza operaciones reales de autenticación.
-/// IsAuthenticatedAsync siempre devuelve false.
-/// GetCurrentUserAsync siempre devuelve null.
 /// </summary>
 public class SsrAuthService : IAuthService
 {
-	public event Action<UserProfile?>? OnAuthStateChanged;
+	public string? LastError { get; private set; }
 
-	public Task<AuthResult> SignInWithEmailAsync(string email, string password)
+	public User? CurrentUser => null;
+
+	public bool IsAuthenticated => false;
+
+	public event Action<User?>? OnAuthStateChanged;
+
+	public Task<bool> SignUpAsync(string email, string password)
 	{
-		return Task.FromResult(new AuthResult(false, "SSR: Autenticación no disponible", null));
+		LastError = "SSR: Registro no disponible";
+		return Task.FromResult(false);
 	}
 
-	public Task<AuthResult> SignUpWithEmailAsync(string email, string password, string displayName)
+	public Task<bool> LoginAsync(string email, string password)
 	{
-		return Task.FromResult(new AuthResult(false, "SSR: Registro no disponible", null));
+		LastError = "SSR: Autenticación no disponible";
+		return Task.FromResult(false);
 	}
 
-	public Task SignOutAsync()
+	public Task LogoutAsync()
 	{
+		LastError = null;
+		OnAuthStateChanged?.Invoke(null);
 		return Task.CompletedTask;
 	}
 
-	public Task<UserProfile?> GetCurrentUserAsync()
+	public Task<bool> TryRestoreSessionAsync()
 	{
-		return Task.FromResult<UserProfile?>(null);
-	}
-
-	public Task<bool> IsAuthenticatedAsync()
-	{
+		LastError = null;
 		return Task.FromResult(false);
 	}
 }

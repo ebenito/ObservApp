@@ -7,6 +7,7 @@ using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
 using ObservApp.Shared.ViewModels;
 using ObservApp.Web.Client.Services;
+using Supabase;
 using Syncfusion.Blazor;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -103,10 +104,21 @@ if (!string.IsNullOrEmpty(supabaseUrl) && !Uri.TryCreate(supabaseUrl, UriKind.Ab
     Console.WriteLine($"[Startup][ERROR] SupabaseUrl no es una URL válida: '{supabaseUrl}'");
 }
 
-builder.Services.AddSingleton<SupabaseService>(sp =>
-    new SupabaseService(supabaseUrl, supabaseKey));
-builder.Services.AddSingleton<IAuthService>(
-    sp => sp.GetRequiredService<SupabaseService>());
+builder.Services.AddSingleton(sp =>
+{
+    var options = new SupabaseOptions
+    {
+        AutoRefreshToken = true,
+        AutoConnectRealtime = true,
+        SessionHandler = new DefaultSupabaseSessionHandler()
+    };
+
+    return new Supabase.Client(supabaseUrl, supabaseKey, options);
+});
+
+builder.Services.AddSingleton<IAuthSessionStore, InMemoryAuthSessionStore>();
+builder.Services.AddSingleton<IAuthService, AuthService>();
+builder.Services.AddSingleton<SupabaseService>();
 builder.Services.AddSingleton<IObservationService>(
     sp => sp.GetRequiredService<SupabaseService>());
 builder.Services.AddTransient<AuthViewModel>();
