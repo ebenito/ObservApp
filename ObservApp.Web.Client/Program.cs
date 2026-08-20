@@ -11,6 +11,42 @@ using Syncfusion.Blazor;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
+using var startupConfigHttp = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
+// Intentar primero el endpoint del host, luego el fichero estático local.
+await LoadOptionalConfigurationAsync("api/client-config");
+await LoadOptionalConfigurationAsync("appsettings.Local.json");
+
+async Task LoadOptionalConfigurationAsync(string relativeUrl)
+{
+    try
+    {
+        // Obtener como string para poder registrarlo en consola y depurar diferencias
+        var json = await startupConfigHttp.GetStringAsync(relativeUrl);
+        try
+        {
+            Console.WriteLine($"[ConfigLoad] {relativeUrl} -> {json}");
+        }
+        catch { }
+
+        // Convertir a stream limpio y añadir a la configuración
+        var bytes = System.Text.Encoding.UTF8.GetBytes(json);
+        await using var ms = new System.IO.MemoryStream(bytes);
+        builder.Configuration.AddJsonStream(ms);
+    }
+    catch (System.Net.Http.HttpRequestException hre)
+    {
+        try { Console.WriteLine($"[ConfigLoad][HTTP] {relativeUrl} no disponible: {hre.Message}"); } catch { }
+    }
+    catch (System.Text.Json.JsonException je)
+    {
+        try { Console.WriteLine($"[ConfigLoad][JSON] Error parseando {relativeUrl}: {je.Message}"); } catch { }
+    }
+    catch (Exception ex)
+    {
+        try { Console.WriteLine($"[ConfigLoad][ERR] al cargar {relativeUrl}: {ex.Message}"); } catch { }
+    }
+}
+
 #if STANDALONE_WASM
 // Solo activo en el build standalone para Azure Static Web Apps.
 // En modo hosted (local + MAUI) el servidor registra los root components
@@ -47,8 +83,26 @@ builder.Services.AddSingleton<IEclipseAudioService, WebEclipseAudioService>();
 builder.Services.AddSingleton<AppState>();
 
 // ── Autenticación y persistencia con Supabase ────────────────────────────────
-var supabaseUrl = builder.Configuration["SupabaseUrl"] ?? "";
-var supabaseKey = builder.Configuration["SupabaseAnonKey"] ?? "";
+var supabaseUrl = (builder.Configuration["SupabaseUrl"] ?? string.Empty).Trim();
+var supabaseKey = (builder.Configuration["SupabaseAnonKey"] ?? string.Empty).Trim();
+
+// Registro de diagnóstico mínimo para identificar valores cargados en el cliente
+try
+{
+    Console.WriteLine($"[Startup] SupabaseUrl='{supabaseUrl}'");
+    Console.WriteLine($"[Startup] SupabaseAnonKey present={(string.IsNullOrEmpty(supabaseKey) ? "false" : "true")}");
+}
+catch
+{
+    // Ignorar si la plataforma no soporta Console.WriteLine en este contexto
+}
+
+// Validar la URL para detectar problemas de formato que causen net_uri_BadHostName
+if (!string.IsNullOrEmpty(supabaseUrl) && !Uri.TryCreate(supabaseUrl, UriKind.Absolute, out var _))
+{
+    Console.WriteLine($"[Startup][ERROR] SupabaseUrl no es una URL válida: '{supabaseUrl}'");
+}
+
 builder.Services.AddSingleton<SupabaseService>(sp =>
     new SupabaseService(supabaseUrl, supabaseKey));
 builder.Services.AddSingleton<IAuthService>(

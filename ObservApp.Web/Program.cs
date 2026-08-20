@@ -7,6 +7,7 @@ using ObservApp.Web.Services;
 using Syncfusion.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
 
 var syncfusionKey =
     builder.Configuration["SYNCFUSION_LICENSE_KEY"] ??
@@ -60,6 +61,12 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 app.UseCors("RssProxy");
+
+app.MapGet("/api/client-config", (IConfiguration configuration) => Results.Json(new
+{
+    SupabaseUrl = (configuration["SupabaseUrl"] ?? string.Empty).Trim(),
+    SupabaseAnonKey = (configuration["SupabaseAnonKey"] ?? string.Empty).Trim()
+}));
 
 app.MapGet("/api/rss-proxy", async (string url, HttpClient http) =>
 {
