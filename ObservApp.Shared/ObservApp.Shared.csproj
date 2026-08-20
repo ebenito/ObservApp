@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>ObservApp</RootNamespace>
     <UserSecretsId>350fa6d5-6ac7-4a95-9403-9a763b027e68</UserSecretsId>
+    <!-- Version se genera automáticamente por GitVersion en Directory.Build.props -->
   </PropertyGroup>
 
   <ItemGroup>

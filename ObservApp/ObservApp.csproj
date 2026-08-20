@@ -14,7 +14,8 @@
 
         <ApplicationTitle>ObservApp</ApplicationTitle>
         <ApplicationId>com.observapp.app</ApplicationId>
-        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+        <!-- ApplicationDisplayVersion se usa para versión visible en Android/Windows -->
+        <!-- Se genera automáticamente por GitVersion en Directory.Build.props -->
         <ApplicationVersion>1</ApplicationVersion>
 
         <WindowsPackageType>MSIX</WindowsPackageType>

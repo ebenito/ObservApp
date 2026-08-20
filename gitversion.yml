@@ -1,0 +1,31 @@
+configuration:
+  # Estrategia: versión semántica con números de commits
+  # Ejemplo: v1.3.2 (main) -> 1.3.3-rc.1+5 (develop)
+  assembly-versioning-scheme: MajorMinorPatchTag
+  assembly-file-versioning-scheme: MajorMinorPatchTag
+  mode: Mainline
+  increment: Patch
+
+  # Tags Git que cumplen con semantic versioning
+  tag-prefix: v
+
+  # No reiniciar versión en develop
+  prevent-increment-of-merged-branch-version: false
+
+  # Configurar rama develop
+  branches:
+    develop:
+      mode: ContinuousDeployment
+      increment: Minor
+      regex: ^develop$
+      source-branches:
+        - main
+    main:
+      mode: Mainline
+      increment: Patch
+      regex: ^main$|^master$
+
+  # Ignorar branches de merge
+  ignore:
+    sha: []
+    commits-before-start: []

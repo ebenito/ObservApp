@@ -1498,4 +1498,31 @@
   <data name="Action_Hide" xml:space="preserve">
     <value>Masquer</value>
   </data>
+  <data name="Auth_Otp_Title" xml:space="preserve">
+    <value>Vérifiez votre e-mail</value>
+  </data>
+  <data name="Auth_Otp_Subtitle" xml:space="preserve">
+    <value>Confirmation du code</value>
+  </data>
+  <data name="Auth_Otp_Description_Prefix" xml:space="preserve">
+    <value>Nous avons envoyé un code à 8 chiffres à</value>
+  </data>
+  <data name="Auth_Otp_Description_Suffix" xml:space="preserve">
+    <value>Vérifiez votre boîte de réception et saisissez-le ci-dessous.</value>
+  </data>
+  <data name="Auth_Otp_Code_Label" xml:space="preserve">
+    <value>Code à 8 chiffres</value>
+  </data>
+  <data name="Auth_Otp_Confirm" xml:space="preserve">
+    <value>Confirmer et entrer</value>
+  </data>
+  <data name="Auth_Otp_Verifying" xml:space="preserve">
+    <value>Vérification du code…</value>
+  </data>
+  <data name="Auth_Otp_Error" xml:space="preserve">
+    <value>Le code est incorrect ou expiré.</value>
+  </data>
+  <data name="Auth_Otp_EmailMissing" xml:space="preserve">
+    <value>Aucun e-mail à vérifier n’a été reçu. Retournez à l’inscription.</value>
+  </data>
 </root>

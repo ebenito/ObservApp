@@ -1,6 +1,8 @@
 ﻿@page "/about"
 @using System.Reflection
+@using ObservApp.Shared.Services
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+@inject IVersionService VersionService
 
 <PageTitle>@L["AppName"] · @L["Nav_About"]</PageTitle>
 
@@ -17,7 +19,7 @@
             <span class="info-icon">📦</span>
             <div>
                 <span class="info-label">Versión:</span>
-                <span class="info-value">@VersionNumber</span>
+                <span class="info-value">@VersionService.GetFullVersion()</span>
             </div>
         </div>
 
@@ -301,5 +303,4 @@
 </style>
 
 @code {
-    private string VersionNumber => $"v{Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "1.0.0"}";
 }

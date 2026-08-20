@@ -159,17 +159,62 @@
   <data name="Nav_Exit" xml:space="preserve">
     <value>Exit</value>
   </data>
-  <data name="Nav_SignIn" xml:space="preserve">
-    <value>Sign in</value>
+  <data name="Auth_SignIn" xml:space="preserve">
+    <value>Sign In</value>
   </data>
-  <data name="Nav_SignOut" xml:space="preserve">
-    <value>Sign out</value>
+  <data name="Auth_SignUp" xml:space="preserve">
+    <value>Sign Up</value>
   </data>
-  <data name="Action_Show" xml:space="preserve">
-    <value>Show</value>
+  <data name="Auth_Email" xml:space="preserve">
+    <value>Email</value>
   </data>
-  <data name="Action_Hide" xml:space="preserve">
-    <value>Hide</value>
+  <data name="Auth_Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Auth_ConfirmPassword" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="Auth_DisplayName" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
+  <data name="Auth_NoAccount" xml:space="preserve">
+    <value>Don't have an account? Sign up</value>
+  </data>
+  <data name="Auth_SignIn_Error" xml:space="preserve">
+    <value>Sign in error</value>
+  </data>
+  <data name="Auth_SignUp_Error" xml:space="preserve">
+    <value>Sign up error</value>
+  </data>
+  <data name="Auth_DisplayName_Required" xml:space="preserve">
+    <value>Display name is required</value>
+  </data>
+  <data name="Auth_SignOut_Error" xml:space="preserve">
+    <value>Sign out error: {0}</value>
+  </data>
+  <data name="Error_Unexpected" xml:space="preserve">
+    <value>Unexpected error: {0}</value>
+  </data>
+  <data name="Auth_HasAccount" xml:space="preserve">
+    <value>Already have an account? Sign in</value>
+  </data>
+  <data name="Auth_ForgotPassword" xml:space="preserve">
+    <value>Forgot your password?</value>
+  </data>
+  <data name="Auth_PasswordMismatch" xml:space="preserve">
+    <value>Passwords do not match</value>
+  </data>
+  <data name="Auth_SigningIn" xml:space="preserve">
+    <value>Signing in...</value>
+  </data>
+  <data name="Auth_CreatingAccount" xml:space="preserve">
+    <value>Creating account…</value>
+  </data>
+  <data name="Auth_WelcomeBack" xml:space="preserve">
+    <value>Welcome back</value>
+  </data>
+  <data name="Auth_CreateAccount" xml:space="preserve">
+    <value>Create account</value>
   </data>
   <data name="Nav_Section_Main" xml:space="preserve">
     <value>Main</value>
@@ -1225,68 +1270,11 @@
   <data name="Eph_DSO_Count" xml:space="preserve">
     <value>visible objects</value>
   </data>
-  <data name="Auth_SignIn" xml:space="preserve">
-    <value>Sign In</value>
-  </data>
-  <data name="Auth_SignUp" xml:space="preserve">
-    <value>Sign Up</value>
-  </data>
   <data name="Auth_SignOut" xml:space="preserve">
     <value>Sign Out</value>
   </data>
-  <data name="Auth_Email" xml:space="preserve">
-    <value>Email</value>
-  </data>
-  <data name="Auth_Password" xml:space="preserve">
-    <value>Password</value>
-  </data>
-  <data name="Auth_DisplayName" xml:space="preserve">
-    <value>Display Name</value>
-  </data>
-  <data name="Auth_SigningIn" xml:space="preserve">
-    <value>Signing in...</value>
-  </data>
   <data name="Auth_Error" xml:space="preserve">
     <value>Authentication error</value>
-  </data>
-  <data name="Auth_WelcomeBack" xml:space="preserve">
-    <value>Welcome back</value>
-  </data>
-  <data name="Auth_ForgotPassword" xml:space="preserve">
-    <value>Forgot your password?</value>
-  </data>
-  <data name="Auth_CreateAccount" xml:space="preserve">
-    <value>Create account</value>
-  </data>
-  <data name="Auth_CreatingAccount" xml:space="preserve">
-    <value>Creating account…</value>
-  </data>
-  <data name="Auth_ConfirmPassword" xml:space="preserve">
-    <value>Confirm password</value>
-  </data>
-  <data name="Auth_PasswordMismatch" xml:space="preserve">
-    <value>Passwords do not match</value>
-  </data>
-  <data name="Auth_HasAccount" xml:space="preserve">
-    <value>Already have an account? Sign in</value>
-  </data>
-  <data name="Auth_NoAccount" xml:space="preserve">
-    <value>Don't have an account? Sign up</value>
-  </data>
-  <data name="Auth_SignIn_Error" xml:space="preserve">
-    <value>Sign in error</value>
-  </data>
-  <data name="Auth_SignUp_Error" xml:space="preserve">
-    <value>Sign up error</value>
-  </data>
-  <data name="Auth_DisplayName_Required" xml:space="preserve">
-    <value>Display name is required</value>
-  </data>
-  <data name="Auth_SignOut_Error" xml:space="preserve">
-    <value>Sign out error: {0}</value>
-  </data>
-  <data name="Error_Unexpected" xml:space="preserve">
-    <value>Unexpected error: {0}</value>
   </data>
   <data name="Obs_Sessions" xml:space="preserve">
     <value>Observation Sessions</value>
@@ -1497,5 +1485,44 @@
   </data>
   <data name="Plan_Type_Other" xml:space="preserve">
     <value>Other</value>
+  </data>
+  <data name="Nav_SignIn" xml:space="preserve">
+    <value>Sign in</value>
+  </data>
+  <data name="Nav_SignOut" xml:space="preserve">
+    <value>Sign out</value>
+  </data>
+  <data name="Action_Show" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="Action_Hide" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="Auth_Otp_Title" xml:space="preserve">
+    <value>Verify your email</value>
+  </data>
+  <data name="Auth_Otp_Subtitle" xml:space="preserve">
+    <value>Code confirmation</value>
+  </data>
+  <data name="Auth_Otp_Description_Prefix" xml:space="preserve">
+    <value>We sent a 8-digit code to</value>
+  </data>
+  <data name="Auth_Otp_Description_Suffix" xml:space="preserve">
+    <value>Check your inbox and enter it below.</value>
+  </data>
+  <data name="Auth_Otp_Code_Label" xml:space="preserve">
+    <value>8-digit code</value>
+  </data>
+  <data name="Auth_Otp_Confirm" xml:space="preserve">
+    <value>Confirm and Sign In</value>
+  </data>
+  <data name="Auth_Otp_Verifying" xml:space="preserve">
+    <value>Verifying code…</value>
+  </data>
+  <data name="Auth_Otp_Error" xml:space="preserve">
+    <value>The code is invalid or has expired.</value>
+  </data>
+  <data name="Auth_Otp_EmailMissing" xml:space="preserve">
+    <value>No email was provided for verification. Return to sign up.</value>
   </data>
 </root>

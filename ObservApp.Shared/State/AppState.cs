@@ -1,13 +1,13 @@
 namespace ObservApp.Shared.State;
 
-using ObservApp.Shared.Services;
+using Supabase.Gotrue;
 
 public class AppState
 {
     private string _theme = "dark";
     private bool _isAuthenticated;
     private string _userDisplayName = string.Empty;
-    private UserProfile? _currentUser;
+    private User? _currentUser;
 
     /// <summary>
     /// Evento genérico disparado en cualquier cambio de estado.
@@ -65,21 +65,40 @@ public class AppState
     }
 
     /// <summary>
-    /// Perfil del usuario autenticado.
+    /// Usuario autenticado de Supabase.
     /// Al asignarse, actualiza automáticamente IsAuthenticated y UserDisplayName.
     /// </summary>
-    public UserProfile? CurrentUser
+    public User? CurrentUser
     {
         get => _currentUser;
         set
         {
             _currentUser = value;
             _isAuthenticated = value != null;
-            _userDisplayName = value?.DisplayName ?? string.Empty;
+            _userDisplayName = ResolveDisplayName(value);
             OnAuthChanged?.Invoke();
 #pragma warning disable CS0618
             OnStateChanged?.Invoke();
 #pragma warning restore CS0618
         }
+    }
+
+    private static string ResolveDisplayName(User? user)
+    {
+        if (user is null)
+        {
+            return string.Empty;
+        }
+
+        if (user.UserMetadata?.TryGetValue("display_name", out var displayName) == true)
+        {
+            var value = displayName?.ToString();
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                return value;
+            }
+        }
+
+        return user.Email ?? string.Empty;
     }
 }

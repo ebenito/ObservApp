@@ -1,48 +1,54 @@
 namespace ObservApp.Shared.Services;
 
-/// <summary>
-/// Resultado de una operación de autenticación.
-/// </summary>
-public record AuthResult(bool Success, string? ErrorMessage, UserProfile? User);
+using Supabase.Gotrue;
 
 /// <summary>
-/// Perfil de usuario autenticado.
-/// </summary>
-public record UserProfile(string Id, string Email, string? DisplayName);
-
-/// <summary>
-/// Interfaz para servicios de autenticación.
-/// Implementaciones: SupabaseService (MAUI/Web.Client), SsrAuthService (Web SSR).
+/// Interfaz para autenticación directa contra Supabase Auth.
 /// </summary>
 public interface IAuthService
 {
 	/// <summary>
+	/// Último error de autenticación normalizado para UI.
+	/// </summary>
+	string? LastError { get; }
+
+	/// <summary>
+	/// Usuario autenticado en la sesión actual.
+	/// </summary>
+	User? CurrentUser { get; }
+
+	/// <summary>
+	/// Indica si existe sesión autenticada activa.
+	/// </summary>
+	bool IsAuthenticated { get; }
+
+	/// <summary>
+	/// Registra un usuario con email y contraseña.
+	/// </summary>
+	Task<bool> SignUpAsync(string email, string password);
+
+	/// <summary>
 	/// Inicia sesión con email y contraseña.
 	/// </summary>
-	Task<AuthResult> SignInWithEmailAsync(string email, string password);
+	Task<bool> LoginAsync(string email, string password);
 
 	/// <summary>
-	/// Registra un nuevo usuario con email, contraseña y nombre mostrado.
+	/// Verifica el OTP de registro enviado por email.
 	/// </summary>
-	Task<AuthResult> SignUpWithEmailAsync(string email, string password, string displayName);
+	Task<bool> VerifyOtpAsync(string email, string code);
 
 	/// <summary>
-	/// Cierra la sesión del usuario actual.
+	/// Cierra sesión y limpia almacenamiento local.
 	/// </summary>
-	Task SignOutAsync();
+	Task LogoutAsync();
 
 	/// <summary>
-	/// Obtiene el perfil del usuario autenticado.
+	/// Intenta restaurar la sesión desde almacenamiento local.
 	/// </summary>
-	Task<UserProfile?> GetCurrentUserAsync();
-
-	/// <summary>
-	/// Verifica si hay un usuario autenticado.
-	/// </summary>
-	Task<bool> IsAuthenticatedAsync();
+	Task<bool> TryRestoreSessionAsync();
 
 	/// <summary>
 	/// Evento disparado cuando cambia el estado de autenticación.
 	/// </summary>
-	event Action<UserProfile?>? OnAuthStateChanged;
+	event Action<User?>? OnAuthStateChanged;
 }

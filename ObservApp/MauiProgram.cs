@@ -6,6 +6,7 @@ using ObservApp.Services;
 using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
 using ObservApp.Shared.ViewModels;
+using Supabase;
 using Syncfusion.Blazor;
 
 namespace ObservApp;
@@ -61,15 +62,28 @@ public static class MauiProgram
         builder.Services.AddSingleton<ISettingsService, MauiSettingsService>();
         builder.Services.AddSingleton<INavigationHistoryService, NavigationHistoryService>();
         builder.Services.AddSingleton<IAppLifecycleService, MauiAppLifecycleService>();
+        builder.Services.AddSingleton<IVersionService, VersionService>();
         builder.Services.AddSingleton<AppState>();
 
         // ── Autenticación y persistencia con Supabase ──────────────────────────
-        var supabaseUrl = builder.Configuration["SupabaseUrl"] ?? "";
-        var supabaseKey = builder.Configuration["SupabaseAnonKey"] ?? "";
-        builder.Services.AddSingleton<SupabaseService>(sp =>
-            new SupabaseService(supabaseUrl, supabaseKey));
-        builder.Services.AddSingleton<IAuthService>(
-            sp => sp.GetRequiredService<SupabaseService>());
+        var supabaseUrl = (builder.Configuration["SupabaseUrl"] ?? string.Empty).Trim();
+        var supabaseKey = (builder.Configuration["SupabaseAnonKey"] ?? string.Empty).Trim();
+
+        builder.Services.AddSingleton(sp =>
+        {
+            var options = new SupabaseOptions
+            {
+                AutoRefreshToken = true,
+                AutoConnectRealtime = true,
+                SessionHandler = new DefaultSupabaseSessionHandler()
+            };
+
+            return new Client(supabaseUrl, supabaseKey, options);
+        });
+
+        builder.Services.AddSingleton<IAuthSessionStore, MauiAuthSessionStore>();
+        builder.Services.AddSingleton<IAuthService, AuthService>();
+        builder.Services.AddSingleton<SupabaseService>();
         builder.Services.AddSingleton<IObservationService>(
             sp => sp.GetRequiredService<SupabaseService>());
         builder.Services.AddTransient<AuthViewModel>();

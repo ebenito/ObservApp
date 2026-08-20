@@ -1,5 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -58,464 +117,1412 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AppName" xml:space="preserve"><value>ObservApp</value></data>
-  <data name="AppVersion" xml:space="preserve"><value>v1.0 · .NET 10</value></data>
-  <data name="Loading" xml:space="preserve"><value>Загрузка ObservApp…</value></data>
-  <data name="Error_Unhandled" xml:space="preserve"><value>Произошла непредвиденная ошибка.</value></data>
-  <data name="Action_Reload" xml:space="preserve"><value>Перезагрузить</value></data>
-  <data name="Nav_Home" xml:space="preserve"><value>Главная</value></data>
-  <data name="Nav_Map" xml:space="preserve"><value>Карта</value></data>
-  <data name="Nav_Planning" xml:space="preserve"><value>Новое планирование</value></data>
-  <data name="Nav_Ephemeris" xml:space="preserve"><value>Эфемериды</value></data>
-  <data name="Nav_EclipseCalc" xml:space="preserve"><value>Калькулятор затмений</value></data>
-  <data name="Nav_History" xml:space="preserve"><value>История</value></data>
-  <data name="Nav_Settings" xml:space="preserve"><value>Настройки</value></data>
-  <data name="Nav_About" xml:space="preserve"><value>О приложении</value></data>
-  <data name="Nav_Exit" xml:space="preserve"><value>Выход</value></data>
-  <data name="Nav_SignIn" xml:space="preserve"><value>Войти</value></data>
-  <data name="Nav_SignOut" xml:space="preserve"><value>Выйти</value></data>
-  <data name="Action_Show" xml:space="preserve"><value>Показать</value></data>
-  <data name="Action_Hide" xml:space="preserve"><value>Скрыть</value></data>
-  <data name="Nav_Section_Main" xml:space="preserve"><value>Главная</value></data>
-  <data name="Nav_Section_Planning" xml:space="preserve"><value>Планирование</value></data>
-  <data name="Nav_Section_Tools" xml:space="preserve"><value>Инструменты</value></data>
-  <data name="Nav_Section_Personal" xml:space="preserve"><value>Личное</value></data>
-  <data name="NotFound_Title" xml:space="preserve"><value>Страница не найдена</value></data>
-  <data name="NotFound_Message" xml:space="preserve"><value>Контент, который вы ищете, не существует или был перемещен.</value></data>
-  <data name="NotFound_Back" xml:space="preserve"><value>← Вернуться на главную</value></data>
-  <data name="Home_Title" xml:space="preserve"><value>Главная</value></data>
-  <data name="Home_Welcome" xml:space="preserve"><value>Добро пожаловать в ObservApp</value></data>
-  <data name="Action_Save" xml:space="preserve"><value>Сохранить</value></data>
-  <data name="Action_Cancel" xml:space="preserve"><value>Отмена</value></data>
-  <data name="Action_Delete" xml:space="preserve"><value>Удалить</value></data>
-  <data name="Action_Edit" xml:space="preserve"><value>Редактировать</value></data>
-  <data name="Action_Share" xml:space="preserve"><value>Поделиться</value></data>
-  <data name="Action_Refresh" xml:space="preserve"><value>Обновить</value></data>
-  <data name="Action_Close" xml:space="preserve"><value>Закрыть</value></data>
-  <data name="Action_Back" xml:space="preserve"><value>Назад</value></data>
-  <data name="Action_Add" xml:space="preserve"><value>Добавить</value></data>
-  <data name="Status_Loading" xml:space="preserve"><value>Загрузка…</value></data>
-  <data name="Status_Saving" xml:space="preserve"><value>Сохранение…</value></data>
-  <data name="Status_Success" xml:space="preserve"><value>Операция успешно завершена.</value></data>
-  <data name="Status_Error" xml:space="preserve"><value>Произошла ошибка. Пожалуйста, попробуйте снова.</value></data>
-  <data name="Status_NoData" xml:space="preserve"><value>Нет данных.</value></data>
-  <data name="Settings_Title" xml:space="preserve"><value>Настройки</value></data>
-  <data name="Settings_Section_Language" xml:space="preserve"><value>Язык</value></data>
-  <data name="Settings_Language_Label" xml:space="preserve"><value>Язык приложения</value></data>
-  <data name="Settings_Language_Hint" xml:space="preserve"><value>Выберите язык для ObservApp. По умолчанию используется язык устройства.</value></data>
-  <data name="Settings_Language_Applied" xml:space="preserve"><value>Язык успешно применен.</value></data>
-  <data name="Settings_Action_Apply" xml:space="preserve"><value>Применить</value></data>
-  <data name="Settings_Language_Applying" xml:space="preserve"><value>Применение языка…</value></data>
-  <data name="Calc_Hub_Title" xml:space="preserve"><value>Калькуляторы</value></data>
-  <data name="Calc_Hub_Subtitle" xml:space="preserve"><value>Инструменты для астрофотографии и визуальных наблюдений</value></data>
-  <data name="Calc_Badge_Available" xml:space="preserve"><value>Доступно</value></data>
-  <data name="Calc_Badge_Soon" xml:space="preserve"><value>Скоро</value></data>
-  <data name="Calc_Eclipse_Title" xml:space="preserve"><value>Экспозиция для затмений</value></data>
-  <data name="Calc_Eclipse_Desc" xml:space="preserve"><value>Рассчитайте время экспозиции для каждой фазы затмения по формуле Q NASA</value></data>
-  <data name="Calc_Magnification_Title" xml:space="preserve"><value>Увеличение и выходной зрачок</value></data>
-  <data name="Calc_Magnification_Desc" xml:space="preserve"><value>Определите оптимальное увеличение и выходной зрачок для вашего телескопа и окуляра</value></data>
-  <data name="Calc_Resolution_Title" xml:space="preserve"><value>Предел разрешения</value></data>
-  <data name="Calc_Resolution_Desc" xml:space="preserve"><value>Рассчитайте теоретический предел разрешения (Рэлея и Доуэса) телескопа</value></data>
-  <data name="Calc_PlateScale_Title" xml:space="preserve"><value>Масштаб изображения</value></data>
-  <data name="Calc_PlateScale_Desc" xml:space="preserve"><value>Получите масштаб в ''/px и полное поле для вашей астрофотографии</value></data>
-  <data name="Calc_Eclipse_Formula" xml:space="preserve"><value>Формула NASA: t = f² / (ISO · 2^Q)</value></data>
-  <data name="Calc_Eclipse_SafetyNote" xml:space="preserve"><value>Для частных и кольцеобразных фаз нужен сертифицированный солнечный фильтр. Калькулятор ориентировочный; всегда делайте брекетинг.</value></data>
-  <data name="Calc_Eclipse_Section_Input" xml:space="preserve"><value>Данные оборудования</value></data>
-  <data name="Calc_Eclipse_Section_Results" xml:space="preserve"><value>Рекомендуемые скорости</value></data>
-  <data name="Calc_Eclipse_Focal" xml:space="preserve"><value>Фокусное расстояние</value></data>
-  <data name="Calc_Eclipse_Aperture" xml:space="preserve"><value>Апертура</value></data>
-  <data name="Calc_Eclipse_Sensor" xml:space="preserve"><value>Сенсор</value></data>
-  <data name="Calc_Eclipse_SolarDiam" xml:space="preserve"><value>Диаметр Солнца на матрице</value></data>
-  <data name="Calc_Eclipse_SensorCoverage" xml:space="preserve"><value>% ширины сенсора</value></data>
-  <data name="Calc_Eclipse_Col_Phase" xml:space="preserve"><value>Явление</value></data>
-  <data name="Calc_Eclipse_Col_Exact" xml:space="preserve"><value>Точное время</value></data>
-  <data name="Calc_Eclipse_Col_Suggested" xml:space="preserve"><value>Рекомендуемое</value></data>
-  <data name="Calc_Eclipse_FillFields" xml:space="preserve"><value>Введите данные оборудования, чтобы увидеть рекомендуемое время.</value></data>
-  <data name="Calc_Eclipse_BracketingNote" xml:space="preserve"><value>Всегда делайте брекетинг ±1 EV. Значения являются приблизительными.</value></data>
-  <data name="Nav_Calculators" xml:space="preserve"><value>Калькуляторы</value></data>
-  <data name="Calc_FOV_Title" xml:space="preserve"><value>Поле зрения (FOV)</value></data>
-  <data name="Calc_FOV_Desc" xml:space="preserve"><value>Рассчитайте истинное и видимое поле зрения для комбинаций телескоп-окуляр</value></data>
-  <data name="FOV_Title" xml:space="preserve"><value>Поле зрения (FOV)</value></data>
-  <data name="FOV_Subtitle" xml:space="preserve"><value>Рассчитайте реальное и видимое поле зрения для вашей комбинации</value></data>
-  <data name="FOV_TelescopeSection" xml:space="preserve"><value>Телескоп</value></data>
-  <data name="FOV_EyepieceSection" xml:space="preserve"><value>Окуляр</value></data>
-  <data name="FOV_FocalLength" xml:space="preserve"><value>Фокусное расстояние (мм)</value></data>
-  <data name="FOV_Aperture" xml:space="preserve"><value>Апертура (мм)</value></data>
-  <data name="FOV_EyepieceFocal" xml:space="preserve"><value>Фокусное расстояние окуляра (мм)</value></data>
-  <data name="FOV_AFOV" xml:space="preserve"><value>Видимое поле зрения (AFOV °)</value></data>
-  <data name="FOV_Calculate" xml:space="preserve"><value>Рассчитать</value></data>
-  <data name="FOV_Reset" xml:space="preserve"><value>Сбросить</value></data>
-  <data name="FOV_Results" xml:space="preserve"><value>Результаты</value></data>
-  <data name="FOV_Magnification" xml:space="preserve"><value>Увеличение</value></data>
-  <data name="FOV_TFOV" xml:space="preserve"><value>Истинное поле зрения (TFOV)</value></data>
-  <data name="FOV_ExitPupil" xml:space="preserve"><value>Выходной зрачок</value></data>
-  <data name="FOV_FocalRatio" xml:space="preserve"><value>Относительное отверстие (f/)</value></data>
-  <data name="FOV_Degrees" xml:space="preserve"><value>градусов</value></data>
-  <data name="FOV_Millimeters" xml:space="preserve"><value>мм</value></data>
-  <data name="FOV_Times" xml:space="preserve"><value>x</value></data>
-  <data name="FOV_MoonLabel" xml:space="preserve"><value>Полная Луна: 0,5°</value></data>
-  <data name="FOV_PleiadesFOV" xml:space="preserve"><value>Плеяды: ~2°</value></data>
-  <data name="FOV_FormulasTitle" xml:space="preserve"><value>Формулы и ссылки</value></data>
-  <data name="FOV_FormulaMAG" xml:space="preserve"><value>Увеличение = Фокусное расстояние телескопа ÷ Фокусное расстояние окуляра</value></data>
-  <data name="FOV_FormulaTFOV" xml:space="preserve"><value>Истинное FOV (TFOV) = AFOV ÷ Увеличение</value></data>
-  <data name="FOV_FormulaEP" xml:space="preserve"><value>Выходной зрачок = Апертура ÷ Увеличение</value></data>
-  <data name="FOV_FormulaFR" xml:space="preserve"><value>Светосила = Фокусное расстояние ÷ Апертура</value></data>
-  <data name="FOV_ReferencesTitle" xml:space="preserve"><value>Астрономические ссылки</value></data>
-  <data name="FOV_Tip_ExitPupil" xml:space="preserve"><value>Идеальный выходной зрачок: 5-7 мм для темного неба, 2-4 мм для планет.</value></data>
-  <data name="FOV_Tip_Magnification" xml:space="preserve"><value>Максимально полезное увеличение составляет около 50х на дюйм апертуры (2х на мм).</value></data>
-  <data name="FOV_MaxMagWarning" xml:space="preserve"><value>⚠ Близко к максимально полезному увеличению</value></data>
-  <data name="FOV_GoodExitPupil" xml:space="preserve"><value>✓ Оптимальный выходной зрачок для объектов глубокого космоса</value></data>
-  <data name="FOV_PlanetaryExitPupil" xml:space="preserve"><value>✓ Подходящий выходной зрачок для наблюдения за планетами</value></data>
-  <data name="FOV_NarrowExitPupil" xml:space="preserve"><value>⚠ Очень маленький выходной зрачок — очень тусклое изображение</value></data>
-  <data name="Nav_CalculadoraFOV" xml:space="preserve"><value>Поле зрения (FOV)</value></data>
-  <data name="Home_Subtitle" xml:space="preserve"><value>Ваш помощник для планирования и записи астрономических наблюдений. Эфемериды, калькуляторы и карты в одном месте.</value></data>
-  <data name="Home_QuickAccess" xml:space="preserve"><value>Быстрый доступ</value></data>
-  <data name="Home_Card_Map_Desc" xml:space="preserve"><value>Найдите места с темным небом поблизости</value></data>
-  <data name="Home_Card_Planning_Desc" xml:space="preserve"><value>Спланируйте следующую сессию наблюдений</value></data>
-  <data name="Home_Card_Ephemeris_Desc" xml:space="preserve"><value>Положения планет, восходы и заходы солнца и луны</value></data>
-  <data name="Home_Card_Calculators_Desc" xml:space="preserve"><value>FOV, экспозиция затмений, увеличение и другое</value></data>
-  <data name="Home_Welcome_User" xml:space="preserve"><value>Добро пожаловать, {0}</value></data>
-  <data name="Home_Sessions_Count" xml:space="preserve"><value>Записано сессий: {0}</value></data>
-  <data name="Home_Recent_Title" xml:space="preserve"><value>Ваши последние наблюдения</value></data>
-  <data name="Home_Recent_Empty" xml:space="preserve"><value>Пока нет сессий. Начните сегодня!</value></data>
-  <data name="Home_Recent_ViewAll" xml:space="preserve"><value>Смотреть всю историю</value></data>
-  <data name="Home_Recent_StartNow" xml:space="preserve"><value>Записать первую сессию</value></data>
-  <data name="Home_Lock_Hint" xml:space="preserve"><value>Войдите, чтобы получить доступ</value></data>
-  <data name="Home_Features_Title" xml:space="preserve"><value>Что вы можете сделать?</value></data>
-  <data name="Home_Feature1_Title" xml:space="preserve"><value>Визуальные наблюдения</value></data>
-  <data name="Home_Feature1_Desc" xml:space="preserve"><value>Рассчитайте поле зрения, увеличение и выходной зрачок</value></data>
-  <data name="Home_Feature2_Title" xml:space="preserve"><value>Калькуляторы</value></data>
-  <data name="Home_Feature2_Desc" xml:space="preserve"><value>Точные инструменты для астрофотографии: масштаб, экспозиция и т.д.</value></data>
-  <data name="Home_Feature3_Title" xml:space="preserve"><value>Астрофотография</value></data>
-  <data name="Home_Feature3_Desc" xml:space="preserve"><value>Рассчитайте время экспозиции по формуле NASA Q для каждой фазы затмения</value></data>
-  <data name="Home_Feature4_Title" xml:space="preserve"><value>История</value></data>
-  <data name="Home_Feature4_Desc" xml:space="preserve"><value>Сохраняйте и просматривайте журнал всех ваших прошлых сессий</value></data>
-  <data name="Calc_SolLuna_Title" xml:space="preserve"><value>Солнце и Луна</value></data>
-  <data name="Calc_SolLuna_Desc" xml:space="preserve"><value>Восход, заход, сумерки, фазы луны, солнцестояния и равноденствия для любой даты и места</value></data>
-  <data name="SolLuna_Title" xml:space="preserve"><value>Калькулятор Солнца и Луны</value></data>
-  <data name="SolLuna_Subtitle" xml:space="preserve"><value>Точные астрономические данные для любой даты (1901–2099) и координат WGS-84</value></data>
-  <data name="SolLuna_Date" xml:space="preserve"><value>Дата</value></data>
-  <data name="SolLuna_Location" xml:space="preserve"><value>Местоположение (WGS-84)</value></data>
-  <data name="SolLuna_Latitude" xml:space="preserve"><value>Широта (°)</value></data>
-  <data name="SolLuna_Longitude" xml:space="preserve"><value>Долгота (°)</value></data>
-  <data name="SolLuna_Altitude" xml:space="preserve"><value>Высота</value></data>
-  <data name="SolLuna_Tab_Sun" xml:space="preserve"><value>Солнце</value></data>
-  <data name="SolLuna_Tab_Moon" xml:space="preserve"><value>Луна</value></data>
-  <data name="SolLuna_Tab_Events" xml:space="preserve"><value>Ежегодные события</value></data>
-  <data name="SolLuna_Sun_Times" xml:space="preserve"><value>Ключевое время Солнца</value></data>
-  <data name="SolLuna_Dawn_Astronomical" xml:space="preserve"><value>Астрономический рассвет</value></data>
-  <data name="SolLuna_Dawn_Nautical" xml:space="preserve"><value>Навигационный рассвет</value></data>
-  <data name="SolLuna_Dawn_Civil" xml:space="preserve"><value>Гражданский рассвет</value></data>
-  <data name="SolLuna_Sunrise" xml:space="preserve"><value>Восход солнца</value></data>
-  <data name="SolLuna_SolarNoon" xml:space="preserve"><value>Солнечный полдень</value></data>
-  <data name="SolLuna_Sunset" xml:space="preserve"><value>Закат солнца</value></data>
-  <data name="SolLuna_Dusk_Civil" xml:space="preserve"><value>Гражданские сумерки</value></data>
-  <data name="SolLuna_Dusk_Nautical" xml:space="preserve"><value>Навигационные сумерки</value></data>
-  <data name="SolLuna_Dusk_Astronomical" xml:space="preserve"><value>Астрономические сумерки</value></data>
-  <data name="SolLuna_DayLength" xml:space="preserve"><value>Долгота дня</value></data>
-  <data name="SolLuna_Sun_Position" xml:space="preserve"><value>Положение Солнца</value></data>
-  <data name="SolLuna_AzimuthRise" xml:space="preserve"><value>Азимут восхода</value></data>
-  <data name="SolLuna_AzimuthSet" xml:space="preserve"><value>Азимут заката</value></data>
-  <data name="SolLuna_MaxAltitude" xml:space="preserve"><value>Макс. высота</value></data>
-  <data name="SolLuna_Declination" xml:space="preserve"><value>Склонение</value></data>
-  <data name="SolLuna_RightAscension" xml:space="preserve"><value>Прямое восхождение</value></data>
-  <data name="SolLuna_EquationOfTime" xml:space="preserve"><value>Уравнение времени</value></data>
-  <data name="SolLuna_Distance" xml:space="preserve"><value>Расстояние</value></data>
-  <data name="SolLuna_Sun_Path" xml:space="preserve"><value>Путь Солнца</value></data>
-  <data name="SolLuna_Moon_Times" xml:space="preserve"><value>Ключевое время Луны</value></data>
-  <data name="SolLuna_Moonrise" xml:space="preserve"><value>Восход Луны</value></data>
-  <data name="SolLuna_MoonTransit" xml:space="preserve"><value>Транзит Луны</value></data>
-  <data name="SolLuna_Moonset" xml:space="preserve"><value>Заход Луны</value></data>
-  <data name="SolLuna_Moon_Position" xml:space="preserve"><value>Положение Луны</value></data>
-  <data name="SolLuna_AngularDiam" xml:space="preserve"><value>Угловой диаметр</value></data>
-  <data name="SolLuna_Moon_Phase" xml:space="preserve"><value>Лунная фаза</value></data>
-  <data name="SolLuna_NextNewMoon" xml:space="preserve"><value>Следующее новолуние</value></data>
-  <data name="SolLuna_NextFullMoon" xml:space="preserve"><value>Следующее полнолуние</value></data>
-  <data name="SolLuna_LunarAge" xml:space="preserve"><value>Возраст луны</value></data>
-  <data name="SolLuna_Days" xml:space="preserve"><value>дней</value></data>
-  <data name="SolLuna_Moon_Path" xml:space="preserve"><value>Путь Луны</value></data>
-  <data name="SolLuna_Events_Year" xml:space="preserve"><value>Астрономические события</value></data>
-  <data name="SolLuna_Solstices_Equinoxes" xml:space="preserve"><value>Солнцестояния и равноденствия</value></data>
-  <data name="SolLuna_VernalEquinox" xml:space="preserve"><value>Весеннее равноденствие</value></data>
-  <data name="SolLuna_SummerSolstice" xml:space="preserve"><value>Летнее солнцестояние</value></data>
-  <data name="SolLuna_AutumnalEquinox" xml:space="preserve"><value>Осеннее равноденствие</value></data>
-  <data name="SolLuna_WinterSolstice" xml:space="preserve"><value>Зимнее солнцестояние</value></data>
-  <data name="SolLuna_Moon_Phases_Year" xml:space="preserve"><value>Фазы луны в году</value></data>
-  <data name="SolLuna_Phase_New" xml:space="preserve"><value>Новолуние</value></data>
-  <data name="SolLuna_Phase_WaxCrescent" xml:space="preserve"><value>Молодая луна</value></data>
-  <data name="SolLuna_Phase_FirstQuarter" xml:space="preserve"><value>Первая четверть</value></data>
-  <data name="SolLuna_Phase_WaxGibbous" xml:space="preserve"><value>Прибывающая луна</value></data>
-  <data name="SolLuna_Phase_Full" xml:space="preserve"><value>Полнолуние</value></data>
-  <data name="SolLuna_Phase_WanGibbous" xml:space="preserve"><value>Убывающая луна</value></data>
-  <data name="SolLuna_Phase_LastQuarter" xml:space="preserve"><value>Последняя четверть</value></data>
-  <data name="SolLuna_Phase_WanCrescent" xml:space="preserve"><value>Старая луна</value></data>
-  <data name="SolLuna_Twi_Astro" xml:space="preserve"><value>Астрономическая ночь</value></data>
-  <data name="SolLuna_Twi_Naut" xml:space="preserve"><value>Навигационные сумерки</value></data>
-  <data name="SolLuna_Twi_Civil" xml:space="preserve"><value>Гражданские сумерки</value></data>
-  <data name="SolLuna_Daytime" xml:space="preserve"><value>Дневное время</value></data>
-  <data name="SolLuna_NoData" xml:space="preserve"><value>Не удалось рассчитать данные для этой даты и места.</value></data>
-  <data name="SolLuna_UseGPS" xml:space="preserve"><value>Использовать GPS</value></data>
-  <data name="SolLuna_Eclipses_Year" xml:space="preserve"><value>Затмения в году</value></data>
-  <data name="SolLuna_Magnitude_Desc" xml:space="preserve"><value>Магнитуда затмения (закрытая часть диаметра)</value></data>
-  <data name="SolLuna_Contact_C1_Desc" xml:space="preserve"><value>C1: Начало частной фазы</value></data>
-  <data name="SolLuna_Contact_C2_Desc" xml:space="preserve"><value>C2: Начало полной/кольцеобразной фазы</value></data>
-  <data name="SolLuna_Contact_C3_Desc" xml:space="preserve"><value>C3: Конец полной/кольцеобразной фазы</value></data>
-  <data name="SolLuna_Contact_C4_Desc" xml:space="preserve"><value>C4: Конец частной фазы</value></data>
-  <data name="FOV_SimulatorTitle" xml:space="preserve"><value>Симуляция поля зрения</value></data>
-  <data name="SolLuna_Eclipse_Solar" xml:space="preserve"><value>Солнечное затмение</value></data>
-  <data name="SolLuna_Eclipse_Lunar" xml:space="preserve"><value>Лунное затмение</value></data>
-  <data name="SolLuna_Eclipse_Total" xml:space="preserve"><value>Полное</value></data>
-  <data name="SolLuna_Eclipse_Annular" xml:space="preserve"><value>Кольцеобразное</value></data>
-  <data name="SolLuna_Eclipse_Partial" xml:space="preserve"><value>Частное</value></data>
-  <data name="SolLuna_Eclipse_Penumbral" xml:space="preserve"><value>Полутеневое</value></data>
-  <data name="Calc_EclipseTimer_Title" xml:space="preserve"><value>Таймер затмений</value></data>
-  <data name="Calc_EclipseTimer_Desc" xml:space="preserve"><value>Контакты C1-C4, бриллиантовое кольцо и оповещения в реальном времени</value></data>
-  <data name="EclipseTimer_Title" xml:space="preserve"><value>Калькулятор таймера затмений</value></data>
-  <data name="EclipseTimer_Subtitle" xml:space="preserve"><value>Точные контакты для вашего местоположения со звуковыми оповещениями</value></data>
-  <data name="EclipseTimer_SelectEclipse" xml:space="preserve"><value>Выберите затмение</value></data>
-  <data name="EclipseTimer_Location" xml:space="preserve"><value>Местоположение</value></data>
-  <data name="EclipseTimer_UseGPS" xml:space="preserve"><value>Использовать GPS</value></data>
-  <data name="EclipseTimer_Calculate" xml:space="preserve"><value>Рассчитать для моего местоположения</value></data>
-  <data name="EclipseTimer_Type_Total" xml:space="preserve"><value>Полное затмение</value></data>
-  <data name="EclipseTimer_Type_Annular" xml:space="preserve"><value>Кольцеобразное затмение</value></data>
-  <data name="EclipseTimer_Type_Partial" xml:space="preserve"><value>Частное затмение</value></data>
-  <data name="EclipseTimer_Type_None" xml:space="preserve"><value>Не видно из этого места</value></data>
-  <data name="EclipseTimer_MaxCoverage" xml:space="preserve"><value>Максимальное покрытие</value></data>
-  <data name="EclipseTimer_NextEvent" xml:space="preserve"><value>Следующее событие</value></data>
-  <data name="EclipseTimer_AudioAlerts" xml:space="preserve"><value>Звуковые оповещения</value></data>
-  <data name="EclipseTimer_AudioOn" xml:space="preserve"><value>Оповещения включены</value></data>
-  <data name="EclipseTimer_AudioOff" xml:space="preserve"><value>Оповещения выключены</value></data>
-  <data name="EclipseTimer_SunBelowHorizon" xml:space="preserve"><value>Во время этого затмения Солнце будет ниже горизонта</value></data>
-  <data name="EclipseTimer_NotVisible" xml:space="preserve"><value>Это затмение не видно из вашего местоположения</value></data>
-  <data name="Eclipse_C1" xml:space="preserve"><value>C1 — Первый контакт</value></data>
-  <data name="Eclipse_C2" xml:space="preserve"><value>C2 — Начало полной фазы</value></data>
-  <data name="Eclipse_C3" xml:space="preserve"><value>C3 — Конец полной фазы</value></data>
-  <data name="Eclipse_C4" xml:space="preserve"><value>C4 — Конец затмения</value></data>
-  <data name="Eclipse_ShadowBands" xml:space="preserve"><value>Теневые полосы</value></data>
-  <data name="Eclipse_BailyBeadsStart" xml:space="preserve"><value>Чётки Бейли (начало)</value></data>
-  <data name="Eclipse_BailyBeadsEnd" xml:space="preserve"><value>Чётки Бейли (конец)</value></data>
-  <data name="Eclipse_DiamondRingStart" xml:space="preserve"><value>Бриллиантовое кольцо (начало)</value></data>
-  <data name="Eclipse_DiamondRingEnd" xml:space="preserve"><value>Бриллиантовое кольцо (конец)</value></data>
-  <data name="Eclipse_Maximum" xml:space="preserve"><value>Максимальное затмение</value></data>
-  <data name="Eclipse_Alert_C1" xml:space="preserve"><value>Первый контакт. Затмение начинается сейчас.</value></data>
-  <data name="Eclipse_Alert_ShadowBands" xml:space="preserve"><value>Внимание, теневые полосы примерно через минуту.</value></data>
-  <data name="Eclipse_Alert_BailyStart" xml:space="preserve"><value>Чётки Бейли видны сейчас.</value></data>
-  <data name="Eclipse_Alert_DiamondStart" xml:space="preserve"><value>Эффект бриллиантового кольца. Полная фаза начнется через секунды.</value></data>
-  <data name="Eclipse_Alert_C2" xml:space="preserve"><value>Второй контакт. Полная фаза начинается сейчас!</value></data>
-  <data name="Eclipse_Alert_Maximum" xml:space="preserve"><value>Максимальная фаза.</value></data>
-  <data name="Eclipse_Alert_C3" xml:space="preserve"><value>Третий контакт. Полная фаза заканчивается сейчас.</value></data>
-  <data name="Eclipse_Alert_DiamondEnd" xml:space="preserve"><value>Эффект бриллиантового кольца на выходе.</value></data>
-  <data name="Eclipse_Alert_BailyEnd" xml:space="preserve"><value>Чётки Бейли на выходе.</value></data>
-  <data name="Eclipse_Alert_C4" xml:space="preserve"><value>Четвертый контакт. Затмение завершилось.</value></data>
-  <data name="EclipseTimer_In" xml:space="preserve"><value>через</value></data>
-  <data name="EclipseTimer_Ago" xml:space="preserve"><value>назад</value></data>
-  <data name="EclipseTimer_Now" xml:space="preserve"><value>СЕЙЧАС!</value></data>
-  <data name="EclipseTimer_Hours" xml:space="preserve"><value>ч</value></data>
-  <data name="EclipseTimer_Minutes" xml:space="preserve"><value>мин</value></data>
-  <data name="EclipseTimer_Seconds" xml:space="preserve"><value>с</value></data>
-  <data name="EclipseTimer_LocalTime" xml:space="preserve"><value>Местное время</value></data>
-  <data name="EclipseTimer_Altitude" xml:space="preserve"><value>Высота Солнца</value></data>
-  <data name="EclipseTimer_Warning_Past" xml:space="preserve"><value>Это затмение уже прошло</value></data>
-  <data name="EclipseTimer_EclipseType_Global" xml:space="preserve"><value>Глобальный тип</value></data>
-  <data name="EclipseTimer_Region" xml:space="preserve"><value>Регион максимальной видимости</value></data>
-  <data name="EclipseTimer_Days" xml:space="preserve"><value>д</value></data>
-  <data name="EclipseTimer_Contacts" xml:space="preserve"><value>Контакты и события</value></data>
-  <data name="EclipseTimer_SimStart" xml:space="preserve"><value>Симулировать затмение</value></data>
-  <data name="EclipseTimer_SimStop" xml:space="preserve"><value>Остановить симуляцию</value></data>
-  <data name="EclipseTimer_SimActive" xml:space="preserve"><value>Симуляция активна со скоростью</value></data>
-  <data name="EclipseTimer_TestAlert" xml:space="preserve"><value>Тест звукового оповещения</value></data>
-  <data name="Settings_FavoriteLocations" xml:space="preserve"><value>Любимые места</value></data>
-  <data name="Settings_ManageLocations" xml:space="preserve"><value>Управление любимыми местами</value></data>
-  <data name="FavLoc_Title" xml:space="preserve"><value>Любимые Места</value></data>
-  <data name="FavLoc_NoLocations" xml:space="preserve"><value>У вас пока нет сохраненных мест.</value></data>
-  <data name="FavLoc_AddCurrent" xml:space="preserve"><value>Добавить текущее место (GPS)</value></data>
-  <data name="FavLoc_SearchPlaceholder" xml:space="preserve"><value>Поиск места (напр. Тейде, Лондон...)</value></data>
-  <data name="FavLoc_SearchBtn" xml:space="preserve"><value>Поиск</value></data>
-  <data name="FavLoc_Search_NoResults" xml:space="preserve"><value>Результаты не найдены.</value></data>
-  <data name="FavLoc_Form_Name" xml:space="preserve"><value>Название места</value></data>
-  <data name="FavLoc_Form_Latitude" xml:space="preserve"><value>Широта (°)</value></data>
-  <data name="FavLoc_Form_Longitude" xml:space="preserve"><value>Долгота (°)</value></data>
-  <data name="FavLoc_Form_Altitude" xml:space="preserve"><value>Высота (метры)</value></data>
-  <data name="FavLoc_Form_Save" xml:space="preserve"><value>Сохранить место</value></data>
-  <data name="FavLoc_Form_Edit" xml:space="preserve"><value>Редактировать место</value></data>
-  <data name="FavLoc_Form_DragHint" xml:space="preserve"><value>Вы можете перетащить булавку на карте для уточнения.</value></data>
-  <data name="FavLoc_Form_Altitude_Loading" xml:space="preserve"><value>Автоматическое вычисление высоты...</value></data>
-  <data name="FavLoc_Form_Name_Required" xml:space="preserve"><value>Требуется название места.</value></data>
-  <data name="FavLoc_Select_Placeholder" xml:space="preserve"><value>-- Выберите любимое место --</value></data>
-  <data name="FavLoc_Select_Manual" xml:space="preserve"><value>Ручные координаты</value></data>
-  <data name="FavLoc_Select_GPS" xml:space="preserve"><value>Текущее местоположение GPS</value></data>
-  <data name="Home_Now_Title" xml:space="preserve"><value>Прямо сейчас</value></data>
-  <data name="Home_Sun_Up" xml:space="preserve"><value>Выше горизонта</value></data>
-  <data name="Home_Sun_Down" xml:space="preserve"><value>Ниже горизонта</value></data>
-  <data name="Home_AstroNight" xml:space="preserve"><value>Астрономическая ночь</value></data>
-  <data name="Home_AstroNight_Active" xml:space="preserve"><value>Активно сейчас ✓</value></data>
-  <data name="Home_NextFullMoon" xml:space="preserve"><value>Следующее полнолуние</value></data>
-  <data name="Home_NextEclipse" xml:space="preserve"><value>Следующее солнечное затмение</value></data>
-  <data name="EclipseTimer_TimelineTitle" xml:space="preserve"><value>Прогресс затмения</value></data>
-  <data name="Signals_Title" xml:space="preserve"><value>Сигналы</value></data>
-  <data name="Signals_Subtitle" xml:space="preserve"><value>Астрономические новости и статьи</value></data>
-  <data name="Signals_Listen" xml:space="preserve"><value>Слушать</value></data>
-  <data name="Signals_OpenBrowser" xml:space="preserve"><value>Открыть в браузере</value></data>
-  <data name="Nav_Signals" xml:space="preserve"><value>Сигналы</value><comment>Lector de noticias RSS</comment></data>
-  <data name="Signals_Stop" xml:space="preserve"><value>Стоп</value></data>
-  <data name="Signals_PrevPage" xml:space="preserve"><value>Назад</value></data>
-  <data name="Signals_NextPage" xml:space="preserve"><value>Вперед</value></data>
-  <data name="Signals_Page" xml:space="preserve"><value>Страница</value></data>
-  <data name="Signals_Articles" xml:space="preserve"><value>статьи</value></data>
-  <data name="Signals_Filter_All" xml:space="preserve"><value>Все</value></data>
-  <data name="Signals_Filter_Es" xml:space="preserve"><value>Испанский</value></data>
-  <data name="Signals_Filter_En" xml:space="preserve"><value>Английский</value></data>
-  <data name="Signals_PartialError" xml:space="preserve"><value>Некоторые источники не загрузились.</value></data>
-  <data name="EclipseTimer_DeltaT" xml:space="preserve"><value>ΔT</value></data>
-  <data name="EclipseTimer_DeltaT_Unit" xml:space="preserve"><value>с</value></data>
-  <data name="EclipseTimer_Magnitude" xml:space="preserve"><value>Магнитуда</value></data>
-  <data name="EclipseTimer_Gamma" xml:space="preserve"><value>Гамма</value></data>
-  <data name="EclipseTimer_TotalityDuration" xml:space="preserve"><value>Продолжительность полной фазы</value></data>
-  <data name="EclipseTimer_Saros" xml:space="preserve"><value>Сарос</value></data>
-  <data name="EclipseTimer_Metrics_Title" xml:space="preserve"><value>Данные затмения</value></data>
-  <data name="Tooltip_Magnitude" xml:space="preserve"><value>Магнитуда: Указывает, какая часть Солнца закрыта. Значения &gt; 1.0 означают полное или кольцеобразное затмение.</value></data>
-  <data name="Tooltip_Gamma" xml:space="preserve"><value>Гамма: Расстояние от оси тени до центра Земли в радиусах Земли.</value></data>
-  <data name="Tooltip_DeltaT" xml:space="preserve"><value>ΔT (Дельта Т): Разница между Земным временем (TT) и Всемирным временем (UT).</value></data>
-  <data name="Tooltip_Saros" xml:space="preserve"><value>Сарос: ~18-летний астрономический цикл для прогнозирования затмений.</value></data>
-  <data name="Eph_Title" xml:space="preserve"><value>Эфемериды</value></data>
-  <data name="Eph_Subtitle" xml:space="preserve"><value>Видимые планеты, события и качество ночного неба</value></data>
-  <data name="Eph_Date" xml:space="preserve"><value>Дата</value></data>
-  <data name="Eph_Location" xml:space="preserve"><value>Местоположение</value></data>
-  <data name="Eph_Planets_Title" xml:space="preserve"><value>Планеты сегодня ночью</value></data>
-  <data name="Eph_Planets_Empty" xml:space="preserve"><value>Не удалось вычислить данные о планетах для этой даты.</value></data>
-  <data name="Eph_Planet_Name" xml:space="preserve"><value>Планета</value></data>
-  <data name="Eph_Planet_Status" xml:space="preserve"><value>Статус</value></data>
-  <data name="Eph_Planet_Visible" xml:space="preserve"><value>Видно</value></data>
-  <data name="Eph_Planet_NotVisible" xml:space="preserve"><value>Ниже горизонта</value></data>
-  <data name="Eph_Planet_Rise" xml:space="preserve"><value>Восход</value></data>
-  <data name="Eph_Planet_Set" xml:space="preserve"><value>Заход</value></data>
-  <data name="Eph_Planet_MaxAlt" xml:space="preserve"><value>Макс. выс.</value></data>
-  <data name="Eph_Planet_Azimuth" xml:space="preserve"><value>Азимут</value></data>
-  <data name="Eph_Planet_Distance" xml:space="preserve"><value>Расстояние</value></data>
-  <data name="Eph_Planet_Illumination" xml:space="preserve"><value>Освещенность</value></data>
-  <data name="Eph_Events_Title" xml:space="preserve"><value>Ближайшие астрономические события</value></data>
-  <data name="Eph_Events_Empty" xml:space="preserve"><value>Нет заметных событий в ближайшие 90 дней.</value></data>
-  <data name="Eph_Tonight_Title" xml:space="preserve"><value>Небо сегодня ночью</value></data>
-  <data name="Eph_Tonight_NoAstroNight" xml:space="preserve"><value>Нет астрономической ночи (Солнце выше -18°)</value></data>
-  <data name="Eph_Tonight_AstroNight" xml:space="preserve"><value>Начало астрономической ночи</value></data>
-  <data name="Eph_Tonight_Quality_Good" xml:space="preserve"><value>Хорошо для наблюдений</value></data>
-  <data name="Eph_Tonight_Quality_Fair" xml:space="preserve"><value>Приемлемо</value></data>
-  <data name="Eph_Tonight_Quality_Poor" xml:space="preserve"><value>Яркая луна</value></data>
-  <data name="Eph_Moon_Present" xml:space="preserve"><value>Качество ночи</value></data>
-  <data name="Eph_Moon_Phase" xml:space="preserve"><value>Фаза луны</value></data>
-  <data name="Eph_Moon_Illumination" xml:space="preserve"><value>Освещенность луны</value></data>
-  <data name="Eph_Eclipse_BannerTitle" xml:space="preserve"><value>Предстоящее солнечное затмение в вашем районе</value></data>
-  <data name="Eph_Eclipse_Type_Total" xml:space="preserve"><value>Полное затмение</value></data>
-  <data name="Eph_Eclipse_Type_Annular" xml:space="preserve"><value>Кольцеобразное затмение</value></data>
-  <data name="Eph_Eclipse_Type_Partial" xml:space="preserve"><value>Частное затмение</value></data>
-  <data name="Eph_Eclipse_Coverage" xml:space="preserve"><value>Максимальное покрытие из вашего местоположения</value></data>
-  <data name="Eph_Eclipse_DaysLeft" xml:space="preserve"><value>дней</value></data>
-  <data name="Eph_Eclipse_Details" xml:space="preserve"><value>Смотреть детали затмения →</value></data>
-  <data name="Eph_Eclipse_NoVisible" xml:space="preserve"><value>В следующем году затмений отсюда не видно</value></data>
-  <data name="Eph_DSO_Title" xml:space="preserve"><value>Глубокий космос сегодня</value></data>
-  <data name="Eph_DSO_Subtitle" xml:space="preserve"><value>Объекты, видимые из вашего местоположения (высота &gt; 10°)</value></data>
-  <data name="Eph_DSO_Loading" xml:space="preserve"><value>Вычисление видимых объектов…</value></data>
-  <data name="Eph_DSO_Empty" xml:space="preserve"><value>Сегодня ночью из этого места не видно объектов глубокого космоса.</value></data>
-  <data name="Eph_DSO_MaxAlt" xml:space="preserve"><value>Макс. выс.</value></data>
-  <data name="Eph_DSO_BestTime" xml:space="preserve"><value>Лучшее время</value></data>
-  <data name="Eph_DSO_VisibleFrom" xml:space="preserve"><value>Видно с</value></data>
-  <data name="Eph_DSO_VisibleTo" xml:space="preserve"><value>по</value></data>
-  <data name="Eph_DSO_Magnitude" xml:space="preserve"><value>Магнитуда</value></data>
-  <data name="Eph_DSO_Type_Nebula" xml:space="preserve"><value>Туманность</value></data>
-  <data name="Eph_DSO_Type_OpenCluster" xml:space="preserve"><value>Рассеянное скопление</value></data>
-  <data name="Eph_DSO_Type_GlobularCluster" xml:space="preserve"><value>Шаровое скопление</value></data>
-  <data name="Eph_DSO_Type_Galaxy" xml:space="preserve"><value>Галактика</value></data>
-  <data name="Eph_DSO_Constellation" xml:space="preserve"><value>Созвездие</value></data>
-  <data name="Eph_DSO_Count" xml:space="preserve"><value>видимых объектов</value></data>
-  <data name="Auth_SignIn" xml:space="preserve"><value>Войти</value></data>
-  <data name="Auth_SignUp" xml:space="preserve"><value>Зарегистрироваться</value></data>
-  <data name="Auth_SignOut" xml:space="preserve"><value>Выйти</value></data>
-  <data name="Auth_Email" xml:space="preserve"><value>Электронная почта</value></data>
-  <data name="Auth_Password" xml:space="preserve"><value>Пароль</value></data>
-  <data name="Auth_DisplayName" xml:space="preserve"><value>Отображаемое имя</value></data>
-  <data name="Auth_SigningIn" xml:space="preserve"><value>Вход...</value></data>
-  <data name="Auth_Error" xml:space="preserve"><value>Ошибка аутентификации</value></data>
-  <data name="Auth_WelcomeBack" xml:space="preserve"><value>С возвращением</value></data>
-  <data name="Auth_ForgotPassword" xml:space="preserve"><value>Забыли пароль?</value></data>
-  <data name="Auth_CreateAccount" xml:space="preserve"><value>Создать аккаунт</value></data>
-  <data name="Auth_CreatingAccount" xml:space="preserve"><value>Создание аккаунта…</value></data>
-  <data name="Auth_ConfirmPassword" xml:space="preserve"><value>Подтвердите пароль</value></data>
-  <data name="Auth_PasswordMismatch" xml:space="preserve"><value>Пароли не совпадают</value></data>
-  <data name="Auth_HasAccount" xml:space="preserve"><value>Уже есть аккаунт? Войти</value></data>
-  <data name="Auth_NoAccount" xml:space="preserve"><value>Нет аккаунта? Зарегистрируйтесь</value></data>
-  <data name="Auth_SignIn_Error" xml:space="preserve"><value>Ошибка входа</value></data>
-  <data name="Auth_SignUp_Error" xml:space="preserve"><value>Ошибка регистрации</value></data>
-  <data name="Auth_DisplayName_Required" xml:space="preserve"><value>Требуется отображаемое имя</value></data>
-  <data name="Auth_SignOut_Error" xml:space="preserve"><value>Ошибка выхода: {0}</value></data>
-  <data name="Error_Unexpected" xml:space="preserve"><value>Непредвиденная ошибка: {0}</value></data>
-  <data name="Obs_Sessions" xml:space="preserve"><value>Сессии наблюдений</value></data>
-  <data name="Obs_NewSession" xml:space="preserve"><value>Новая сессия</value></data>
-  <data name="Obs_Title" xml:space="preserve"><value>Заголовок</value></data>
-  <data name="Obs_Date" xml:space="preserve"><value>Дата</value></data>
-  <data name="Obs_Notes" xml:space="preserve"><value>Заметки</value></data>
-  <data name="Obs_Location" xml:space="preserve"><value>Местоположение</value></data>
-  <data name="Obs_Seeing" xml:space="preserve"><value>Видимость (Seeing)</value></data>
-  <data name="Obs_Transparency" xml:space="preserve"><value>Прозрачность</value></data>
-  <data name="Obs_Save" xml:space="preserve"><value>Сохранить</value></data>
-  <data name="Obs_Delete" xml:space="preserve"><value>Удалить</value></data>
-  <data name="Hist_Title" xml:space="preserve"><value>История наблюдений</value></data>
-  <data name="Hist_Subtitle" xml:space="preserve"><value>Записано сессий: {0}</value></data>
-  <data name="Hist_NewSession" xml:space="preserve"><value>Новая сессия</value></data>
-  <data name="Hist_Empty_Title" xml:space="preserve"><value>Пока нет сессий</value></data>
-  <data name="Hist_Empty_Desc" xml:space="preserve"><value>Вы еще не записали ни одной сессии наблюдений.</value></data>
-  <data name="Hist_FirstSession" xml:space="preserve"><value>Записать первую сессию</value></data>
-  <data name="Hist_Objects" xml:space="preserve"><value>{0} объектов</value></data>
-  <data name="Hist_Seeing" xml:space="preserve"><value>Видимость</value></data>
-  <data name="Hist_Transparency" xml:space="preserve"><value>Прозрачность</value></data>
-  <data name="Hist_ViewDetails" xml:space="preserve"><value>Просмотр деталей</value></data>
-  <data name="Hist_Edit" xml:space="preserve"><value>Редактировать</value></data>
-  <data name="Hist_Delete" xml:space="preserve"><value>Удалить</value></data>
-  <data name="Hist_ConfirmDelete" xml:space="preserve"><value>Удалить эту сессию?</value></data>
-  <data name="Hist_ConfirmYes" xml:space="preserve"><value>Да, удалить</value></data>
-  <data name="Hist_ConfirmNo" xml:space="preserve"><value>Отмена</value></data>
-  <data name="Hist_Targets_Title" xml:space="preserve"><value>Наблюдаемые объекты</value></data>
-  <data name="Hist_Target_Eyepiece" xml:space="preserve"><value>Окуляр</value></data>
-  <data name="Hist_Target_Magnification" xml:space="preserve"><value>Увеличение</value></data>
-  <data name="Hist_Target_Rating" xml:space="preserve"><value>Оценка</value></data>
-  <data name="Hist_Location" xml:space="preserve"><value>Местоположение</value></data>
-  <data name="Hist_Latitude" xml:space="preserve"><value>Широта</value></data>
-  <data name="Hist_Longitude" xml:space="preserve"><value>Долгота</value></data>
-  <data name="Hist_Date" xml:space="preserve"><value>Дата</value></data>
-  <data name="Hist_Notes" xml:space="preserve"><value>Заметки</value></data>
-  <data name="Hist_Close" xml:space="preserve"><value>Закрыть</value></data>
-  <data name="Hist_LoadError" xml:space="preserve"><value>Ошибка загрузки сессий.</value></data>
-  <data name="Plan_Title_New" xml:space="preserve"><value>Новая сессия</value></data>
-  <data name="Plan_Title_Edit" xml:space="preserve"><value>Редактировать сессию</value></data>
-  <data name="Plan_Section_Session" xml:space="preserve"><value>Данные сессии</value></data>
-  <data name="Plan_Section_Targets" xml:space="preserve"><value>Наблюдаемые объекты</value></data>
-  <data name="Plan_SessionTitle" xml:space="preserve"><value>Заголовок сессии</value></data>
-  <data name="Plan_SessionTitle_Required" xml:space="preserve"><value>Заголовок обязателен</value></data>
-  <data name="Plan_Date" xml:space="preserve"><value>Дата</value></data>
-  <data name="Plan_Time" xml:space="preserve"><value>Время начала</value></data>
-  <data name="Plan_Location" xml:space="preserve"><value>Местоположение</value></data>
-  <data name="Plan_LocationName" xml:space="preserve"><value>Название места</value></data>
-  <data name="Plan_Seeing" xml:space="preserve"><value>Видимость (1-5)</value></data>
-  <data name="Plan_Transparency" xml:space="preserve"><value>Прозрачность (1-5)</value></data>
-  <data name="Plan_Notes" xml:space="preserve"><value>Заметки</value></data>
-  <data name="Plan_AddTarget" xml:space="preserve"><value>+ Добавить объект</value></data>
-  <data name="Plan_Target_Name" xml:space="preserve"><value>Имя объекта</value></data>
-  <data name="Plan_Target_Name_Required" xml:space="preserve"><value>Имя обязательно</value></data>
-  <data name="Plan_Target_Type" xml:space="preserve"><value>Тип</value></data>
-  <data name="Plan_Target_Constellation" xml:space="preserve"><value>Созвездие</value></data>
-  <data name="Plan_Target_Eyepiece" xml:space="preserve"><value>Окуляр</value></data>
-  <data name="Plan_Target_Magnification" xml:space="preserve"><value>Увеличение</value></data>
-  <data name="Plan_Target_Rating" xml:space="preserve"><value>Оценка</value></data>
-  <data name="Plan_Target_Notes" xml:space="preserve"><value>Заметки об объекте</value></data>
-  <data name="Plan_Save" xml:space="preserve"><value>Сохранить сессию</value></data>
-  <data name="Plan_Saving" xml:space="preserve"><value>Сохранение…</value></data>
-  <data name="Plan_Cancel" xml:space="preserve"><value>Отмена</value></data>
-  <data name="Plan_SaveError" xml:space="preserve"><value>Ошибка при сохранении сессии.</value></data>
-  <data name="Plan_LoadError" xml:space="preserve"><value>Ошибка загрузки сессии.</value></data>
-  <data name="Plan_Type_Planet" xml:space="preserve"><value>Планета</value></data>
-  <data name="Plan_Type_Moon" xml:space="preserve"><value>Луна</value></data>
-  <data name="Plan_Type_DeepSkyObject" xml:space="preserve"><value>Объект глубокого космоса</value></data>
-  <data name="Plan_Type_DoubleStar" xml:space="preserve"><value>Двойная звезда</value></data>
-  <data name="Plan_Type_Asteroid" xml:space="preserve"><value>Астероид</value></data>
-  <data name="Plan_Type_Comet" xml:space="preserve"><value>Комета</value></data>
-  <data name="Plan_Type_Other" xml:space="preserve"><value>Другое</value></data>
+  <data name="AppName" xml:space="preserve">
+    <value>ObservApp</value>
+  </data>
+  <data name="AppVersion" xml:space="preserve">
+    <value>v1.0 · .NET 10</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Загрузка ObservApp…</value>
+  </data>
+  <data name="Error_Unhandled" xml:space="preserve">
+    <value>Произошла непредвиденная ошибка.</value>
+  </data>
+  <data name="Action_Reload" xml:space="preserve">
+    <value>Перезагрузить</value>
+  </data>
+  <data name="Nav_Home" xml:space="preserve">
+    <value>Главная</value>
+  </data>
+  <data name="Nav_Map" xml:space="preserve">
+    <value>Карта</value>
+  </data>
+  <data name="Nav_Planning" xml:space="preserve">
+    <value>Новое планирование</value>
+  </data>
+  <data name="Nav_Ephemeris" xml:space="preserve">
+    <value>Эфемериды</value>
+  </data>
+  <data name="Nav_EclipseCalc" xml:space="preserve">
+    <value>Калькулятор затмений</value>
+  </data>
+  <data name="Nav_History" xml:space="preserve">
+    <value>История</value>
+  </data>
+  <data name="Nav_Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Nav_About" xml:space="preserve">
+    <value>О приложении</value>
+  </data>
+  <data name="Nav_Exit" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="Auth_SignIn" xml:space="preserve">
+    <value>Войти</value>
+  </data>
+  <data name="Auth_SignUp" xml:space="preserve">
+    <value>Зарегистрироваться</value>
+  </data>
+  <data name="Auth_Email" xml:space="preserve">
+    <value>Электронная почта</value>
+  </data>
+  <data name="Auth_Password" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="Auth_ConfirmPassword" xml:space="preserve">
+    <value>Подтвердите пароль</value>
+  </data>
+  <data name="Auth_DisplayName" xml:space="preserve">
+    <value>Отображаемое имя</value>
+  </data>
+  <data name="Auth_NoAccount" xml:space="preserve">
+    <value>Нет аккаунта? Зарегистрируйтесь</value>
+  </data>
+  <data name="Auth_SignIn_Error" xml:space="preserve">
+    <value>Ошибка входа</value>
+  </data>
+  <data name="Auth_SignUp_Error" xml:space="preserve">
+    <value>Ошибка регистрации</value>
+  </data>
+  <data name="Auth_DisplayName_Required" xml:space="preserve">
+    <value>Требуется отображаемое имя</value>
+  </data>
+  <data name="Auth_SignOut_Error" xml:space="preserve">
+    <value>Ошибка выхода: {0}</value>
+  </data>
+  <data name="Error_Unexpected" xml:space="preserve">
+    <value>Непредвиденная ошибка: {0}</value>
+  </data>
+  <data name="Auth_HasAccount" xml:space="preserve">
+    <value>Уже есть аккаунт? Войти</value>
+  </data>
+  <data name="Auth_ForgotPassword" xml:space="preserve">
+    <value>Забыли пароль?</value>
+  </data>
+  <data name="Auth_PasswordMismatch" xml:space="preserve">
+    <value>Пароли не совпадают</value>
+  </data>
+  <data name="Auth_SigningIn" xml:space="preserve">
+    <value>Вход...</value>
+  </data>
+  <data name="Auth_CreatingAccount" xml:space="preserve">
+    <value>Создание аккаунта…</value>
+  </data>
+  <data name="Auth_WelcomeBack" xml:space="preserve">
+    <value>С возвращением</value>
+  </data>
+  <data name="Auth_CreateAccount" xml:space="preserve">
+    <value>Создать аккаунт</value>
+  </data>
+  <data name="Nav_Section_Main" xml:space="preserve">
+    <value>Главная</value>
+  </data>
+  <data name="Nav_Section_Planning" xml:space="preserve">
+    <value>Планирование</value>
+  </data>
+  <data name="Nav_Section_Tools" xml:space="preserve">
+    <value>Инструменты</value>
+  </data>
+  <data name="Nav_Section_Personal" xml:space="preserve">
+    <value>Личное</value>
+  </data>
+  <data name="NotFound_Title" xml:space="preserve">
+    <value>Страница не найдена</value>
+  </data>
+  <data name="NotFound_Message" xml:space="preserve">
+    <value>Контент, который вы ищете, не существует или был перемещен.</value>
+  </data>
+  <data name="NotFound_Back" xml:space="preserve">
+    <value>← Вернуться на главную</value>
+  </data>
+  <data name="Home_Title" xml:space="preserve">
+    <value>Главная</value>
+  </data>
+  <data name="Home_Welcome" xml:space="preserve">
+    <value>Добро пожаловать в ObservApp</value>
+  </data>
+  <data name="Action_Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Action_Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Action_Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Action_Edit" xml:space="preserve">
+    <value>Редактировать</value>
+  </data>
+  <data name="Action_Share" xml:space="preserve">
+    <value>Поделиться</value>
+  </data>
+  <data name="Action_Refresh" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
+  <data name="Action_Close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="Action_Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="Action_Add" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="Status_Loading" xml:space="preserve">
+    <value>Загрузка…</value>
+  </data>
+  <data name="Status_Saving" xml:space="preserve">
+    <value>Сохранение…</value>
+  </data>
+  <data name="Status_Success" xml:space="preserve">
+    <value>Операция успешно завершена.</value>
+  </data>
+  <data name="Status_Error" xml:space="preserve">
+    <value>Произошла ошибка. Пожалуйста, попробуйте снова.</value>
+  </data>
+  <data name="Status_NoData" xml:space="preserve">
+    <value>Нет данных.</value>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Settings_Section_Language" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="Settings_Language_Label" xml:space="preserve">
+    <value>Язык приложения</value>
+  </data>
+  <data name="Settings_Language_Hint" xml:space="preserve">
+    <value>Выберите язык для ObservApp. По умолчанию используется язык устройства.</value>
+  </data>
+  <data name="Settings_Language_Applied" xml:space="preserve">
+    <value>Язык успешно применен.</value>
+  </data>
+  <data name="Settings_Action_Apply" xml:space="preserve">
+    <value>Применить</value>
+  </data>
+  <data name="Settings_Language_Applying" xml:space="preserve">
+    <value>Применение языка…</value>
+  </data>
+  <data name="Calc_Hub_Title" xml:space="preserve">
+    <value>Калькуляторы</value>
+  </data>
+  <data name="Calc_Hub_Subtitle" xml:space="preserve">
+    <value>Инструменты для астрофотографии и визуальных наблюдений</value>
+  </data>
+  <data name="Calc_Badge_Available" xml:space="preserve">
+    <value>Доступно</value>
+  </data>
+  <data name="Calc_Badge_Soon" xml:space="preserve">
+    <value>Скоро</value>
+  </data>
+  <data name="Calc_Eclipse_Title" xml:space="preserve">
+    <value>Экспозиция для затмений</value>
+  </data>
+  <data name="Calc_Eclipse_Desc" xml:space="preserve">
+    <value>Рассчитайте время экспозиции для каждой фазы затмения по формуле Q NASA</value>
+  </data>
+  <data name="Calc_Magnification_Title" xml:space="preserve">
+    <value>Увеличение и выходной зрачок</value>
+  </data>
+  <data name="Calc_Magnification_Desc" xml:space="preserve">
+    <value>Определите оптимальное увеличение и выходной зрачок для вашего телескопа и окуляра</value>
+  </data>
+  <data name="Calc_Resolution_Title" xml:space="preserve">
+    <value>Предел разрешения</value>
+  </data>
+  <data name="Calc_Resolution_Desc" xml:space="preserve">
+    <value>Рассчитайте теоретический предел разрешения (Рэлея и Доуэса) телескопа</value>
+  </data>
+  <data name="Calc_PlateScale_Title" xml:space="preserve">
+    <value>Масштаб изображения</value>
+  </data>
+  <data name="Calc_PlateScale_Desc" xml:space="preserve">
+    <value>Получите масштаб в ''/px и полное поле для вашей астрофотографии</value>
+  </data>
+  <data name="Calc_Eclipse_Formula" xml:space="preserve">
+    <value>Формула NASA: t = f² / (ISO · 2^Q)</value>
+  </data>
+  <data name="Calc_Eclipse_SafetyNote" xml:space="preserve">
+    <value>Для частных и кольцеобразных фаз нужен сертифицированный солнечный фильтр. Калькулятор ориентировочный; всегда делайте брекетинг.</value>
+  </data>
+  <data name="Calc_Eclipse_Section_Input" xml:space="preserve">
+    <value>Данные оборудования</value>
+  </data>
+  <data name="Calc_Eclipse_Section_Results" xml:space="preserve">
+    <value>Рекомендуемые скорости</value>
+  </data>
+  <data name="Calc_Eclipse_Focal" xml:space="preserve">
+    <value>Фокусное расстояние</value>
+  </data>
+  <data name="Calc_Eclipse_Aperture" xml:space="preserve">
+    <value>Апертура</value>
+  </data>
+  <data name="Calc_Eclipse_Sensor" xml:space="preserve">
+    <value>Сенсор</value>
+  </data>
+  <data name="Calc_Eclipse_SolarDiam" xml:space="preserve">
+    <value>Диаметр Солнца на матрице</value>
+  </data>
+  <data name="Calc_Eclipse_SensorCoverage" xml:space="preserve">
+    <value>% ширины сенсора</value>
+  </data>
+  <data name="Calc_Eclipse_Col_Phase" xml:space="preserve">
+    <value>Явление</value>
+  </data>
+  <data name="Calc_Eclipse_Col_Exact" xml:space="preserve">
+    <value>Точное время</value>
+  </data>
+  <data name="Calc_Eclipse_Col_Suggested" xml:space="preserve">
+    <value>Рекомендуемое</value>
+  </data>
+  <data name="Calc_Eclipse_FillFields" xml:space="preserve">
+    <value>Введите данные оборудования, чтобы увидеть рекомендуемое время.</value>
+  </data>
+  <data name="Calc_Eclipse_BracketingNote" xml:space="preserve">
+    <value>Всегда делайте брекетинг ±1 EV. Значения являются приблизительными.</value>
+  </data>
+  <data name="Nav_Calculators" xml:space="preserve">
+    <value>Калькуляторы</value>
+  </data>
+  <data name="Calc_FOV_Title" xml:space="preserve">
+    <value>Поле зрения (FOV)</value>
+  </data>
+  <data name="Calc_FOV_Desc" xml:space="preserve">
+    <value>Рассчитайте истинное и видимое поле зрения для комбинаций телескоп-окуляр</value>
+  </data>
+  <data name="FOV_Title" xml:space="preserve">
+    <value>Поле зрения (FOV)</value>
+  </data>
+  <data name="FOV_Subtitle" xml:space="preserve">
+    <value>Рассчитайте реальное и видимое поле зрения для вашей комбинации</value>
+  </data>
+  <data name="FOV_TelescopeSection" xml:space="preserve">
+    <value>Телескоп</value>
+  </data>
+  <data name="FOV_EyepieceSection" xml:space="preserve">
+    <value>Окуляр</value>
+  </data>
+  <data name="FOV_FocalLength" xml:space="preserve">
+    <value>Фокусное расстояние (мм)</value>
+  </data>
+  <data name="FOV_Aperture" xml:space="preserve">
+    <value>Апертура (мм)</value>
+  </data>
+  <data name="FOV_EyepieceFocal" xml:space="preserve">
+    <value>Фокусное расстояние окуляра (мм)</value>
+  </data>
+  <data name="FOV_AFOV" xml:space="preserve">
+    <value>Видимое поле зрения (AFOV °)</value>
+  </data>
+  <data name="FOV_Calculate" xml:space="preserve">
+    <value>Рассчитать</value>
+  </data>
+  <data name="FOV_Reset" xml:space="preserve">
+    <value>Сбросить</value>
+  </data>
+  <data name="FOV_Results" xml:space="preserve">
+    <value>Результаты</value>
+  </data>
+  <data name="FOV_Magnification" xml:space="preserve">
+    <value>Увеличение</value>
+  </data>
+  <data name="FOV_TFOV" xml:space="preserve">
+    <value>Истинное поле зрения (TFOV)</value>
+  </data>
+  <data name="FOV_ExitPupil" xml:space="preserve">
+    <value>Выходной зрачок</value>
+  </data>
+  <data name="FOV_FocalRatio" xml:space="preserve">
+    <value>Относительное отверстие (f/)</value>
+  </data>
+  <data name="FOV_Degrees" xml:space="preserve">
+    <value>градусов</value>
+  </data>
+  <data name="FOV_Millimeters" xml:space="preserve">
+    <value>мм</value>
+  </data>
+  <data name="FOV_Times" xml:space="preserve">
+    <value>x</value>
+  </data>
+  <data name="FOV_MoonLabel" xml:space="preserve">
+    <value>Полная Луна: 0,5°</value>
+  </data>
+  <data name="FOV_PleiadesFOV" xml:space="preserve">
+    <value>Плеяды: ~2°</value>
+  </data>
+  <data name="FOV_FormulasTitle" xml:space="preserve">
+    <value>Формулы и ссылки</value>
+  </data>
+  <data name="FOV_FormulaMAG" xml:space="preserve">
+    <value>Увеличение = Фокусное расстояние телескопа ÷ Фокусное расстояние окуляра</value>
+  </data>
+  <data name="FOV_FormulaTFOV" xml:space="preserve">
+    <value>Истинное FOV (TFOV) = AFOV ÷ Увеличение</value>
+  </data>
+  <data name="FOV_FormulaEP" xml:space="preserve">
+    <value>Выходной зрачок = Апертура ÷ Увеличение</value>
+  </data>
+  <data name="FOV_FormulaFR" xml:space="preserve">
+    <value>Светосила = Фокусное расстояние ÷ Апертура</value>
+  </data>
+  <data name="FOV_ReferencesTitle" xml:space="preserve">
+    <value>Астрономические ссылки</value>
+  </data>
+  <data name="FOV_Tip_ExitPupil" xml:space="preserve">
+    <value>Идеальный выходной зрачок: 5-7 мм для темного неба, 2-4 мм для планет.</value>
+  </data>
+  <data name="FOV_Tip_Magnification" xml:space="preserve">
+    <value>Максимально полезное увеличение составляет около 50х на дюйм апертуры (2х на мм).</value>
+  </data>
+  <data name="FOV_MaxMagWarning" xml:space="preserve">
+    <value>⚠ Близко к максимально полезному увеличению</value>
+  </data>
+  <data name="FOV_GoodExitPupil" xml:space="preserve">
+    <value>✓ Оптимальный выходной зрачок для объектов глубокого космоса</value>
+  </data>
+  <data name="FOV_PlanetaryExitPupil" xml:space="preserve">
+    <value>✓ Подходящий выходной зрачок для наблюдения за планетами</value>
+  </data>
+  <data name="FOV_NarrowExitPupil" xml:space="preserve">
+    <value>⚠ Очень маленький выходной зрачок — очень тусклое изображение</value>
+  </data>
+  <data name="Nav_CalculadoraFOV" xml:space="preserve">
+    <value>Поле зрения (FOV)</value>
+  </data>
+  <data name="Home_Subtitle" xml:space="preserve">
+    <value>Ваш помощник для планирования и записи астрономических наблюдений. Эфемериды, калькуляторы и карты в одном месте.</value>
+  </data>
+  <data name="Home_QuickAccess" xml:space="preserve">
+    <value>Быстрый доступ</value>
+  </data>
+  <data name="Home_Card_Map_Desc" xml:space="preserve">
+    <value>Найдите места с темным небом поблизости</value>
+  </data>
+  <data name="Home_Card_Planning_Desc" xml:space="preserve">
+    <value>Спланируйте следующую сессию наблюдений</value>
+  </data>
+  <data name="Home_Card_Ephemeris_Desc" xml:space="preserve">
+    <value>Положения планет, восходы и заходы солнца и луны</value>
+  </data>
+  <data name="Home_Card_Calculators_Desc" xml:space="preserve">
+    <value>FOV, экспозиция затмений, увеличение и другое</value>
+  </data>
+  <data name="Home_Welcome_User" xml:space="preserve">
+    <value>Добро пожаловать, {0}</value>
+  </data>
+  <data name="Home_Sessions_Count" xml:space="preserve">
+    <value>Записано сессий: {0}</value>
+  </data>
+  <data name="Home_Recent_Title" xml:space="preserve">
+    <value>Ваши последние наблюдения</value>
+  </data>
+  <data name="Home_Recent_Empty" xml:space="preserve">
+    <value>Пока нет сессий. Начните сегодня!</value>
+  </data>
+  <data name="Home_Recent_ViewAll" xml:space="preserve">
+    <value>Смотреть всю историю</value>
+  </data>
+  <data name="Home_Recent_StartNow" xml:space="preserve">
+    <value>Записать первую сессию</value>
+  </data>
+  <data name="Home_Lock_Hint" xml:space="preserve">
+    <value>Войдите, чтобы получить доступ</value>
+  </data>
+  <data name="Home_Features_Title" xml:space="preserve">
+    <value>Что вы можете сделать?</value>
+  </data>
+  <data name="Home_Feature1_Title" xml:space="preserve">
+    <value>Визуальные наблюдения</value>
+  </data>
+  <data name="Home_Feature1_Desc" xml:space="preserve">
+    <value>Рассчитайте поле зрения, увеличение и выходной зрачок</value>
+  </data>
+  <data name="Home_Feature2_Title" xml:space="preserve">
+    <value>Калькуляторы</value>
+  </data>
+  <data name="Home_Feature2_Desc" xml:space="preserve">
+    <value>Точные инструменты для астрофотографии: масштаб, экспозиция и т.д.</value>
+  </data>
+  <data name="Home_Feature3_Title" xml:space="preserve">
+    <value>Астрофотография</value>
+  </data>
+  <data name="Home_Feature3_Desc" xml:space="preserve">
+    <value>Рассчитайте время экспозиции по формуле NASA Q для каждой фазы затмения</value>
+  </data>
+  <data name="Home_Feature4_Title" xml:space="preserve">
+    <value>История</value>
+  </data>
+  <data name="Home_Feature4_Desc" xml:space="preserve">
+    <value>Сохраняйте и просматривайте журнал всех ваших прошлых сессий</value>
+  </data>
+  <data name="Calc_SolLuna_Title" xml:space="preserve">
+    <value>Солнце и Луна</value>
+  </data>
+  <data name="Calc_SolLuna_Desc" xml:space="preserve">
+    <value>Восход, заход, сумерки, фазы луны, солнцестояния и равноденствия для любой даты и места</value>
+  </data>
+  <data name="SolLuna_Title" xml:space="preserve">
+    <value>Калькулятор Солнца и Луны</value>
+  </data>
+  <data name="SolLuna_Subtitle" xml:space="preserve">
+    <value>Точные астрономические данные для любой даты (1901–2099) и координат WGS-84</value>
+  </data>
+  <data name="SolLuna_Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="SolLuna_Location" xml:space="preserve">
+    <value>Местоположение (WGS-84)</value>
+  </data>
+  <data name="SolLuna_Latitude" xml:space="preserve">
+    <value>Широта (°)</value>
+  </data>
+  <data name="SolLuna_Longitude" xml:space="preserve">
+    <value>Долгота (°)</value>
+  </data>
+  <data name="SolLuna_Altitude" xml:space="preserve">
+    <value>Высота</value>
+  </data>
+  <data name="SolLuna_Tab_Sun" xml:space="preserve">
+    <value>Солнце</value>
+  </data>
+  <data name="SolLuna_Tab_Moon" xml:space="preserve">
+    <value>Луна</value>
+  </data>
+  <data name="SolLuna_Tab_Events" xml:space="preserve">
+    <value>Ежегодные события</value>
+  </data>
+  <data name="SolLuna_Sun_Times" xml:space="preserve">
+    <value>Ключевое время Солнца</value>
+  </data>
+  <data name="SolLuna_Dawn_Astronomical" xml:space="preserve">
+    <value>Астрономический рассвет</value>
+  </data>
+  <data name="SolLuna_Dawn_Nautical" xml:space="preserve">
+    <value>Навигационный рассвет</value>
+  </data>
+  <data name="SolLuna_Dawn_Civil" xml:space="preserve">
+    <value>Гражданский рассвет</value>
+  </data>
+  <data name="SolLuna_Sunrise" xml:space="preserve">
+    <value>Восход солнца</value>
+  </data>
+  <data name="SolLuna_SolarNoon" xml:space="preserve">
+    <value>Солнечный полдень</value>
+  </data>
+  <data name="SolLuna_Sunset" xml:space="preserve">
+    <value>Закат солнца</value>
+  </data>
+  <data name="SolLuna_Dusk_Civil" xml:space="preserve">
+    <value>Гражданские сумерки</value>
+  </data>
+  <data name="SolLuna_Dusk_Nautical" xml:space="preserve">
+    <value>Навигационные сумерки</value>
+  </data>
+  <data name="SolLuna_Dusk_Astronomical" xml:space="preserve">
+    <value>Астрономические сумерки</value>
+  </data>
+  <data name="SolLuna_DayLength" xml:space="preserve">
+    <value>Долгота дня</value>
+  </data>
+  <data name="SolLuna_Sun_Position" xml:space="preserve">
+    <value>Положение Солнца</value>
+  </data>
+  <data name="SolLuna_AzimuthRise" xml:space="preserve">
+    <value>Азимут восхода</value>
+  </data>
+  <data name="SolLuna_AzimuthSet" xml:space="preserve">
+    <value>Азимут заката</value>
+  </data>
+  <data name="SolLuna_MaxAltitude" xml:space="preserve">
+    <value>Макс. высота</value>
+  </data>
+  <data name="SolLuna_Declination" xml:space="preserve">
+    <value>Склонение</value>
+  </data>
+  <data name="SolLuna_RightAscension" xml:space="preserve">
+    <value>Прямое восхождение</value>
+  </data>
+  <data name="SolLuna_EquationOfTime" xml:space="preserve">
+    <value>Уравнение времени</value>
+  </data>
+  <data name="SolLuna_Distance" xml:space="preserve">
+    <value>Расстояние</value>
+  </data>
+  <data name="SolLuna_Sun_Path" xml:space="preserve">
+    <value>Путь Солнца</value>
+  </data>
+  <data name="SolLuna_Moon_Times" xml:space="preserve">
+    <value>Ключевое время Луны</value>
+  </data>
+  <data name="SolLuna_Moonrise" xml:space="preserve">
+    <value>Восход Луны</value>
+  </data>
+  <data name="SolLuna_MoonTransit" xml:space="preserve">
+    <value>Транзит Луны</value>
+  </data>
+  <data name="SolLuna_Moonset" xml:space="preserve">
+    <value>Заход Луны</value>
+  </data>
+  <data name="SolLuna_Moon_Position" xml:space="preserve">
+    <value>Положение Луны</value>
+  </data>
+  <data name="SolLuna_AngularDiam" xml:space="preserve">
+    <value>Угловой диаметр</value>
+  </data>
+  <data name="SolLuna_Moon_Phase" xml:space="preserve">
+    <value>Лунная фаза</value>
+  </data>
+  <data name="SolLuna_NextNewMoon" xml:space="preserve">
+    <value>Следующее новолуние</value>
+  </data>
+  <data name="SolLuna_NextFullMoon" xml:space="preserve">
+    <value>Следующее полнолуние</value>
+  </data>
+  <data name="SolLuna_LunarAge" xml:space="preserve">
+    <value>Возраст луны</value>
+  </data>
+  <data name="SolLuna_Days" xml:space="preserve">
+    <value>дней</value>
+  </data>
+  <data name="SolLuna_Moon_Path" xml:space="preserve">
+    <value>Путь Луны</value>
+  </data>
+  <data name="SolLuna_Events_Year" xml:space="preserve">
+    <value>Астрономические события</value>
+  </data>
+  <data name="SolLuna_Solstices_Equinoxes" xml:space="preserve">
+    <value>Солнцестояния и равноденствия</value>
+  </data>
+  <data name="SolLuna_VernalEquinox" xml:space="preserve">
+    <value>Весеннее равноденствие</value>
+  </data>
+  <data name="SolLuna_SummerSolstice" xml:space="preserve">
+    <value>Летнее солнцестояние</value>
+  </data>
+  <data name="SolLuna_AutumnalEquinox" xml:space="preserve">
+    <value>Осеннее равноденствие</value>
+  </data>
+  <data name="SolLuna_WinterSolstice" xml:space="preserve">
+    <value>Зимнее солнцестояние</value>
+  </data>
+  <data name="SolLuna_Moon_Phases_Year" xml:space="preserve">
+    <value>Фазы луны в году</value>
+  </data>
+  <data name="SolLuna_Phase_New" xml:space="preserve">
+    <value>Новолуние</value>
+  </data>
+  <data name="SolLuna_Phase_WaxCrescent" xml:space="preserve">
+    <value>Молодая луна</value>
+  </data>
+  <data name="SolLuna_Phase_FirstQuarter" xml:space="preserve">
+    <value>Первая четверть</value>
+  </data>
+  <data name="SolLuna_Phase_WaxGibbous" xml:space="preserve">
+    <value>Прибывающая луна</value>
+  </data>
+  <data name="SolLuna_Phase_Full" xml:space="preserve">
+    <value>Полнолуние</value>
+  </data>
+  <data name="SolLuna_Phase_WanGibbous" xml:space="preserve">
+    <value>Убывающая луна</value>
+  </data>
+  <data name="SolLuna_Phase_LastQuarter" xml:space="preserve">
+    <value>Последняя четверть</value>
+  </data>
+  <data name="SolLuna_Phase_WanCrescent" xml:space="preserve">
+    <value>Старая луна</value>
+  </data>
+  <data name="SolLuna_Twi_Astro" xml:space="preserve">
+    <value>Астрономическая ночь</value>
+  </data>
+  <data name="SolLuna_Twi_Naut" xml:space="preserve">
+    <value>Навигационные сумерки</value>
+  </data>
+  <data name="SolLuna_Twi_Civil" xml:space="preserve">
+    <value>Гражданские сумерки</value>
+  </data>
+  <data name="SolLuna_Daytime" xml:space="preserve">
+    <value>Дневное время</value>
+  </data>
+  <data name="SolLuna_NoData" xml:space="preserve">
+    <value>Не удалось рассчитать данные для этой даты и места.</value>
+  </data>
+  <data name="SolLuna_UseGPS" xml:space="preserve">
+    <value>Использовать GPS</value>
+  </data>
+  <data name="SolLuna_Eclipses_Year" xml:space="preserve">
+    <value>Затмения в году</value>
+  </data>
+  <data name="SolLuna_Magnitude_Desc" xml:space="preserve">
+    <value>Магнитуда затмения (закрытая часть диаметра)</value>
+  </data>
+  <data name="SolLuna_Contact_C1_Desc" xml:space="preserve">
+    <value>C1: Начало частной фазы</value>
+  </data>
+  <data name="SolLuna_Contact_C2_Desc" xml:space="preserve">
+    <value>C2: Начало полной/кольцеобразной фазы</value>
+  </data>
+  <data name="SolLuna_Contact_C3_Desc" xml:space="preserve">
+    <value>C3: Конец полной/кольцеобразной фазы</value>
+  </data>
+  <data name="SolLuna_Contact_C4_Desc" xml:space="preserve">
+    <value>C4: Конец частной фазы</value>
+  </data>
+  <data name="FOV_SimulatorTitle" xml:space="preserve">
+    <value>Симуляция поля зрения</value>
+  </data>
+  <data name="SolLuna_Eclipse_Solar" xml:space="preserve">
+    <value>Солнечное затмение</value>
+  </data>
+  <data name="SolLuna_Eclipse_Lunar" xml:space="preserve">
+    <value>Лунное затмение</value>
+  </data>
+  <data name="SolLuna_Eclipse_Total" xml:space="preserve">
+    <value>Полное</value>
+  </data>
+  <data name="SolLuna_Eclipse_Annular" xml:space="preserve">
+    <value>Кольцеобразное</value>
+  </data>
+  <data name="SolLuna_Eclipse_Partial" xml:space="preserve">
+    <value>Частное</value>
+  </data>
+  <data name="SolLuna_Eclipse_Penumbral" xml:space="preserve">
+    <value>Полутеневое</value>
+  </data>
+  <data name="Calc_EclipseTimer_Title" xml:space="preserve">
+    <value>Таймер затмений</value>
+  </data>
+  <data name="Calc_EclipseTimer_Desc" xml:space="preserve">
+    <value>Контакты C1-C4, бриллиантовое кольцо и оповещения в реальном времени</value>
+  </data>
+  <data name="EclipseTimer_Title" xml:space="preserve">
+    <value>Калькулятор таймера затмений</value>
+  </data>
+  <data name="EclipseTimer_Subtitle" xml:space="preserve">
+    <value>Точные контакты для вашего местоположения со звуковыми оповещениями</value>
+  </data>
+  <data name="EclipseTimer_SelectEclipse" xml:space="preserve">
+    <value>Выберите затмение</value>
+  </data>
+  <data name="EclipseTimer_Location" xml:space="preserve">
+    <value>Местоположение</value>
+  </data>
+  <data name="EclipseTimer_UseGPS" xml:space="preserve">
+    <value>Использовать GPS</value>
+  </data>
+  <data name="EclipseTimer_Calculate" xml:space="preserve">
+    <value>Рассчитать для моего местоположения</value>
+  </data>
+  <data name="EclipseTimer_Type_Total" xml:space="preserve">
+    <value>Полное затмение</value>
+  </data>
+  <data name="EclipseTimer_Type_Annular" xml:space="preserve">
+    <value>Кольцеобразное затмение</value>
+  </data>
+  <data name="EclipseTimer_Type_Partial" xml:space="preserve">
+    <value>Частное затмение</value>
+  </data>
+  <data name="EclipseTimer_Type_None" xml:space="preserve">
+    <value>Не видно из этого места</value>
+  </data>
+  <data name="EclipseTimer_MaxCoverage" xml:space="preserve">
+    <value>Максимальное покрытие</value>
+  </data>
+  <data name="EclipseTimer_NextEvent" xml:space="preserve">
+    <value>Следующее событие</value>
+  </data>
+  <data name="EclipseTimer_AudioAlerts" xml:space="preserve">
+    <value>Звуковые оповещения</value>
+  </data>
+  <data name="EclipseTimer_AudioOn" xml:space="preserve">
+    <value>Оповещения включены</value>
+  </data>
+  <data name="EclipseTimer_AudioOff" xml:space="preserve">
+    <value>Оповещения выключены</value>
+  </data>
+  <data name="EclipseTimer_SunBelowHorizon" xml:space="preserve">
+    <value>Во время этого затмения Солнце будет ниже горизонта</value>
+  </data>
+  <data name="EclipseTimer_NotVisible" xml:space="preserve">
+    <value>Это затмение не видно из вашего местоположения</value>
+  </data>
+  <data name="Eclipse_C1" xml:space="preserve">
+    <value>C1 — Первый контакт</value>
+  </data>
+  <data name="Eclipse_C2" xml:space="preserve">
+    <value>C2 — Начало полной фазы</value>
+  </data>
+  <data name="Eclipse_C3" xml:space="preserve">
+    <value>C3 — Конец полной фазы</value>
+  </data>
+  <data name="Eclipse_C4" xml:space="preserve">
+    <value>C4 — Конец затмения</value>
+  </data>
+  <data name="Eclipse_ShadowBands" xml:space="preserve">
+    <value>Теневые полосы</value>
+  </data>
+  <data name="Eclipse_BailyBeadsStart" xml:space="preserve">
+    <value>Чётки Бейли (начало)</value>
+  </data>
+  <data name="Eclipse_BailyBeadsEnd" xml:space="preserve">
+    <value>Чётки Бейли (конец)</value>
+  </data>
+  <data name="Eclipse_DiamondRingStart" xml:space="preserve">
+    <value>Бриллиантовое кольцо (начало)</value>
+  </data>
+  <data name="Eclipse_DiamondRingEnd" xml:space="preserve">
+    <value>Бриллиантовое кольцо (конец)</value>
+  </data>
+  <data name="Eclipse_Maximum" xml:space="preserve">
+    <value>Максимальное затмение</value>
+  </data>
+  <data name="Eclipse_Alert_C1" xml:space="preserve">
+    <value>Первый контакт. Затмение начинается сейчас.</value>
+  </data>
+  <data name="Eclipse_Alert_ShadowBands" xml:space="preserve">
+    <value>Внимание, теневые полосы примерно через минуту.</value>
+  </data>
+  <data name="Eclipse_Alert_BailyStart" xml:space="preserve">
+    <value>Чётки Бейли видны сейчас.</value>
+  </data>
+  <data name="Eclipse_Alert_DiamondStart" xml:space="preserve">
+    <value>Эффект бриллиантового кольца. Полная фаза начнется через секунды.</value>
+  </data>
+  <data name="Eclipse_Alert_C2" xml:space="preserve">
+    <value>Второй контакт. Полная фаза начинается сейчас!</value>
+  </data>
+  <data name="Eclipse_Alert_Maximum" xml:space="preserve">
+    <value>Максимальная фаза.</value>
+  </data>
+  <data name="Eclipse_Alert_C3" xml:space="preserve">
+    <value>Третий контакт. Полная фаза заканчивается сейчас.</value>
+  </data>
+  <data name="Eclipse_Alert_DiamondEnd" xml:space="preserve">
+    <value>Эффект бриллиантового кольца на выходе.</value>
+  </data>
+  <data name="Eclipse_Alert_BailyEnd" xml:space="preserve">
+    <value>Чётки Бейли на выходе.</value>
+  </data>
+  <data name="Eclipse_Alert_C4" xml:space="preserve">
+    <value>Четвертый контакт. Затмение завершилось.</value>
+  </data>
+  <data name="EclipseTimer_In" xml:space="preserve">
+    <value>через</value>
+  </data>
+  <data name="EclipseTimer_Ago" xml:space="preserve">
+    <value>назад</value>
+  </data>
+  <data name="EclipseTimer_Now" xml:space="preserve">
+    <value>СЕЙЧАС!</value>
+  </data>
+  <data name="EclipseTimer_Hours" xml:space="preserve">
+    <value>ч</value>
+  </data>
+  <data name="EclipseTimer_Minutes" xml:space="preserve">
+    <value>мин</value>
+  </data>
+  <data name="EclipseTimer_Seconds" xml:space="preserve">
+    <value>с</value>
+  </data>
+  <data name="EclipseTimer_LocalTime" xml:space="preserve">
+    <value>Местное время</value>
+  </data>
+  <data name="EclipseTimer_Altitude" xml:space="preserve">
+    <value>Высота Солнца</value>
+  </data>
+  <data name="EclipseTimer_Warning_Past" xml:space="preserve">
+    <value>Это затмение уже прошло</value>
+  </data>
+  <data name="EclipseTimer_EclipseType_Global" xml:space="preserve">
+    <value>Глобальный тип</value>
+  </data>
+  <data name="EclipseTimer_Region" xml:space="preserve">
+    <value>Регион максимальной видимости</value>
+  </data>
+  <data name="EclipseTimer_Days" xml:space="preserve">
+    <value>д</value>
+  </data>
+  <data name="EclipseTimer_Contacts" xml:space="preserve">
+    <value>Контакты и события</value>
+  </data>
+  <data name="EclipseTimer_SimStart" xml:space="preserve">
+    <value>Симулировать затмение</value>
+  </data>
+  <data name="EclipseTimer_SimStop" xml:space="preserve">
+    <value>Остановить симуляцию</value>
+  </data>
+  <data name="EclipseTimer_SimActive" xml:space="preserve">
+    <value>Симуляция активна со скоростью</value>
+  </data>
+  <data name="EclipseTimer_TestAlert" xml:space="preserve">
+    <value>Тест звукового оповещения</value>
+  </data>
+  <data name="Settings_FavoriteLocations" xml:space="preserve">
+    <value>Любимые места</value>
+  </data>
+  <data name="Settings_ManageLocations" xml:space="preserve">
+    <value>Управление любимыми местами</value>
+  </data>
+  <data name="FavLoc_Title" xml:space="preserve">
+    <value>Любимые Места</value>
+  </data>
+  <data name="FavLoc_NoLocations" xml:space="preserve">
+    <value>У вас пока нет сохраненных мест.</value>
+  </data>
+  <data name="FavLoc_AddCurrent" xml:space="preserve">
+    <value>Добавить текущее место (GPS)</value>
+  </data>
+  <data name="FavLoc_SearchPlaceholder" xml:space="preserve">
+    <value>Поиск места (напр. Тейде, Лондон...)</value>
+  </data>
+  <data name="FavLoc_SearchBtn" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="FavLoc_Search_NoResults" xml:space="preserve">
+    <value>Результаты не найдены.</value>
+  </data>
+  <data name="FavLoc_Form_Name" xml:space="preserve">
+    <value>Название места</value>
+  </data>
+  <data name="FavLoc_Form_Latitude" xml:space="preserve">
+    <value>Широта (°)</value>
+  </data>
+  <data name="FavLoc_Form_Longitude" xml:space="preserve">
+    <value>Долгота (°)</value>
+  </data>
+  <data name="FavLoc_Form_Altitude" xml:space="preserve">
+    <value>Высота (метры)</value>
+  </data>
+  <data name="FavLoc_Form_Save" xml:space="preserve">
+    <value>Сохранить место</value>
+  </data>
+  <data name="FavLoc_Form_Edit" xml:space="preserve">
+    <value>Редактировать место</value>
+  </data>
+  <data name="FavLoc_Form_DragHint" xml:space="preserve">
+    <value>Вы можете перетащить булавку на карте для уточнения.</value>
+  </data>
+  <data name="FavLoc_Form_Altitude_Loading" xml:space="preserve">
+    <value>Автоматическое вычисление высоты...</value>
+  </data>
+  <data name="FavLoc_Form_Name_Required" xml:space="preserve">
+    <value>Требуется название места.</value>
+  </data>
+  <data name="FavLoc_Select_Placeholder" xml:space="preserve">
+    <value>-- Выберите любимое место --</value>
+  </data>
+  <data name="FavLoc_Select_Manual" xml:space="preserve">
+    <value>Ручные координаты</value>
+  </data>
+  <data name="FavLoc_Select_GPS" xml:space="preserve">
+    <value>Текущее местоположение GPS</value>
+  </data>
+  <data name="Home_Now_Title" xml:space="preserve">
+    <value>Прямо сейчас</value>
+  </data>
+  <data name="Home_Sun_Up" xml:space="preserve">
+    <value>Выше горизонта</value>
+  </data>
+  <data name="Home_Sun_Down" xml:space="preserve">
+    <value>Ниже горизонта</value>
+  </data>
+  <data name="Home_AstroNight" xml:space="preserve">
+    <value>Астрономическая ночь</value>
+  </data>
+  <data name="Home_AstroNight_Active" xml:space="preserve">
+    <value>Активно сейчас ✓</value>
+  </data>
+  <data name="Home_NextFullMoon" xml:space="preserve">
+    <value>Следующее полнолуние</value>
+  </data>
+  <data name="Home_NextEclipse" xml:space="preserve">
+    <value>Следующее солнечное затмение</value>
+  </data>
+  <data name="EclipseTimer_TimelineTitle" xml:space="preserve">
+    <value>Прогресс затмения</value>
+  </data>
+  <data name="Signals_Title" xml:space="preserve">
+    <value>Сигналы</value>
+  </data>
+  <data name="Signals_Subtitle" xml:space="preserve">
+    <value>Астрономические новости и статьи</value>
+  </data>
+  <data name="Signals_Listen" xml:space="preserve">
+    <value>Слушать</value>
+  </data>
+  <data name="Signals_OpenBrowser" xml:space="preserve">
+    <value>Открыть в браузере</value>
+  </data>
+  <data name="Nav_Signals" xml:space="preserve">
+    <value>Сигналы</value>
+    <comment>Lector de noticias RSS</comment>
+  </data>
+  <data name="Signals_Stop" xml:space="preserve">
+    <value>Стоп</value>
+  </data>
+  <data name="Signals_PrevPage" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="Signals_NextPage" xml:space="preserve">
+    <value>Вперед</value>
+  </data>
+  <data name="Signals_Page" xml:space="preserve">
+    <value>Страница</value>
+  </data>
+  <data name="Signals_Articles" xml:space="preserve">
+    <value>статьи</value>
+  </data>
+  <data name="Signals_Filter_All" xml:space="preserve">
+    <value>Все</value>
+  </data>
+  <data name="Signals_Filter_Es" xml:space="preserve">
+    <value>Испанский</value>
+  </data>
+  <data name="Signals_Filter_En" xml:space="preserve">
+    <value>Английский</value>
+  </data>
+  <data name="Signals_PartialError" xml:space="preserve">
+    <value>Некоторые источники не загрузились.</value>
+  </data>
+  <data name="EclipseTimer_DeltaT" xml:space="preserve">
+    <value>ΔT</value>
+  </data>
+  <data name="EclipseTimer_DeltaT_Unit" xml:space="preserve">
+    <value>с</value>
+  </data>
+  <data name="EclipseTimer_Magnitude" xml:space="preserve">
+    <value>Магнитуда</value>
+  </data>
+  <data name="EclipseTimer_Gamma" xml:space="preserve">
+    <value>Гамма</value>
+  </data>
+  <data name="EclipseTimer_TotalityDuration" xml:space="preserve">
+    <value>Продолжительность полной фазы</value>
+  </data>
+  <data name="EclipseTimer_Saros" xml:space="preserve">
+    <value>Сарос</value>
+  </data>
+  <data name="EclipseTimer_Metrics_Title" xml:space="preserve">
+    <value>Данные затмения</value>
+  </data>
+  <data name="Tooltip_Magnitude" xml:space="preserve">
+    <value>Магнитуда: Указывает, какая часть Солнца закрыта. Значения &gt; 1.0 означают полное или кольцеобразное затмение.</value>
+  </data>
+  <data name="Tooltip_Gamma" xml:space="preserve">
+    <value>Гамма: Расстояние от оси тени до центра Земли в радиусах Земли.</value>
+  </data>
+  <data name="Tooltip_DeltaT" xml:space="preserve">
+    <value>ΔT (Дельта Т): Разница между Земным временем (TT) и Всемирным временем (UT).</value>
+  </data>
+  <data name="Tooltip_Saros" xml:space="preserve">
+    <value>Сарос: ~18-летний астрономический цикл для прогнозирования затмений.</value>
+  </data>
+  <data name="Eph_Title" xml:space="preserve">
+    <value>Эфемериды</value>
+  </data>
+  <data name="Eph_Subtitle" xml:space="preserve">
+    <value>Видимые планеты, события и качество ночного неба</value>
+  </data>
+  <data name="Eph_Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="Eph_Location" xml:space="preserve">
+    <value>Местоположение</value>
+  </data>
+  <data name="Eph_Planets_Title" xml:space="preserve">
+    <value>Планеты сегодня ночью</value>
+  </data>
+  <data name="Eph_Planets_Empty" xml:space="preserve">
+    <value>Не удалось вычислить данные о планетах для этой даты.</value>
+  </data>
+  <data name="Eph_Planet_Name" xml:space="preserve">
+    <value>Планета</value>
+  </data>
+  <data name="Eph_Planet_Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="Eph_Planet_Visible" xml:space="preserve">
+    <value>Видно</value>
+  </data>
+  <data name="Eph_Planet_NotVisible" xml:space="preserve">
+    <value>Ниже горизонта</value>
+  </data>
+  <data name="Eph_Planet_Rise" xml:space="preserve">
+    <value>Восход</value>
+  </data>
+  <data name="Eph_Planet_Set" xml:space="preserve">
+    <value>Заход</value>
+  </data>
+  <data name="Eph_Planet_MaxAlt" xml:space="preserve">
+    <value>Макс. выс.</value>
+  </data>
+  <data name="Eph_Planet_Azimuth" xml:space="preserve">
+    <value>Азимут</value>
+  </data>
+  <data name="Eph_Planet_Distance" xml:space="preserve">
+    <value>Расстояние</value>
+  </data>
+  <data name="Eph_Planet_Illumination" xml:space="preserve">
+    <value>Освещенность</value>
+  </data>
+  <data name="Eph_Events_Title" xml:space="preserve">
+    <value>Ближайшие астрономические события</value>
+  </data>
+  <data name="Eph_Events_Empty" xml:space="preserve">
+    <value>Нет заметных событий в ближайшие 90 дней.</value>
+  </data>
+  <data name="Eph_Tonight_Title" xml:space="preserve">
+    <value>Небо сегодня ночью</value>
+  </data>
+  <data name="Eph_Tonight_NoAstroNight" xml:space="preserve">
+    <value>Нет астрономической ночи (Солнце выше -18°)</value>
+  </data>
+  <data name="Eph_Tonight_AstroNight" xml:space="preserve">
+    <value>Начало астрономической ночи</value>
+  </data>
+  <data name="Eph_Tonight_Quality_Good" xml:space="preserve">
+    <value>Хорошо для наблюдений</value>
+  </data>
+  <data name="Eph_Tonight_Quality_Fair" xml:space="preserve">
+    <value>Приемлемо</value>
+  </data>
+  <data name="Eph_Tonight_Quality_Poor" xml:space="preserve">
+    <value>Яркая луна</value>
+  </data>
+  <data name="Eph_Moon_Present" xml:space="preserve">
+    <value>Качество ночи</value>
+  </data>
+  <data name="Eph_Moon_Phase" xml:space="preserve">
+    <value>Фаза луны</value>
+  </data>
+  <data name="Eph_Moon_Illumination" xml:space="preserve">
+    <value>Освещенность луны</value>
+  </data>
+  <data name="Eph_Eclipse_BannerTitle" xml:space="preserve">
+    <value>Предстоящее солнечное затмение в вашем районе</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Total" xml:space="preserve">
+    <value>Полное затмение</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Annular" xml:space="preserve">
+    <value>Кольцеобразное затмение</value>
+  </data>
+  <data name="Eph_Eclipse_Type_Partial" xml:space="preserve">
+    <value>Частное затмение</value>
+  </data>
+  <data name="Eph_Eclipse_Coverage" xml:space="preserve">
+    <value>Максимальное покрытие из вашего местоположения</value>
+  </data>
+  <data name="Eph_Eclipse_DaysLeft" xml:space="preserve">
+    <value>дней</value>
+  </data>
+  <data name="Eph_Eclipse_Details" xml:space="preserve">
+    <value>Смотреть детали затмения →</value>
+  </data>
+  <data name="Eph_Eclipse_NoVisible" xml:space="preserve">
+    <value>В следующем году затмений отсюда не видно</value>
+  </data>
+  <data name="Eph_DSO_Title" xml:space="preserve">
+    <value>Глубокий космос сегодня</value>
+  </data>
+  <data name="Eph_DSO_Subtitle" xml:space="preserve">
+    <value>Объекты, видимые из вашего местоположения (высота &gt; 10°)</value>
+  </data>
+  <data name="Eph_DSO_Loading" xml:space="preserve">
+    <value>Вычисление видимых объектов…</value>
+  </data>
+  <data name="Eph_DSO_Empty" xml:space="preserve">
+    <value>Сегодня ночью из этого места не видно объектов глубокого космоса.</value>
+  </data>
+  <data name="Eph_DSO_MaxAlt" xml:space="preserve">
+    <value>Макс. выс.</value>
+  </data>
+  <data name="Eph_DSO_BestTime" xml:space="preserve">
+    <value>Лучшее время</value>
+  </data>
+  <data name="Eph_DSO_VisibleFrom" xml:space="preserve">
+    <value>Видно с</value>
+  </data>
+  <data name="Eph_DSO_VisibleTo" xml:space="preserve">
+    <value>по</value>
+  </data>
+  <data name="Eph_DSO_Magnitude" xml:space="preserve">
+    <value>Магнитуда</value>
+  </data>
+  <data name="Eph_DSO_Type_Nebula" xml:space="preserve">
+    <value>Туманность</value>
+  </data>
+  <data name="Eph_DSO_Type_OpenCluster" xml:space="preserve">
+    <value>Рассеянное скопление</value>
+  </data>
+  <data name="Eph_DSO_Type_GlobularCluster" xml:space="preserve">
+    <value>Шаровое скопление</value>
+  </data>
+  <data name="Eph_DSO_Type_Galaxy" xml:space="preserve">
+    <value>Галактика</value>
+  </data>
+  <data name="Eph_DSO_Constellation" xml:space="preserve">
+    <value>Созвездие</value>
+  </data>
+  <data name="Eph_DSO_Count" xml:space="preserve">
+    <value>видимых объектов</value>
+  </data>
+  <data name="Auth_SignOut" xml:space="preserve">
+    <value>Выйти</value>
+  </data>
+  <data name="Auth_Error" xml:space="preserve">
+    <value>Ошибка аутентификации</value>
+  </data>
+  <data name="Obs_Sessions" xml:space="preserve">
+    <value>Сессии наблюдений</value>
+  </data>
+  <data name="Obs_NewSession" xml:space="preserve">
+    <value>Новая сессия</value>
+  </data>
+  <data name="Obs_Title" xml:space="preserve">
+    <value>Заголовок</value>
+  </data>
+  <data name="Obs_Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="Obs_Notes" xml:space="preserve">
+    <value>Заметки</value>
+  </data>
+  <data name="Obs_Location" xml:space="preserve">
+    <value>Местоположение</value>
+  </data>
+  <data name="Obs_Seeing" xml:space="preserve">
+    <value>Видимость (Seeing)</value>
+  </data>
+  <data name="Obs_Transparency" xml:space="preserve">
+    <value>Прозрачность</value>
+  </data>
+  <data name="Obs_Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Obs_Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Hist_Title" xml:space="preserve">
+    <value>История наблюдений</value>
+  </data>
+  <data name="Hist_Subtitle" xml:space="preserve">
+    <value>Записано сессий: {0}</value>
+  </data>
+  <data name="Hist_NewSession" xml:space="preserve">
+    <value>Новая сессия</value>
+  </data>
+  <data name="Hist_Empty_Title" xml:space="preserve">
+    <value>Пока нет сессий</value>
+  </data>
+  <data name="Hist_Empty_Desc" xml:space="preserve">
+    <value>Вы еще не записали ни одной сессии наблюдений.</value>
+  </data>
+  <data name="Hist_FirstSession" xml:space="preserve">
+    <value>Записать первую сессию</value>
+  </data>
+  <data name="Hist_Objects" xml:space="preserve">
+    <value>{0} объектов</value>
+  </data>
+  <data name="Hist_Seeing" xml:space="preserve">
+    <value>Видимость</value>
+  </data>
+  <data name="Hist_Transparency" xml:space="preserve">
+    <value>Прозрачность</value>
+  </data>
+  <data name="Hist_ViewDetails" xml:space="preserve">
+    <value>Просмотр деталей</value>
+  </data>
+  <data name="Hist_Edit" xml:space="preserve">
+    <value>Редактировать</value>
+  </data>
+  <data name="Hist_Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Hist_ConfirmDelete" xml:space="preserve">
+    <value>Удалить эту сессию?</value>
+  </data>
+  <data name="Hist_ConfirmYes" xml:space="preserve">
+    <value>Да, удалить</value>
+  </data>
+  <data name="Hist_ConfirmNo" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Hist_Targets_Title" xml:space="preserve">
+    <value>Наблюдаемые объекты</value>
+  </data>
+  <data name="Hist_Target_Eyepiece" xml:space="preserve">
+    <value>Окуляр</value>
+  </data>
+  <data name="Hist_Target_Magnification" xml:space="preserve">
+    <value>Увеличение</value>
+  </data>
+  <data name="Hist_Target_Rating" xml:space="preserve">
+    <value>Оценка</value>
+  </data>
+  <data name="Hist_Location" xml:space="preserve">
+    <value>Местоположение</value>
+  </data>
+  <data name="Hist_Latitude" xml:space="preserve">
+    <value>Широта</value>
+  </data>
+  <data name="Hist_Longitude" xml:space="preserve">
+    <value>Долгота</value>
+  </data>
+  <data name="Hist_Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="Hist_Notes" xml:space="preserve">
+    <value>Заметки</value>
+  </data>
+  <data name="Hist_Close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="Hist_LoadError" xml:space="preserve">
+    <value>Ошибка загрузки сессий.</value>
+  </data>
+  <data name="Plan_Title_New" xml:space="preserve">
+    <value>Новая сессия</value>
+  </data>
+  <data name="Plan_Title_Edit" xml:space="preserve">
+    <value>Редактировать сессию</value>
+  </data>
+  <data name="Plan_Section_Session" xml:space="preserve">
+    <value>Данные сессии</value>
+  </data>
+  <data name="Plan_Section_Targets" xml:space="preserve">
+    <value>Наблюдаемые объекты</value>
+  </data>
+  <data name="Plan_SessionTitle" xml:space="preserve">
+    <value>Заголовок сессии</value>
+  </data>
+  <data name="Plan_SessionTitle_Required" xml:space="preserve">
+    <value>Заголовок обязателен</value>
+  </data>
+  <data name="Plan_Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="Plan_Time" xml:space="preserve">
+    <value>Время начала</value>
+  </data>
+  <data name="Plan_Location" xml:space="preserve">
+    <value>Местоположение</value>
+  </data>
+  <data name="Plan_LocationName" xml:space="preserve">
+    <value>Название места</value>
+  </data>
+  <data name="Plan_Seeing" xml:space="preserve">
+    <value>Видимость (1-5)</value>
+  </data>
+  <data name="Plan_Transparency" xml:space="preserve">
+    <value>Прозрачность (1-5)</value>
+  </data>
+  <data name="Plan_Notes" xml:space="preserve">
+    <value>Заметки</value>
+  </data>
+  <data name="Plan_AddTarget" xml:space="preserve">
+    <value>+ Добавить объект</value>
+  </data>
+  <data name="Plan_Target_Name" xml:space="preserve">
+    <value>Имя объекта</value>
+  </data>
+  <data name="Plan_Target_Name_Required" xml:space="preserve">
+    <value>Имя обязательно</value>
+  </data>
+  <data name="Plan_Target_Type" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="Plan_Target_Constellation" xml:space="preserve">
+    <value>Созвездие</value>
+  </data>
+  <data name="Plan_Target_Eyepiece" xml:space="preserve">
+    <value>Окуляр</value>
+  </data>
+  <data name="Plan_Target_Magnification" xml:space="preserve">
+    <value>Увеличение</value>
+  </data>
+  <data name="Plan_Target_Rating" xml:space="preserve">
+    <value>Оценка</value>
+  </data>
+  <data name="Plan_Target_Notes" xml:space="preserve">
+    <value>Заметки об объекте</value>
+  </data>
+  <data name="Plan_Save" xml:space="preserve">
+    <value>Сохранить сессию</value>
+  </data>
+  <data name="Plan_Saving" xml:space="preserve">
+    <value>Сохранение…</value>
+  </data>
+  <data name="Plan_Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Plan_SaveError" xml:space="preserve">
+    <value>Ошибка при сохранении сессии.</value>
+  </data>
+  <data name="Plan_LoadError" xml:space="preserve">
+    <value>Ошибка загрузки сессии.</value>
+  </data>
+  <data name="Plan_Type_Planet" xml:space="preserve">
+    <value>Планета</value>
+  </data>
+  <data name="Plan_Type_Moon" xml:space="preserve">
+    <value>Луна</value>
+  </data>
+  <data name="Plan_Type_DeepSkyObject" xml:space="preserve">
+    <value>Объект глубокого космоса</value>
+  </data>
+  <data name="Plan_Type_DoubleStar" xml:space="preserve">
+    <value>Двойная звезда</value>
+  </data>
+  <data name="Plan_Type_Asteroid" xml:space="preserve">
+    <value>Астероид</value>
+  </data>
+  <data name="Plan_Type_Comet" xml:space="preserve">
+    <value>Комета</value>
+  </data>
+  <data name="Plan_Type_Other" xml:space="preserve">
+    <value>Другое</value>
+  </data>
+  <data name="Nav_SignIn" xml:space="preserve">
+    <value>Войти</value>
+  </data>
+  <data name="Nav_SignOut" xml:space="preserve">
+    <value>Выйти</value>
+  </data>
+  <data name="Action_Show" xml:space="preserve">
+    <value>Показать</value>
+  </data>
+  <data name="Action_Hide" xml:space="preserve">
+    <value>Скрыть</value>
+  </data>
+  <data name="Auth_Otp_Title" xml:space="preserve">
+    <value>Подтвердите вашу почту</value>
+  </data>
+  <data name="Auth_Otp_Subtitle" xml:space="preserve">
+    <value>Подтверждение кода</value>
+  </data>
+  <data name="Auth_Otp_Description_Prefix" xml:space="preserve">
+    <value>Мы отправили 8-значный код на</value>
+  </data>
+  <data name="Auth_Otp_Description_Suffix" xml:space="preserve">
+    <value>Проверьте входящие и введите его ниже.</value>
+  </data>
+  <data name="Auth_Otp_Code_Label" xml:space="preserve">
+    <value>8-значный код</value>
+  </data>
+  <data name="Auth_Otp_Confirm" xml:space="preserve">
+    <value>Подтвердить и войти</value>
+  </data>
+  <data name="Auth_Otp_Verifying" xml:space="preserve">
+    <value>Проверка кода…</value>
+  </data>
+  <data name="Auth_Otp_Error" xml:space="preserve">
+    <value>Код неверный или истёк.</value>
+  </data>
+  <data name="Auth_Otp_EmailMissing" xml:space="preserve">
+    <value>Не передан email для проверки. Вернитесь к регистрации.</value>
+  </data>
 </root>

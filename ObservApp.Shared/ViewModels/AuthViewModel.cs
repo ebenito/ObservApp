@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Localization;
 using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
+using Supabase.Gotrue;
 
 /// <summary>
 /// ViewModel para gestionar la autenticación del usuario.
@@ -32,7 +33,9 @@ public partial class AuthViewModel : ObservableObject
 	[ObservableProperty]
 	private string? errorMessage;
 
-	public AuthViewModel(IAuthService authService, AppState appState,
+	public AuthViewModel(
+		IAuthService authService,
+		AppState appState,
 		IStringLocalizer<ObservApp.Resources.Strings.App> localizer)
 	{
 		_authService = authService;
@@ -50,14 +53,14 @@ public partial class AuthViewModel : ObservableObject
 			IsLoading = true;
 			ErrorMessage = null;
 
-			var result = await _authService.SignInWithEmailAsync(Email, Password);
-			if (!result.Success)
+			var ok = await _authService.LoginAsync(Email, Password);
+			if (!ok)
 			{
-				ErrorMessage = result.ErrorMessage ?? _l["Auth_SignIn_Error"];
+				ErrorMessage = _authService.LastError ?? _l["Auth_SignIn_Error"];
 				return;
 			}
 
-			_appState.CurrentUser = result.User;
+			_appState.CurrentUser = _authService.CurrentUser;
 			Email = string.Empty;
 			Password = string.Empty;
 		}
@@ -79,20 +82,14 @@ public partial class AuthViewModel : ObservableObject
 			IsLoading = true;
 			ErrorMessage = null;
 
-			if (string.IsNullOrWhiteSpace(DisplayName))
+			var ok = await _authService.SignUpAsync(Email, Password);
+			if (!ok)
 			{
-				ErrorMessage = _l["Auth_DisplayName_Required"];
+				ErrorMessage = _authService.LastError ?? _l["Auth_SignUp_Error"];
 				return;
 			}
 
-			var result = await _authService.SignUpWithEmailAsync(Email, Password, DisplayName);
-			if (!result.Success)
-			{
-				ErrorMessage = result.ErrorMessage ?? _l["Auth_SignUp_Error"];
-				return;
-			}
-
-			_appState.CurrentUser = result.User;
+			_appState.CurrentUser = _authService.CurrentUser;
 			Email = string.Empty;
 			Password = string.Empty;
 			DisplayName = string.Empty;
@@ -115,7 +112,7 @@ public partial class AuthViewModel : ObservableObject
 			IsLoading = true;
 			ErrorMessage = null;
 
-			await _authService.SignOutAsync();
+			await _authService.LogoutAsync();
 			_appState.CurrentUser = null;
 		}
 		catch (Exception ex)
@@ -128,11 +125,8 @@ public partial class AuthViewModel : ObservableObject
 		}
 	}
 
-	private void OnAuthStateChanged(UserProfile? userProfile)
+	private void OnAuthStateChanged(User? user)
 	{
-		if (userProfile != null)
-		{
-			_appState.CurrentUser = userProfile;
-		}
+		_appState.CurrentUser = user;
 	}
 }
