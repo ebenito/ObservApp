@@ -1505,7 +1505,7 @@
     <value>تأكيد الرمز</value>
   </data>
   <data name="Auth_Otp_Description_Prefix" xml:space="preserve">
-    <value>لقد أرسلنا رمزًا مكوّنًا من 6 أرقام إلى</value>
+    <value>لقد أرسلنا رمزًا مكونًا من 8 أرقام إلى</value>
   </data>
   <data name="Auth_Otp_Description_Suffix" xml:space="preserve">
     <value>راجع صندوق الوارد وأدخله أدناه.</value>

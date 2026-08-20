@@ -1505,7 +1505,7 @@
     <value>Confirmación de código</value>
   </data>
   <data name="Auth_Otp_Description_Prefix" xml:space="preserve">
-    <value>Hemos enviado un código de 6 dígitos a</value>
+    <value>Hemos enviado un código de 8 dígitos a</value>
   </data>
   <data name="Auth_Otp_Description_Suffix" xml:space="preserve">
     <value>Revisa tu bandeja de entrada e introdúcelo a continuación.</value>

@@ -1505,7 +1505,7 @@
     <value>Подтверждение кода</value>
   </data>
   <data name="Auth_Otp_Description_Prefix" xml:space="preserve">
-    <value>Мы отправили 6-значный код на</value>
+    <value>Мы отправили 8-значный код на</value>
   </data>
   <data name="Auth_Otp_Description_Suffix" xml:space="preserve">
     <value>Проверьте входящие и введите его ниже.</value>
