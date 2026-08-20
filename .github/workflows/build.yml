@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Setup .NET 10
         uses: actions/setup-dotnet@v5
@@ -24,6 +26,24 @@ jobs:
 
       - name: Install MAUI workload
         run: dotnet workload install maui
+
+      - name: Install GitVersion tool
+        run: dotnet tool install -g GitVersion.Tool
+
+      - name: Calculate version with GitVersion
+        id: gitversion
+        run: |
+          # GitVersion con /output buildserver establece env vars automáticamente
+          # en GitHub Actions: GITVERSION_*
+          dotnet-gitversion /output buildserver /nofetch
+
+          # Variables ya están disponibles en env, extraer algunos valores
+          Write-Host "GitVersion ejecutado correctamente" -ForegroundColor Green
+          Write-Host "Variables disponibles en env:" -ForegroundColor Cyan
+          Get-ChildItem env: | Where-Object { $_.Name -like "GITVERSION*" } | ForEach-Object {
+            Write-Host "  $($_.Name): $($_.Value)" -ForegroundColor Gray
+          }
+        shell: pwsh
 
       - name: Crear appsettings.Local.json
         run: |
@@ -69,6 +89,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Setup .NET 10
         uses: actions/setup-dotnet@v5

@@ -1,6 +1,5 @@
 <Solution>
   <Folder Name="/Elementos de la solución/">
-    <File Path=".github/workflows/build.yml" />
     <File Path=".gitignore" />
     <File Path="Documentacion/implementation_plan.md" />
     <File Path="README.md" />
@@ -20,6 +19,11 @@
     <File Path="Documentacion/Claude/readme.md" />
     <File Path="Documentacion/Claude/SETUP_CLAUDE_PROJECT.md" />
     <File Path="InstruccionesProyecto.txt" />
+  </Folder>
+  <Folder Name="/Elementos de la solución/GitHub/">
+    <File Path=".github/workflows/build.yml" />
+    <File Path="Directory.Build.props" />
+    <File Path="gitversion.yml" />
   </Folder>
   <Folder Name="/Elementos de la solución/Suprabase/">
     <File Path="Documentacion/Supabase/DOCUMENTACION_COMPLETADA.md" />
