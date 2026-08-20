@@ -62,6 +62,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<ISettingsService, MauiSettingsService>();
         builder.Services.AddSingleton<INavigationHistoryService, NavigationHistoryService>();
         builder.Services.AddSingleton<IAppLifecycleService, MauiAppLifecycleService>();
+        builder.Services.AddSingleton<IVersionService, VersionService>();
         builder.Services.AddSingleton<AppState>();
 
         // ── Autenticación y persistencia con Supabase ──────────────────────────

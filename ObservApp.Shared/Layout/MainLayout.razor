@@ -11,6 +11,7 @@
 @inject AppState AppState
 @inject IJSRuntime JS
 @inject INavigationHistoryService HistoryService
+@inject IVersionService VersionService
 @implements IDisposable
 
 <!-- AppBar -->
@@ -27,7 +28,7 @@
         </div>
     </div>
     <div class="obs-appbar-right">
-        <span class="obs-version">@L["AppVersion"]</span>
+        <span class="obs-version">@VersionService.GetFormattedVersion()</span>
     </div>
 </div>
 

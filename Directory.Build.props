@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <!-- ========================================
+	   GitVersion Configuration
+	   Genera versiones automáticamente basadas en tags Git
+	   ======================================== -->
+
+  <ItemGroup>
+	<PackageReference Include="GitVersion.MsBuild" Version="6.0.0">
+	  <PrivateAssets>all</PrivateAssets>
+	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
+  </ItemGroup>
+
+  <PropertyGroup>
+	<!-- GitVersion genera automáticamente: $(GitVersion_MajorMinorPatch), $(GitVersion_FullSemVer), etc -->
+	<Version Condition="'$(GitVersion_SemVer)' != ''">$(GitVersion_SemVer)</Version>
+	<FileVersion Condition="'$(GitVersion_AssemblySemVer)' != ''">$(GitVersion_AssemblySemVer)</FileVersion>
+	<InformationalVersion Condition="'$(GitVersion_InformationalVersion)' != ''">$(GitVersion_InformationalVersion)</InformationalVersion>
+
+	<!-- Para MAUI: versión display (major.minor) -->
+	<ApplicationDisplayVersion Condition="'$(GitVersion_MajorMinorPatch)' != ''">$(GitVersion_Major).$(GitVersion_Minor)</ApplicationDisplayVersion>
+
+	<!-- Fallback si GitVersion no está disponible (para uso local sin Git) -->
+	<Version Condition="'$(Version)' == ''">1.3.2</Version>
+	<FileVersion Condition="'$(FileVersion)' == ''">1.3.2.0</FileVersion>
+	<InformationalVersion Condition="'$(InformationalVersion)' == ''">1.3.2</InformationalVersion>
+	<ApplicationDisplayVersion Condition="'$(ApplicationDisplayVersion)' == ''">1.3</ApplicationDisplayVersion>
+  </PropertyGroup>
+</Project>

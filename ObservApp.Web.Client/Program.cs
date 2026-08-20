@@ -81,6 +81,7 @@ builder.Services.AddSingleton<IEclipseCalculatorService, EclipseCalculatorServic
 builder.Services.AddSingleton<IHomeAstronomyService, HomeAstronomyService>();
 builder.Services.AddSingleton<IEfemeridesAstronomyService, EfemeridesAstronomyService>();
 builder.Services.AddSingleton<IEclipseAudioService, WebEclipseAudioService>();
+builder.Services.AddSingleton<IVersionService, VersionService>();
 builder.Services.AddSingleton<AppState>();
 
 // ── Autenticación y persistencia con Supabase ────────────────────────────────
