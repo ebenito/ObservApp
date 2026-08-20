@@ -31,14 +31,16 @@ jobs:
       - name: Calculate version with GitVersion
         id: gitversion
         run: |
-          $output = dotnet-gitversion /output json /nofetch | ConvertFrom-Json
-          echo "semver=$($output.SemVer)" >> $env:GITHUB_OUTPUT
-          echo "GITVERSION_SEMVER=$($output.SemVer)" >> $env:GITHUB_ENV
-          echo "GITVERSION_ASSEMBLYFILEVERSIONVERSION=$($output.AssemblyFileVersionVersion)" >> $env:GITHUB_ENV
-          echo "GITVERSION_INFORMATIONALVERSION=$($output.InformationalVersion)" >> $env:GITHUB_ENV
-          echo "GITVERSION_MAJOR=$($output.Major)" >> $env:GITHUB_ENV
-          echo "GITVERSION_MINOR=$($output.Minor)" >> $env:GITHUB_ENV
-          Write-Host "✓ Version: $($output.SemVer)"
+          # GitVersion con /output buildserver establece env vars automáticamente
+          # en GitHub Actions: GITVERSION_*
+          dotnet-gitversion /output buildserver /nofetch
+
+          # Variables ya están disponibles en env, extraer algunos valores
+          Write-Host "GitVersion ejecutado correctamente" -ForegroundColor Green
+          Write-Host "Variables disponibles en env:" -ForegroundColor Cyan
+          Get-ChildItem env: | Where-Object { $_.Name -like "GITVERSION*" } | ForEach-Object {
+            Write-Host "  $($_.Name): $($_.Value)" -ForegroundColor Gray
+          }
         shell: pwsh
 
       - name: Crear appsettings.Local.json
