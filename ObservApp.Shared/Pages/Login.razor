@@ -192,15 +192,22 @@
         if (_isSignInMode)
         {
             await AuthViewModel.SignInCommand.ExecuteAsync(null);
-        }
-        else
-        {
-            await AuthViewModel.SignUpCommand.ExecuteAsync(null);
+
+            if (AppState.IsAuthenticated)
+            {
+                NavManager.NavigateTo("/");
+            }
+
+            return;
         }
 
-        if (AppState.IsAuthenticated)
+        var emailForOtp = AuthViewModel.Email;
+        await AuthViewModel.SignUpCommand.ExecuteAsync(null);
+
+        if (string.IsNullOrWhiteSpace(AuthViewModel.ErrorMessage) && !string.IsNullOrWhiteSpace(emailForOtp))
         {
-            NavManager.NavigateTo("/");
+            var encodedEmail = Uri.EscapeDataString(emailForOtp);
+            NavManager.NavigateTo($"/confirm-otp?email={encodedEmail}");
         }
     }
 

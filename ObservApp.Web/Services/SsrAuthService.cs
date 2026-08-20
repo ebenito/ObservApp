@@ -28,6 +28,12 @@ public class SsrAuthService : IAuthService
 		return Task.FromResult(false);
 	}
 
+	public Task<bool> VerifyOtpAsync(string email, string code)
+	{
+		LastError = "SSR: Verificación OTP no disponible";
+		return Task.FromResult(false);
+	}
+
 	public Task LogoutAsync()
 	{
 		LastError = null;

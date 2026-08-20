@@ -1,0 +1,126 @@
+@page "/confirm-otp"
+@using Microsoft.AspNetCore.Components
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+@inject IAuthService AuthService
+@inject AppState AppState
+@inject NavigationManager NavManager
+
+<PageTitle>@L["AppName"] · @L["Auth_Otp_Title"]</PageTitle>
+
+<div class="login-page">
+    <div class="login-shell">
+        <header class="login-header">
+            <span class="login-star">★</span>
+            <h1 class="login-brand">@L["AppName"]</h1>
+        </header>
+
+        <section class="login-card">
+            <div class="login-card__intro">
+                <p class="login-kicker">@L["Auth_Otp_Title"]</p>
+                <h2 class="login-title">@L["Auth_Otp_Subtitle"]</h2>
+            </div>
+
+            <p class="login-forgot">
+                @L["Auth_Otp_Description_Prefix"] <strong>@(Email ?? string.Empty)</strong>. @L["Auth_Otp_Description_Suffix"]
+            </p>
+
+            @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+            {
+                <div class="login-error" role="alert">@ErrorMessage</div>
+            }
+
+            @if (IsLoading)
+            {
+                <div class="login-loading" aria-live="polite">
+                    <span class="login-spinner" aria-hidden="true"></span>
+                    <span>@L["Auth_Otp_Verifying"]</span>
+                </div>
+            }
+
+            <div class="login-fields">
+                <div class="login-field">
+                    <label class="login-label" for="otp-code">@L["Auth_Otp_Code_Label"]</label>
+                    <input id="otp-code"
+                           class="login-input"
+                           inputmode="numeric"
+                           maxlength="8"
+                           autocomplete="one-time-code"
+                           value="@OtpCode"
+                           @oninput="OnOtpCodeInput" />
+                </div>
+            </div>
+
+            <button type="button"
+                    class="login-primary"
+                    @onclick="ConfirmAsync"
+                    disabled="@IsSubmitDisabled">
+                @L["Auth_Otp_Confirm"]
+            </button>
+        </section>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "email")]
+    public string? Email { get; set; }
+
+    private string OtpCode { get; set; } = string.Empty;
+    private bool IsLoading { get; set; }
+    private string? ErrorMessage { get; set; }
+
+    private bool IsSubmitDisabled =>
+        IsLoading ||
+        string.IsNullOrWhiteSpace(Email) ||
+        OtpCode.Length != 8;
+
+    protected override void OnParametersSet()
+    {
+        if (string.IsNullOrWhiteSpace(Email))
+        {
+            ErrorMessage = L["Auth_Otp_EmailMissing"];
+            return;
+        }
+
+        ErrorMessage = null;
+    }
+
+    private void OnOtpCodeInput(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        var rawValue = e.Value?.ToString() ?? string.Empty;
+        var digitsOnly = new string(rawValue.Where(char.IsDigit).Take(8).ToArray());
+        OtpCode = digitsOnly;
+    }
+
+    private async Task ConfirmAsync()
+    {
+        if (IsSubmitDisabled || string.IsNullOrWhiteSpace(Email))
+        {
+            return;
+        }
+
+        try
+        {
+            IsLoading = true;
+            ErrorMessage = null;
+
+            var ok = await AuthService.VerifyOtpAsync(Email, OtpCode);
+            if (!ok)
+            {
+                ErrorMessage = AuthService.LastError ?? L["Auth_Otp_Error"];
+                return;
+            }
+
+            AppState.CurrentUser = AuthService.CurrentUser;
+            NavManager.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = string.Format(L["Error_Unexpected"], ex.Message);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+}

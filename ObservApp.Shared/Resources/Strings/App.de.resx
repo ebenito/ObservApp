@@ -1498,4 +1498,31 @@
   <data name="Action_Hide" xml:space="preserve">
     <value>Ausblenden </value>
   </data>
+  <data name="Auth_Otp_Title" xml:space="preserve">
+    <value>E-Mail bestätigen</value>
+  </data>
+  <data name="Auth_Otp_Subtitle" xml:space="preserve">
+    <value>Code-Bestätigung</value>
+  </data>
+  <data name="Auth_Otp_Description_Prefix" xml:space="preserve">
+    <value>Wir haben einen 6-stelligen Code gesendet an</value>
+  </data>
+  <data name="Auth_Otp_Description_Suffix" xml:space="preserve">
+    <value>Prüfe deinen Posteingang und gib ihn unten ein.</value>
+  </data>
+  <data name="Auth_Otp_Code_Label" xml:space="preserve">
+    <value>8-stelliger Code</value>
+  </data>
+  <data name="Auth_Otp_Confirm" xml:space="preserve">
+    <value>Bestätigen und anmelden</value>
+  </data>
+  <data name="Auth_Otp_Verifying" xml:space="preserve">
+    <value>Code wird geprüft…</value>
+  </data>
+  <data name="Auth_Otp_Error" xml:space="preserve">
+    <value>Der Code ist ungültig oder abgelaufen.</value>
+  </data>
+  <data name="Auth_Otp_EmailMissing" xml:space="preserve">
+    <value>Es wurde keine E-Mail zur Verifizierung übergeben. Zur Registrierung zurückkehren.</value>
+  </data>
 </root>

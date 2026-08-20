@@ -33,6 +33,11 @@ public interface IAuthService
 	Task<bool> LoginAsync(string email, string password);
 
 	/// <summary>
+	/// Verifica el OTP de registro enviado por email.
+	/// </summary>
+	Task<bool> VerifyOtpAsync(string email, string code);
+
+	/// <summary>
 	/// Cierra sesión y limpia almacenamiento local.
 	/// </summary>
 	Task LogoutAsync();

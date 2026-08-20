@@ -1498,4 +1498,31 @@
   <data name="Action_Hide" xml:space="preserve">
     <value>Nascondere</value>
   </data>
+  <data name="Auth_Otp_Title" xml:space="preserve">
+    <value>Verifica la tua email</value>
+  </data>
+  <data name="Auth_Otp_Subtitle" xml:space="preserve">
+    <value>Conferma del codice</value>
+  </data>
+  <data name="Auth_Otp_Description_Prefix" xml:space="preserve">
+    <value>Abbiamo inviato un codice a 6 cifre a</value>
+  </data>
+  <data name="Auth_Otp_Description_Suffix" xml:space="preserve">
+    <value>Controlla la tua casella e inseriscilo qui sotto.</value>
+  </data>
+  <data name="Auth_Otp_Code_Label" xml:space="preserve">
+    <value>Codice a 8 cifre</value>
+  </data>
+  <data name="Auth_Otp_Confirm" xml:space="preserve">
+    <value>Conferma ed entra</value>
+  </data>
+  <data name="Auth_Otp_Verifying" xml:space="preserve">
+    <value>Verifica del codice…</value>
+  </data>
+  <data name="Auth_Otp_Error" xml:space="preserve">
+    <value>Il codice non è valido oppure è scaduto.</value>
+  </data>
+  <data name="Auth_Otp_EmailMissing" xml:space="preserve">
+    <value>Nessuna email ricevuta per la verifica. Torna alla registrazione.</value>
+  </data>
 </root>

@@ -41,8 +41,7 @@ public sealed class AuthService : IAuthService
 				return false;
 			}
 
-			await PersistSessionAsync(session);
-			OnAuthStateChanged?.Invoke(CurrentUser);
+			// El registro vía OTP no autentica automáticamente al usuario.
 			return true;
 		}
 		catch (Exception ex)
@@ -63,6 +62,35 @@ public sealed class AuthService : IAuthService
 			if (session?.User is null)
 			{
 				LastError = "No se pudo iniciar sesión.";
+				return false;
+			}
+
+			await PersistSessionAsync(session);
+			OnAuthStateChanged?.Invoke(CurrentUser);
+			return true;
+		}
+		catch (Exception ex)
+		{
+			LastError = NormalizeAuthError(ex.Message);
+			return false;
+		}
+	}
+
+	public async Task<bool> VerifyOtpAsync(string email, string code)
+	{
+		try
+		{
+			LastError = null;
+			await EnsureInitializedAsync();
+
+			var session = await _supabase.Auth.VerifyOTP(
+				email: email,
+				token: code,
+				type: Supabase.Gotrue.Constants.EmailOtpType.Signup);
+
+			if (session?.User is null)
+			{
+				LastError = "No se pudo verificar el código.";
 				return false;
 			}
 
@@ -191,6 +219,19 @@ public sealed class AuthService : IAuthService
 		if (message.Contains("User already registered", StringComparison.OrdinalIgnoreCase))
 		{
 			return "El usuario ya está registrado.";
+		}
+
+		if (message.Contains("Token has expired", StringComparison.OrdinalIgnoreCase)
+			|| message.Contains("expired", StringComparison.OrdinalIgnoreCase))
+		{
+			return "El código ha caducado. Solicita uno nuevo.";
+		}
+
+		if (message.Contains("Invalid token", StringComparison.OrdinalIgnoreCase)
+			|| message.Contains("Token is invalid", StringComparison.OrdinalIgnoreCase)
+			|| message.Contains("otp", StringComparison.OrdinalIgnoreCase))
+		{
+			return "El código introducido no es válido.";
 		}
 
 		return message;
