@@ -25,6 +25,22 @@ jobs:
       - name: Install MAUI workload
         run: dotnet workload install maui
 
+      - name: Install GitVersion tool
+        run: dotnet tool install -g GitVersion.Tool
+
+      - name: Calculate version with GitVersion
+        id: gitversion
+        run: |
+          $output = dotnet-gitversion /output json /nofetch | ConvertFrom-Json
+          echo "semver=$($output.SemVer)" >> $env:GITHUB_OUTPUT
+          echo "GITVERSION_SEMVER=$($output.SemVer)" >> $env:GITHUB_ENV
+          echo "GITVERSION_ASSEMBLYFILEVERSIONVERSION=$($output.AssemblyFileVersionVersion)" >> $env:GITHUB_ENV
+          echo "GITVERSION_INFORMATIONALVERSION=$($output.InformationalVersion)" >> $env:GITHUB_ENV
+          echo "GITVERSION_MAJOR=$($output.Major)" >> $env:GITHUB_ENV
+          echo "GITVERSION_MINOR=$($output.Minor)" >> $env:GITHUB_ENV
+          Write-Host "✓ Version: $($output.SemVer)"
+        shell: pwsh
+
       - name: Crear appsettings.Local.json
         run: |
           echo '{"SyncfusionLicenseKey": "${{ secrets.SYNCFUSION_LICENSE_KEY }}"}' > ObservApp/appsettings.Local.json
