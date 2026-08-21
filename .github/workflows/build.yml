@@ -120,16 +120,16 @@ jobs:
         run: dotnet restore ObservApp.Web.Client/ObservApp.Web.Client.csproj -p:TargetFramework=net10.0
 
       - name: Publish Blazor WASM standalone
-        run: >
-          dotnet publish ObservApp.Web.Client/ObservApp.Web.Client.csproj
-          --configuration Release
-          --output ./publish/web
-          --no-restore
-          -p:TargetFramework=net10.0
-          -p:DefineConstants=STANDALONE_WASM
-          -p:DebuggerSupport=false
-          -p:CopyOutputSymbolsToPublishDirectory=false
-          -p:Version=${{ env.GITVERSION_FULLSEMVER }}
-          -p:InformationalVersion=${{ env.GITVERSION_INFORMATIONALVERSION }}
-
-      # ... resto igual
+        run: |
+          VER="${GITVERSION_FULLSEMVER:-1.0.0}"
+          INFOVERS="${GITVERSION_INFORMATIONALVERSION:-1.0.0}"
+          dotnet publish ObservApp.Web.Client/ObservApp.Web.Client.csproj \
+            --configuration Release \
+            --output ./publish/web \
+            --no-restore \
+            -p:TargetFramework=net10.0 \
+            -p:DefineConstants=STANDALONE_WASM \
+            -p:DebuggerSupport=false \
+            -p:CopyOutputSymbolsToPublishDirectory=false \
+            -p:Version="$VER" \
+            -p:InformationalVersion="$INFOVERS"
