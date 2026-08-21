@@ -22,6 +22,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddSyncfusionBlazor();
 builder.Services.AddLocalization();
+builder.Services.AddSingleton<IVersionService, VersionService>();
 builder.Services.AddScoped<ILocalizationService, SsrLocalizationService>();
 builder.Services.AddScoped<ISettingsService, SsrSettingsService>();
 builder.Services.AddScoped<INavigationHistoryService, NavigationHistoryService>();
