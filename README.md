@@ -137,51 +137,47 @@ ObservApp utiliza **Supabase** para gestión de usuarios y persistencia de datos
 observation_sessions (
   id UUID PRIMARY KEY,
   user_id UUID REFERENCES auth.users,
-  location_name TEXT,
-  latitude DECIMAL,
-  longitude DECIMAL,
-  altitude_m INT,
-  started_at TIMESTAMP,
-  ended_at TIMESTAMP,
+  date TIMESTAMPTZ NOT NULL,
+  title TEXT NOT NULL,
   notes TEXT,
-  weather_conditions TEXT,
-  equipment TEXT,
-  objects_observed JSONB,
-  created_at TIMESTAMP DEFAULT now()
+  latitude DOUBLE PRECISION,
+  longitude DOUBLE PRECISION,
+  location_name TEXT,
+  seeing INTEGER CHECK (seeing >= 1 AND seeing <= 5),
+  transparency INTEGER CHECK (transparency >= 1 AND transparency <= 5),
+  targets JSONB DEFAULT '[]'::jsonb,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
 )
 
 -- Ubicaciones favoritas
 favorite_locations (
   id UUID PRIMARY KEY,
   user_id UUID REFERENCES auth.users,
-  name TEXT,
-  latitude DECIMAL,
-  longitude DECIMAL,
-  altitude_m INT,
-  is_favorite BOOLEAN DEFAULT true,
-  created_at TIMESTAMP DEFAULT now()
+  name TEXT NOT NULL,
+  latitude DOUBLE PRECISION NOT NULL,
+  longitude DOUBLE PRECISION NOT NULL,
+  altitude_m DOUBLE PRECISION NOT NULL DEFAULT 0,
+  is_favorite BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ DEFAULT now()
 )
 ```
 
 #### Acceso desde código:
 
 ```csharp
-// inyectado en componentes
-@inject SupabaseService SupabaseService
+// inyectado en componentes o ViewModels
+@inject IObservationService ObservationService
+@inject IFavoriteLocationsService FavoriteLocationsService
 
-// Crear sesión de observación
-var newSession = new ObservationSession { ... };
-await SupabaseService.Client
-  .From("observation_sessions")
-  .Insert(newSession);
+// Crear o actualizar sesión de observación
+var saved = await ObservationService.SaveAsync(new ObservationSession { ... });
 
-// Recuperar sesiones del usuario actual
-var sessions = await SupabaseService.Client
-  .From("observation_sessions")
-  .Select("*")
-  .Eq("user_id", userId)
-  .Order("started_at", ascending: false)
-  .Get<List<ObservationSession>>();
+// Recuperar sesiones del usuario autenticado
+var sessions = await ObservationService.GetAllAsync();
+
+// Guardar ubicación favorita (Supabase con fallback local)
+await FavoriteLocationsService.SaveFavoriteLocationAsync(new FavoriteLocation { ... });
 ```
 
 ---
