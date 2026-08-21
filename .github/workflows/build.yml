@@ -45,9 +45,16 @@ jobs:
           }
         shell: pwsh
 
-      - name: Crear appsettings.Local.json
+      - name: Crear appsettings.Local.json para MAUI
         run: |
           echo '{"SyncfusionLicenseKey": "${{ secrets.SYNCFUSION_LICENSE_KEY }}"}' > ObservApp/appsettings.Local.json
+
+      - name: Crear appsettings.Local.json para Web Host
+        run: |
+          echo '{
+            "SupabaseUrl": "${{ secrets.SUPABASE_URL }}",
+            "SupabaseAnonKey": "${{ secrets.SUPABASE_ANON_KEY }}"
+          }' > ObservApp.Web/appsettings.Local.json
 
       - name: Restore Android
         run: dotnet restore ObservApp/ObservApp.csproj -p:TargetFramework=net10.0-android
@@ -110,6 +117,8 @@ jobs:
           -p:DefineConstants=STANDALONE_WASM
           -p:DebuggerSupport=false
           -p:CopyOutputSymbolsToPublishDirectory=false
+          -p:Version=${{ env.GITVERSION_FULLSEMVER }}
+          -p:InformationalVersion=${{ env.GITVERSION_INFORMATIONALVERSION }}
 
       - name: Limpiar artefactos no necesarios para Azure Static Web Apps
         run: |
