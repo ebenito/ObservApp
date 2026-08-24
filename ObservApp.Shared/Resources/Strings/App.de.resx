@@ -334,7 +334,7 @@
     <value>Auflösungsgrenze</value>
   </data>
   <data name="Calc_Resolution_Desc" xml:space="preserve">
-    <value>Berechnet die theoretische Auflösungsgrenze (Rayleigh und Dawes) deines Teleskops</value>
+    <value>Berechnet die theoretische Auflösungsgrenze (Rayleigh und Dawes) deines Teleskopes</value>
   </data>
   <data name="Calc_PlateScale_Title" xml:space="preserve">
     <value>Bildmaßstab</value>
@@ -1269,6 +1269,78 @@
   </data>
   <data name="Eph_DSO_Count" xml:space="preserve">
     <value>sichtbare Objekte</value>
+  </data>
+  <data name="Eph_DSO_Filter_Search" xml:space="preserve">
+    <value>Search by name…</value>
+  </data>
+  <data name="Eph_DSO_Filter_Catalog" xml:space="preserve">
+    <value>Catalog</value>
+  </data>
+  <data name="Eph_DSO_Filter_Constellation" xml:space="preserve">
+    <value>Constellation</value>
+  </data>
+  <data name="Eph_DSO_Filter_Instrument" xml:space="preserve">
+    <value>Instrument</value>
+  </data>
+  <data name="Eph_DSO_Filter_Sky" xml:space="preserve">
+    <value>Sky quality</value>
+  </data>
+  <data name="Eph_DSO_Filter_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Eph_DSO_Filter_NoResults" xml:space="preserve">
+    <value>No objects match the current filters.</value>
+  </data>
+  <data name="Eph_DSO_Cat_Messier" xml:space="preserve">
+    <value>Messier</value>
+  </data>
+  <data name="Eph_DSO_Cat_Caldwell" xml:space="preserve">
+    <value>Caldwell</value>
+  </data>
+  <data name="Eph_DSO_Cat_NGC" xml:space="preserve">
+    <value>NGC</value>
+  </data>
+  <data name="Eph_DSO_Cat_IC" xml:space="preserve">
+    <value>IC</value>
+  </data>
+  <data name="Eph_DSO_Cat_Collinder" xml:space="preserve">
+    <value>Collinder</value>
+  </data>
+  <data name="Eph_DSO_Cat_Melotte" xml:space="preserve">
+    <value>Melotte</value>
+  </data>
+  <data name="Eph_DSO_Cat_Barnard" xml:space="preserve">
+    <value>Barnard</value>
+  </data>
+  <data name="Eph_DSO_Sky_Urban" xml:space="preserve">
+    <value>Urban</value>
+  </data>
+  <data name="Eph_DSO_Sky_Suburban" xml:space="preserve">
+    <value>Suburban</value>
+  </data>
+  <data name="Eph_DSO_Sky_SuburbanDarkSky" xml:space="preserve">
+    <value>Suburban / Dark Sky</value>
+  </data>
+  <data name="Eph_DSO_Sky_DarkSky" xml:space="preserve">
+    <value>Dark Sky</value>
+  </data>
+  <data name="Eph_DSO_Instr_NakedEye" xml:space="preserve">
+    <value>Naked eye</value>
+  </data>
+  <data name="Eph_DSO_Instr_Binoculars" xml:space="preserve">
+    <value>Binoculars</value>
+  </data>
+  <data name="Eph_DSO_Instr_SmallTelescope" xml:space="preserve">
+    <value>Small telescope</value>
+  </data>
+  <data name="Eph_DSO_Instr_MediumTelescope" xml:space="preserve">
+    <value>Medium telescope</value>
+  </data>
+  <data name="Eph_DSO_Instr_LargeTelescope" xml:space="preserve">
+    <value>Large telescope</value>
+  </data>
+  <data name="Eph_DSO_Filter_ResultCount" xml:space="preserve">
+    <value>objects</value>
   </data>
   <data name="Auth_SignOut" xml:space="preserve">
     <value>Abmelden</value>

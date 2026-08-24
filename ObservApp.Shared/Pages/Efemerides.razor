@@ -302,8 +302,54 @@
             </div>
             @if (_dsoVisibles.Count > 0)
             {
-                <span class="eph-dso-count">@_dsoVisibles.Count @L["Eph_DSO_Count"]</span>
+                var filteredCount = DsoFiltered.Count();
+                <span class="eph-dso-count">@filteredCount @L["Eph_DSO_Filter_ResultCount"]</span>
             }
+        </div>
+
+        <!-- Filtros DSO -->
+        <div class="eph-dso-filters">
+            <input class="eph-input eph-dso-filter-search"
+                   type="search"
+                   placeholder="@L["Eph_DSO_Filter_Search"]"
+                   value="@_dsoFilterSearch"
+                   @onchange="@(e => { _dsoFilterSearch = e.Value?.ToString() ?? string.Empty; OnDsoFilterChanged(); })" />
+            <select class="eph-input eph-dso-filter-select"
+                    value="@_dsoFilterCatalog"
+                    @onchange="@(e => { _dsoFilterCatalog = e.Value?.ToString() ?? string.Empty; OnDsoFilterChanged(); })">
+                <option value="">@L["Eph_DSO_Filter_Catalog"] — @L["Eph_DSO_Filter_All"]</option>
+                @foreach (var prefix in DsoCatalogPrefixOptions)
+                {
+                    <option value="@prefix">@DsoCatalogLabel(prefix)</option>
+                }
+            </select>
+            <select class="eph-input eph-dso-filter-select"
+                    value="@_dsoFilterConstellation"
+                    @onchange="@(e => { _dsoFilterConstellation = e.Value?.ToString() ?? string.Empty; OnDsoFilterChanged(); })">
+                <option value="">@L["Eph_DSO_Filter_Constellation"] — @L["Eph_DSO_Filter_All"]</option>
+                @foreach (var c in DsoConstellationOptions)
+                {
+                    <option value="@c">@c</option>
+                }
+            </select>
+            <select class="eph-input eph-dso-filter-select"
+                    value="@_dsoFilterInstrument"
+                    @onchange="@(e => { _dsoFilterInstrument = e.Value?.ToString() ?? string.Empty; OnDsoFilterChanged(); })">
+                <option value="">@L["Eph_DSO_Filter_Instrument"] — @L["Eph_DSO_Filter_All"]</option>
+                @foreach (var i in DsoInstrumentOptions)
+                {
+                    <option value="@i">@DsoInstrumentLabel(i)</option>
+                }
+            </select>
+            <select class="eph-input eph-dso-filter-select"
+                    value="@_dsoFilterSky"
+                    @onchange="@(e => { _dsoFilterSky = e.Value?.ToString() ?? string.Empty; OnDsoFilterChanged(); })">
+                <option value="">@L["Eph_DSO_Filter_Sky"] — @L["Eph_DSO_Filter_All"]</option>
+                @foreach (var s in DsoSkyOptions)
+                {
+                    <option value="@s">@DsoSkyLabel(s)</option>
+                }
+            </select>
         </div>
 
         @if (_dsoLoading)
@@ -319,8 +365,15 @@
         }
         else
         {
+            var dsoFiltered = DsoFiltered.ToList();
+            @if (dsoFiltered.Count == 0)
+            {
+                <div class="eph-empty">@L["Eph_DSO_Filter_NoResults"]</div>
+            }
+            else
+            {
             <div class="eph-dso-list">
-                @foreach (var item in _dsoVisibles)
+                @foreach (var item in dsoFiltered)
                 {
                     <div class="eph-dso-card @EfemeridesUiFormatter.DsoAccentClass(item.Dso.Type)">
                         <div class="eph-dso-media-layout">
@@ -391,6 +444,7 @@
                     </div>
                 }
             </div>
+            }
         }
     </div>
 
@@ -438,6 +492,134 @@
     private DateTime? _dsoNightStartUtc;
     private DateTime? _dsoNightEndUtc;
     private CancellationTokenSource? _calcCts;
+
+    // ── Filtros DSO ──────────────────────────────────────────────────────────
+    private string _dsoFilterSearch = string.Empty;
+    private string _dsoFilterCatalog = string.Empty;
+    private string _dsoFilterConstellation = string.Empty;
+    private string _dsoFilterInstrument = string.Empty;
+    private string _dsoFilterSky = string.Empty;
+
+    private IEnumerable<DsoVisibility> DsoFiltered => _dsoVisibles.Where(item =>
+        (string.IsNullOrEmpty(_dsoFilterSearch) || DsoMatchesSearch(item.Dso, _dsoFilterSearch)) &&
+        (string.IsNullOrEmpty(_dsoFilterCatalog) || GetDsoCatalogPrefix(item.Dso) == _dsoFilterCatalog) &&
+        (string.IsNullOrEmpty(_dsoFilterConstellation) || item.Dso.Constellation == _dsoFilterConstellation) &&
+        (string.IsNullOrEmpty(_dsoFilterInstrument) || GetDsoInstrumentCategory(item.Dso.RecommendedInstrument) == _dsoFilterInstrument) &&
+        (string.IsNullOrEmpty(_dsoFilterSky) || item.Dso.SkyRequirement == _dsoFilterSky));
+
+    private IEnumerable<string> DsoCatalogPrefixOptions => DsoCatalog
+        .SelectMany(d => d.Catalogs ?? [])
+        .Select(GetCatalogEntryPrefix)
+        .Where(p => !string.IsNullOrEmpty(p))
+        .Distinct()
+        .OrderBy(p => p);
+
+    private IEnumerable<string> DsoConstellationOptions => DsoCatalog
+        .Select(d => d.Constellation)
+        .Where(c => !string.IsNullOrEmpty(c))
+        .Distinct()
+        .OrderBy(c => c);
+
+    private IEnumerable<string> DsoInstrumentOptions => DsoCatalog
+        .Select(d => GetDsoInstrumentCategory(d.RecommendedInstrument))
+        .Where(i => !string.IsNullOrEmpty(i))
+        .Distinct()
+        .OrderBy(i => i);
+
+    private IEnumerable<string> DsoSkyOptions => DsoCatalog
+        .Select(d => d.SkyRequirement ?? string.Empty)
+        .Where(s => !string.IsNullOrEmpty(s))
+        .Distinct()
+        .OrderBy(s => s);
+
+    private static readonly Dictionary<string, string> CatalogPrefixMap = new(StringComparer.OrdinalIgnoreCase)
+    {
+        { "M",   "Messier"   },
+        { "C",   "Caldwell"  },
+        { "NGC", "NGC"       },
+        { "IC",  "IC"        },
+        { "Cr",  "Collinder" },
+        { "Mel", "Melotte"   },
+        { "B",   "Barnard"   },
+    };
+
+    private static string GetCatalogEntryPrefix(string entry)
+    {
+        if (string.IsNullOrWhiteSpace(entry)) return string.Empty;
+        var trimmed = entry.TrimStart();
+        foreach (var key in CatalogPrefixMap.Keys.OrderByDescending(k => k.Length))
+        {
+            if (trimmed.StartsWith(key, StringComparison.OrdinalIgnoreCase)
+                && (trimmed.Length == key.Length || !char.IsLetter(trimmed[key.Length])))
+                return key;
+        }
+        return string.Empty;
+    }
+
+    private static string GetDsoCatalogPrefix(DsoEntry dso)
+    {
+        foreach (var cat in dso.Catalogs ?? [])
+        {
+            var prefix = GetCatalogEntryPrefix(cat);
+            if (!string.IsNullOrEmpty(prefix)) return prefix;
+        }
+        return string.Empty;
+    }
+
+    private static string GetDsoInstrumentCategory(string? raw)
+    {
+        if (string.IsNullOrEmpty(raw)) return string.Empty;
+        if (raw.Contains("Naked eye", StringComparison.OrdinalIgnoreCase)) return "NakedEye";
+        if (raw.StartsWith("Binoculars", StringComparison.OrdinalIgnoreCase)) return "Binoculars";
+        if (raw.StartsWith("Small", StringComparison.OrdinalIgnoreCase)) return "SmallTelescope";
+        if (raw.Contains("Medium to large", StringComparison.OrdinalIgnoreCase)) return "LargeTelescope";
+        if (raw.StartsWith("Medium", StringComparison.OrdinalIgnoreCase)) return "MediumTelescope";
+        return string.Empty;
+    }
+
+    private static bool DsoMatchesSearch(DsoEntry dso, string search)
+    {
+        var s = search.Trim();
+        if (string.IsNullOrEmpty(s)) return true;
+        if (dso.Id.Contains(s, StringComparison.OrdinalIgnoreCase)) return true;
+        if (dso.Name.Contains(s, StringComparison.OrdinalIgnoreCase)) return true;
+        if (dso.AltNames is not null && dso.AltNames.Any(n => n.Contains(s, StringComparison.OrdinalIgnoreCase))) return true;
+        if (dso.Catalogs is not null && dso.Catalogs.Any(c => c.Contains(s, StringComparison.OrdinalIgnoreCase))) return true;
+        return false;
+    }
+
+    private string DsoCatalogLabel(string prefix) => prefix switch
+    {
+        "M"   => L["Eph_DSO_Cat_Messier"],
+        "C"   => L["Eph_DSO_Cat_Caldwell"],
+        "NGC" => L["Eph_DSO_Cat_NGC"],
+        "IC"  => L["Eph_DSO_Cat_IC"],
+        "Cr"  => L["Eph_DSO_Cat_Collinder"],
+        "Mel" => L["Eph_DSO_Cat_Melotte"],
+        "B"   => L["Eph_DSO_Cat_Barnard"],
+        _     => prefix
+    };
+
+    private string DsoInstrumentLabel(string key) => key switch
+    {
+        "NakedEye"        => L["Eph_DSO_Instr_NakedEye"],
+        "Binoculars"      => L["Eph_DSO_Instr_Binoculars"],
+        "SmallTelescope"  => L["Eph_DSO_Instr_SmallTelescope"],
+        "MediumTelescope" => L["Eph_DSO_Instr_MediumTelescope"],
+        "LargeTelescope"  => L["Eph_DSO_Instr_LargeTelescope"],
+        _                 => key
+    };
+
+    private string DsoSkyLabel(string key) => key switch
+    {
+        "Urban"            => L["Eph_DSO_Sky_Urban"],
+        "Suburban"         => L["Eph_DSO_Sky_Suburban"],
+        "Suburban/DarkSky" => L["Eph_DSO_Sky_SuburbanDarkSky"],
+        "DarkSky"          => L["Eph_DSO_Sky_DarkSky"],
+        _                  => key
+    };
+
+    private void OnDsoFilterChanged() => StateHasChanged();
 
     // ── Ciclo de vida ─────────────────────────────────────────────────────────
     protected override async Task OnInitializedAsync()

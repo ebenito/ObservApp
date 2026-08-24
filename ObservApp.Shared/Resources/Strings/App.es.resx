@@ -1270,6 +1270,78 @@
   <data name="Eph_DSO_Count" xml:space="preserve">
     <value>objetos visibles</value>
   </data>
+  <data name="Eph_DSO_Filter_Search" xml:space="preserve">
+    <value>Buscar por nombre…</value>
+  </data>
+  <data name="Eph_DSO_Filter_Catalog" xml:space="preserve">
+    <value>Catálogo</value>
+  </data>
+  <data name="Eph_DSO_Filter_Constellation" xml:space="preserve">
+    <value>Constelación</value>
+  </data>
+  <data name="Eph_DSO_Filter_Instrument" xml:space="preserve">
+    <value>Instrumento</value>
+  </data>
+  <data name="Eph_DSO_Filter_Sky" xml:space="preserve">
+    <value>Calidad del cielo</value>
+  </data>
+  <data name="Eph_DSO_Filter_All" xml:space="preserve">
+    <value>Todos</value>
+  </data>
+  <data name="Eph_DSO_Filter_NoResults" xml:space="preserve">
+    <value>Ningún objeto coincide con los filtros aplicados.</value>
+  </data>
+  <data name="Eph_DSO_Cat_Messier" xml:space="preserve">
+    <value>Messier</value>
+  </data>
+  <data name="Eph_DSO_Cat_Caldwell" xml:space="preserve">
+    <value>Caldwell</value>
+  </data>
+  <data name="Eph_DSO_Cat_NGC" xml:space="preserve">
+    <value>NGC</value>
+  </data>
+  <data name="Eph_DSO_Cat_IC" xml:space="preserve">
+    <value>IC</value>
+  </data>
+  <data name="Eph_DSO_Cat_Collinder" xml:space="preserve">
+    <value>Collinder</value>
+  </data>
+  <data name="Eph_DSO_Cat_Melotte" xml:space="preserve">
+    <value>Melotte</value>
+  </data>
+  <data name="Eph_DSO_Cat_Barnard" xml:space="preserve">
+    <value>Barnard</value>
+  </data>
+  <data name="Eph_DSO_Sky_Urban" xml:space="preserve">
+    <value>Urbano</value>
+  </data>
+  <data name="Eph_DSO_Sky_Suburban" xml:space="preserve">
+    <value>Suburbano</value>
+  </data>
+  <data name="Eph_DSO_Sky_SuburbanDarkSky" xml:space="preserve">
+    <value>Suburbano / Cielo oscuro</value>
+  </data>
+  <data name="Eph_DSO_Sky_DarkSky" xml:space="preserve">
+    <value>Cielo oscuro</value>
+  </data>
+  <data name="Eph_DSO_Instr_NakedEye" xml:space="preserve">
+    <value>A simple vista</value>
+  </data>
+  <data name="Eph_DSO_Instr_Binoculars" xml:space="preserve">
+    <value>Prismáticos</value>
+  </data>
+  <data name="Eph_DSO_Instr_SmallTelescope" xml:space="preserve">
+    <value>Telescopio pequeño</value>
+  </data>
+  <data name="Eph_DSO_Instr_MediumTelescope" xml:space="preserve">
+    <value>Telescopio mediano</value>
+  </data>
+  <data name="Eph_DSO_Instr_LargeTelescope" xml:space="preserve">
+    <value>Telescopio grande</value>
+  </data>
+  <data name="Eph_DSO_Filter_ResultCount" xml:space="preserve">
+    <value>objetos</value>
+  </data>
   <data name="Auth_SignOut" xml:space="preserve">
     <value>Cerrar sesión</value>
   </data>

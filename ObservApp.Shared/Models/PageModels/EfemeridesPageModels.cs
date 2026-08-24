@@ -50,7 +50,11 @@ public sealed record DsoEntry(
 	double RaDeg,
 	double DecDeg,
 	double Magnitude,
-	string Description);
+	string Description,
+	IReadOnlyList<string>? Catalogs = null,
+	IReadOnlyList<string>? AltNames = null,
+	string? RecommendedInstrument = null,
+	string? SkyRequirement = null);
 
 public sealed class DsoVisibility
 {

@@ -1,895 +1,1543 @@
-﻿[
-    {
-        "Id":  "M42",
-        "Name":  "Gran Nebulosa de Orión",
-        "Constellation":  "Orion",
-        "Type":  "Nebula",
-        "Emoji":  "🌌",
-        "RaDeg":  83.8,
-        "DecDeg":  -5.4,
-        "Magnitude":  4,
-        "Description":  "Nebulosa brillante en la espada de Orión."
-    },
-    {
-        "Id":  "M43",
-        "Name":  "De Mairan",
-        "Constellation":  "Orion",
-        "Type":  "Nebula",
-        "Emoji":  "🌌",
-        "RaDeg":  83.9,
-        "DecDeg":  -5.3,
-        "Magnitude":  9,
-        "Description":  "Pequeña nebulosa unida al complejo de Orión."
-    },
-    {
-        "Id":  "M1",
-        "Name":  "Nebulosa del Cangrejo",
-        "Constellation":  "Taurus",
-        "Type":  "Nebula",
-        "Emoji":  "🌌",
-        "RaDeg":  83.6,
-        "DecDeg":  22,
-        "Magnitude":  8.4,
-        "Description":  "Resto de supernova histórico en Tauro."
-    },
-    {
-        "Id":  "M57",
-        "Name":  "Nebulosa del Anillo",
-        "Constellation":  "Lyra",
-        "Type":  "Nebula",
-        "Emoji":  "🌌",
-        "RaDeg":  283.4,
-        "DecDeg":  33,
-        "Magnitude":  8.8,
-        "Description":  "Planetaria icónica con anillo bien definido."
-    },
-    {
-        "Id":  "M27",
-        "Name":  "Nebulosa Dumbbell",
-        "Constellation":  "Vulpecula",
-        "Type":  "Nebula",
-        "Emoji":  "🌌",
-        "RaDeg":  299.9,
-        "DecDeg":  22.7,
-        "Magnitude":  7.4,
-        "Description":  "Planetaria extensa y muy agradecida visualmente."
-    },
-    {
-        "Id":  "M97",
-        "Name":  "Nebulosa del Búho",
-        "Constellation":  "Ursa Major",
-        "Type":  "Nebula",
-        "Emoji":  "🌌",
-        "RaDeg":  168.7,
-        "DecDeg":  55,
-        "Magnitude":  9.9,
-        "Description":  "Planetaria tenue famosa por sus dos cavidades oscuras."
-    },
-    {
-        "Id":  "M17",
-        "Name":  "Nebulosa Omega",
-        "Constellation":  "Sagittarius",
-        "Type":  "Nebula",
-        "Emoji":  "🌌",
-        "RaDeg":  275.2,
-        "DecDeg":  -16.2,
-        "Magnitude":  6,
-        "Description":  "Nebulosa de emisión brillante en Sagitario."
-    },
-    {
-        "Id":  "M16",
-        "Name":  "Nebulosa del Águila",
-        "Constellation":  "Serpens",
-        "Type":  "Nebula",
-        "Emoji":  "🌌",
-        "RaDeg":  274.7,
-        "DecDeg":  -13.8,
-        "Magnitude":  6,
-        "Description":  "Región de formación estelar de los Pilares de la Creación."
-    },
-    {
-        "Id":  "M20",
-        "Name":  "Nebulosa Trífida",
-        "Constellation":  "Sagittarius",
-        "Type":  "Nebula",
-        "Emoji":  "🌌",
-        "RaDeg":  270.6,
-        "DecDeg":  -23,
-        "Magnitude":  6.3,
-        "Description":  "Nebulosa dividida por bandas oscuras muy fotogénicas."
-    },
-    {
-        "Id":  "M8",
-        "Name":  "Nebulosa de la Laguna",
-        "Constellation":  "Sagittarius",
-        "Type":  "Nebula",
-        "Emoji":  "🌌",
-        "RaDeg":  271,
-        "DecDeg":  -24.4,
-        "Magnitude":  6,
-        "Description":  "Gran nebulosa estival visible a simple vista en cielos oscuros."
-    },
-    {
-        "Id":  "NGC 7293",
-        "Name":  "Nebulosa de la Hélice",
-        "Constellation":  "Aquarius",
-        "Type":  "Nebula",
-        "Emoji":  "🌌",
-        "RaDeg":  337.4,
-        "DecDeg":  -20.8,
-        "Magnitude":  7.3,
-        "Description":  "Planetaria cercana y extensa en Acuario."
-    },
-    {
-        "Id":  "NGC 2244",
-        "Name":  "Nebulosa Roseta",
-        "Constellation":  "Monoceros",
-        "Type":  "Nebula",
-        "Emoji":  "🌌",
-        "RaDeg":  98.2,
-        "DecDeg":  4.9,
-        "Magnitude":  4.8,
-        "Description":  "Complejo nebular amplio alrededor de un cúmulo joven."
-    },
-    {
-        "Id":  "NGC 6992",
-        "Name":  "Velo Oriental",
-        "Constellation":  "Cygnus",
-        "Type":  "Nebula",
-        "Emoji":  "🌌",
-        "RaDeg":  314.4,
-        "DecDeg":  31.7,
-        "Magnitude":  7,
-        "Description":  "Filamento brillante del remanente de la Nebulosa del Velo."
-    },
-    {
-        "Id":  "IC 1805",
-        "Name":  "Nebulosa del Corazón",
-        "Constellation":  "Cassiopeia",
-        "Type":  "Nebula",
-        "Emoji":  "🌌",
-        "RaDeg":  38.2,
-        "DecDeg":  61.5,
-        "Magnitude":  6.5,
-        "Description":  "Gran región HII del cielo boreal."
-    },
-    {
-        "Id":  "M45",
-        "Name":  "Pléyades",
-        "Constellation":  "Taurus",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  56.8,
-        "DecDeg":  24.1,
-        "Magnitude":  1.6,
-        "Description":  "Cúmulo abierto brillante y muy extenso."
-    },
-    {
-        "Id":  "M44",
-        "Name":  "La Colmena",
-        "Constellation":  "Cancer",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  130,
-        "DecDeg":  19.6,
-        "Magnitude":  3.1,
-        "Description":  "Gran cúmulo visible incluso a simple vista."
-    },
-    {
-        "Id":  "M36",
-        "Name":  "M36",
-        "Constellation":  "Auriga",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  84.1,
-        "DecDeg":  34.1,
-        "Magnitude":  6,
-        "Description":  "Cúmulo compacto del rico campo de Auriga."
-    },
-    {
-        "Id":  "M37",
-        "Name":  "M37",
-        "Constellation":  "Auriga",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  88.1,
-        "DecDeg":  32.6,
-        "Magnitude":  5.6,
-        "Description":  "Cúmulo muy rico y fino para aperturas medias."
-    },
-    {
-        "Id":  "M38",
-        "Name":  "M38",
-        "Constellation":  "Auriga",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  82.8,
-        "DecDeg":  35.8,
-        "Magnitude":  6.4,
-        "Description":  "Cúmulo abierto amplio en Auriga."
-    },
-    {
-        "Id":  "M35",
-        "Name":  "M35",
-        "Constellation":  "Gemini",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  92.2,
-        "DecDeg":  24.3,
-        "Magnitude":  5.1,
-        "Description":  "Cúmulo brillante cerca del pie de Géminis."
-    },
-    {
-        "Id":  "M48",
-        "Name":  "M48",
-        "Constellation":  "Hydra",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  123.4,
-        "DecDeg":  -5.8,
-        "Magnitude":  5.8,
-        "Description":  "Cúmulo abierto grande de brillo uniforme."
-    },
-    {
-        "Id":  "M6",
-        "Name":  "Cúmulo Mariposa",
-        "Constellation":  "Scorpius",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  265.1,
-        "DecDeg":  -32.2,
-        "Magnitude":  4.2,
-        "Description":  "Cúmulo sureño con silueta de alas abiertas."
-    },
-    {
-        "Id":  "M7",
-        "Name":  "M7",
-        "Constellation":  "Scorpius",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  268.5,
-        "DecDeg":  -34.8,
-        "Magnitude":  3.3,
-        "Description":  "Cúmulo amplio y brillante muy bajo en latitudes medias."
-    },
-    {
-        "Id":  "M11",
-        "Name":  "Cúmulo del Pato Salvaje",
-        "Constellation":  "Scutum",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  282.8,
-        "DecDeg":  -6.3,
-        "Magnitude":  5.8,
-        "Description":  "Uno de los cúmulos abiertos más ricos del cielo."
-    },
-    {
-        "Id":  "M18",
-        "Name":  "M18",
-        "Constellation":  "Sagittarius",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  274.3,
-        "DecDeg":  -17.1,
-        "Magnitude":  6.9,
-        "Description":  "Cúmulo abierto pequeño en los campos de Sagitario."
-    },
-    {
-        "Id":  "M21",
-        "Name":  "M21",
-        "Constellation":  "Sagittarius",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  273,
-        "DecDeg":  -22.5,
-        "Magnitude":  5.9,
-        "Description":  "Cúmulo abierto joven próximo a la Trífida."
-    },
-    {
-        "Id":  "M23",
-        "Name":  "M23",
-        "Constellation":  "Sagittarius",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  269.3,
-        "DecDeg":  -19,
-        "Magnitude":  5.5,
-        "Description":  "Cúmulo amplio con muchas estrellas resolubles."
-    },
-    {
-        "Id":  "M25",
-        "Name":  "M25",
-        "Constellation":  "Sagittarius",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  277.9,
-        "DecDeg":  -19.2,
-        "Magnitude":  4.6,
-        "Description":  "Cúmulo abierto grande sobre la Vía Láctea estival."
-    },
-    {
-        "Id":  "M39",
-        "Name":  "M39",
-        "Constellation":  "Cygnus",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  323.9,
-        "DecDeg":  48.4,
-        "Magnitude":  4.6,
-        "Description":  "Cúmulo muy abierto ideal para bajos aumentos."
-    },
-    {
-        "Id":  "NGC 869",
-        "Name":  "Doble Cúmulo Norte",
-        "Constellation":  "Perseus",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  34.7,
-        "DecDeg":  57.1,
-        "Magnitude":  3.7,
-        "Description":  "Uno de los dos cúmulos del famoso doble de Perseo."
-    },
-    {
-        "Id":  "NGC 884",
-        "Name":  "Doble Cúmulo Sur",
-        "Constellation":  "Perseus",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  35.9,
-        "DecDeg":  57.1,
-        "Magnitude":  3.8,
-        "Description":  "Segundo componente del célebre doble cúmulo."
-    },
-    {
-        "Id":  "Mel 20",
-        "Name":  "Alpha Persei",
-        "Constellation":  "Perseus",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  51.5,
-        "DecDeg":  49,
-        "Magnitude":  1.2,
-        "Description":  "Asociación estelar amplia alrededor de Mirfak."
-    },
-    {
-        "Id":  "M41",
-        "Name":  "M41",
-        "Constellation":  "Canis Major",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  101.5,
-        "DecDeg":  -20.7,
-        "Magnitude":  4.5,
-        "Description":  "Cúmulo brillante bajo Sirio."
-    },
-    {
-        "Id":  "M50",
-        "Name":  "M50",
-        "Constellation":  "Monoceros",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  105.7,
-        "DecDeg":  -8.4,
-        "Magnitude":  5.9,
-        "Description":  "Cúmulo abierto fino en Unicornio."
-    },
-    {
-        "Id":  "IC 4665",
-        "Name":  "IC 4665",
-        "Constellation":  "Ophiuchus",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  266.6,
-        "DecDeg":  5.7,
-        "Magnitude":  4.2,
-        "Description":  "Cúmulo abierto muy amplio visible con prismáticos."
-    },
-    {
-        "Id":  "Mel 111",
-        "Name":  "Cabellera de Berenice",
-        "Constellation":  "Coma Berenices",
-        "Type":  "OpenCluster",
-        "Emoji":  "✨",
-        "RaDeg":  186,
-        "DecDeg":  26,
-        "Magnitude":  1.8,
-        "Description":  "Gran cúmulo disperso ideal para campo amplio."
-    },
-    {
-        "Id":  "M13",
-        "Name":  "Gran Cúmulo de Hércules",
-        "Constellation":  "Hercules",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  250.4,
-        "DecDeg":  36.5,
-        "Magnitude":  5.8,
-        "Description":  "Globular brillante y muy popular en verano."
-    },
-    {
-        "Id":  "M92",
-        "Name":  "M92",
-        "Constellation":  "Hercules",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  259.3,
-        "DecDeg":  43.1,
-        "Magnitude":  6.4,
-        "Description":  "Globular compacto rival de M13."
-    },
-    {
-        "Id":  "M5",
-        "Name":  "M5",
-        "Constellation":  "Serpens",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  229.6,
-        "DecDeg":  2.1,
-        "Magnitude":  5.6,
-        "Description":  "Globular grande y ricamente poblado."
-    },
-    {
-        "Id":  "M3",
-        "Name":  "M3",
-        "Constellation":  "Canes Venatici",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  205.5,
-        "DecDeg":  28.4,
-        "Magnitude":  6.2,
-        "Description":  "Globular brillante en la primavera boreal."
-    },
-    {
-        "Id":  "M10",
-        "Name":  "M10",
-        "Constellation":  "Ophiuchus",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  254.3,
-        "DecDeg":  -4.1,
-        "Magnitude":  6.6,
-        "Description":  "Globular concentrado en Ofiuco."
-    },
-    {
-        "Id":  "M12",
-        "Name":  "M12",
-        "Constellation":  "Ophiuchus",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  251.8,
-        "DecDeg":  -1.9,
-        "Magnitude":  6.7,
-        "Description":  "Globular algo más suelto que M10."
-    },
-    {
-        "Id":  "M14",
-        "Name":  "M14",
-        "Constellation":  "Ophiuchus",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  264.4,
-        "DecDeg":  -3.2,
-        "Magnitude":  7.6,
-        "Description":  "Globular tenue pero accesible con telescopio medio."
-    },
-    {
-        "Id":  "M62",
-        "Name":  "M62",
-        "Constellation":  "Ophiuchus",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  255.3,
-        "DecDeg":  -30.1,
-        "Magnitude":  6.5,
-        "Description":  "Globular brillante muy bajo desde Europa."
-    },
-    {
-        "Id":  "M19",
-        "Name":  "M19",
-        "Constellation":  "Ophiuchus",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  255.7,
-        "DecDeg":  -26.3,
-        "Magnitude":  6.8,
-        "Description":  "Globular notablemente oblongo."
-    },
-    {
-        "Id":  "M4",
-        "Name":  "M4",
-        "Constellation":  "Scorpius",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  245.9,
-        "DecDeg":  -26.5,
-        "Magnitude":  5.6,
-        "Description":  "Globular cercano junto a Antares."
-    },
-    {
-        "Id":  "M80",
-        "Name":  "M80",
-        "Constellation":  "Scorpius",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  244.3,
-        "DecDeg":  -23,
-        "Magnitude":  7.3,
-        "Description":  "Globular denso entre las garras de Escorpio."
-    },
-    {
-        "Id":  "M22",
-        "Name":  "M22",
-        "Constellation":  "Sagittarius",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  279.1,
-        "DecDeg":  -23.9,
-        "Magnitude":  5.1,
-        "Description":  "Uno de los globulares más brillantes del cielo."
-    },
-    {
-        "Id":  "M28",
-        "Name":  "M28",
-        "Constellation":  "Sagittarius",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  276.1,
-        "DecDeg":  -24.9,
-        "Magnitude":  6.8,
-        "Description":  "Globular compacto en los campos de Sagitario."
-    },
-    {
-        "Id":  "M9",
-        "Name":  "M9",
-        "Constellation":  "Ophiuchus",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  259.8,
-        "DecDeg":  -18.5,
-        "Magnitude":  7.7,
-        "Description":  "Globular intermedio con núcleo condensado."
-    },
-    {
-        "Id":  "M15",
-        "Name":  "M15",
-        "Constellation":  "Pegasus",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  322.5,
-        "DecDeg":  12.2,
-        "Magnitude":  6.2,
-        "Description":  "Globular otoñal muy concentrado."
-    },
-    {
-        "Id":  "M2",
-        "Name":  "M2",
-        "Constellation":  "Aquarius",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  323.4,
-        "DecDeg":  -0.8,
-        "Magnitude":  6.5,
-        "Description":  "Globular brillante en Acuario."
-    },
-    {
-        "Id":  "M30",
-        "Name":  "M30",
-        "Constellation":  "Capricornus",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  325.1,
-        "DecDeg":  -23.2,
-        "Magnitude":  7.2,
-        "Description":  "Globular compacto de Capricornio."
-    },
-    {
-        "Id":  "M56",
-        "Name":  "M56",
-        "Constellation":  "Lyra",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  289.1,
-        "DecDeg":  30.2,
-        "Magnitude":  8.3,
-        "Description":  "Globular pequeño entre Lira y Cisne."
-    },
-    {
-        "Id":  "M71",
-        "Name":  "M71",
-        "Constellation":  "Sagitta",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  298.4,
-        "DecDeg":  18.8,
-        "Magnitude":  8.2,
-        "Description":  "Cúmulo globular laxo en la Flecha."
-    },
-    {
-        "Id":  "NGC 5139",
-        "Name":  "Omega Centauri",
-        "Constellation":  "Centaurus",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  201.7,
-        "DecDeg":  -47.5,
-        "Magnitude":  3.9,
-        "Description":  "El mayor cúmulo globular visible desde la Tierra."
-    },
-    {
-        "Id":  "M79",
-        "Name":  "M79",
-        "Constellation":  "Lepus",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  81,
-        "DecDeg":  -24.5,
-        "Magnitude":  7.7,
-        "Description":  "Globular invernal en la Liebre."
-    },
-    {
-        "Id":  "NGC 288",
-        "Name":  "NGC 288",
-        "Constellation":  "Sculptor",
-        "Type":  "GlobularCluster",
-        "Emoji":  "✨",
-        "RaDeg":  13.2,
-        "DecDeg":  -26.6,
-        "Magnitude":  8.1,
-        "Description":  "Globular austrial de bajo brillo superficial."
-    },
-    {
-        "Id":  "M31",
-        "Name":  "Galaxia de Andrómeda",
-        "Constellation":  "Andromeda",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  10.7,
-        "DecDeg":  41.3,
-        "Magnitude":  3.4,
-        "Description":  "La gran galaxia vecina del Grupo Local."
-    },
-    {
-        "Id":  "M32",
-        "Name":  "M32",
-        "Constellation":  "Andromeda",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  10.7,
-        "DecDeg":  40.9,
-        "Magnitude":  8.7,
-        "Description":  "Galaxia satélite compacta de Andrómeda."
-    },
-    {
-        "Id":  "M110",
-        "Name":  "M110",
-        "Constellation":  "Andromeda",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  10.1,
-        "DecDeg":  41.7,
-        "Magnitude":  8.5,
-        "Description":  "Segunda compañera destacada de M31."
-    },
-    {
-        "Id":  "M33",
-        "Name":  "Galaxia del Triángulo",
-        "Constellation":  "Triangulum",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  23.5,
-        "DecDeg":  30.7,
-        "Magnitude":  5.7,
-        "Description":  "Gran espiral de bajo brillo superficial."
-    },
-    {
-        "Id":  "M81",
-        "Name":  "Galaxia de Bode",
-        "Constellation":  "Ursa Major",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  148.9,
-        "DecDeg":  69.1,
-        "Magnitude":  6.9,
-        "Description":  "Espiral brillante emparejada con M82."
-    },
-    {
-        "Id":  "M82",
-        "Name":  "Galaxia del Cigarro",
-        "Constellation":  "Ursa Major",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  148.9,
-        "DecDeg":  69.7,
-        "Magnitude":  8.4,
-        "Description":  "Galaxia irregular famosa por su forma alargada."
-    },
-    {
-        "Id":  "M51",
-        "Name":  "Galaxia del Remolino",
-        "Constellation":  "Canes Venatici",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  202.5,
-        "DecDeg":  47.2,
-        "Magnitude":  8.4,
-        "Description":  "Espiral con compañero visible en telescopio."
-    },
-    {
-        "Id":  "M101",
-        "Name":  "Galaxia del Molinete",
-        "Constellation":  "Ursa Major",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  210.8,
-        "DecDeg":  54.3,
-        "Magnitude":  7.9,
-        "Description":  "Gran espiral de baja densidad superficial."
-    },
-    {
-        "Id":  "M63",
-        "Name":  "Galaxia del Girasol",
-        "Constellation":  "Canes Venatici",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  198,
-        "DecDeg":  42,
-        "Magnitude":  8.6,
-        "Description":  "Espiral brillante con halo granulado."
-    },
-    {
-        "Id":  "M94",
-        "Name":  "M94",
-        "Constellation":  "Canes Venatici",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  192.7,
-        "DecDeg":  41.1,
-        "Magnitude":  8.2,
-        "Description":  "Galaxia compacta con núcleo muy luminoso."
-    },
-    {
-        "Id":  "M64",
-        "Name":  "Galaxia del Ojo Negro",
-        "Constellation":  "Coma Berenices",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  194.2,
-        "DecDeg":  21.7,
-        "Magnitude":  8.5,
-        "Description":  "Galaxia célebre por su banda oscura."
-    },
-    {
-        "Id":  "M104",
-        "Name":  "Galaxia del Sombrero",
-        "Constellation":  "Virgo",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  190,
-        "DecDeg":  -11.6,
-        "Magnitude":  8,
-        "Description":  "Galaxia de perfil con gran bulbo central."
-    },
-    {
-        "Id":  "M87",
-        "Name":  "M87",
-        "Constellation":  "Virgo",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  187.7,
-        "DecDeg":  12.4,
-        "Magnitude":  8.6,
-        "Description":  "Gigante elíptica del cúmulo de Virgo."
-    },
-    {
-        "Id":  "M84",
-        "Name":  "M84",
-        "Constellation":  "Virgo",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  186.3,
-        "DecDeg":  12.9,
-        "Magnitude":  9.1,
-        "Description":  "Elíptica brillante del corazón de Virgo."
-    },
-    {
-        "Id":  "M86",
-        "Name":  "M86",
-        "Constellation":  "Virgo",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  186.6,
-        "DecDeg":  12.9,
-        "Magnitude":  8.9,
-        "Description":  "Otra destacada elíptica del conjunto de Virgo."
-    },
-    {
-        "Id":  "M49",
-        "Name":  "M49",
-        "Constellation":  "Virgo",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  187.4,
-        "DecDeg":  8,
-        "Magnitude":  8.4,
-        "Description":  "Galaxia elíptica brillante en Virgo."
-    },
-    {
-        "Id":  "M77",
-        "Name":  "M77",
-        "Constellation":  "Cetus",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  37,
-        "DecDeg":  0,
-        "Magnitude":  8.9,
-        "Description":  "Galaxia Seyfert luminosa en Cetus."
-    },
-    {
-        "Id":  "M74",
-        "Name":  "M74",
-        "Constellation":  "Pisces",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  24.2,
-        "DecDeg":  15.8,
-        "Magnitude":  9.4,
-        "Description":  "Espiral frontal delicada en Piscis."
-    },
-    {
-        "Id":  "M106",
-        "Name":  "M106",
-        "Constellation":  "Canes Venatici",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  184.7,
-        "DecDeg":  47.3,
-        "Magnitude":  8.4,
-        "Description":  "Gran espiral con núcleo activo."
-    },
-    {
-        "Id":  "NGC 253",
-        "Name":  "Galaxia del Escultor",
-        "Constellation":  "Sculptor",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  11.9,
-        "DecDeg":  -25.3,
-        "Magnitude":  7.1,
-        "Description":  "Galaxia brillante visible desde latitudes templadas del sur."
-    },
-    {
-        "Id":  "NGC 891",
-        "Name":  "NGC 891",
-        "Constellation":  "Andromeda",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  35.6,
-        "DecDeg":  42.4,
-        "Magnitude":  9.9,
-        "Description":  "Galaxia de canto con prominente banda de polvo."
-    },
-    {
-        "Id":  "NGC 4565",
-        "Name":  "Galaxia de la Aguja",
-        "Constellation":  "Coma Berenices",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  189.1,
-        "DecDeg":  25.9,
-        "Magnitude":  9.6,
-        "Description":  "Una de las galaxias de canto más elegantes."
-    },
-    {
-        "Id":  "NGC 7331",
-        "Name":  "NGC 7331",
-        "Constellation":  "Pegasus",
-        "Type":  "Galaxy",
-        "Emoji":  "🌌",
-        "RaDeg":  339.3,
-        "DecDeg":  34.4,
-        "Magnitude":  9.5,
-        "Description":  "Espiral brillante en Pegaso, cercana al Quinteto de Stephan."
-    },
+[
+  {
+    "Id": "M42",
+    "Name": "Gran Nebulosa de Orión",
+    "Constellation": "Orion",
+    "Type": "Nebula",
+    "Emoji": "🌌",
+    "RaDeg": 83.8,
+    "DecDeg": -5.4,
+    "Magnitude": 4,
+    "Description": "Nebulosa brillante en la espada de Orión.",
+    "Catalogs": [
+      "M42"
+    ],
+    "AltNames": [
+      "Orion Nebula",
+      "Nebulosa de Orión"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm under dark skies",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M43",
+    "Name": "De Mairan",
+    "Constellation": "Orion",
+    "Type": "Nebula",
+    "Emoji": "🌌",
+    "RaDeg": 83.9,
+    "DecDeg": -5.3,
+    "Magnitude": 9,
+    "Description": "Pequeña nebulosa unida al complejo de Orión.",
+    "Catalogs": [
+      "M43"
+    ],
+    "AltNames": [
+      "De Mairan Nebula"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M1",
+    "Name": "Nebulosa del Cangrejo",
+    "Constellation": "Taurus",
+    "Type": "Nebula",
+    "Emoji": "🌌",
+    "RaDeg": 83.6,
+    "DecDeg": 22,
+    "Magnitude": 8.4,
+    "Description": "Resto de supernova histórico en Tauro.",
+    "Catalogs": [
+      "M1"
+    ],
+    "AltNames": [
+      "Crab Nebula",
+      "Nebulosa del Cangrejo"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M57",
+    "Name": "Nebulosa del Anillo",
+    "Constellation": "Lyra",
+    "Type": "Nebula",
+    "Emoji": "🌌",
+    "RaDeg": 283.4,
+    "DecDeg": 33,
+    "Magnitude": 8.8,
+    "Description": "Planetaria icónica con anillo bien definido.",
+    "Catalogs": [
+      "M57"
+    ],
+    "AltNames": [
+      "Ring Nebula",
+      "Nebulosa del Anillo"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M27",
+    "Name": "Nebulosa Dumbbell",
+    "Constellation": "Vulpecula",
+    "Type": "Nebula",
+    "Emoji": "🌌",
+    "RaDeg": 299.9,
+    "DecDeg": 22.7,
+    "Magnitude": 7.4,
+    "Description": "Planetaria extensa y muy agradecida visualmente.",
+    "Catalogs": [
+      "M27"
+    ],
+    "AltNames": [
+      "Dumbbell Nebula",
+      "Nebulosa Dumbbell"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M97",
+    "Name": "Nebulosa del Búho",
+    "Constellation": "Ursa Major",
+    "Type": "Nebula",
+    "Emoji": "🌌",
+    "RaDeg": 168.7,
+    "DecDeg": 55,
+    "Magnitude": 9.9,
+    "Description": "Planetaria tenue famosa por sus dos cavidades oscuras.",
+    "Catalogs": [
+      "M97"
+    ],
+    "AltNames": [
+      "Owl Nebula",
+      "Nebulosa del Búho"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M17",
+    "Name": "Nebulosa Omega",
+    "Constellation": "Sagittarius",
+    "Type": "Nebula",
+    "Emoji": "🌌",
+    "RaDeg": 275.2,
+    "DecDeg": -16.2,
+    "Magnitude": 6,
+    "Description": "Nebulosa de emisión brillante en Sagitario.",
+    "Catalogs": [
+      "M17"
+    ],
+    "AltNames": [
+      "Omega Nebula",
+      "Nebulosa Omega"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm under dark skies",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M16",
+    "Name": "Nebulosa del Águila",
+    "Constellation": "Serpens",
+    "Type": "Nebula",
+    "Emoji": "🌌",
+    "RaDeg": 274.7,
+    "DecDeg": -13.8,
+    "Magnitude": 6,
+    "Description": "Región de formación estelar de los Pilares de la Creación.",
+    "Catalogs": [
+      "M16"
+    ],
+    "AltNames": [
+      "Eagle Nebula",
+      "Nebulosa del Águila"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm under dark skies",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M20",
+    "Name": "Nebulosa Trífida",
+    "Constellation": "Sagittarius",
+    "Type": "Nebula",
+    "Emoji": "🌌",
+    "RaDeg": 270.6,
+    "DecDeg": -23,
+    "Magnitude": 6.3,
+    "Description": "Nebulosa dividida por bandas oscuras muy fotogénicas.",
+    "Catalogs": [
+      "M20"
+    ],
+    "AltNames": [
+      "Trifid Nebula",
+      "Nebulosa Trífida"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M8",
+    "Name": "Nebulosa de la Laguna",
+    "Constellation": "Sagittarius",
+    "Type": "Nebula",
+    "Emoji": "🌌",
+    "RaDeg": 271,
+    "DecDeg": -24.4,
+    "Magnitude": 6,
+    "Description": "Gran nebulosa estival visible a simple vista en cielos oscuros.",
+    "Catalogs": [
+      "M8"
+    ],
+    "AltNames": [
+      "Lagoon Nebula",
+      "Nebulosa de la Laguna"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm under dark skies",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "NGC 7293",
+    "Name": "Nebulosa de la Hélice",
+    "Constellation": "Aquarius",
+    "Type": "Nebula",
+    "Emoji": "🌌",
+    "RaDeg": 337.4,
+    "DecDeg": -20.8,
+    "Magnitude": 7.3,
+    "Description": "Planetaria cercana y extensa en Acuario.",
+    "Catalogs": [
+      "NGC 7293"
+    ],
+    "AltNames": [
+      "Helix Nebula",
+      "Nebulosa de la Hélice"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "NGC 2244",
+    "Name": "Nebulosa Roseta",
+    "Constellation": "Monoceros",
+    "Type": "Nebula",
+    "Emoji": "🌌",
+    "RaDeg": 98.2,
+    "DecDeg": 4.9,
+    "Magnitude": 4.8,
+    "Description": "Complejo nebular amplio alrededor de un cúmulo joven.",
+    "Catalogs": [
+      "NGC 2244"
+    ],
+    "AltNames": [
+      "Rosette Nebula",
+      "Nebulosa Roseta"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm under dark skies",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "NGC 6992",
+    "Name": "Velo Oriental",
+    "Constellation": "Cygnus",
+    "Type": "Nebula",
+    "Emoji": "🌌",
+    "RaDeg": 314.4,
+    "DecDeg": 31.7,
+    "Magnitude": 7,
+    "Description": "Filamento brillante del remanente de la Nebulosa del Velo.",
+    "Catalogs": [
+      "NGC 6992"
+    ],
+    "AltNames": [
+      "Veil Nebula East",
+      "Velo Oriental"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "IC 1805",
+    "Name": "Nebulosa del Corazón",
+    "Constellation": "Cassiopeia",
+    "Type": "Nebula",
+    "Emoji": "🌌",
+    "RaDeg": 38.2,
+    "DecDeg": 61.5,
+    "Magnitude": 6.5,
+    "Description": "Gran región HII del cielo boreal.",
+    "Catalogs": [
+      "IC 1805"
+    ],
+    "AltNames": [
+      "Heart Nebula",
+      "Nebulosa del Corazón"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M45",
+    "Name": "Pléyades",
+    "Constellation": "Taurus",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 56.8,
+    "DecDeg": 24.1,
+    "Magnitude": 1.6,
+    "Description": "Cúmulo abierto brillante y muy extenso.",
+    "Catalogs": [
+      "M45"
+    ],
+    "AltNames": [
+      "Pleiades",
+      "Pléyades"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, visible to naked eye under dark skies",
+    "SkyRequirement": "Suburban"
+  },
+  {
+    "Id": "M44",
+    "Name": "La Colmena",
+    "Constellation": "Cancer",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 130,
+    "DecDeg": 19.6,
+    "Magnitude": 3.1,
+    "Description": "Gran cúmulo visible incluso a simple vista.",
+    "Catalogs": [
+      "M44"
+    ],
+    "AltNames": [
+      "Beehive Cluster",
+      "La Colmena"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, visible to naked eye under dark skies",
+    "SkyRequirement": "Suburban"
+  },
+  {
+    "Id": "M36",
+    "Name": "M36",
+    "Constellation": "Auriga",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 84.1,
+    "DecDeg": 34.1,
+    "Magnitude": 6,
+    "Description": "Cúmulo compacto del rico campo de Auriga.",
+    "Catalogs": [
+      "M36"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm+",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M37",
+    "Name": "M37",
+    "Constellation": "Auriga",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 88.1,
+    "DecDeg": 32.6,
+    "Magnitude": 5.6,
+    "Description": "Cúmulo muy rico y fino para aperturas medias.",
+    "Catalogs": [
+      "M37"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm+",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M38",
+    "Name": "M38",
+    "Constellation": "Auriga",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 82.8,
+    "DecDeg": 35.8,
+    "Magnitude": 6.4,
+    "Description": "Cúmulo abierto amplio en Auriga.",
+    "Catalogs": [
+      "M38"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm+",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M35",
+    "Name": "M35",
+    "Constellation": "Gemini",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 92.2,
+    "DecDeg": 24.3,
+    "Magnitude": 5.1,
+    "Description": "Cúmulo brillante cerca del pie de Géminis.",
+    "Catalogs": [
+      "M35"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm+",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M48",
+    "Name": "M48",
+    "Constellation": "Hydra",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 123.4,
+    "DecDeg": -5.8,
+    "Magnitude": 5.8,
+    "Description": "Cúmulo abierto grande de brillo uniforme.",
+    "Catalogs": [
+      "M48"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm+",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M6",
+    "Name": "Cúmulo Mariposa",
+    "Constellation": "Scorpius",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 265.1,
+    "DecDeg": -32.2,
+    "Magnitude": 4.2,
+    "Description": "Cúmulo sureño con silueta de alas abiertas.",
+    "Catalogs": [
+      "M6"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, visible to naked eye under dark skies",
+    "SkyRequirement": "Suburban"
+  },
+  {
+    "Id": "M7",
+    "Name": "M7",
+    "Constellation": "Scorpius",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 268.5,
+    "DecDeg": -34.8,
+    "Magnitude": 3.3,
+    "Description": "Cúmulo amplio y brillante muy bajo en latitudes medias.",
+    "Catalogs": [
+      "M7"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, visible to naked eye under dark skies",
+    "SkyRequirement": "Suburban"
+  },
+  {
+    "Id": "M11",
+    "Name": "Cúmulo del Pato Salvaje",
+    "Constellation": "Scutum",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 282.8,
+    "DecDeg": -6.3,
+    "Magnitude": 5.8,
+    "Description": "Uno de los cúmulos abiertos más ricos del cielo.",
+    "Catalogs": [
+      "M11"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm+",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M18",
+    "Name": "M18",
+    "Constellation": "Sagittarius",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 274.3,
+    "DecDeg": -17.1,
+    "Magnitude": 6.9,
+    "Description": "Cúmulo abierto pequeño en los campos de Sagitario.",
+    "Catalogs": [
+      "M18"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm+",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M21",
+    "Name": "M21",
+    "Constellation": "Sagittarius",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 273,
+    "DecDeg": -22.5,
+    "Magnitude": 5.9,
+    "Description": "Cúmulo abierto joven próximo a la Trífida.",
+    "Catalogs": [
+      "M21"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm+",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M23",
+    "Name": "M23",
+    "Constellation": "Sagittarius",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 269.3,
+    "DecDeg": -19,
+    "Magnitude": 5.5,
+    "Description": "Cúmulo amplio con muchas estrellas resolubles.",
+    "Catalogs": [
+      "M23"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm+",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M25",
+    "Name": "M25",
+    "Constellation": "Sagittarius",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 277.9,
+    "DecDeg": -19.2,
+    "Magnitude": 4.6,
+    "Description": "Cúmulo abierto grande sobre la Vía Láctea estival.",
+    "Catalogs": [
+      "M25"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm+",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M39",
+    "Name": "M39",
+    "Constellation": "Cygnus",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 323.9,
+    "DecDeg": 48.4,
+    "Magnitude": 4.6,
+    "Description": "Cúmulo muy abierto ideal para bajos aumentos.",
+    "Catalogs": [
+      "M39"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm+",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "NGC 869",
+    "Name": "Doble Cúmulo Norte",
+    "Constellation": "Perseus",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 34.7,
+    "DecDeg": 57.1,
+    "Magnitude": 3.7,
+    "Description": "Uno de los dos cúmulos del famoso doble de Perseo.",
+    "Catalogs": [
+      "NGC 869"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, visible to naked eye under dark skies",
+    "SkyRequirement": "Suburban"
+  },
+  {
+    "Id": "NGC 884",
+    "Name": "Doble Cúmulo Sur",
+    "Constellation": "Perseus",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 35.9,
+    "DecDeg": 57.1,
+    "Magnitude": 3.8,
+    "Description": "Segundo componente del célebre doble cúmulo.",
+    "Catalogs": [
+      "NGC 884"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, visible to naked eye under dark skies",
+    "SkyRequirement": "Suburban"
+  },
+  {
+    "Id": "Mel 20",
+    "Name": "Alpha Persei",
+    "Constellation": "Perseus",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 51.5,
+    "DecDeg": 49,
+    "Magnitude": 1.2,
+    "Description": "Asociación estelar amplia alrededor de Mirfak.",
+    "Catalogs": [
+      "Mel 20"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, visible to naked eye under dark skies",
+    "SkyRequirement": "Suburban"
+  },
+  {
+    "Id": "M41",
+    "Name": "M41",
+    "Constellation": "Canis Major",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 101.5,
+    "DecDeg": -20.7,
+    "Magnitude": 4.5,
+    "Description": "Cúmulo brillante bajo Sirio.",
+    "Catalogs": [
+      "M41"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, visible to naked eye under dark skies",
+    "SkyRequirement": "Suburban"
+  },
+  {
+    "Id": "M50",
+    "Name": "M50",
+    "Constellation": "Monoceros",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 105.7,
+    "DecDeg": -8.4,
+    "Magnitude": 5.9,
+    "Description": "Cúmulo abierto fino en Unicornio.",
+    "Catalogs": [
+      "M50"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm+",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "IC 4665",
+    "Name": "IC 4665",
+    "Constellation": "Ophiuchus",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 266.6,
+    "DecDeg": 5.7,
+    "Magnitude": 4.2,
+    "Description": "Cúmulo abierto muy amplio visible con prismáticos.",
+    "Catalogs": [
+      "IC 4665"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, visible to naked eye under dark skies",
+    "SkyRequirement": "Suburban"
+  },
+  {
+    "Id": "Mel 111",
+    "Name": "Cabellera de Berenice",
+    "Constellation": "Coma Berenices",
+    "Type": "OpenCluster",
+    "Emoji": "✨",
+    "RaDeg": 186,
+    "DecDeg": 26,
+    "Magnitude": 1.8,
+    "Description": "Gran cúmulo disperso ideal para campo amplio.",
+    "Catalogs": [
+      "Mel 111"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, visible to naked eye under dark skies",
+    "SkyRequirement": "Suburban"
+  },
+  {
+    "Id": "M13",
+    "Name": "Gran Cúmulo de Hércules",
+    "Constellation": "Hercules",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 250.4,
+    "DecDeg": 36.5,
+    "Magnitude": 5.8,
+    "Description": "Globular brillante y muy popular en verano.",
+    "Catalogs": [
+      "M13"
+    ],
+    "AltNames": [
+      "Great Hercules Cluster",
+      "Gran Cúmulo de Hércules"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Small telescope 100mm+, binoculars 10x50 under dark skies",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M92",
+    "Name": "M92",
+    "Constellation": "Hercules",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 259.3,
+    "DecDeg": 43.1,
+    "Magnitude": 6.4,
+    "Description": "Globular compacto rival de M13.",
+    "Catalogs": [
+      "M92"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Small telescope 100mm+, binoculars 10x50 under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M5",
+    "Name": "M5",
+    "Constellation": "Serpens",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 229.6,
+    "DecDeg": 2.1,
+    "Magnitude": 5.6,
+    "Description": "Globular grande y ricamente poblado.",
+    "Catalogs": [
+      "M5"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Small telescope 100mm+, binoculars 10x50 under dark skies",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M3",
+    "Name": "M3",
+    "Constellation": "Canes Venatici",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 205.5,
+    "DecDeg": 28.4,
+    "Magnitude": 6.2,
+    "Description": "Globular brillante en la primavera boreal.",
+    "Catalogs": [
+      "M3"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Small telescope 100mm+, binoculars 10x50 under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M10",
+    "Name": "M10",
+    "Constellation": "Ophiuchus",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 254.3,
+    "DecDeg": -4.1,
+    "Magnitude": 6.6,
+    "Description": "Globular concentrado en Ofiuco.",
+    "Catalogs": [
+      "M10"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm+",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M12",
+    "Name": "M12",
+    "Constellation": "Ophiuchus",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 251.8,
+    "DecDeg": -1.9,
+    "Magnitude": 6.7,
+    "Description": "Globular algo más suelto que M10.",
+    "Catalogs": [
+      "M12"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm+",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M14",
+    "Name": "M14",
+    "Constellation": "Ophiuchus",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 264.4,
+    "DecDeg": -3.2,
+    "Magnitude": 7.6,
+    "Description": "Globular tenue pero accesible con telescopio medio.",
+    "Catalogs": [
+      "M14"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm+",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M62",
+    "Name": "M62",
+    "Constellation": "Ophiuchus",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 255.3,
+    "DecDeg": -30.1,
+    "Magnitude": 6.5,
+    "Description": "Globular brillante muy bajo desde Europa.",
+    "Catalogs": [
+      "M62"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Small telescope 100mm+, binoculars 10x50 under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M19",
+    "Name": "M19",
+    "Constellation": "Ophiuchus",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 255.7,
+    "DecDeg": -26.3,
+    "Magnitude": 6.8,
+    "Description": "Globular notablemente oblongo.",
+    "Catalogs": [
+      "M19"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm+",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M4",
+    "Name": "M4",
+    "Constellation": "Scorpius",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 245.9,
+    "DecDeg": -26.5,
+    "Magnitude": 5.6,
+    "Description": "Globular cercano junto a Antares.",
+    "Catalogs": [
+      "M4"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Small telescope 100mm+, binoculars 10x50 under dark skies",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M80",
+    "Name": "M80",
+    "Constellation": "Scorpius",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 244.3,
+    "DecDeg": -23,
+    "Magnitude": 7.3,
+    "Description": "Globular denso entre las garras de Escorpio.",
+    "Catalogs": [
+      "M80"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm+",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M22",
+    "Name": "M22",
+    "Constellation": "Sagittarius",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 279.1,
+    "DecDeg": -23.9,
+    "Magnitude": 5.1,
+    "Description": "Uno de los globulares más brillantes del cielo.",
+    "Catalogs": [
+      "M22"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Small telescope 100mm+, binoculars 10x50 under dark skies",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M28",
+    "Name": "M28",
+    "Constellation": "Sagittarius",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 276.1,
+    "DecDeg": -24.9,
+    "Magnitude": 6.8,
+    "Description": "Globular compacto en los campos de Sagitario.",
+    "Catalogs": [
+      "M28"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm+",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M9",
+    "Name": "M9",
+    "Constellation": "Ophiuchus",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 259.8,
+    "DecDeg": -18.5,
+    "Magnitude": 7.7,
+    "Description": "Globular intermedio con núcleo condensado.",
+    "Catalogs": [
+      "M9"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm+",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M15",
+    "Name": "M15",
+    "Constellation": "Pegasus",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 322.5,
+    "DecDeg": 12.2,
+    "Magnitude": 6.2,
+    "Description": "Globular otoñal muy concentrado.",
+    "Catalogs": [
+      "M15"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Small telescope 100mm+, binoculars 10x50 under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M2",
+    "Name": "M2",
+    "Constellation": "Aquarius",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 323.4,
+    "DecDeg": -0.8,
+    "Magnitude": 6.5,
+    "Description": "Globular brillante en Acuario.",
+    "Catalogs": [
+      "M2"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Small telescope 100mm+, binoculars 10x50 under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M30",
+    "Name": "M30",
+    "Constellation": "Capricornus",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 325.1,
+    "DecDeg": -23.2,
+    "Magnitude": 7.2,
+    "Description": "Globular compacto de Capricornio.",
+    "Catalogs": [
+      "M30"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm+",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M56",
+    "Name": "M56",
+    "Constellation": "Lyra",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 289.1,
+    "DecDeg": 30.2,
+    "Magnitude": 8.3,
+    "Description": "Globular pequeño entre Lira y Cisne.",
+    "Catalogs": [
+      "M56"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm+",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M71",
+    "Name": "M71",
+    "Constellation": "Sagitta",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 298.4,
+    "DecDeg": 18.8,
+    "Magnitude": 8.2,
+    "Description": "Cúmulo globular laxo en la Flecha.",
+    "Catalogs": [
+      "M71"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm+",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "NGC 5139",
+    "Name": "Omega Centauri",
+    "Constellation": "Centaurus",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 201.7,
+    "DecDeg": -47.5,
+    "Magnitude": 3.9,
+    "Description": "El mayor cúmulo globular visible desde la Tierra.",
+    "Catalogs": [
+      "NGC 5139"
+    ],
+    "AltNames": [
+      "Omega Centauri"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Small telescope 100mm+, binoculars 10x50 under dark skies",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M79",
+    "Name": "M79",
+    "Constellation": "Lepus",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 81,
+    "DecDeg": -24.5,
+    "Magnitude": 7.7,
+    "Description": "Globular invernal en la Liebre.",
+    "Catalogs": [
+      "M79"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm+",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "NGC 288",
+    "Name": "NGC 288",
+    "Constellation": "Sculptor",
+    "Type": "GlobularCluster",
+    "Emoji": "✨",
+    "RaDeg": 13.2,
+    "DecDeg": -26.6,
+    "Magnitude": 8.1,
+    "Description": "Globular austrial de bajo brillo superficial.",
+    "Catalogs": [
+      "NGC 288"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm+",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M31",
+    "Name": "Galaxia de Andrómeda",
+    "Constellation": "Andromeda",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 10.7,
+    "DecDeg": 41.3,
+    "Magnitude": 3.4,
+    "Description": "La gran galaxia vecina del Grupo Local.",
+    "Catalogs": [
+      "M31"
+    ],
+    "AltNames": [
+      "Andromeda Galaxy",
+      "Galaxia de Andrómeda"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm under dark skies",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M32",
+    "Name": "M32",
+    "Constellation": "Andromeda",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 10.7,
+    "DecDeg": 40.9,
+    "Magnitude": 8.7,
+    "Description": "Galaxia satélite compacta de Andrómeda.",
+    "Catalogs": [
+      "M32"
+    ],
+    "AltNames": [
+      "Andromeda I"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M110",
+    "Name": "M110",
+    "Constellation": "Andromeda",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 10.1,
+    "DecDeg": 41.7,
+    "Magnitude": 8.5,
+    "Description": "Segunda compañera destacada de M31.",
+    "Catalogs": [
+      "M110"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M33",
+    "Name": "Galaxia del Triángulo",
+    "Constellation": "Triangulum",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 23.5,
+    "DecDeg": 30.7,
+    "Magnitude": 5.7,
+    "Description": "Gran espiral de bajo brillo superficial.",
+    "Catalogs": [
+      "M33"
+    ],
+    "AltNames": [
+      "Triangulum Galaxy",
+      "Galaxia del Triángulo"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm under dark skies",
+    "SkyRequirement": "Suburban/DarkSky"
+  },
+  {
+    "Id": "M81",
+    "Name": "Galaxia de Bode",
+    "Constellation": "Ursa Major",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 148.9,
+    "DecDeg": 69.1,
+    "Magnitude": 6.9,
+    "Description": "Espiral brillante emparejada con M82.",
+    "Catalogs": [
+      "M81"
+    ],
+    "AltNames": [
+      "Bode Galaxy",
+      "Galaxia de Bode"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M82",
+    "Name": "Galaxia del Cigarro",
+    "Constellation": "Ursa Major",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 148.9,
+    "DecDeg": 69.7,
+    "Magnitude": 8.4,
+    "Description": "Galaxia irregular famosa por su forma alargada.",
+    "Catalogs": [
+      "M82"
+    ],
+    "AltNames": [
+      "Cigar Galaxy",
+      "Galaxia del Cigarro"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M51",
+    "Name": "Galaxia del Remolino",
+    "Constellation": "Canes Venatici",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 202.5,
+    "DecDeg": 47.2,
+    "Magnitude": 8.4,
+    "Description": "Espiral con compañero visible en telescopio.",
+    "Catalogs": [
+      "M51"
+    ],
+    "AltNames": [
+      "Whirlpool Galaxy",
+      "Galaxia del Remolino"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M101",
+    "Name": "Galaxia del Molinete",
+    "Constellation": "Ursa Major",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 210.8,
+    "DecDeg": 54.3,
+    "Magnitude": 7.9,
+    "Description": "Gran espiral de baja densidad superficial.",
+    "Catalogs": [
+      "M101"
+    ],
+    "AltNames": [
+      "Pinwheel Galaxy",
+      "Galaxia del Molinete"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M63",
+    "Name": "Galaxia del Girasol",
+    "Constellation": "Canes Venatici",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 198,
+    "DecDeg": 42,
+    "Magnitude": 8.6,
+    "Description": "Espiral brillante con halo granulado.",
+    "Catalogs": [
+      "M63"
+    ],
+    "AltNames": [
+      "Sunflower Galaxy",
+      "Galaxia del Girasol"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M94",
+    "Name": "M94",
+    "Constellation": "Canes Venatici",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 192.7,
+    "DecDeg": 41.1,
+    "Magnitude": 8.2,
+    "Description": "Galaxia compacta con núcleo muy luminoso.",
+    "Catalogs": [
+      "M94"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M64",
+    "Name": "Galaxia del Ojo Negro",
+    "Constellation": "Coma Berenices",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 194.2,
+    "DecDeg": 21.7,
+    "Magnitude": 8.5,
+    "Description": "Galaxia célebre por su banda oscura.",
+    "Catalogs": [
+      "M64"
+    ],
+    "AltNames": [
+      "Black Eye Galaxy",
+      "Galaxia del Ojo Negro"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M104",
+    "Name": "Galaxia del Sombrero",
+    "Constellation": "Virgo",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 190,
+    "DecDeg": -11.6,
+    "Magnitude": 8,
+    "Description": "Galaxia de perfil con gran bulbo central.",
+    "Catalogs": [
+      "M104"
+    ],
+    "AltNames": [
+      "Sombrero Galaxy",
+      "Galaxia del Sombrero"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M87",
+    "Name": "M87",
+    "Constellation": "Virgo",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 187.7,
+    "DecDeg": 12.4,
+    "Magnitude": 8.6,
+    "Description": "Gigante elíptica del cúmulo de Virgo.",
+    "Catalogs": [
+      "M87"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M84",
+    "Name": "M84",
+    "Constellation": "Virgo",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 186.3,
+    "DecDeg": 12.9,
+    "Magnitude": 9.1,
+    "Description": "Elíptica brillante del corazón de Virgo.",
+    "Catalogs": [
+      "M84"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M86",
+    "Name": "M86",
+    "Constellation": "Virgo",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 186.6,
+    "DecDeg": 12.9,
+    "Magnitude": 8.9,
+    "Description": "Otra destacada elíptica del conjunto de Virgo.",
+    "Catalogs": [
+      "M86"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M49",
+    "Name": "M49",
+    "Constellation": "Virgo",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 187.4,
+    "DecDeg": 8,
+    "Magnitude": 8.4,
+    "Description": "Galaxia elíptica brillante en Virgo.",
+    "Catalogs": [
+      "M49"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M77",
+    "Name": "M77",
+    "Constellation": "Cetus",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 37,
+    "DecDeg": 0,
+    "Magnitude": 8.9,
+    "Description": "Galaxia Seyfert luminosa en Cetus.",
+    "Catalogs": [
+      "M77"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M74",
+    "Name": "M74",
+    "Constellation": "Pisces",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 24.2,
+    "DecDeg": 15.8,
+    "Magnitude": 9.4,
+    "Description": "Espiral frontal delicada en Piscis.",
+    "Catalogs": [
+      "M74"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "M106",
+    "Name": "M106",
+    "Constellation": "Canes Venatici",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 184.7,
+    "DecDeg": 47.3,
+    "Magnitude": 8.4,
+    "Description": "Gran espiral con núcleo activo.",
+    "Catalogs": [
+      "M106"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "NGC 253",
+    "Name": "Galaxia del Escultor",
+    "Constellation": "Sculptor",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 11.9,
+    "DecDeg": -25.3,
+    "Magnitude": 7.1,
+    "Description": "Galaxia brillante visible desde latitudes templadas del sur.",
+    "Catalogs": [
+      "NGC 253"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "NGC 891",
+    "Name": "NGC 891",
+    "Constellation": "Andromeda",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 35.6,
+    "DecDeg": 42.4,
+    "Magnitude": 9.9,
+    "Description": "Galaxia de canto con prominente banda de polvo.",
+    "Catalogs": [
+      "NGC 891"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "NGC 4565",
+    "Name": "Galaxia de la Aguja",
+    "Constellation": "Coma Berenices",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 189.1,
+    "DecDeg": 25.9,
+    "Magnitude": 9.6,
+    "Description": "Una de las galaxias de canto más elegantes.",
+    "Catalogs": [
+      "NGC 4565"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
+  {
+    "Id": "NGC 7331",
+    "Name": "NGC 7331",
+    "Constellation": "Pegasus",
+    "Type": "Galaxy",
+    "Emoji": "🌌",
+    "RaDeg": 339.3,
+    "DecDeg": 34.4,
+    "Magnitude": 9.5,
+    "Description": "Espiral brillante en Pegaso, cercana al Quinteto de Stephan.",
+    "Catalogs": [
+      "NGC 7331"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
+  },
   {
     "Id": "NGC 6946",
     "Name": "Galaxia de los Fuegos Artificiales",
@@ -899,7 +1547,17 @@
     "RaDeg": 308.7,
     "DecDeg": 60.2,
     "Magnitude": 8.8,
-    "Description": "Galaxia espiral famosa por sus supernovas."
+    "Description": "Galaxia espiral famosa por sus supernovas.",
+    "Catalogs": [
+      "NGC 6946"
+    ],
+    "AltNames": [
+      "Fireworks Galaxy",
+      "Galaxia de los Fuegos Artificiales"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
   },
   {
     "Id": "Cr 399",
@@ -910,9 +1568,18 @@
     "RaDeg": 291.1,
     "DecDeg": 20.2,
     "Magnitude": 3.6,
-    "Description": "Asterismo muy popular con forma inconfundible de percha, ideal para prismáticos."
+    "Description": "Asterismo muy popular con forma inconfundible de percha, ideal para prismáticos.",
+    "Catalogs": [
+      "Cr 399"
+    ],
+    "AltNames": [
+      "Coathanger Cluster",
+      "Cúmulo de la Percha"
+    ],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, visible to naked eye under dark skies",
+    "SkyRequirement": "Suburban"
   },
-  
   {
     "Id": "Mel 25",
     "Name": "Híades",
@@ -922,7 +1589,16 @@
     "RaDeg": 66.7,
     "DecDeg": 15.9,
     "Magnitude": 0.5,
-    "Description": "El cúmulo abierto más cercano a la Tierra, en la cabeza de Tauro."
+    "Description": "El cúmulo abierto más cercano a la Tierra, en la cabeza de Tauro. También llamado Collinder 50 (Cr 50)",
+    "Catalogs": [
+      "Mel 25",
+      "Cr 50",
+      "C 41"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, visible to naked eye under dark skies",
+    "SkyRequirement": "Suburban"
   },
   {
     "Id": "NGC 457",
@@ -933,7 +1609,14 @@
     "RaDeg": 19.8,
     "DecDeg": 58.3,
     "Magnitude": 6.4,
-    "Description": "Cúmulo divertido y popular por sus dos estrellas brillantes que forman 'ojos'."
+    "Description": "Cúmulo divertido y popular por sus dos estrellas brillantes que forman 'ojos'.",
+    "Catalogs": [
+      "NGC 457"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Binoculars 10x50+, small telescope 80–100mm+",
+    "SkyRequirement": "Suburban/DarkSky"
   },
   {
     "Id": "B33",
@@ -944,7 +1627,14 @@
     "RaDeg": 85.2,
     "DecDeg": -2.5,
     "Magnitude": 6.8,
-    "Description": "Famosa silueta oscura de emisión en el cinturón de Orión."
+    "Description": "Famosa silueta oscura de emisión en el cinturón de Orión.",
+    "Catalogs": [
+      "B33"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium telescope 150mm under dark skies",
+    "SkyRequirement": "DarkSky"
   },
   {
     "Id": "B142",
@@ -955,7 +1645,14 @@
     "RaDeg": 298.8,
     "DecDeg": 10.2,
     "Magnitude": 9.0,
-    "Description": "Nebulosa oscura con forma de 'E' visible sobre el fondo estelar de la Vía Láctea."
+    "Description": "Nebulosa oscura con forma de 'E' visible sobre el fondo estelar de la Vía Láctea.",
+    "Catalogs": [
+      "B142"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
   },
   {
     "Id": "Beta Cyg",
@@ -966,7 +1663,14 @@
     "RaDeg": 292.7,
     "DecDeg": 27.9,
     "Magnitude": 3.1,
-    "Description": "La estrella doble más famosa del cielo, con un contraste azul y dorado espectacular."
+    "Description": "La estrella doble más famosa del cielo, con un contraste azul y dorado espectacular.",
+    "Catalogs": [
+      "Beta Cyg"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Naked eye and binoculars 10x50+",
+    "SkyRequirement": "Urban"
   },
   {
     "Id": "Zeta UMa",
@@ -977,7 +1681,14 @@
     "RaDeg": 200.9,
     "DecDeg": 54.9,
     "Magnitude": 2.2,
-    "Description": "Famosa doble visible a simple vista en la cola de la Gran Osa."
+    "Description": "Famosa doble visible a simple vista en la cola de la Gran Osa.",
+    "Catalogs": [
+      "Zeta UMa"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Naked eye and binoculars 10x50+",
+    "SkyRequirement": "Urban"
   },
   {
     "Id": "Gamma And",
@@ -988,7 +1699,14 @@
     "RaDeg": 30.9,
     "DecDeg": 42.3,
     "Magnitude": 2.1,
-    "Description": "Hermosa doble otoñal con un marcado contraste entre naranja y turquesa."
+    "Description": "Hermosa doble otoñal con un marcado contraste entre naranja y turquesa.",
+    "Catalogs": [
+      "Gamma And"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Naked eye and binoculars 10x50+",
+    "SkyRequirement": "Urban"
   },
   {
     "Id": "M65",
@@ -999,7 +1717,14 @@
     "RaDeg": 169.8,
     "DecDeg": 13.1,
     "Magnitude": 9.3,
-    "Description": "Galaxia espiral perteneciente al célebre Triplete de Leo."
+    "Description": "Galaxia espiral perteneciente al célebre Triplete de Leo.",
+    "Catalogs": [
+      "M65"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
   },
   {
     "Id": "M66",
@@ -1010,7 +1735,14 @@
     "RaDeg": 170.1,
     "DecDeg": 12.9,
     "Magnitude": 8.9,
-    "Description": "La miembro más brillante y asimétrica del Triplete de Leo."
+    "Description": "La miembro más brillante y asimétrica del Triplete de Leo.",
+    "Catalogs": [
+      "M66"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
   },
   {
     "Id": "NGC 3628",
@@ -1021,7 +1753,14 @@
     "RaDeg": 170.1,
     "DecDeg": 13.6,
     "Magnitude": 9.5,
-    "Description": "Galaxia de perfil con una ancha banda oscura, tercera del Triplete de Leo."
+    "Description": "Galaxia de perfil con una ancha banda oscura, tercera del Triplete de Leo.",
+    "Catalogs": [
+      "NGC 3628"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
   },
   {
     "Id": "M108",
@@ -1032,6 +1771,13 @@
     "RaDeg": 167.9,
     "DecDeg": 55.7,
     "Magnitude": 10.0,
-    "Description": "Galaxia espiral de perfil muy cercana visualmente a la Nebulosa del Búho (M97)."
+    "Description": "Galaxia espiral de perfil muy cercana visualmente a la Nebulosa del Búho (M97).",
+    "Catalogs": [
+      "M108"
+    ],
+    "AltNames": [],
+    "BestMonths": [],
+    "RecommendedInstrument": "Medium to large telescope 200mm under dark skies",
+    "SkyRequirement": "DarkSky"
   }
 ]
