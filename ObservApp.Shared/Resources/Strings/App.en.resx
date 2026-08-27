@@ -1342,6 +1342,9 @@
   <data name="Eph_DSO_Filter_ResultCount" xml:space="preserve">
     <value>objects</value>
   </data>
+  <data name="Eph_DSO_BestMonths" xml:space="preserve">
+    <value>Best months</value>
+  </data>
   <data name="Auth_SignOut" xml:space="preserve">
     <value>Sign Out</value>
   </data>

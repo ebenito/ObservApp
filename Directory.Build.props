@@ -20,7 +20,7 @@
 		<Version Condition="'$(Version)' == ''">1.3.2</Version>
 		<FileVersion Condition="'$(FileVersion)' == ''">1.3.2.0</FileVersion>
 		<InformationalVersion Condition="'$(InformationalVersion)' == ''">1.3.2</InformationalVersion>
-		<ApplicationDisplayVersion Condition="'$(ApplicationDisplayVersion)' == ''">1.3</ApplicationDisplayVersion>
+		<ApplicationDisplayVersion Condition="'$(ApplicationDisplayVersion)' == ''">1.3.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 </Project>
 

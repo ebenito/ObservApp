@@ -53,6 +53,7 @@ public sealed record DsoEntry(
 	string Description,
 	IReadOnlyList<string>? Catalogs = null,
 	IReadOnlyList<string>? AltNames = null,
+	IReadOnlyList<string>? BestMonths = null,
 	string? RecommendedInstrument = null,
 	string? SkyRequirement = null);
 

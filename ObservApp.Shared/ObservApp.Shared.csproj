@@ -14,13 +14,13 @@
     <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.11" />
 
     <!-- Syncfusion Blazor -->
-    <PackageReference Include="Syncfusion.Blazor.Core" Version="34.2.4" />
-    <PackageReference Include="Syncfusion.Blazor.Navigations" Version="34.2.4" />
-    <PackageReference Include="Syncfusion.Blazor.Buttons" Version="34.2.4" />
-    <PackageReference Include="Syncfusion.Blazor.Inputs" Version="34.2.4" />
-    <PackageReference Include="Syncfusion.Blazor.Themes" Version="34.2.4" />
-    <!--<PackageReference Include="Syncfusion.Blazor.DropDowns" Version="34.1.32" />
-    <PackageReference Include="Syncfusion.Blazor.Grid" Version="34.1.32" />
+    <PackageReference Include="Syncfusion.Blazor.Core" Version="34.2.5" />
+    <PackageReference Include="Syncfusion.Blazor.Navigations" Version="34.2.5" />
+    <PackageReference Include="Syncfusion.Blazor.Buttons" Version="34.2.5" />
+    <PackageReference Include="Syncfusion.Blazor.Inputs" Version="34.2.5" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="34.2.5" />
+    <PackageReference Include="Syncfusion.Blazor.DropDowns" Version="34.2.5" />
+    <!--<PackageReference Include="Syncfusion.Blazor.Grid" Version="34.1.32" />
     <PackageReference Include="Syncfusion.Blazor.Charts" Version="34.1.32" />
     <PackageReference Include="Syncfusion.Blazor.Maps" Version="34.1.32" />
     <PackageReference Include="Syncfusion.Blazor.Notifications" Version="34.1.32" />

@@ -6,6 +6,7 @@
 @using ObservApp.Shared.Models.PageModels
 @using ObservApp.Shared.Services
 @using ObservApp.Shared.ViewModels
+@using Syncfusion.Blazor.DropDowns
 @implements IDisposable
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
 @inject IEfemeridesAstronomyService EphAstronomyService
@@ -313,43 +314,75 @@
                    type="search"
                    placeholder="@L["Eph_DSO_Filter_Search"]"
                    value="@_dsoFilterSearch"
-                   @onchange="@(e => { _dsoFilterSearch = e.Value?.ToString() ?? string.Empty; OnDsoFilterChanged(); })" />
-            <select class="eph-input eph-dso-filter-select"
-                    value="@_dsoFilterCatalog"
-                    @onchange="@(e => { _dsoFilterCatalog = e.Value?.ToString() ?? string.Empty; OnDsoFilterChanged(); })">
-                <option value="">@L["Eph_DSO_Filter_Catalog"] — @L["Eph_DSO_Filter_All"]</option>
-                @foreach (var prefix in DsoCatalogPrefixOptions)
-                {
-                    <option value="@prefix">@DsoCatalogLabel(prefix)</option>
-                }
-            </select>
-            <select class="eph-input eph-dso-filter-select"
-                    value="@_dsoFilterConstellation"
-                    @onchange="@(e => { _dsoFilterConstellation = e.Value?.ToString() ?? string.Empty; OnDsoFilterChanged(); })">
-                <option value="">@L["Eph_DSO_Filter_Constellation"] — @L["Eph_DSO_Filter_All"]</option>
-                @foreach (var c in DsoConstellationOptions)
-                {
-                    <option value="@c">@c</option>
-                }
-            </select>
-            <select class="eph-input eph-dso-filter-select"
-                    value="@_dsoFilterInstrument"
-                    @onchange="@(e => { _dsoFilterInstrument = e.Value?.ToString() ?? string.Empty; OnDsoFilterChanged(); })">
-                <option value="">@L["Eph_DSO_Filter_Instrument"] — @L["Eph_DSO_Filter_All"]</option>
-                @foreach (var i in DsoInstrumentOptions)
-                {
-                    <option value="@i">@DsoInstrumentLabel(i)</option>
-                }
-            </select>
-            <select class="eph-input eph-dso-filter-select"
-                    value="@_dsoFilterSky"
-                    @onchange="@(e => { _dsoFilterSky = e.Value?.ToString() ?? string.Empty; OnDsoFilterChanged(); })">
-                <option value="">@L["Eph_DSO_Filter_Sky"] — @L["Eph_DSO_Filter_All"]</option>
-                @foreach (var s in DsoSkyOptions)
-                {
-                    <option value="@s">@DsoSkyLabel(s)</option>
-                }
-            </select>
+                   @onchange="OnDsoSearchChanged" />
+
+            <SfComboBox CssClass="eph-dso-combo"
+                        TValue="string"
+                        TItem="DsoFilterOption"
+                        DataSource="@DsoCatalogOptions"
+                        Placeholder="@L["Eph_DSO_Filter_Catalog"]"
+                        @bind-Value="_dsoFilterCatalog"
+                        AllowFiltering="true"
+                        AllowCustom="false"
+                        PopupHeight="280px">
+                <ComboBoxFieldSettings Text="Label" Value="Value" />
+                <ComboBoxTemplates TItem="DsoFilterOption">
+                    <ItemTemplate Context="item">
+                        @RenderFilterItem(item)
+                    </ItemTemplate>
+                </ComboBoxTemplates>
+            </SfComboBox>
+
+            <SfComboBox CssClass="eph-dso-combo"
+                        TValue="string"
+                        TItem="DsoFilterOption"
+                        DataSource="@DsoConstellationOptions"
+                        Placeholder="@L["Eph_DSO_Filter_Constellation"]"
+                        @bind-Value="_dsoFilterConstellation"
+                        AllowFiltering="true"
+                        AllowCustom="false"
+                        PopupHeight="280px">
+                <ComboBoxFieldSettings Text="Label" Value="Value" />
+                <ComboBoxTemplates TItem="DsoFilterOption">
+                    <ItemTemplate Context="item">
+                        @RenderFilterItem(item)
+                    </ItemTemplate>
+                </ComboBoxTemplates>
+            </SfComboBox>
+
+            <SfComboBox CssClass="eph-dso-combo"
+                        TValue="string"
+                        TItem="DsoFilterOption"
+                        DataSource="@DsoInstrumentOptions"
+                        Placeholder="@L["Eph_DSO_Filter_Instrument"]"
+                        @bind-Value="_dsoFilterInstrument"
+                        AllowFiltering="true"
+                        AllowCustom="false"
+                        PopupHeight="280px">
+                <ComboBoxFieldSettings Text="Label" Value="Value" />
+                <ComboBoxTemplates TItem="DsoFilterOption">
+                    <ItemTemplate Context="item">
+                        @RenderFilterItem(item)
+                    </ItemTemplate>
+                </ComboBoxTemplates>
+            </SfComboBox>
+
+            <SfComboBox CssClass="eph-dso-combo"
+                        TValue="string"
+                        TItem="DsoFilterOption"
+                        DataSource="@DsoSkyOptions"
+                        Placeholder="@L["Eph_DSO_Filter_Sky"]"
+                        @bind-Value="_dsoFilterSky"
+                        AllowFiltering="true"
+                        AllowCustom="false"
+                        PopupHeight="280px">
+                <ComboBoxFieldSettings Text="Label" Value="Value" />
+                <ComboBoxTemplates TItem="DsoFilterOption">
+                    <ItemTemplate Context="item">
+                        @RenderFilterItem(item)
+                    </ItemTemplate>
+                </ComboBoxTemplates>
+            </SfComboBox>
         </div>
 
         @if (_dsoLoading)
@@ -411,6 +444,37 @@
                                     <div class="eph-dso-type-line">@EfemeridesUiFormatter.DsoTypeLabel(L, item.Dso.Type) · @L["Eph_DSO_Magnitude"] @item.Dso.Magnitude.ToString("F1", CultureInfo.InvariantCulture)</div>
                                 </div>
 
+                                <!-- Catálogos y nombres alternativos -->
+                                @if ((item.Dso.Catalogs?.Any() ?? false) || (item.Dso.AltNames?.Any() ?? false))
+                                {
+                                    <div class="eph-dso-metadata-section">
+                                        @if (item.Dso.Catalogs?.Any() ?? false)
+                                        {
+                                            <div class="eph-dso-field">
+                                                <span class="eph-dso-field-label">📋 @L["Eph_DSO_Filter_Catalog"]</span>
+                                                <div class="eph-dso-badge-list">
+                                                    @foreach (var cat in item.Dso.Catalogs)
+                                                    {
+                                                        <span class="eph-dso-badge">@cat</span>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                        @if (item.Dso.AltNames?.Any() ?? false)
+                                        {
+                                            <div class="eph-dso-field">
+                                                <span class="eph-dso-field-label">🏷️ @L["Eph_DSO_Filter_All"]</span>
+                                                <div class="eph-dso-alt-names">
+                                                    @foreach (var altName in item.Dso.AltNames)
+                                                    {
+                                                        <span class="eph-dso-altname">@altName</span>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+
                                 <div class="eph-dso-stats-grid">
                                     <div class="stat-row">
                                         <span class="stat-label">@L["Eph_DSO_MaxAlt"]</span>
@@ -429,6 +493,47 @@
                                         @EfemeridesUiFormatter.FormatTimeOpt(item.VisibleUntil)
                                     </div>
                                 </div>
+
+                                <!-- Instrumento y Calidad del cielo -->
+                                @if (!string.IsNullOrEmpty(item.Dso.RecommendedInstrument) || !string.IsNullOrEmpty(item.Dso.SkyRequirement))
+                                {
+                                    <div class="eph-dso-observation-reqs">
+                                        @if (!string.IsNullOrEmpty(item.Dso.RecommendedInstrument))
+                                        {
+                                            <div class="eph-dso-req-item">
+                                                <span class="eph-dso-req-icon">🔭</span>
+                                                <div>
+                                                    <div class="eph-dso-req-label">@L["Eph_DSO_Filter_Instrument"]</div>
+                                                    <div class="eph-dso-req-value">@item.Dso.RecommendedInstrument</div>
+                                                </div>
+                                            </div>
+                                        }
+                                        @if (!string.IsNullOrEmpty(item.Dso.SkyRequirement))
+                                        {
+                                            <div class="eph-dso-req-item">
+                                                <span class="eph-dso-req-icon">🌌</span>
+                                                <div>
+                                                    <div class="eph-dso-req-label">@L["Eph_DSO_Filter_Sky"]</div>
+                                                    <div class="eph-dso-req-value">@item.Dso.SkyRequirement</div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+
+                                <!-- Mejores meses -->
+                                @if (item.Dso.BestMonths?.Any() ?? false)
+                                {
+                                    <div class="eph-dso-months-section">
+                                        <span class="eph-dso-months-label">📅 @L["Eph_DSO_BestMonths"]</span>
+                                        <div class="eph-dso-months-grid">
+                                            @foreach (var month in item.Dso.BestMonths)
+                                            {
+                                                <span class="eph-dso-month-badge">@month</span>
+                                            }
+                                        </div>
+                                    </div>
+                                }
 
                                 <div class="eph-dso-track-wrap">
                                     <div class="eph-dso-track-labels">
@@ -507,30 +612,56 @@
         (string.IsNullOrEmpty(_dsoFilterInstrument) || GetDsoInstrumentCategory(item.Dso.RecommendedInstrument) == _dsoFilterInstrument) &&
         (string.IsNullOrEmpty(_dsoFilterSky) || item.Dso.SkyRequirement == _dsoFilterSky));
 
-    private IEnumerable<string> DsoCatalogPrefixOptions => DsoCatalog
-        .SelectMany(d => d.Catalogs ?? [])
-        .Select(GetCatalogEntryPrefix)
-        .Where(p => !string.IsNullOrEmpty(p))
-        .Distinct()
-        .OrderBy(p => p);
+    private IEnumerable<DsoFilterOption> DsoCatalogOptions =>
+    [
+        new(string.Empty, $"{L["Eph_DSO_Filter_Catalog"]} — {L["Eph_DSO_Filter_All"]}", "🗂️", L["Eph_DSO_Filter_All"], "eph-dso-cb-avatar--catalog"),
+        .. DsoCatalog
+            .SelectMany(d => d.Catalogs ?? [])
+            .Select(GetCatalogEntryPrefix)
+            .Where(p => !string.IsNullOrEmpty(p))
+            .Distinct()
+            .OrderBy(p => p)
+            .Select(prefix => new DsoFilterOption(
+                prefix,
+                DsoCatalogLabel(prefix),
+                "🗂️",
+                L["Eph_DSO_Filter_Catalog"],
+                "eph-dso-cb-avatar--catalog",
+                DsoCatalogLabel(prefix)[0].ToString()))
+    ];
 
-    private IEnumerable<string> DsoConstellationOptions => DsoCatalog
-        .Select(d => d.Constellation)
-        .Where(c => !string.IsNullOrEmpty(c))
-        .Distinct()
-        .OrderBy(c => c);
+    private IEnumerable<DsoFilterOption> DsoConstellationOptions =>
+    [
+        new(string.Empty, $"{L["Eph_DSO_Filter_Constellation"]} — {L["Eph_DSO_Filter_All"]}", "✨", L["Eph_DSO_Filter_All"], "eph-dso-cb-avatar--constellation"),
+        .. DsoCatalog
+            .Select(d => d.Constellation)
+            .Where(c => !string.IsNullOrEmpty(c))
+            .Distinct()
+            .OrderBy(c => c)
+            .Select(c => new DsoFilterOption(c, c, DsoConstellationIcon(c), string.Empty, "eph-dso-cb-avatar--constellation"))
+    ];
 
-    private IEnumerable<string> DsoInstrumentOptions => DsoCatalog
-        .Select(d => GetDsoInstrumentCategory(d.RecommendedInstrument))
-        .Where(i => !string.IsNullOrEmpty(i))
-        .Distinct()
-        .OrderBy(i => i);
+    private IEnumerable<DsoFilterOption> DsoInstrumentOptions =>
+    [
+        new(string.Empty, $"{L["Eph_DSO_Filter_Instrument"]} — {L["Eph_DSO_Filter_All"]}", "🎚️", L["Eph_DSO_Filter_All"], "eph-dso-cb-avatar--instrument"),
+        .. DsoCatalog
+            .Select(d => GetDsoInstrumentCategory(d.RecommendedInstrument))
+            .Where(i => !string.IsNullOrEmpty(i))
+            .Distinct()
+            .OrderBy(i => i)
+            .Select(i => new DsoFilterOption(i, DsoInstrumentLabel(i), DsoInstrumentIcon(i), L["Eph_DSO_Filter_Instrument"], "eph-dso-cb-avatar--instrument"))
+    ];
 
-    private IEnumerable<string> DsoSkyOptions => DsoCatalog
-        .Select(d => d.SkyRequirement ?? string.Empty)
-        .Where(s => !string.IsNullOrEmpty(s))
-        .Distinct()
-        .OrderBy(s => s);
+    private IEnumerable<DsoFilterOption> DsoSkyOptions =>
+    [
+        new(string.Empty, $"{L["Eph_DSO_Filter_Sky"]} — {L["Eph_DSO_Filter_All"]}", "🌘", L["Eph_DSO_Filter_All"], "eph-dso-cb-avatar--sky"),
+        .. DsoCatalog
+            .Select(d => d.SkyRequirement ?? string.Empty)
+            .Where(s => !string.IsNullOrEmpty(s))
+            .Distinct()
+            .OrderBy(s => s)
+            .Select(s => new DsoFilterOption(s, DsoSkyLabel(s), DsoSkyIcon(s), L["Eph_DSO_Filter_Sky"], "eph-dso-cb-avatar--sky"))
+    ];
 
     private static readonly Dictionary<string, string> CatalogPrefixMap = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -619,7 +750,134 @@
         _                  => key
     };
 
-    private void OnDsoFilterChanged() => StateHasChanged();
+    private static readonly string[] DsoConstellationFallbackIcons = ["⭐", "🌟", "✦", "✶", "✷", "✸", "✹", "✺"];
+
+    private static string DsoConstellationIcon(string constellation)
+    {
+        var known = constellation switch
+        {
+            "Orion" => "🏹",
+            "Leo" => "🦁",
+            "Ursa Major" => "🐻",
+            "Scorpius" => "🦂",
+            "Sagittarius" => "♐",
+            "Cassiopeia" => "👑",
+            "Cygnus" => "🦢",
+            "Lyra" => "🎼",
+            "Gemini" => "♊",
+            "Cancer" => "♋",
+            "Taurus" => "♉",
+            "Aquarius" => "♒",
+            "Pisces" => "♓",
+            "Capricornus" => "♑",
+            "Aries" => "♈",
+            "Virgo" => "♍",
+            "Libra" => "♎",
+            _ => string.Empty
+        };
+
+        if (!string.IsNullOrEmpty(known))
+        {
+            return known;
+        }
+
+        var idx = Math.Abs(constellation.GetHashCode(StringComparison.OrdinalIgnoreCase)) % DsoConstellationFallbackIcons.Length;
+        return DsoConstellationFallbackIcons[idx];
+    }
+
+    private static string DsoInstrumentIcon(string key) => key switch
+    {
+        "NakedEye" => "👁️",
+        "Binoculars" => "🥽",
+        "SmallTelescope" => "🔭",
+        "MediumTelescope" => "🛰️",
+        "LargeTelescope" => "📡",
+        _ => "🎚️"
+    };
+
+    private static string DsoSkyIcon(string key) => key switch
+    {
+        "Urban" => "🌆",
+        "Suburban" => "🏘️",
+        "Suburban/DarkSky" => "🌗",
+        "DarkSky" => "🌌",
+        _ => "🌘"
+    };
+
+    private void OnDsoSearchChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        _dsoFilterSearch = e.Value?.ToString() ?? string.Empty;
+        StateHasChanged();
+    }
+
+    private RenderFragment RenderFilterItem(DsoFilterOption item) => builder =>
+    {
+        builder.OpenElement(0, "div");
+        builder.AddAttribute(1, "class", "eph-dso-cb-item");
+        builder.AddAttribute(2, "style", "display:flex;align-items:center;gap:12px;min-height:58px;padding:6px 2px;");
+
+        builder.OpenElement(3, "span");
+        builder.AddAttribute(4, "class", $"eph-dso-cb-avatar {item.AvatarClass}");
+        builder.AddAttribute(5, "style", $"width:44px;height:44px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;{DsoAvatarBackground(item.AvatarClass)}");
+
+        if (string.IsNullOrEmpty(item.Badge))
+        {
+            builder.OpenElement(6, "span");
+            builder.AddAttribute(7, "class", "eph-dso-cb-icon");
+            builder.AddAttribute(8, "style", "font-size:1.25rem;line-height:1;");
+            builder.AddContent(9, item.Icon);
+            builder.CloseElement();
+        }
+        else
+        {
+            builder.OpenElement(10, "span");
+            builder.AddAttribute(11, "class", "eph-dso-cb-badge");
+            builder.AddAttribute(12, "style", "width:26px;height:26px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:700;");
+            builder.AddContent(13, item.Badge);
+            builder.CloseElement();
+        }
+
+        builder.CloseElement();
+
+        builder.OpenElement(14, "span");
+        builder.AddAttribute(15, "class", "eph-dso-cb-text");
+        builder.AddAttribute(16, "style", "display:flex;flex-direction:column;min-width:0;");
+
+        builder.OpenElement(17, "span");
+        builder.AddAttribute(18, "class", "eph-dso-cb-title");
+        builder.AddAttribute(19, "style", "display:block;font-size:1.08rem;line-height:1.25;font-weight:600;");
+        builder.AddContent(20, item.Label);
+        builder.CloseElement();
+
+        if (!string.IsNullOrWhiteSpace(item.Subtitle))
+        {
+            builder.OpenElement(21, "span");
+            builder.AddAttribute(22, "class", "eph-dso-cb-subtitle");
+            builder.AddAttribute(23, "style", "display:block;font-size:.84rem;line-height:1.2;margin-top:2px;");
+            builder.AddContent(24, item.Subtitle);
+            builder.CloseElement();
+        }
+
+        builder.CloseElement();
+        builder.CloseElement();
+    };
+
+    private static string DsoAvatarBackground(string avatarClass) => avatarClass switch
+    {
+        "eph-dso-cb-avatar--catalog" => "background:radial-gradient(circle at 28% 25%,#67f0ff 0,#2ec4b6 38%,#1b5f7e 100%);border:1px solid rgba(255,255,255,.16);",
+        "eph-dso-cb-avatar--constellation" => "background:radial-gradient(circle at 25% 20%,#ffffff 0,#94b6ff 28%,#2d3d83 100%);border:1px solid rgba(255,255,255,.16);",
+        "eph-dso-cb-avatar--instrument" => "background:radial-gradient(circle at 20% 20%,#ffe29d 0,#ffc85a 32%,#8b5cf6 100%);border:1px solid rgba(255,255,255,.16);",
+        "eph-dso-cb-avatar--sky" => "background:radial-gradient(circle at 25% 20%,#c4d6ff 0,#5877d8 30%,#1b243a 100%);border:1px solid rgba(255,255,255,.16);",
+        _ => "background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);"
+    };
+
+    private sealed record DsoFilterOption(
+        string Value,
+        string Label,
+        string Icon,
+        string Subtitle,
+        string AvatarClass,
+        string? Badge = null);
 
     // ── Ciclo de vida ─────────────────────────────────────────────────────────
     protected override async Task OnInitializedAsync()
