@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Elementos de la solución/">
+    <File Path="../../../Users/ebenito/Downloads/dso-catalog-doc.md" />
     <File Path=".gitignore" />
     <File Path="Documentacion/implementation_plan.md" />
     <File Path="README.md" />

@@ -66,7 +66,7 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.11" />
         <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.11" />
         <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.11" />
-        <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.90" />
+        <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.100" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.100" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.11" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.11" />
@@ -75,14 +75,14 @@
         <!-- Syncfusion licensing (el resto de paquetes SF van en Shared) -->
 
         <!-- Supabase — nombre correcto del paquete desde v1.x -->
-        <PackageReference Include="Supabase" Version="1.6.0" />
+        <PackageReference Include="Supabase" Version="1.6.2" />
 
         <!-- Astronomy Engine — cálculos offline de planetas, luna, eclipses -->
         <PackageReference Include="CosineKitty.AstronomyEngine" Version="2.1.19" />
 
         <!-- Community Toolkit MAUI — permisos, share, toast nativo Android -->
-        <PackageReference Include="CommunityToolkit.Maui" Version="15.0.0" />
-        <PackageReference Include="Syncfusion.Licensing" Version="34.2.4" />
+        <PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
+        <PackageReference Include="Syncfusion.Licensing" Version="34.2.5" />
     </ItemGroup>
 
 	<ItemGroup>

@@ -92,7 +92,17 @@ public sealed class EclipseCalculatorService : IEclipseCalculatorService
             if (solar.kind == EclipseKind.None)
                 return new LocalEclipseResult(LocalEclipseType.None, 0, contacts, false, null);
 
-            localType = solar.kind switch
+			// ── Verificar que el eclipse local corresponde al eclipse del catálogo ──
+			// Si el pico local dista más de 6h del máximo global, es un eclipse diferente
+			if (solar.peak.time != null)
+			{
+				var localPeakUtc = solar.peak.time!.ToUtcDateTime();
+				var diff = Math.Abs((localPeakUtc - eclipse.Date).TotalHours);
+				if (diff > 6.0)
+					return new LocalEclipseResult(LocalEclipseType.None, 0, contacts, false, null);
+			}
+
+			localType = solar.kind switch
             {
                 EclipseKind.Total   => LocalEclipseType.Total,
                 EclipseKind.Annular => LocalEclipseType.Annular,
