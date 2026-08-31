@@ -30,7 +30,7 @@
     <PackageReference Include="Syncfusion.Blazor.Calendars" Version="34.1.32" />-->
 
     <!-- Supabase — nombre correcto desde v1.x -->
-    <PackageReference Include="Supabase" Version="1.6.0" />
+    <PackageReference Include="Supabase" Version="1.6.2" />
 
     <!-- MVVM Community Toolkit -->
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
