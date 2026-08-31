@@ -79,17 +79,17 @@ public static class EfemeridesUiFormatter
 	public static string DsoThumbnailAltText(DsoEntry dso)
 		=> $"{dso.Id} {dso.Name}";
 
-	public static string MoonPhaseName(double angle) => angle switch
+	public static string MoonPhaseName(IStringLocalizer<ObservApp.Resources.Strings.App> l, double angle) => angle switch
 	{
-		< 22.5 => "Luna Nueva",
-		< 67.5 => "Cuarto Creciente",
-		< 112.5 => "Cuarto Creciente",
-		< 157.5 => "Luna Gibosa Creciente",
-		< 202.5 => "Luna Llena",
-		< 247.5 => "Luna Gibosa Menguante",
-		< 292.5 => "Cuarto Menguante",
-		< 337.5 => "Luna Creciente Menguante",
-		_ => "Luna Nueva"
+		< 22.5 => l["SolLuna_Phase_New"],
+		< 67.5 => l["SolLuna_Phase_WaxCrescent"],
+		< 112.5 => l["SolLuna_Phase_FirstQuarter"],
+		< 157.5 => l["SolLuna_Phase_WaxGibbous"],
+		< 202.5 => l["SolLuna_Phase_Full"],
+		< 247.5 => l["SolLuna_Phase_WanGibbous"],
+		< 292.5 => l["SolLuna_Phase_LastQuarter"],
+		< 337.5 => l["SolLuna_Phase_WanCrescent"],
+		_ => l["SolLuna_Phase_New"]
 	};
 
 	public static string MoonPhaseEmoji(double angle) => angle switch

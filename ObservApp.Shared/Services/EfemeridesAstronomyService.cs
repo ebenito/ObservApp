@@ -1,14 +1,17 @@
 namespace ObservApp.Shared.Services;
 
 using CosineKitty;
+using Microsoft.Extensions.Localization;
 
 public sealed class EfemeridesAstronomyService : IEfemeridesAstronomyService
 {
 	private readonly IEclipseCalculatorService _eclipseCalculator;
+	private readonly IStringLocalizer<ObservApp.Resources.Strings.App> _localizer;
 
-	public EfemeridesAstronomyService(IEclipseCalculatorService eclipseCalculator)
+	public EfemeridesAstronomyService(IEclipseCalculatorService eclipseCalculator, IStringLocalizer<ObservApp.Resources.Strings.App> localizer)
 	{
 		_eclipseCalculator = eclipseCalculator;
+		_localizer = localizer;
 	}
 
 	public EphComputationResult Compute(DateTime date, double latitude, double longitude, double altitudeMeters)
@@ -175,7 +178,7 @@ public sealed class EfemeridesAstronomyService : IEfemeridesAstronomyService
 		return result;
 	}
 
-	private static List<EphEventData> ComputeEvents(DateTime date)
+	private List<EphEventData> ComputeEvents(DateTime date)
 	{
 		var events = new List<EphEventData>();
 		var limit30 = date.AddDays(30);
@@ -183,10 +186,10 @@ public sealed class EfemeridesAstronomyService : IEfemeridesAstronomyService
 
 		var moonPhases = new[]
 		{
-			(0.0,   "🌑", "Luna Nueva"),
-			(90.0,  "🌓", "Cuarto Creciente"),
-			(180.0, "🌕", "Luna Llena"),
-			(270.0, "🌗", "Cuarto Menguante"),
+			(0.0,   "🌑", _localizer["SolLuna_Phase_New"]),
+			(90.0,  "🌓", _localizer["SolLuna_Phase_FirstQuarter"]),
+			(180.0, "🌕", _localizer["SolLuna_Phase_Full"]),
+			(270.0, "🌗", _localizer["SolLuna_Phase_LastQuarter"]),
 		};
 
 		foreach (var (angle, emoji, name) in moonPhases)
@@ -222,10 +225,10 @@ public sealed class EfemeridesAstronomyService : IEfemeridesAstronomyService
 				var seasons = Astronomy.Seasons(year);
 				var seasonDefs = new[]
 				{
-					(seasons.mar_equinox.ToUtcDateTime(), "🌸", "Equinoccio de primavera"),
-					(seasons.jun_solstice.ToUtcDateTime(), "☀️", "Solsticio de verano"),
-					(seasons.sep_equinox.ToUtcDateTime(), "🍂", "Equinoccio de otoño"),
-					(seasons.dec_solstice.ToUtcDateTime(), "❄️", "Solsticio de invierno"),
+					(seasons.mar_equinox.ToUtcDateTime(), "🌸", _localizer["SolLuna_VernalEquinox"]),
+					(seasons.jun_solstice.ToUtcDateTime(), "☀️", _localizer["SolLuna_SummerSolstice"]),
+					(seasons.sep_equinox.ToUtcDateTime(), "🍂", _localizer["SolLuna_AutumnalEquinox"]),
+					(seasons.dec_solstice.ToUtcDateTime(), "❄️", _localizer["SolLuna_WinterSolstice"]),
 				};
 
 				foreach (var (dt, emoji, desc) in seasonDefs)
@@ -316,7 +319,10 @@ public sealed class EfemeridesAstronomyService : IEfemeridesAstronomyService
 	{
 		foreach (var dso in dsos)
 		{
-			cancellationToken.ThrowIfCancellationRequested();
+			if (cancellationToken.IsCancellationRequested)
+			{
+				break;
+			}
 			var result = CalculateDsoVisibility(dso, observer, window);
 			if (result is { IsVisibleTonight: true })
 			{
