@@ -13,6 +13,7 @@
 @inject IDsoCatalogProvider DsoCatalogProvider
 @inject EfemeridesViewModel VM
 @inject IJSRuntime JS
+@inject ILogger<Efemerides> Logger
 
 <PageTitle>@L["Eph_Title"] — ObservApp</PageTitle>
 
@@ -295,17 +296,22 @@
         }
     </div>
 
+    @{
+        // Se evalúa una única vez por render y se reutiliza tanto para el
+        // contador de la cabecera como para la lista, en vez de recorrer
+        // _dsoVisibles dos veces con el mismo filtro.
+        var dsoFiltered = DsoFiltered.ToList();
+    }
     <div class="eph-card eph-card--full eph-section">
         <div class="eph-card-header eph-dso-header">
-            <span class="eph-card-icon">🌌</span>
+            <span class="eph-card-icon" aria-hidden="true">🌌</span>
             <div class="eph-dso-header-text">
                 <span class="eph-card-title">@L["Eph_DSO_Title"]</span>
                 <span class="eph-dso-header-subtitle">@L["Eph_DSO_Subtitle"]</span>
             </div>
             @if (_dsoVisibles.Count > 0)
             {
-                var filteredCount = DsoFiltered.Count();
-                <span class="eph-dso-count">@filteredCount @L["Eph_DSO_Filter_ResultCount"]</span>
+                <span class="eph-dso-count">@dsoFiltered.Count @L["Eph_DSO_Filter_ResultCount"]</span>
             }
         </div>
 
@@ -403,7 +409,6 @@
         }
         else
         {
-            var dsoFiltered = DsoFiltered.ToList();
             @if (dsoFiltered.Count == 0)
             {
                 <div class="eph-empty">@L["Eph_DSO_Filter_NoResults"]</div>
@@ -413,7 +418,7 @@
             <div class="eph-dso-list">
                 @foreach (var item in dsoFiltered)
                 {
-                    <div class="eph-dso-card @EfemeridesUiFormatter.DsoAccentClass(item.Dso.Type)">
+                    <div class="eph-dso-card @EfemeridesUiFormatter.DsoAccentClass(item.Dso.Type)" @key="item.Dso.Id">
                         <div class="eph-dso-media-layout">
                             <div class="eph-dso-thumb-wrap">
                                 @if (item.ThumbnailFailed)
@@ -1078,8 +1083,12 @@
             CalcularProximoEclipseLocal();
             _ = CalcularDsosAsync();
         }
-        catch
+        catch (Exception ex)
         {
+            Logger.LogError(ex,
+                "Error calculando efemérides para fecha={Fecha}, lat={Lat}, lon={Lon}, alt={Alt}",
+                _fecha, _lat, _lon, _altMetros);
+
             _planetas = new();
             _eventos = new();
             _tonight = null;
