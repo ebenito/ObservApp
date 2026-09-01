@@ -1,0 +1,68 @@
+@using System.Globalization
+@using ObservApp.Shared.Formatters
+@using ObservApp.Shared.Models.PageModels
+
+<div class="eph-card eph-card--full eph-section">
+    <div class="eph-card-header">
+        <span class="eph-card-icon" aria-hidden="true">🌌</span>
+        <span class="eph-card-title">@L["Eph_Tonight_Title"]</span>
+    </div>
+    @if (Tonight != null)
+    {
+        <div class="eph-card-body">
+            <div class="eph-tonight-grid">
+                <div class="eph-tonight-quality @EfemeridesUiFormatter.QualityClass(Tonight.Quality)">
+                    <div class="eph-tonight-quality-dot"></div>
+                    <div>
+                        <div class="eph-tonight-quality-label">@EfemeridesUiFormatter.QualityLabel(L, Tonight.Quality)</div>
+                        <div class="eph-tonight-quality-sub">@L["Eph_Moon_Present"]</div>
+                    </div>
+                </div>
+                <div class="eph-tonight-info">
+                    <div class="stat-row">
+                        <span class="stat-label">@L["Eph_Moon_Phase"]</span>
+                        <span class="stat-value">@Tonight.MoonPhaseEmoji @Tonight.MoonPhaseName</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">@L["Eph_Moon_Illumination"]</span>
+                        <span class="stat-value">@Tonight.MoonIlluminationPct.ToString("F0", CultureInfo.InvariantCulture)%</span>
+                    </div>
+                    @if (Tonight.AstroNightStart.HasValue)
+                    {
+                        <div class="stat-row">
+                            <span class="stat-label">@L["Eph_Tonight_AstroNight"]</span>
+                            <span class="stat-value eph-aurora">@Tonight.AstroNightStart.Value.ToLocalTime().ToString("HH:mm")</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="stat-row">
+                            <span class="stat-label">@L["Eph_Tonight_AstroNight"]</span>
+                            <span class="stat-value eph-comet">@L["Eph_Tonight_NoAstroNight"]</span>
+                        </div>
+                    }
+                    @if (Tonight.MoonRise.HasValue)
+                    {
+                        <div class="stat-row">
+                            <span class="stat-label">🌙 @L["Eph_Planet_Rise"]</span>
+                            <span class="stat-value">@Tonight.MoonRise.Value.ToLocalTime().ToString("HH:mm")</span>
+                        </div>
+                    }
+                    @if (Tonight.MoonSet.HasValue)
+                    {
+                        <div class="stat-row">
+                            <span class="stat-label">🌙 @L["Eph_Planet_Set"]</span>
+                            <span class="stat-value">@Tonight.MoonSet.Value.ToLocalTime().ToString("HH:mm")</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public TonightData? Tonight { get; set; }
+
+    [Inject] public IStringLocalizer<ObservApp.Resources.Strings.App> L { get; set; } = default!;
+}

@@ -30,6 +30,7 @@ builder.Services.AddScoped<IAppLifecycleService, WebAppLifecycleService>();
 builder.Services.AddScoped<IGeolocationService, SsrGeolocationService>();
 builder.Services.AddScoped<IFavoriteLocationsService, SsrFavoriteLocationsService>();
 builder.Services.AddScoped<IDsoCatalogProvider, DsoCatalogProvider>();
+builder.Services.AddSingleton<IFilterSvgIconProvider, FilterSvgIconProvider>();
 builder.Services.AddScoped<ILocationStateService, LocationStateService>();
 builder.Services.AddScoped<IExternalLinkService, SsrExternalLinkService>();
 builder.Services.AddScoped<ITextToSpeechService, SsrTextToSpeechService>();

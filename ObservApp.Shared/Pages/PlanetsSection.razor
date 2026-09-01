@@ -1,0 +1,114 @@
+@using System.Globalization
+@using ObservApp.Shared.Formatters
+@using ObservApp.Shared.Models.PageModels
+
+<div class="eph-card eph-card--full eph-section">
+    <div class="eph-card-header">
+        <span class="eph-card-icon" aria-hidden="true">🪐</span>
+        <span class="eph-card-title">@L["Eph_Planets_Title"]</span>
+    </div>
+    @if (Planetas == null || Planetas.Count == 0)
+    {
+        <div class="eph-empty">@L["Eph_Planets_Empty"]</div>
+    }
+    else
+    {
+        <div class="eph-planets-table-wrapper">
+            <table class="eph-planets-table">
+                <thead>
+                    <tr>
+                        <th>@L["Eph_Planet_Name"]</th>
+                        <th>@L["Eph_Planet_Status"]</th>
+                        <th>@L["Eph_Planet_MaxAlt"]</th>
+                        <th>@L["Eph_Planet_Rise"]</th>
+                        <th>@L["Eph_Planet_Set"]</th>
+                        <th>@L["Eph_Planet_Azimuth"]</th>
+                        <th>@L["Eph_Planet_Distance"]</th>
+                        <th>@L["Eph_Planet_Illumination"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Planetas)
+                    {
+                        <tr class="@(p.IsVisible ? "eph-row--visible" : "eph-row--hidden")">
+                            <td class="eph-planet-name">
+                                <span class="eph-planet-emoji">@p.Emoji</span>
+                                @p.Name
+                            </td>
+                            <td>
+                                @if (p.IsVisible)
+                                {
+                                    <span class="eph-badge eph-badge--visible">@L["Eph_Planet_Visible"]</span>
+                                }
+                                else
+                                {
+                                    <span class="eph-badge eph-badge--hidden">@L["Eph_Planet_NotVisible"]</span>
+                                }
+                            </td>
+                            <td class="eph-mono">@p.MaxAltitude.ToString("F1", CultureInfo.InvariantCulture)°</td>
+                            <td class="eph-mono">@EfemeridesUiFormatter.FormatTimeOpt(p.RiseTime)</td>
+                            <td class="eph-mono">@EfemeridesUiFormatter.FormatTimeOpt(p.SetTime)</td>
+                            <td class="eph-mono">@p.AzimuthAtMax.ToString("F1", CultureInfo.InvariantCulture)°</td>
+                            <td class="eph-mono">@p.DistanceAU.ToString("F3", CultureInfo.InvariantCulture) UA</td>
+                            <td class="eph-mono">@p.IlluminationPct.ToString("F0", CultureInfo.InvariantCulture)%</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="eph-planets-cards">
+            @foreach (var p in Planetas)
+            {
+                <div class="eph-planet-card @(p.IsVisible ? "eph-planet-card--visible" : "eph-planet-card--hidden")">
+                    <div class="eph-planet-card-header">
+                        <span class="eph-planet-emoji-lg">@p.Emoji</span>
+                        <div>
+                            <div class="eph-planet-card-name">@p.Name</div>
+                            @if (p.IsVisible)
+                            {
+                                <span class="eph-badge eph-badge--visible">@L["Eph_Planet_Visible"]</span>
+                            }
+                            else
+                            {
+                                <span class="eph-badge eph-badge--hidden">@L["Eph_Planet_NotVisible"]</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="eph-planet-card-body">
+                        <div class="stat-row">
+                            <span class="stat-label">@L["Eph_Planet_MaxAlt"]</span>
+                            <span class="stat-value">@p.MaxAltitude.ToString("F1", CultureInfo.InvariantCulture)°</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">@L["Eph_Planet_Rise"]</span>
+                            <span class="stat-value">@EfemeridesUiFormatter.FormatTimeOpt(p.RiseTime)</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">@L["Eph_Planet_Set"]</span>
+                            <span class="stat-value">@EfemeridesUiFormatter.FormatTimeOpt(p.SetTime)</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">@L["Eph_Planet_Azimuth"]</span>
+                            <span class="stat-value">@p.AzimuthAtMax.ToString("F1", CultureInfo.InvariantCulture)°</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">@L["Eph_Planet_Distance"]</span>
+                            <span class="stat-value">@p.DistanceAU.ToString("F3", CultureInfo.InvariantCulture) UA</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">@L["Eph_Planet_Illumination"]</span>
+                            <span class="stat-value">@p.IlluminationPct.ToString("F0", CultureInfo.InvariantCulture)%</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public List<PlanetData> Planetas { get; set; } = new();
+
+    [Inject] public IStringLocalizer<ObservApp.Resources.Strings.App> L { get; set; } = default!;
+}

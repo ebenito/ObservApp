@@ -1,15 +1,15 @@
-/* ============================================================
+﻿/* ============================================================
    EFEMÉRIDES — scoped CSS
    ============================================================ */
 
-.eph-page {
+::deep .eph-page {
     max-width: 860px;
     margin: 0 auto;
     padding: 20px 16px 56px;
 }
 
 /* ── Navegación de vuelta ── */
-.eph-back {
+::deep .eph-back {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -22,34 +22,34 @@
     transition: opacity var(--transition), transform var(--transition);
 }
 
-    .eph-back:hover {
+    ::deep .eph-back:hover {
         opacity: 1;
         transform: translateX(-3px);
     }
 
 /* ── Cabecera ── */
-.eph-header {
+::deep .eph-header {
     display: flex;
     align-items: flex-start;
     gap: 14px;
     margin-bottom: 24px;
 }
 
-.eph-header-icon {
+::deep .eph-header-icon {
     font-size: 2.2rem;
     line-height: 1;
     flex-shrink: 0;
     margin-top: 2px;
 }
 
-.eph-header-title {
+::deep .eph-header-title {
     font-size: 1.45rem;
     font-weight: 700;
     color: var(--obs-moon);
     margin: 0 0 4px;
 }
 
-.eph-header-subtitle {
+::deep .eph-header-subtitle {
     font-size: 0.84rem;
     color: var(--obs-comet);
     margin: 0;
@@ -57,7 +57,7 @@
 }
 
 /* ── Grid inputs ── */
-.eph-inputs-grid {
+::deep .eph-inputs-grid {
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 12px;
@@ -65,28 +65,28 @@
 }
 
 @media (max-width: 540px) {
-    .eph-inputs-grid {
+    ::deep .eph-inputs-grid {
         grid-template-columns: 1fr;
     }
 }
 
 /* ── Tarjeta genérica ── */
-.eph-card {
+::deep .eph-card {
     background: var(--obs-navy);
     border: 1px solid var(--obs-border);
     border-radius: var(--radius-lg);
     overflow: hidden;
 }
 
-.eph-card--full {
+::deep .eph-card--full {
     grid-column: 1 / -1;
 }
 
-.eph-section {
+::deep .eph-section {
     margin-bottom: 16px;
 }
 
-.eph-card-header {
+::deep .eph-card-header {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -98,21 +98,21 @@
     color: var(--obs-moon);
 }
 
-.eph-card-icon {
+::deep .eph-card-icon {
     font-size: 1.1rem;
     color: var(--obs-moon);
 }
 
-.eph-card-title {
+::deep .eph-card-title {
     color: var(--obs-moon);
 }
 
-.eph-card-body {
+::deep .eph-card-body {
     padding: 14px 16px;
 }
 
 /* ── Inputs ── */
-.eph-input {
+::deep .eph-input {
     width: 100%;
     background: var(--obs-midnight);
     color: var(--obs-moon);
@@ -126,22 +126,22 @@
     color-scheme: dark;
 }
 
-    .eph-input:focus {
+    ::deep .eph-input:focus {
         outline: none;
         border-color: var(--obs-aurora);
     }
 
 /* ── Selector de ubicación ── */
-.eph-location-header {
+::deep .eph-location-header {
     justify-content: space-between;
 }
 
-.eph-select-wrapper {
+::deep .eph-select-wrapper {
     padding: 10px 15px;
     border-bottom: 1px solid var(--obs-border);
 }
 
-    .eph-select-wrapper select {
+    ::deep .eph-select-wrapper select {
         width: 100%;
         background: var(--obs-midnight);
         border: 1px solid var(--obs-border);
@@ -153,42 +153,42 @@
         transition: border-color var(--transition);
     }
 
-        .eph-select-wrapper select:focus {
+        ::deep .eph-select-wrapper select:focus {
             outline: none;
             border-color: var(--obs-aurora);
         }
 
-        .eph-select-wrapper select option {
+        ::deep .eph-select-wrapper select option {
             background: var(--obs-midnight);
             color: var(--obs-moon);
         }
 
-.eph-location-body {
+::deep .eph-location-body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
 }
 
 @media (max-width: 540px) {
-    .eph-location-body {
+    ::deep .eph-location-body {
         grid-template-columns: 1fr;
     }
 }
 
-.eph-field {
+::deep .eph-field {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
-.eph-label {
+::deep .eph-label {
     font-size: 0.78rem;
     color: var(--obs-comet);
     font-weight: 500;
 }
 
 /* ── Botón GPS ── */
-.eph-gps-btn {
+::deep .eph-gps-btn {
     display: inline-flex;
     align-items: center;
     gap: 5px;
@@ -204,22 +204,22 @@
     white-space: nowrap;
 }
 
-    .eph-gps-btn:hover:not(:disabled) {
+    ::deep .eph-gps-btn:hover:not(:disabled) {
         background: var(--obs-aurora);
         color: var(--obs-midnight);
     }
 
-    .eph-gps-btn:disabled {
+    ::deep .eph-gps-btn:disabled {
         opacity: .6;
         cursor: not-allowed;
     }
 
-.eph-gps-btn--loading {
+::deep .eph-gps-btn--loading {
     border-color: var(--obs-comet);
     color: var(--obs-comet);
 }
 
-.eph-gps-spinner {
+::deep .eph-gps-spinner {
     display: inline-block;
     width: 12px;
     height: 12px;
@@ -235,7 +235,7 @@
     }
 }
 
-.eph-gps-error {
+::deep .eph-gps-error {
     padding: 8px 15px;
     font-size: 0.82rem;
     color: var(--obs-mars);
@@ -243,7 +243,7 @@
     border-bottom: 1px solid var(--obs-border);
 }
 
-.eph-gps-source {
+::deep .eph-gps-source {
     padding: 6px 15px;
     font-size: 0.78rem;
     color: var(--obs-aurora);
@@ -251,7 +251,7 @@
 }
 
 /* ── Vacío ── */
-.eph-empty {
+::deep .eph-empty {
     padding: 24px 16px;
     text-align: center;
     color: var(--obs-comet);
@@ -259,7 +259,7 @@
 }
 
 /* ── Banner eclipse local ── */
-.eph-eclipse-banner {
+::deep .eph-eclipse-banner {
     display: grid;
     grid-template-columns: auto 1fr auto;
     gap: 16px;
@@ -271,27 +271,27 @@
     border-radius: var(--radius-lg);
 }
 
-.eph-eclipse-banner--total {
+::deep .eph-eclipse-banner--total {
     border-color: var(--obs-aurora);
     box-shadow: 0 0 0 1px rgba(46,196,182,.12) inset;
 }
 
-.eph-eclipse-banner--annular {
+::deep .eph-eclipse-banner--annular {
     border-color: var(--obs-star);
     box-shadow: 0 0 0 1px rgba(244,196,48,.12) inset;
 }
 
-.eph-eclipse-banner--partial {
+::deep .eph-eclipse-banner--partial {
     border-color: var(--obs-comet);
     box-shadow: 0 0 0 1px rgba(148,163,184,.12) inset;
 }
 
-.eph-eclipse-banner-icon {
+::deep .eph-eclipse-banner-icon {
     font-size: 2rem;
     line-height: 1;
 }
 
-.eph-eclipse-banner-title {
+::deep .eph-eclipse-banner-title {
     font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: .05em;
@@ -299,7 +299,7 @@
     margin-bottom: 6px;
 }
 
-.eph-eclipse-banner-main {
+::deep .eph-eclipse-banner-main {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -307,19 +307,19 @@
     margin-bottom: 6px;
 }
 
-.eph-eclipse-banner-type {
+::deep .eph-eclipse-banner-type {
     color: var(--obs-moon);
     font-size: 1rem;
     font-weight: 700;
 }
 
-.eph-eclipse-banner-date,
-.eph-eclipse-banner-meta strong {
+::deep .eph-eclipse-banner-date,
+::deep .eph-eclipse-banner-meta strong {
     color: var(--obs-moon);
     font-family: var(--font-mono);
 }
 
-.eph-eclipse-banner-meta {
+::deep .eph-eclipse-banner-meta {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
@@ -328,11 +328,11 @@
     font-size: 0.84rem;
 }
 
-.eph-eclipse-banner-sep {
+::deep .eph-eclipse-banner-sep {
     color: var(--obs-border);
 }
 
-.eph-eclipse-banner-link {
+::deep .eph-eclipse-banner-link {
     color: var(--obs-aurora);
     text-decoration: none;
     font-size: 0.88rem;
@@ -340,33 +340,33 @@
     transition: opacity var(--transition);
 }
 
-    .eph-eclipse-banner-link:hover {
+    ::deep .eph-eclipse-banner-link:hover {
         opacity: .85;
     }
 
 @media (max-width: 640px) {
-    .eph-eclipse-banner {
+    ::deep .eph-eclipse-banner {
         grid-template-columns: 1fr;
         text-align: left;
     }
 }
 
 /* ── Tabla de planetas (≥640px) ── */
-.eph-planets-table-wrapper {
+::deep .eph-planets-table-wrapper {
     overflow-x: auto;
 }
 
-.eph-planets-table {
+::deep .eph-planets-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.86rem;
 }
 
-    .eph-planets-table thead tr {
+    ::deep .eph-planets-table thead tr {
         background: var(--obs-deep);
     }
 
-    .eph-planets-table th {
+    ::deep .eph-planets-table th {
         padding: 10px 12px;
         text-align: left;
         color: var(--obs-comet);
@@ -377,43 +377,43 @@
         white-space: nowrap;
     }
 
-    .eph-planets-table td {
+    ::deep .eph-planets-table td {
         padding: 10px 12px;
         border-bottom: 1px solid rgba(46,64,87,.5);
         color: var(--obs-moon);
         white-space: nowrap;
     }
 
-    .eph-planets-table tbody tr:last-child td {
+    ::deep .eph-planets-table tbody tr:last-child td {
         border-bottom: none;
     }
 
-    .eph-planets-table tbody tr:hover {
+    ::deep .eph-planets-table tbody tr:hover {
         background: rgba(255,255,255,.03);
     }
 
-.eph-row--visible td {
+::deep .eph-row--visible td {
     background: rgba(46,196,182,.03);
 }
 
-.eph-planet-name {
+::deep .eph-planet-name {
     display: flex;
     align-items: center;
     gap: 6px;
     font-weight: 600;
 }
 
-.eph-planet-emoji {
+::deep .eph-planet-emoji {
     font-size: 1rem;
 }
 
-.eph-mono {
+::deep .eph-mono {
     font-family: var(--font-mono);
     font-size: 0.84rem;
 }
 
 /* ── Badges ── */
-.eph-badge {
+::deep .eph-badge {
     display: inline-block;
     padding: 2px 8px;
     border-radius: 99px;
@@ -423,38 +423,38 @@
     text-transform: uppercase;
 }
 
-.eph-badge--visible {
+::deep .eph-badge--visible {
     background: rgba(46,196,182,.15);
     color: var(--obs-aurora);
     border: 1px solid rgba(46,196,182,.3);
 }
 
-.eph-badge--hidden {
+::deep .eph-badge--hidden {
     background: rgba(148,163,184,.08);
     color: var(--obs-comet);
     border: 1px solid rgba(148,163,184,.2);
 }
 
 /* ── Tarjetas planetas (móvil <640px) ── */
-.eph-planets-cards {
+::deep .eph-planets-cards {
     display: none;
     flex-direction: column;
     gap: 10px;
     padding: 14px;
 }
 
-.eph-planet-card {
+::deep .eph-planet-card {
     background: var(--obs-deep);
     border: 1px solid var(--obs-border);
     border-radius: var(--radius-md);
     overflow: hidden;
 }
 
-.eph-planet-card--visible {
+::deep .eph-planet-card--visible {
     border-color: rgba(46,196,182,.3);
 }
 
-.eph-planet-card-header {
+::deep .eph-planet-card-header {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -463,33 +463,33 @@
     border-bottom: 1px solid var(--obs-border);
 }
 
-.eph-planet-emoji-lg {
+::deep .eph-planet-emoji-lg {
     font-size: 1.5rem;
 }
 
-.eph-planet-card-name {
+::deep .eph-planet-card-name {
     font-weight: 700;
     color: var(--obs-moon);
     font-size: 0.95rem;
     margin-bottom: 3px;
 }
 
-.eph-planet-card-body {
+::deep .eph-planet-card-body {
     padding: 10px 12px;
 }
 
 @media (max-width: 639px) {
-    .eph-planets-table-wrapper {
+    ::deep .eph-planets-table-wrapper {
         display: none;
     }
 
-    .eph-planets-cards {
+    ::deep .eph-planets-cards {
         display: flex;
     }
 }
 
 /* ── Stat rows (shared) ── */
-.stat-row {
+::deep .stat-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -498,26 +498,26 @@
     font-size: 0.84rem;
 }
 
-    .stat-row:last-child {
+    ::deep .stat-row:last-child {
         border-bottom: none;
     }
 
-.stat-label {
+::deep .stat-label {
     color: var(--obs-comet);
 }
 
-.stat-value {
+::deep .stat-value {
     color: var(--obs-moon);
     font-family: var(--font-mono);
     font-size: 0.83rem;
 }
 
 /* ── Eventos próximos ── */
-.eph-events-list {
+::deep .eph-events-list {
     padding: 6px 0;
 }
 
-.eph-event-row {
+::deep .eph-event-row {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -526,18 +526,18 @@
     font-size: 0.86rem;
 }
 
-    .eph-event-row:last-child {
+    ::deep .eph-event-row:last-child {
         border-bottom: none;
     }
 
-.eph-event-emoji {
+::deep .eph-event-emoji {
     font-size: 1.2rem;
     flex-shrink: 0;
     width: 24px;
     text-align: center;
 }
 
-.eph-event-date {
+::deep .eph-event-date {
     font-family: var(--font-mono);
     font-size: 0.82rem;
     color: var(--obs-star);
@@ -545,12 +545,12 @@
     min-width: 100px;
 }
 
-.eph-event-desc {
+::deep .eph-event-desc {
     color: var(--obs-moon);
 }
 
 /* ── Cielo esta noche ── */
-.eph-tonight-grid {
+::deep .eph-tonight-grid {
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 16px;
@@ -558,12 +558,12 @@
 }
 
 @media (max-width: 480px) {
-    .eph-tonight-grid {
+    ::deep .eph-tonight-grid {
         grid-template-columns: 1fr;
     }
 }
 
-.eph-tonight-quality {
+::deep .eph-tonight-quality {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -573,88 +573,88 @@
     min-width: 180px;
 }
 
-.eph-quality--good {
+::deep .eph-quality--good {
     background: rgba(46,196,182,.08);
     border-color: rgba(46,196,182,.3);
 }
 
-.eph-quality--fair {
+::deep .eph-quality--fair {
     background: rgba(244,196,48,.06);
     border-color: rgba(244,196,48,.3);
 }
 
-.eph-quality--poor {
+::deep .eph-quality--poor {
     background: rgba(231,111,81,.07);
     border-color: rgba(231,111,81,.3);
 }
 
-.eph-tonight-quality-dot {
+::deep .eph-tonight-quality-dot {
     width: 14px;
     height: 14px;
     border-radius: 50%;
     flex-shrink: 0;
 }
 
-.eph-quality--good .eph-tonight-quality-dot {
+::deep .eph-quality--good .eph-tonight-quality-dot {
     background: var(--obs-aurora);
     box-shadow: 0 0 8px var(--obs-aurora);
 }
 
-.eph-quality--fair .eph-tonight-quality-dot {
+::deep .eph-quality--fair .eph-tonight-quality-dot {
     background: var(--obs-star);
     box-shadow: 0 0 8px var(--obs-star);
 }
 
-.eph-quality--poor .eph-tonight-quality-dot {
+::deep .eph-quality--poor .eph-tonight-quality-dot {
     background: var(--obs-mars);
     box-shadow: 0 0 8px var(--obs-mars);
 }
 
-.eph-tonight-quality-label {
+::deep .eph-tonight-quality-label {
     font-weight: 700;
     font-size: 0.9rem;
     color: var(--obs-moon);
 }
 
-.eph-tonight-quality-sub {
+::deep .eph-tonight-quality-sub {
     font-size: 0.75rem;
     color: var(--obs-comet);
     margin-top: 2px;
 }
 
-.eph-tonight-info {
+::deep .eph-tonight-info {
     flex: 1;
 }
 
-.eph-aurora {
+::deep .eph-aurora {
     color: var(--obs-aurora);
 }
 
-.eph-comet {
+::deep .eph-comet {
     color: var(--obs-comet);
 }
 
 /* ── Cielo profundo ── */
-.eph-dso-header {
+::deep .eph-dso-header {
     justify-content: space-between;
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
 }
 
-.eph-dso-header-text {
+::deep .eph-dso-header-text {
     display: flex;
     flex-direction: column;
     gap: 2px;
 }
 
-.eph-dso-header-subtitle {
+::deep .eph-dso-header-subtitle {
     color: var(--obs-comet);
     font-size: 0.76rem;
     font-weight: 400;
 }
 
-.eph-dso-count {
+::deep .eph-dso-count {
     display: inline-flex;
     align-items: center;
     padding: 4px 10px;
@@ -665,7 +665,7 @@
     font-weight: 700;
 }
 
-.eph-dso-filters {
+::deep .eph-dso-filters {
     display: grid;
     grid-template-columns: 1fr;
     gap: 12px;
@@ -946,7 +946,7 @@
     }
 }
 
-.eph-dso-loading-wrap {
+::deep .eph-dso-loading-wrap {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -955,23 +955,23 @@
     min-height: 180px;
 }
 
-.eph-dso-spinner {
+::deep .eph-dso-spinner {
     color: var(--obs-aurora);
 }
 
-.eph-dso-loading-text {
+::deep .eph-dso-loading-text {
     color: var(--obs-comet);
     font-size: 0.88rem;
 }
 
-.eph-dso-list {
+::deep .eph-dso-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
     padding: 14px;
 }
 
-.eph-dso-card {
+::deep .eph-dso-card {
     background: var(--obs-deep);
     border: 1px solid var(--obs-border);
     border-left-width: 4px;
@@ -979,19 +979,19 @@
     padding: 14px;
 }
 
-.eph-dso-media-layout {
+::deep .eph-dso-media-layout {
     display: grid;
     grid-template-columns: 160px minmax(0, 1fr);
     gap: 14px;
     align-items: start;
 }
 
-.eph-dso-thumb-wrap {
+::deep .eph-dso-thumb-wrap {
     width: 100%;
 }
 
-.eph-dso-thumb,
-.eph-dso-thumb-fallback {
+::deep .eph-dso-thumb,
+::deep .eph-dso-thumb-fallback {
     width: 100%;
     aspect-ratio: 16 / 11;
     border-radius: var(--radius-md);
@@ -999,12 +999,12 @@
     background: var(--obs-midnight);
 }
 
-.eph-dso-thumb {
+::deep .eph-dso-thumb {
     display: block;
     object-fit: cover;
 }
 
-.eph-dso-thumb-fallback {
+::deep .eph-dso-thumb-fallback {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1014,38 +1014,38 @@
     background: radial-gradient(circle at 30% 25%, rgba(123,94,167,.35), transparent 35%), radial-gradient(circle at 70% 65%, rgba(46,196,182,.22), transparent 32%), var(--obs-midnight);
 }
 
-.eph-dso-thumb-fallback-emoji {
+::deep .eph-dso-thumb-fallback-emoji {
     font-size: 2rem;
     line-height: 1;
 }
 
-.eph-dso-thumb-fallback-id {
+::deep .eph-dso-thumb-fallback-id {
     font-family: var(--font-mono);
     font-size: 0.85rem;
     color: var(--obs-comet);
 }
 
-.eph-dso-main {
+::deep .eph-dso-main {
     min-width: 0;
 }
 
-.eph-dso-card--nebula {
+::deep .eph-dso-card--nebula {
     border-left-color: var(--obs-aurora);
 }
 
-.eph-dso-card--open {
+::deep .eph-dso-card--open {
     border-left-color: var(--obs-star);
 }
 
-.eph-dso-card--globular {
+::deep .eph-dso-card--globular {
     border-left-color: var(--obs-nebula);
 }
 
-.eph-dso-card--galaxy {
+::deep .eph-dso-card--galaxy {
     border-left-color: var(--obs-mars);
 }
 
-.eph-dso-card-top {
+::deep .eph-dso-card-top {
     display: flex;
     justify-content: space-between;
     gap: 12px;
@@ -1053,50 +1053,50 @@
     margin-bottom: 12px;
 }
 
-.eph-dso-title-wrap {
+::deep .eph-dso-title-wrap {
     display: flex;
     gap: 10px;
     align-items: flex-start;
 }
 
-.eph-dso-emoji {
+::deep .eph-dso-emoji {
     font-size: 1.4rem;
     line-height: 1;
     margin-top: 2px;
 }
 
-.eph-dso-name-line {
+::deep .eph-dso-name-line {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     align-items: baseline;
 }
 
-.eph-dso-id {
+::deep .eph-dso-id {
     color: var(--obs-star);
     font-family: var(--font-mono);
     font-size: 0.92rem;
     font-weight: 700;
 }
 
-.eph-dso-name {
+::deep .eph-dso-name {
     color: var(--obs-moon);
     font-size: 0.98rem;
     font-weight: 700;
 }
 
-.eph-dso-constellation,
-.eph-dso-type-line {
+::deep .eph-dso-constellation,
+::deep .eph-dso-type-line {
     color: var(--obs-comet);
     font-size: 0.82rem;
 }
 
-.eph-dso-type-line {
+::deep .eph-dso-type-line {
     text-align: right;
     white-space: nowrap;
 }
 
-.eph-dso-metadata-section {
+::deep .eph-dso-metadata-section {
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -1106,26 +1106,26 @@
     border-bottom: 1px solid var(--obs-border);
 }
 
-.eph-dso-field {
+::deep .eph-dso-field {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
-.eph-dso-field-label {
+::deep .eph-dso-field-label {
     color: var(--obs-moon);
     font-size: 0.82rem;
     font-weight: 600;
     letter-spacing: .01em;
 }
 
-.eph-dso-badge-list {
+::deep .eph-dso-badge-list {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
 }
 
-.eph-dso-badge {
+::deep .eph-dso-badge {
     display: inline-block;
     padding: 3px 8px;
     background: rgba(46,196,182,.12);
@@ -1136,13 +1136,13 @@
     font-weight: 600;
 }
 
-.eph-dso-alt-names {
+::deep .eph-dso-alt-names {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
-.eph-dso-altname {
+::deep .eph-dso-altname {
     display: block;
     color: var(--obs-comet);
     font-size: 0.82rem;
@@ -1150,7 +1150,7 @@
     line-height: 1.4;
 }
 
-.eph-dso-observation-reqs {
+::deep .eph-dso-observation-reqs {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -1159,19 +1159,19 @@
     border-top: 1px solid var(--obs-border);
 }
 
-.eph-dso-req-item {
+::deep .eph-dso-req-item {
     display: flex;
     align-items: flex-start;
     gap: 10px;
 }
 
-.eph-dso-req-icon {
+::deep .eph-dso-req-icon {
     font-size: 1.1rem;
     line-height: 1.5;
     flex-shrink: 0;
 }
 
-.eph-dso-req-label {
+::deep .eph-dso-req-label {
     color: var(--obs-comet);
     font-size: 0.78rem;
     font-weight: 500;
@@ -1180,13 +1180,13 @@
     margin-bottom: 2px;
 }
 
-.eph-dso-req-value {
+::deep .eph-dso-req-value {
     color: var(--obs-moon);
     font-size: 0.9rem;
     line-height: 1.4;
 }
 
-.eph-dso-months-section {
+::deep .eph-dso-months-section {
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -1195,20 +1195,20 @@
     border-top: 1px solid var(--obs-border);
 }
 
-.eph-dso-months-label {
+::deep .eph-dso-months-label {
     color: var(--obs-moon);
     font-size: 0.82rem;
     font-weight: 600;
     letter-spacing: .01em;
 }
 
-.eph-dso-months-grid {
+::deep .eph-dso-months-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
     gap: 6px;
 }
 
-.eph-dso-month-badge {
+::deep .eph-dso-month-badge {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1223,17 +1223,17 @@
     min-height: 28px;
 }
 
-.eph-dso-stats-grid {
+::deep .eph-dso-stats-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0 12px;
 }
 
-.eph-dso-track-wrap {
+::deep .eph-dso-track-wrap {
     margin-top: 12px;
 }
 
-.eph-dso-track-labels {
+::deep .eph-dso-track-labels {
     display: flex;
     justify-content: space-between;
     color: var(--obs-comet);
@@ -1242,7 +1242,7 @@
     margin-bottom: 6px;
 }
 
-.eph-dso-track {
+::deep .eph-dso-track {
     position: relative;
     height: 10px;
     border-radius: 999px;
@@ -1251,7 +1251,7 @@
     overflow: hidden;
 }
 
-.eph-dso-track-visible {
+::deep .eph-dso-track-visible {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -1260,24 +1260,24 @@
 }
 
 @media (max-width: 640px) {
-    .eph-dso-media-layout {
+    ::deep .eph-dso-media-layout {
         grid-template-columns: 1fr;
     }
 
-    .eph-dso-thumb-wrap {
+    ::deep .eph-dso-thumb-wrap {
         max-width: 240px;
     }
 
-    .eph-dso-card-top {
+    ::deep .eph-dso-card-top {
         flex-direction: column;
     }
 
-    .eph-dso-type-line {
+    ::deep .eph-dso-type-line {
         text-align: left;
         white-space: normal;
     }
 
-    .eph-dso-stats-grid {
+    ::deep .eph-dso-stats-grid {
         grid-template-columns: 1fr;
     }
 }

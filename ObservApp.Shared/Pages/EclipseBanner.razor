@@ -1,0 +1,32 @@
+@using System.Globalization
+@using ObservApp.Shared.Formatters
+@using ObservApp.Shared.Services
+
+@if (NextEclipse != null && NextEclipseResult != null)
+{
+    <div class="eph-eclipse-banner @EfemeridesUiFormatter.EclipseBannerClass(NextEclipseResult.Type)">
+        <div class="eph-eclipse-banner-icon" aria-hidden="true">@EfemeridesUiFormatter.EclipseEmoji(NextEclipseResult.Type)</div>
+        <div class="eph-eclipse-banner-body">
+            <div class="eph-eclipse-banner-title">@L["Eph_Eclipse_BannerTitle"]</div>
+            <div class="eph-eclipse-banner-main">
+                <span class="eph-eclipse-banner-type">@EfemeridesUiFormatter.EclipseTypeLabel(L, NextEclipseResult.Type)</span>
+                <span class="eph-eclipse-banner-date">@NextEclipse.Date.ToLocalTime().ToString("dd MMM yyyy", CultureInfo.CurrentCulture)</span>
+            </div>
+            <div class="eph-eclipse-banner-meta">
+                <span>@L["Eph_Eclipse_Coverage"]</span>
+                <strong>@((NextEclipseResult.MaxCoverage * 100.0).ToString("F0", CultureInfo.InvariantCulture))%</strong>
+                <span class="eph-eclipse-banner-sep">•</span>
+                <strong>@EfemeridesUiFormatter.DaysUntilEclipse(NextEclipse.Date)</strong>
+                <span>@L["Eph_Eclipse_DaysLeft"]</span>
+            </div>
+        </div>
+        <a class="eph-eclipse-banner-link" href="/calculadoras/eclipse-solar">@L["Eph_Eclipse_Details"]</a>
+    </div>
+}
+
+@code {
+    [Parameter] public EclipseDefinition? NextEclipse { get; set; }
+    [Parameter] public LocalEclipseResult? NextEclipseResult { get; set; }
+
+    [Inject] public IStringLocalizer<ObservApp.Resources.Strings.App> L { get; set; } = default!;
+}

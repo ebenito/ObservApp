@@ -1,0 +1,154 @@
+@using System.Globalization
+@using ObservApp.Shared.Formatters
+@using ObservApp.Shared.Models.PageModels
+
+<div class="eph-dso-list">
+    @foreach (var item in Items)
+    {
+        <div class="eph-dso-card @EfemeridesUiFormatter.DsoAccentClass(item.Dso.Type)" @key="item.Dso.Id">
+            <div class="eph-dso-media-layout">
+                <div class="eph-dso-thumb-wrap">
+                    @if (item.ThumbnailFailed)
+                    {
+                        <div class="eph-dso-thumb-fallback" role="img" aria-label="@EfemeridesUiFormatter.DsoThumbnailAltText(item.Dso)">
+                            <span class="eph-dso-thumb-fallback-emoji">@item.Dso.Emoji</span>
+                            <span class="eph-dso-thumb-fallback-id">@item.Dso.Id</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <img class="eph-dso-thumb"
+                             src="@EfemeridesUiFormatter.BuildDsoThumbnailUrl(item.Dso)"
+                             alt="@EfemeridesUiFormatter.DsoThumbnailAltText(item.Dso)"
+                             loading="lazy"
+                             referrerpolicy="no-referrer"
+                             @onerror="() => OnImageError.InvokeAsync(item)" />
+                    }
+                </div>
+
+                <div class="eph-dso-main">
+                    <div class="eph-dso-card-top">
+                        <div class="eph-dso-title-wrap">
+                            <span class="eph-dso-emoji">@item.Dso.Emoji</span>
+                            <div>
+                                <div class="eph-dso-name-line">
+                                    <span class="eph-dso-id">@item.Dso.Id</span>
+                                    <span class="eph-dso-name">@item.Dso.Name</span>
+                                </div>
+                                <div class="eph-dso-constellation">@L["Eph_DSO_Constellation"]: @item.Dso.Constellation</div>
+                            </div>
+                        </div>
+                        <div class="eph-dso-type-line">@EfemeridesUiFormatter.DsoTypeLabel(L, item.Dso.Type) · @L["Eph_DSO_Magnitude"] @item.Dso.Magnitude.ToString("F1", CultureInfo.InvariantCulture)</div>
+                    </div>
+
+                    @if ((item.Dso.Catalogs?.Any() ?? false) || (item.Dso.AltNames?.Any() ?? false))
+                    {
+                        <div class="eph-dso-metadata-section">
+                            @if (item.Dso.Catalogs?.Any() ?? false)
+                            {
+                                <div class="eph-dso-field">
+                                    <span class="eph-dso-field-label"><span aria-hidden="true">📋</span> @L["Eph_DSO_Filter_Catalog"]</span>
+                                    <div class="eph-dso-badge-list">
+                                        @foreach (var cat in item.Dso.Catalogs)
+                                        {
+                                            <span class="eph-dso-badge">@cat</span>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            @if (item.Dso.AltNames?.Any() ?? false)
+                            {
+                                <div class="eph-dso-field">
+                                    <span class="eph-dso-field-label"><span aria-hidden="true">🏷️</span> @L["Eph_DSO_Filter_All"]</span>
+                                    <div class="eph-dso-alt-names">
+                                        @foreach (var altName in item.Dso.AltNames)
+                                        {
+                                            <span class="eph-dso-altname">@altName</span>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    <div class="eph-dso-stats-grid">
+                        <div class="stat-row">
+                            <span class="stat-label">@L["Eph_DSO_MaxAlt"]</span>
+                            <span class="stat-value">@item.MaxAltitude.ToString("F1", CultureInfo.InvariantCulture)°</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">@L["Eph_DSO_BestTime"]</span>
+                            @EfemeridesUiFormatter.FormatTimeOpt(item.BestViewingTime)
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">@L["Eph_DSO_VisibleFrom"]</span>
+                            @EfemeridesUiFormatter.FormatTimeOpt(item.VisibleFrom)
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">@L["Eph_DSO_VisibleTo"]</span>
+                            @EfemeridesUiFormatter.FormatTimeOpt(item.VisibleUntil)
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(item.Dso.RecommendedInstrument) || !string.IsNullOrEmpty(item.Dso.SkyRequirement))
+                    {
+                        <div class="eph-dso-observation-reqs">
+                            @if (!string.IsNullOrEmpty(item.Dso.RecommendedInstrument))
+                            {
+                                <div class="eph-dso-req-item">
+                                    <span class="eph-dso-req-icon" aria-hidden="true">🔭</span>
+                                    <div>
+                                        <div class="eph-dso-req-label">@L["Eph_DSO_Filter_Instrument"]</div>
+                                        <div class="eph-dso-req-value">@item.Dso.RecommendedInstrument</div>
+                                    </div>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(item.Dso.SkyRequirement))
+                            {
+                                <div class="eph-dso-req-item">
+                                    <span class="eph-dso-req-icon" aria-hidden="true">🌌</span>
+                                    <div>
+                                        <div class="eph-dso-req-label">@L["Eph_DSO_Filter_Sky"]</div>
+                                        <div class="eph-dso-req-value">@item.Dso.SkyRequirement</div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    @if (item.Dso.BestMonths?.Any() ?? false)
+                    {
+                        <div class="eph-dso-months-section">
+                            <span class="eph-dso-months-label"><span aria-hidden="true">📅</span> @L["Eph_DSO_BestMonths"]</span>
+                            <div class="eph-dso-months-grid">
+                                @foreach (var month in item.Dso.BestMonths)
+                                {
+                                    <span class="eph-dso-month-badge">@month</span>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <div class="eph-dso-track-wrap">
+                        <div class="eph-dso-track-labels">
+                            @EfemeridesUiFormatter.FormatTimeOpt(NightStartUtc)
+                            @EfemeridesUiFormatter.FormatTimeOpt(NightEndUtc)
+                        </div>
+                        <div class="eph-dso-track">
+                            <div class="eph-dso-track-visible" style="@EfemeridesUiFormatter.BuildDsoVisibilityStyle(item)"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public List<DsoVisibility> Items { get; set; } = new();
+    [Parameter] public DateTime? NightStartUtc { get; set; }
+    [Parameter] public DateTime? NightEndUtc { get; set; }
+    [Parameter, EditorRequired] public EventCallback<DsoVisibility> OnImageError { get; set; }
+
+    [Inject] public IStringLocalizer<ObservApp.Resources.Strings.App> L { get; set; } = default!;
+}
