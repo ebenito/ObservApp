@@ -969,13 +969,18 @@
     {
         VM.OnStateChanged += OnVmStateChanged;
         await VM.InitializeAsync();
-        Calcular();
+        await CalcularAsync();
     }
 
     private void OnVmStateChanged()
     {
-        Calcular();
-        _ = InvokeAsync(StateHasChanged);
+        _ = RecalcularYRenderizarAsync();
+    }
+
+    private async Task RecalcularYRenderizarAsync()
+    {
+        await CalcularAsync();
+        await InvokeAsync(StateHasChanged);
     }
 
     public void Dispose()
@@ -997,51 +1002,79 @@
         await VM.UseGpsAsync();
     }
 
-    private void OnFechaChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    private async Task OnFechaChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
     {
         if (DateTime.TryParse(e.Value?.ToString(), out var d))
         {
             _fecha = d;
-            Calcular();
+            await CalcularAsync();
         }
     }
 
-    private void OnLatChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    private async Task OnLatChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
     {
         if (double.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var v))
         {
             _lat = Math.Clamp(v, -90, 90);
             VM.SetManualLocation(_lat, _lon, _altMetros);
-            Calcular();
+            await CalcularAsync();
         }
     }
 
-    private void OnLonChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    private async Task OnLonChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
     {
         if (double.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var v))
         {
             _lon = Math.Clamp(v, -180, 180);
             VM.SetManualLocation(_lat, _lon, _altMetros);
-            Calcular();
+            await CalcularAsync();
         }
     }
 
-    private void OnAltChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    private async Task OnAltChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
     {
         if (double.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var v))
         {
             _altMetros = v;
             VM.SetManualLocation(_lat, _lon, _altMetros);
-            Calcular();
+            await CalcularAsync();
         }
     }
 
+    private int _calcGeneration;
+
     // ── Motor de cálculo ─────────────────────────────────────────────────────
-    private void Calcular()
+    // Async para no bloquear el hilo de UI: el trabajo pesado (planetas +
+    // búsqueda de próximo eclipse) se ejecuta en un Task.Run. Se usa un
+    // contador de generación para descartar resultados obsoletos si el
+    // usuario cambia fecha/ubicación varias veces seguidas antes de que
+    // termine un cálculo anterior.
+    private async Task CalcularAsync()
     {
+        var generation = ++_calcGeneration;
+        var fecha = _fecha;
+        var lat = _lat;
+        var lon = _lon;
+        var alt = _altMetros;
+
         try
         {
-            var computation = EphAstronomyService.Compute(_fecha, _lat, _lon, _altMetros);
+            var (computation, eclipse, eclipseResult) = await Task.Run(() =>
+            {
+                var comp = EphAstronomyService.Compute(fecha, lat, lon, alt);
+                var (ecl, eclResult) = EphAstronomyService.FindNextVisibleEclipse(
+                    DateTime.UtcNow, lat, lon, alt, yearsAhead: 2);
+                return (comp, ecl, eclResult);
+            });
+
+            if (generation != _calcGeneration)
+            {
+                // Ha llegado una entrada más reciente mientras calculábamos
+                // esta; descartamos el resultado para no pisar datos nuevos
+                // con otros ya obsoletos.
+                return;
+            }
+
             _planetas = computation.Planets
                 .Select(p => new PlanetData
                 {
@@ -1080,14 +1113,22 @@
                     }
                 };
 
-            CalcularProximoEclipseLocal();
+            _nextLocalEclipse = eclipse;
+            _nextLocalEclipseResult = eclipseResult;
+
             _ = CalcularDsosAsync();
         }
         catch (Exception ex)
         {
+            if (generation != _calcGeneration)
+            {
+                // Error de un cálculo ya obsoleto: no pisar el estado actual.
+                return;
+            }
+
             Logger.LogError(ex,
                 "Error calculando efemérides para fecha={Fecha}, lat={Lat}, lon={Lon}, alt={Alt}",
-                _fecha, _lat, _lon, _altMetros);
+                fecha, lat, lon, alt);
 
             _planetas = new();
             _eventos = new();
@@ -1099,19 +1140,6 @@
             _dsoNightEndUtc = null;
             _dsoLoading = false;
         }
-    }
-
-    private void CalcularProximoEclipseLocal()
-    {
-        var (eclipse, result) = EphAstronomyService.FindNextVisibleEclipse(
-            DateTime.UtcNow,
-            _lat,
-            _lon,
-            _altMetros,
-            yearsAhead: 2);
-
-        _nextLocalEclipse = eclipse;
-        _nextLocalEclipseResult = result;
     }
 
     private async Task CalcularDsosAsync()
