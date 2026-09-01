@@ -136,6 +136,70 @@ html, body {
         transform: translateY(-1px);
     }
 
+/* Lightbox global para imágenes DSO (se usa por JS) */
+.eph-dso-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(2, 6, 23, 0.8);
+    backdrop-filter: blur(6px);
+}
+
+.eph-dso-lightbox-panel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: min(92vw, 900px);
+    max-height: 90vh;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    border-radius: 18px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    overflow: hidden;
+}
+
+.eph-dso-lightbox-image {
+    display: block;
+    max-width: min(90vw, 1200px);
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    background: rgba(2, 6, 23, 1);
+}
+
+.eph-dso-lightbox-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.9);
+    color: var(--obs-moon);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 2;
+    transition: transform .2s ease, background .2s ease;
+}
+
+.eph-dso-lightbox-close:hover {
+    background: rgba(46, 196, 182, 0.14);
+    transform: scale(1.04);
+}
+
+.eph-dso-lightbox-close:focus {
+    outline: 2px solid rgba(46, 196, 182, 0.7);
+    outline-offset: 2px;
+}
+
 .obs-card-header {
     display: flex;
     align-items: center;

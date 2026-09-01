@@ -11,7 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ObservApp.Web.Client\ObservApp.Web.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.11" />
-    <PackageReference Include="Syncfusion.Licensing" Version="34.2.5" />
+    <PackageReference Include="Syncfusion.Licensing" Version="34.2.6" />
   </ItemGroup>
 
 </Project>

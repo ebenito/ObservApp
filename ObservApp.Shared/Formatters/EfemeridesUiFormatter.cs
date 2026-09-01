@@ -76,6 +76,16 @@ public static class EfemeridesUiFormatter
 		return $"https://alasky.cds.unistra.fr/hips-image-services/hips2fits?hips=CDS%2FP%2FDSS2%2Fcolor&width=320&height=220&projection=TAN&fov={fov}&ra={ra}&dec={dec}&format=jpg";
 	}
 
+	public static string BuildDsoLargeImageUrl(DsoEntry dso)
+	{
+		var fov = DsoFieldOfView(dso).ToString("F3", CultureInfo.InvariantCulture);
+		var ra = dso.RaDeg.ToString("F4", CultureInfo.InvariantCulture);
+		var dec = dso.DecDeg.ToString("F4", CultureInfo.InvariantCulture);
+
+		// Imagen de mayor resolución para el lightbox
+		return $"https://alasky.cds.unistra.fr/hips-image-services/hips2fits?hips=CDS%2FP%2FDSS2%2Fcolor&width=1200&height=900&projection=TAN&fov={fov}&ra={ra}&dec={dec}&format=jpg";
+	}
+
 	public static string DsoThumbnailAltText(DsoEntry dso)
 		=> $"{dso.Id} {dso.Name}";
 

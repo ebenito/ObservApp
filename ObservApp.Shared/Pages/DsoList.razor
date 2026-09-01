@@ -22,8 +22,14 @@
                              alt="@EfemeridesUiFormatter.DsoThumbnailAltText(item.Dso)"
                              loading="lazy"
                              referrerpolicy="no-referrer"
+                             @onclick="() => OpenLightbox(item)"
                              @onerror="() => OnImageError.InvokeAsync(item)" />
                     }
+                  }
+
+
+                    @* Lightbox ahora gestionado por JS en document.body *@
+
                 </div>
 
                 <div class="eph-dso-main">
@@ -145,10 +151,47 @@
 </div>
 
 @code {
+    [Inject] private IJSRuntime JS { get; set; } = default!;
+
     [Parameter, EditorRequired] public List<DsoVisibility> Items { get; set; } = new();
     [Parameter] public DateTime? NightStartUtc { get; set; }
     [Parameter] public DateTime? NightEndUtc { get; set; }
     [Parameter, EditorRequired] public EventCallback<DsoVisibility> OnImageError { get; set; }
 
     [Inject] public IStringLocalizer<ObservApp.Resources.Strings.App> L { get; set; } = default!;
+
+    private void OpenLightbox(DsoVisibility item)
+    {
+        if (item.ThumbnailFailed)
+            return;
+
+        var url = EfemeridesUiFormatter.BuildDsoLargeImageUrl(item.Dso);
+        var alt = EfemeridesUiFormatter.DsoThumbnailAltText(item.Dso);
+        _ = JS.InvokeVoidAsync("showDsoLightbox", url, alt);
+    }
+
+    private void CloseLightbox()
+    {
+        _ = JS.InvokeVoidAsync("closeDsoLightbox");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                // Definir funciones de lightbox en runtime si no están cargadas desde un script externo
+                var lite = @"if(!window.showDsoLightbox){window.showDsoLightbox=function(u,a){if(!u) return; if(document.getElementById('obs-dso-lightbox')) return; const overlay=document.createElement('div'); overlay.id='obs-dso-lightbox'; overlay.className='eph-dso-lightbox'; overlay.innerHTML='<div class=""eph-dso-lightbox-panel"" role=""dialog"" aria-modal=""true""><button type=""button"" class=""eph-dso-lightbox-close"" aria-label=""Cerrar imagen"">×</button><img class=""eph-dso-lightbox-image"" src=""'+u+'"" alt=""'+(a||'')+'"" loading=""eager""/></div>'; overlay.addEventListener('click',function(){window.closeDsoLightbox();}); overlay.querySelector('.eph-dso-lightbox-panel').addEventListener('click',function(e){e.stopPropagation();}); overlay.querySelector('.eph-dso-lightbox-close').addEventListener('click',function(e){e.stopPropagation(); window.closeDsoLightbox();}); function onKey(e){ if(e.key==='Escape') window.closeDsoLightbox(); } overlay._onKey=onKey; document.addEventListener('keydown', onKey); document.body.appendChild(overlay);}; window.closeDsoLightbox=function(){const overlay=document.getElementById('obs-dso-lightbox'); if(!overlay) return; if(overlay._onKey) document.removeEventListener('keydown', overlay._onKey); overlay.remove();}; }";
+
+                await JS.InvokeVoidAsync("eval", lite);
+            }
+            catch
+            {
+                // Ignorar - si eval no está disponible, fallará y el script externo (web) debería cubrirlo
+            }
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
 }
