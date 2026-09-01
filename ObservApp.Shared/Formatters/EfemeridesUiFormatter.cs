@@ -83,7 +83,7 @@ public static class EfemeridesUiFormatter
 		var dec = dso.DecDeg.ToString("F4", CultureInfo.InvariantCulture);
 
 		// Imagen de mayor resolución para el lightbox
-		return $"https://alasky.cds.unistra.fr/hips-image-services/hips2fits?hips=CDS%2FP%2FDSS2%2Fcolor&width=1200&height=900&projection=TAN&fov={fov}&ra={ra}&dec={dec}&format=jpg";
+		return $"https://alasky.cds.unistra.fr/hips-image-services/hips2fits?hips=CDS%2FP%2FDSS2%2Fcolor&width=900&height=675&projection=TAN&fov={fov}&ra={ra}&dec={dec}&format=jpg";
 	}
 
 	public static string DsoThumbnailAltText(DsoEntry dso)
