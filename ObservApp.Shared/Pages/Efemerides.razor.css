@@ -141,27 +141,27 @@
     border-bottom: 1px solid var(--obs-border);
 }
 
-.eph-select-wrapper select {
-    width: 100%;
-    background: var(--obs-midnight);
-    border: 1px solid var(--obs-border);
-    color: var(--obs-moon);
-    border-radius: var(--radius-md);
-    padding: 8px 10px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: border-color var(--transition);
-}
-
-    .eph-select-wrapper select:focus {
-        outline: none;
-        border-color: var(--obs-aurora);
-    }
-
-    .eph-select-wrapper select option {
+    .eph-select-wrapper select {
+        width: 100%;
         background: var(--obs-midnight);
+        border: 1px solid var(--obs-border);
         color: var(--obs-moon);
+        border-radius: var(--radius-md);
+        padding: 8px 10px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: border-color var(--transition);
     }
+
+        .eph-select-wrapper select:focus {
+            outline: none;
+            border-color: var(--obs-aurora);
+        }
+
+        .eph-select-wrapper select option {
+            background: var(--obs-midnight);
+            color: var(--obs-moon);
+        }
 
 .eph-location-body {
     display: grid;
@@ -230,7 +230,9 @@
 }
 
 @keyframes eph-spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .eph-gps-error {
@@ -826,7 +828,7 @@
 /* ── Contenido de cada item ── */
 ::deep .eph-dso-cb-item {
     display: flex;
-    align-items: center; 
+    align-items: center;
     gap: 12px;
     min-height: 44px;
     padding: 4px 2px;
@@ -841,6 +843,8 @@
     align-items: center;
     flex-shrink: 0;
     overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, .14);
+    background: rgba(255, 255, 255, .06); /* fallback para ítems sin modificador */
 }
 
 ::deep .eph-dso-cb-text {
@@ -1007,10 +1011,7 @@
     justify-content: center;
     gap: 8px;
     color: var(--obs-moon);
-    background:
-        radial-gradient(circle at 30% 25%, rgba(123,94,167,.35), transparent 35%),
-        radial-gradient(circle at 70% 65%, rgba(46,196,182,.22), transparent 32%),
-        var(--obs-midnight);
+    background: radial-gradient(circle at 30% 25%, rgba(123,94,167,.35), transparent 35%), radial-gradient(circle at 70% 65%, rgba(46,196,182,.22), transparent 32%), var(--obs-midnight);
 }
 
 .eph-dso-thumb-fallback-emoji {
@@ -1279,5 +1280,4 @@
     .eph-dso-stats-grid {
         grid-template-columns: 1fr;
     }
-
 }

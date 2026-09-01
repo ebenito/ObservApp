@@ -24,7 +24,7 @@
         <a class="eph-back" href="/">← @L["Action_Back"]</a>
     </div>
     <div class="eph-header">
-        <span class="eph-header-icon">🔭</span>
+        <span class="eph-header-icon" aria-hidden="true">🔭</span>
         <div>
             <h1 class="eph-header-title">@L["Eph_Title"]</h1>
             <p class="eph-header-subtitle">@L["Eph_Subtitle"]</p>
@@ -37,7 +37,7 @@
         <!-- Fecha -->
         <div class="eph-card">
             <div class="eph-card-header">
-                <span class="eph-card-icon">📅</span>
+                <span class="eph-card-icon" aria-hidden="true">📅</span>
                 <span class="eph-card-title">@L["Eph_Date"]</span>
             </div>
             <div class="eph-card-body">
@@ -85,7 +85,7 @@
     @if (_nextLocalEclipse != null && _nextLocalEclipseResult != null)
     {
         <div class="eph-eclipse-banner @EfemeridesUiFormatter.EclipseBannerClass(_nextLocalEclipseResult.Type)">
-            <div class="eph-eclipse-banner-icon">@EfemeridesUiFormatter.EclipseEmoji(_nextLocalEclipseResult.Type)</div>
+            <div class="eph-eclipse-banner-icon" aria-hidden="true">@EfemeridesUiFormatter.EclipseEmoji(_nextLocalEclipseResult.Type)</div>
             <div class="eph-eclipse-banner-body">
                 <div class="eph-eclipse-banner-title">@L["Eph_Eclipse_BannerTitle"]</div>
                 <div class="eph-eclipse-banner-main">
@@ -106,7 +106,7 @@
     <!-- Sección 2: Tabla de planetas -->
     <div class="eph-card eph-card--full eph-section">
         <div class="eph-card-header">
-            <span class="eph-card-icon">🪐</span>
+            <span class="eph-card-icon" aria-hidden="true">🪐</span>
             <span class="eph-card-title">@L["Eph_Planets_Title"]</span>
         </div>
         @if (_planetas == null || _planetas.Count == 0)
@@ -214,7 +214,7 @@
     <!-- Sección 3: Eventos próximos -->
     <div class="eph-card eph-card--full eph-section">
         <div class="eph-card-header">
-            <span class="eph-card-icon">🗓️</span>
+            <span class="eph-card-icon" aria-hidden="true">🗓️</span>
             <span class="eph-card-title">@L["Eph_Events_Title"]</span>
         </div>
         @if (_eventos == null || _eventos.Count == 0)
@@ -239,7 +239,7 @@
     <!-- Sección 4: Cielo esta noche -->
     <div class="eph-card eph-card--full eph-section">
         <div class="eph-card-header">
-            <span class="eph-card-icon">🌌</span>
+            <span class="eph-card-icon" aria-hidden="true">🌌</span>
             <span class="eph-card-title">@L["Eph_Tonight_Title"]</span>
         </div>
         @if (_tonight != null)
@@ -320,6 +320,7 @@
             <input class="eph-input eph-dso-filter-search"
                    type="search"
                    placeholder="@L["Eph_DSO_Filter_Search"]"
+                   aria-label="@L["Eph_DSO_Filter_Search"]"
                    value="@_dsoFilterSearch"
                    @onchange="OnDsoSearchChanged" />
 
@@ -461,7 +462,7 @@
                                         @if (item.Dso.Catalogs?.Any() ?? false)
                                         {
                                             <div class="eph-dso-field">
-                                                <span class="eph-dso-field-label">📋 @L["Eph_DSO_Filter_Catalog"]</span>
+                                                <span class="eph-dso-field-label"><span aria-hidden="true">📋</span> @L["Eph_DSO_Filter_Catalog"]</span>
                                                 <div class="eph-dso-badge-list">
                                                     @foreach (var cat in item.Dso.Catalogs)
                                                     {
@@ -473,7 +474,7 @@
                                         @if (item.Dso.AltNames?.Any() ?? false)
                                         {
                                             <div class="eph-dso-field">
-                                                <span class="eph-dso-field-label">🏷️ @L["Eph_DSO_Filter_All"]</span>
+                                                <span class="eph-dso-field-label"><span aria-hidden="true">🏷️</span> @L["Eph_DSO_Filter_All"]</span>
                                                 <div class="eph-dso-alt-names">
                                                     @foreach (var altName in item.Dso.AltNames)
                                                     {
@@ -511,7 +512,7 @@
                                         @if (!string.IsNullOrEmpty(item.Dso.RecommendedInstrument))
                                         {
                                             <div class="eph-dso-req-item">
-                                                <span class="eph-dso-req-icon">🔭</span>
+                                                <span class="eph-dso-req-icon" aria-hidden="true">🔭</span>
                                                 <div>
                                                     <div class="eph-dso-req-label">@L["Eph_DSO_Filter_Instrument"]</div>
                                                     <div class="eph-dso-req-value">@item.Dso.RecommendedInstrument</div>
@@ -521,7 +522,7 @@
                                         @if (!string.IsNullOrEmpty(item.Dso.SkyRequirement))
                                         {
                                             <div class="eph-dso-req-item">
-                                                <span class="eph-dso-req-icon">🌌</span>
+                                                <span class="eph-dso-req-icon" aria-hidden="true">🌌</span>
                                                 <div>
                                                     <div class="eph-dso-req-label">@L["Eph_DSO_Filter_Sky"]</div>
                                                     <div class="eph-dso-req-value">@item.Dso.SkyRequirement</div>
@@ -535,7 +536,7 @@
                                 @if (item.Dso.BestMonths?.Any() ?? false)
                                 {
                                     <div class="eph-dso-months-section">
-                                        <span class="eph-dso-months-label">📅 @L["Eph_DSO_BestMonths"]</span>
+                                        <span class="eph-dso-months-label"><span aria-hidden="true">📅</span> @L["Eph_DSO_BestMonths"]</span>
                                         <div class="eph-dso-months-grid">
                                             @foreach (var month in item.Dso.BestMonths)
                                             {
@@ -904,55 +905,37 @@
         var svgKey = GetFilterSvgKey(item);
         var svgContent = _filterSvgIcons.GetValueOrDefault(svgKey, _filterSvgIcons["catalog-all"]);
 
-        // Contenedor item
         builder.OpenElement(0, "div");
         builder.AddAttribute(1, "class", "eph-dso-cb-item");
 
-        // Avatar
-        builder.OpenElement(3, "span");
-        builder.AddAttribute(4, "class", $"eph-dso-cb-avatar {item.AvatarClass}");
-        builder.AddAttribute(5, "style", $"width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;border:1px solid rgba(255,255,255,.14);{DsoAvatarBackground(item.AvatarClass)}");
+        builder.OpenElement(2, "span");
+        builder.AddAttribute(3, "class", $"eph-dso-cb-avatar {item.AvatarClass}");
 
-        // SVG inline
-        builder.OpenElement(6, "span");
-        builder.AddAttribute(7, "style", "display:flex;align-items:center;justify-content:center;width:20px;height:20px;flex-shrink:0;");
-        builder.AddMarkupContent(8, svgContent);
-        builder.CloseElement();
+        builder.OpenElement(4, "span");
+        builder.AddAttribute(5, "class", "eph-dso-cb-svg-icon");
+        builder.AddMarkupContent(6, svgContent);
+        builder.CloseElement(); // svg-icon
 
         builder.CloseElement(); // avatar
 
-        // Bloque texto
+        builder.OpenElement(7, "span");
+        builder.AddAttribute(8, "class", "eph-dso-cb-text");
+
         builder.OpenElement(9, "span");
-        builder.AddAttribute(10, "style", "display:flex;flex-direction:column;justify-content:center;min-width:0;");
+        builder.AddAttribute(10, "class", "eph-dso-cb-title");
+        builder.AddContent(11, item.Label);
+        builder.CloseElement(); // title
 
-        // Título
-        builder.OpenElement(11, "span");
-        builder.AddAttribute(12, "class", "eph-dso-cb-title");
-        builder.AddAttribute(13, "style", "display:block;font-size:.97rem;font-weight:600;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#e2e8f0;");
-        builder.AddContent(14, item.Label);
-        builder.CloseElement();
-
-        // Subtitle solo si no está vacío
         if (!string.IsNullOrWhiteSpace(item.Subtitle))
         {
-            builder.OpenElement(15, "span");
-            builder.AddAttribute(16, "class", "eph-dso-cb-subtitle");
-            builder.AddAttribute(17, "style", "display:block;font-size:.75rem;color:#94a3b8;margin-top:1px;letter-spacing:.02em;text-transform:uppercase;");
-            builder.AddContent(18, item.Subtitle);
-            builder.CloseElement();
+            builder.OpenElement(12, "span");
+            builder.AddAttribute(13, "class", "eph-dso-cb-subtitle");
+            builder.AddContent(14, item.Subtitle);
+            builder.CloseElement(); // subtitle
         }
 
-        builder.CloseElement(); // texto
+        builder.CloseElement(); // text
         builder.CloseElement(); // item
-    };
-
-    private static string DsoAvatarBackground(string avatarClass) => avatarClass switch
-    {
-        "eph-dso-cb-avatar--catalog" => "background:rgba(46,196,182,.12);",
-        "eph-dso-cb-avatar--constellation" => "background:rgba(244,196,48,.10);",
-        "eph-dso-cb-avatar--instrument" => "background:rgba(123,94,167,.14);",
-        "eph-dso-cb-avatar--sky" => "background:rgba(88,119,216,.12);",
-        _ => "background:rgba(255,255,255,.06);"
     };
 
     private sealed record DsoFilterOption(
