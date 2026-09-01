@@ -1159,13 +1159,20 @@
         {
             await Task.Run(() =>
             {
-                var catalog = DsoCatalog.Select(d => new EphDsoCoordinate
+                var dsoCatalog = DsoCatalog;
+                var catalogById = new Dictionary<string, DsoEntry>(dsoCatalog.Count);
+                var catalog = new List<EphDsoCoordinate>(dsoCatalog.Count);
+                foreach (var d in dsoCatalog)
                 {
-                    Id = d.Id,
-                    RaDeg = d.RaDeg,
-                    DecDeg = d.DecDeg,
-                    Magnitude = d.Magnitude
-                }).ToList();
+                    catalogById[d.Id] = d;
+                    catalog.Add(new EphDsoCoordinate
+                    {
+                        Id = d.Id,
+                        RaDeg = d.RaDeg,
+                        DecDeg = d.DecDeg,
+                        Magnitude = d.Magnitude
+                    });
+                }
 
                 var (window, visible) = EphAstronomyService.ComputeDsoVisibility(
                     _fecha,
@@ -1178,24 +1185,20 @@
                 token.ThrowIfCancellationRequested();
 
                 var mapped = visible
-                    .Select(v =>
-                    {
-                        var dso = DsoCatalog.FirstOrDefault(x => x.Id == v.Id);
-                        return dso is null
-                            ? null
-                            : new DsoVisibility
-                            {
-                                Dso = dso,
-                                IsVisibleTonight = v.IsVisibleTonight,
-                                MaxAltitude = v.MaxAltitude,
-                                AzimuthAtMax = v.AzimuthAtMax,
-                                VisibleFrom = v.VisibleFrom,
-                                VisibleUntil = v.VisibleUntil,
-                                BestViewingTime = v.BestViewingTime,
-                                VisibleStartPercent = v.VisibleStartPercent,
-                                VisibleWidthPercent = v.VisibleWidthPercent
-                            };
-                    })
+                    .Select(v => catalogById.TryGetValue(v.Id, out var dso)
+                        ? new DsoVisibility
+                        {
+                            Dso = dso,
+                            IsVisibleTonight = v.IsVisibleTonight,
+                            MaxAltitude = v.MaxAltitude,
+                            AzimuthAtMax = v.AzimuthAtMax,
+                            VisibleFrom = v.VisibleFrom,
+                            VisibleUntil = v.VisibleUntil,
+                            BestViewingTime = v.BestViewingTime,
+                            VisibleStartPercent = v.VisibleStartPercent,
+                            VisibleWidthPercent = v.VisibleWidthPercent
+                        }
+                        : null)
                     .Where(v => v is not null)
                     .Cast<DsoVisibility>()
                     .ToList();
