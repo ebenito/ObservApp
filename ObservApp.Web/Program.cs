@@ -55,10 +55,18 @@ builder.Services.AddScoped<IArticleService>(sp =>
         rssProviders: Array.Empty<RssFeedArticleProvider>()));
 
 builder.Services.AddHttpClient();
+
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ??
+    builder.Configuration["Cors:AllowedOrigins"]?
+        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+    ?? ["https://localhost:5001", "https://localhost:7184", "http://localhost:5000", "http://localhost:7294"];
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("RssProxy", policy =>
-        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+        policy.WithOrigins(allowedOrigins)
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 });
 
 var app = builder.Build();
@@ -173,4 +181,4 @@ app.Use(async (context, next) =>
     }
 });
 
-app.Run();
+await app.RunAsync();
