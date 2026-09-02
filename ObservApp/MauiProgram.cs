@@ -57,8 +57,7 @@ public static class MauiProgram
         // ── Localización ─────────────────────────────────────────────────────
         builder.Services.AddLocalization();
         builder.Services.AddSingleton<LocalizationService>();
-        builder.Services.AddSingleton<ILocalizationService>(
-            sp => sp.GetRequiredService<LocalizationService>());
+        builder.Services.AddSingleton<ILocalizationService>(sp => sp.GetRequiredService<LocalizationService>());
         builder.Services.AddSingleton<ISettingsService, MauiSettingsService>();
         builder.Services.AddSingleton<INavigationHistoryService, NavigationHistoryService>();
         builder.Services.AddSingleton<IAppLifecycleService, MauiAppLifecycleService>();
@@ -84,8 +83,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IAuthSessionStore, MauiAuthSessionStore>();
         builder.Services.AddSingleton<IAuthService, AuthService>();
         builder.Services.AddSingleton<SupabaseService>();
-        builder.Services.AddSingleton<IObservationService>(
-            sp => sp.GetRequiredService<SupabaseService>());
+        builder.Services.AddSingleton<IObservationService>(sp => sp.GetRequiredService<SupabaseService>());
         builder.Services.AddTransient<AuthViewModel>();
         builder.Services.AddTransient<HistorialViewModel>();
         builder.Services.AddTransient<HomeViewModel>();
@@ -98,6 +96,7 @@ public static class MauiProgram
         // ── Ubicaciones Favoritas ─────────────────────────────────────────────
         builder.Services.AddSingleton<IFavoriteLocationsService, MauiFavoriteLocationsService>();
         builder.Services.AddSingleton<IDsoCatalogProvider, DsoCatalogProvider>();
+        builder.Services.AddSingleton<IFilterSvgIconProvider, FilterSvgIconProvider>();
 
         // ── Estado compartido de ubicación ────────────────────────────────────
         builder.Services.AddSingleton<ILocationStateService, LocationStateService>();

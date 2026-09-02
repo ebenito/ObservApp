@@ -6,6 +6,7 @@
     <File Path="README.md" />
   </Folder>
   <Folder Name="/Elementos de la solución/changelog/">
+    <File Path="2026_08-Efemerides.md" />
     <File Path="Documentacion/changelog/2026_04-arquitectura-base.md" />
     <File Path="Documentacion/changelog/2026_05-calculadora-sol-luna.md" />
     <File Path="Documentacion/changelog/2026_05-fix-cambio-idioma-sidebar.md" />

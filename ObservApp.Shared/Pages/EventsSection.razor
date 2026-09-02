@@ -1,0 +1,32 @@
+@using System.Globalization
+@using ObservApp.Shared.Models.PageModels
+
+<div class="eph-card eph-card--full eph-section">
+    <div class="eph-card-header">
+        <span class="eph-card-icon" aria-hidden="true">🗓️</span>
+        <span class="eph-card-title">@L["Eph_Events_Title"]</span>
+    </div>
+    @if (Eventos == null || Eventos.Count == 0)
+    {
+        <div class="eph-empty">@L["Eph_Events_Empty"]</div>
+    }
+    else
+    {
+        <div class="eph-events-list">
+            @foreach (var ev in Eventos)
+            {
+                <div class="eph-event-row">
+                    <span class="eph-event-emoji">@ev.Emoji</span>
+                    <span class="eph-event-date">@ev.Date.ToString("dd MMM yyyy", CultureInfo.CurrentCulture)</span>
+                    <span class="eph-event-desc">@ev.Description</span>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public List<EphEvent> Eventos { get; set; } = new();
+
+    [Inject] public IStringLocalizer<ObservApp.Resources.Strings.App> L { get; set; } = default!;
+}

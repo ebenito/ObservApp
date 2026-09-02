@@ -82,7 +82,7 @@
 
         <!-- Community Toolkit MAUI — permisos, share, toast nativo Android -->
         <PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
-        <PackageReference Include="Syncfusion.Licensing" Version="34.2.5" />
+        <PackageReference Include="Syncfusion.Licensing" Version="34.2.6" />
     </ItemGroup>
 
 	<ItemGroup>
