@@ -8,6 +8,7 @@ using SupabaseClient = Supabase.Client;
 /// </summary>
 public sealed class AuthService : IAuthService
 {
+	private static readonly TimeSpan SupabaseOperationTimeout = TimeSpan.FromSeconds(8);
 	private readonly SupabaseClient _supabase;
 	private readonly IAuthSessionStore _sessionStore;
 	private readonly SemaphoreSlim _initializeLock = new(1, 1);
@@ -130,7 +131,16 @@ public sealed class AuthService : IAuthService
 		try
 		{
 			LastError = null;
-			await EnsureInitializedAsync();
+
+			var initTask = EnsureInitializedAsync();
+			if (await Task.WhenAny(initTask, Task.Delay(SupabaseOperationTimeout)) != initTask)
+			{
+				LastError = "La sesión de Supabase no pudo restaurarse en tiempo razonable.";
+				await _sessionStore.ClearAsync();
+				return false;
+			}
+
+			await initTask;
 
 			var (accessToken, refreshToken) = await _sessionStore.LoadAsync();
 			if (string.IsNullOrWhiteSpace(accessToken) || string.IsNullOrWhiteSpace(refreshToken))

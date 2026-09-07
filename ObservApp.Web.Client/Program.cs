@@ -13,12 +13,13 @@ using Syncfusion.Blazor;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 using var startupConfigHttp = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
-// En modo HOSTED: intentar primero /api/client-config del servidor.
-// En modo STANDALONE: saltar directamente a appsettings.Local.json.
-#if !STANDALONE_WASM
+// En modo HOSTED: la configuración del cliente llega desde /api/client-config.
+// En modo STANDALONE: cargar appsettings.Local.json desde wwwroot.
+#if STANDALONE_WASM
+await LoadOptionalConfigurationAsync("appsettings.Local.json");
+#else
 await LoadOptionalConfigurationAsync("api/client-config");
 #endif
-await LoadOptionalConfigurationAsync("appsettings.Local.json");
 
 async Task LoadOptionalConfigurationAsync(string relativeUrl)
 {
@@ -100,17 +101,27 @@ if (!string.IsNullOrEmpty(supabaseUrl) && !Uri.TryCreate(supabaseUrl, UriKind.Ab
 
 builder.Services.AddSingleton(sp =>
 {
+	var httpClientFactory = new WebAssemblyHttpClientFactory();
 	var options = new SupabaseOptions
 	{
 		AutoRefreshToken = true,
 		AutoConnectRealtime = true,
-		SessionHandler = new DefaultSupabaseSessionHandler()
+		SessionHandler = new DefaultSupabaseSessionHandler(),
+		HttpClient = httpClientFactory.Create(),
+		StorageClientOptions = new Supabase.Storage.ClientOptions
+		{
+			HttpRequestClient = httpClientFactory.Create(),
+			HttpUploadClient = httpClientFactory.Create(),
+			HttpDownloadClient = httpClientFactory.Create()
+		}
 	};
 
 	return new Supabase.Client(supabaseUrl, supabaseKey, options);
 });
 
-builder.Services.AddSingleton<IAuthSessionStore, InMemoryAuthSessionStore>();
+
+
+builder.Services.AddSingleton<IAuthSessionStore, BrowserAuthSessionStore>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<SupabaseService>();
 builder.Services.AddSingleton<IObservationService>(
