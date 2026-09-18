@@ -70,6 +70,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.101" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.12" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.12" />
+        <PackageReference Include="Microsoft.Maui.Resizetizer" Version="10.0.101" />
         <PackageReference Include="Plugin.Maui.Audio" Version="4.0.0" />
 
         <!-- Syncfusion licensing (el resto de paquetes SF van en Shared) -->
@@ -83,7 +84,11 @@
         <!-- Community Toolkit MAUI — permisos, share, toast nativo Android -->
         <PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
         <PackageReference Include="Syncfusion.Licensing" Version="34.2.8" />
-    </ItemGroup>
+  
+        <!-- Fuerza la versión de SkiaSharp compatible con MAUI Resizetizer 10.0.101 -->
+        <PackageReference Include="SkiaSharp" Version="4.152.1" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.116.1" Condition="$([MSBuild]::IsOSPlatform('Linux'))" />
+      </ItemGroup>
 
 	<ItemGroup>
 		<EmbeddedResource Include="appsettings.json" />
