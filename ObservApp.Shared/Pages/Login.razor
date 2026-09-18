@@ -6,6 +6,7 @@
 @inject AuthViewModel AuthViewModel
 @inject AppState AppState
 @inject NavigationManager NavManager
+@inject IAuthService AuthService
 
 <PageTitle>@L["AppName"] · @(_isSignInMode ? L["Auth_SignIn"] : L["Auth_SignUp"])</PageTitle>
 
@@ -104,12 +105,24 @@
                 }
             </div>
 
-            <button type="button"
-                    class="login-primary"
-                    @onclick="SubmitAsync"
-                    disabled="@IsSubmitDisabled">
-                @(_isSignInMode ? L["Auth_SignIn"] : L["Auth_CreateAccount"])
-            </button>
+            <div class="login-actions">
+                <button type="button"
+                        class="login-primary"
+                        @onclick="SubmitAsync"
+                        disabled="@IsSubmitDisabled">
+                    @(_isSignInMode ? L["Auth_SignIn"] : L["Auth_CreateAccount"])
+                </button>
+
+                @if (_isSignInMode)
+                {
+                    <button type="button"
+                            class="login-secondary"
+                            @onclick="RestoreSessionAsync"
+                            disabled="@AuthViewModel.IsLoading">
+                        @L["Auth_ReconnectSession"]
+                    </button>
+                }
+            </div>
 
             @if (_isSignInMode)
             {
@@ -176,6 +189,37 @@
 
     private void OnConfirmPasswordInput(Microsoft.AspNetCore.Components.ChangeEventArgs e)
         => _confirmPassword = e.Value?.ToString() ?? string.Empty;
+
+    private async Task RestoreSessionAsync()
+    {
+        if (AuthViewModel.IsLoading || AppState.IsAuthenticated)
+        {
+            return;
+        }
+
+        try
+        {
+            AuthViewModel.IsLoading = true;
+            AuthViewModel.ErrorMessage = null;
+
+            var restored = await AuthService.TryRestoreSessionAsync();
+            if (!restored)
+            {
+                AuthViewModel.ErrorMessage = AuthService.LastError ?? L["Auth_SignIn_Error"];
+                return;
+            }
+
+            AppState.CurrentUser = AuthService.CurrentUser;
+            if (AppState.IsAuthenticated)
+            {
+                NavManager.NavigateTo("/");
+            }
+        }
+        finally
+        {
+            AuthViewModel.IsLoading = false;
+        }
+    }
 
     private async Task SubmitAsync()
     {

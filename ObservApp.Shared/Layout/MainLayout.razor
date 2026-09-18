@@ -145,11 +145,9 @@
         AppState.OnAuthChanged += OnAppStateChanged;
         AuthService.OnAuthStateChanged += OnAuthStateChanged;
 
-        if (!AuthService.IsAuthenticated)
-        {
-            await AuthService.TryRestoreSessionAsync();
-        }
-
+        // En Supabase v8 la restauración automática de sesión durante el primer render de la UI
+        // puede bloquear la navegación y los botones en Blazor WebAssembly. Se deja para uso
+        // explícito en la pantalla de login/usuario y no se ejecuta al arrancar el layout.
         AppState.CurrentUser = AuthService.CurrentUser;
 
         // Registrar la URL actual en el historial de navegación

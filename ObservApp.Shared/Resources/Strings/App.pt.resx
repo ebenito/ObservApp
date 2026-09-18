@@ -201,6 +201,9 @@
   <data name="Auth_ForgotPassword" xml:space="preserve">
     <value>Esqueceu sua senha?</value>
   </data>
+  <data name="Auth_ReconnectSession" xml:space="preserve">
+    <value>Reconectar sessão</value>
+  </data>
   <data name="Auth_PasswordMismatch" xml:space="preserve">
     <value>As senhas não coincidem</value>
   </data>

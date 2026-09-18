@@ -10,16 +10,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.11" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.12" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.12" />
 
     <!-- Syncfusion Blazor -->
-    <PackageReference Include="Syncfusion.Blazor.Core" Version="34.2.6" />
-    <PackageReference Include="Syncfusion.Blazor.Navigations" Version="34.2.6" />
-    <PackageReference Include="Syncfusion.Blazor.Buttons" Version="34.2.6" />
-    <PackageReference Include="Syncfusion.Blazor.Inputs" Version="34.2.6" />
-    <PackageReference Include="Syncfusion.Blazor.Themes" Version="34.2.6" />
-    <PackageReference Include="Syncfusion.Blazor.DropDowns" Version="34.2.6" />
+    <PackageReference Include="Syncfusion.Blazor.Core" Version="34.2.8" />
+    <PackageReference Include="Syncfusion.Blazor.Navigations" Version="34.2.8" />
+    <PackageReference Include="Syncfusion.Blazor.Buttons" Version="34.2.8" />
+    <PackageReference Include="Syncfusion.Blazor.Inputs" Version="34.2.8" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="34.2.8" />
+    <PackageReference Include="Syncfusion.Blazor.DropDowns" Version="34.2.8" />
     <!--<PackageReference Include="Syncfusion.Blazor.Grid" Version="34.1.32" />
     <PackageReference Include="Syncfusion.Blazor.Charts" Version="34.1.32" />
     <PackageReference Include="Syncfusion.Blazor.Maps" Version="34.1.32" />
@@ -30,7 +30,7 @@
     <PackageReference Include="Syncfusion.Blazor.Calendars" Version="34.1.32" />-->
 
     <!-- Supabase — nombre correcto desde v1.x -->
-    <PackageReference Include="Supabase" Version="1.6.2" />
+    <PackageReference Include="Supabase" Version="8.1.1" />
 
     <!-- MVVM Community Toolkit -->
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
