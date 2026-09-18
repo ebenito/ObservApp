@@ -25,7 +25,12 @@ jobs:
           dotnet-version: 10.0.x
 
       - name: Install MAUI workload
-        run: dotnet workload install maui
+        run: |
+          $version = (Select-Xml -Path ObservApp/ObservApp.csproj `
+            -XPath "//PackageReference[@Include='Microsoft.Maui.Controls']/@Version").Node.Value
+          Write-Host "Instalando MAUI workload version $version" -ForegroundColor Cyan
+          dotnet workload install maui --version $version
+        shell: pwsh
 
       - name: Install GitVersion tool
         run: dotnet tool install -g GitVersion.Tool
@@ -33,13 +38,8 @@ jobs:
       - name: Calculate version with GitVersion
         id: gitversion
         run: |
-          # GitVersion con /output buildserver establece env vars automáticamente
-          # en GitHub Actions: GITVERSION_*
           dotnet-gitversion /output buildserver /nofetch
-
-          # Variables ya están disponibles en env, extraer algunos valores
           Write-Host "GitVersion ejecutado correctamente" -ForegroundColor Green
-          Write-Host "Variables disponibles en env:" -ForegroundColor Cyan
           Get-ChildItem env: | Where-Object { $_.Name -like "GITVERSION*" } | ForEach-Object {
             Write-Host "  $($_.Name): $($_.Value)" -ForegroundColor Gray
           }
@@ -55,9 +55,6 @@ jobs:
             "SupabaseUrl": "${{ secrets.SUPABASE_URL }}",
             "SupabaseAnonKey": "${{ secrets.SUPABASE_ANON_KEY }}"
           }' > ObservApp.Web/appsettings.Local.json
-
-      - name: Clear NuGet cache
-        run: dotnet nuget locals all --clear
 
       - name: Restore Android
         run: dotnet restore ObservApp/ObservApp.csproj -p:TargetFramework=net10.0-android
@@ -81,14 +78,14 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: ObservApp-Android
-          path: ObservApp/publish/android/*.apk
+          path: ObservApp/publish/android/**/*.apk
           if-no-files-found: warn
 
       - name: Upload Windows MSIX
         uses: actions/upload-artifact@v5
         with:
           name: ObservApp-Windows
-          path: ObservApp/publish/windows/*.msix
+          path: ObservApp/publish/windows/**/*.msix
           if-no-files-found: warn
 
   deploy-web:

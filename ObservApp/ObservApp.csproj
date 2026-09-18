@@ -70,6 +70,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.101" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.12" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.12" />
+        <PackageReference Include="Microsoft.Maui.Resizetizer" Version="10.0.101" />
         <PackageReference Include="Plugin.Maui.Audio" Version="4.0.0" />
 
         <!-- Syncfusion licensing (el resto de paquetes SF van en Shared) -->
