@@ -105,18 +105,27 @@
                 }
             </div>
 
-            <button type="button"
-                    class="login-primary"
-                    @onclick="SubmitAsync"
-                    disabled="@IsSubmitDisabled">
-                @(_isSignInMode ? L["Auth_SignIn"] : L["Auth_CreateAccount"])
-            </button>
+            <div class="login-actions">
+                <button type="button"
+                        class="login-primary"
+                        @onclick="SubmitAsync"
+                        disabled="@IsSubmitDisabled">
+                    @(_isSignInMode ? L["Auth_SignIn"] : L["Auth_CreateAccount"])
+                </button>
+
+                @if (_isSignInMode)
+                {
+                    <button type="button"
+                            class="login-secondary"
+                            @onclick="RestoreSessionAsync"
+                            disabled="@AuthViewModel.IsLoading">
+                        @L["Auth_ReconnectSession"]
+                    </button>
+                }
+            </div>
 
             @if (_isSignInMode)
             {
-                <button type="button" class="login-secondary" @onclick="RestoreSessionAsync" disabled="@AuthViewModel.IsLoading">
-                    @L["Auth_ReconnectSession"]
-                </button>
                 <p class="login-forgot">@L["Auth_ForgotPassword"]</p>
             }
 
