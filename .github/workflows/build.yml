@@ -25,11 +25,7 @@ jobs:
           dotnet-version: 10.0.x
 
       - name: Install MAUI workload
-        run: |
-          $version = (Select-Xml -Path ObservApp/ObservApp.csproj `
-            -XPath "//PackageReference[@Include='Microsoft.Maui.Controls']/@Version").Node.Value
-          Write-Host "Instalando MAUI workload version $version" -ForegroundColor Cyan
-          dotnet workload install maui --version $version
+        run: dotnet workload install maui
         shell: pwsh
 
       - name: Install GitVersion tool
@@ -66,7 +62,7 @@ jobs:
         run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release
 
       - name: Publish Android
-        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release --no-restore --output ObservApp/publish/android
+        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release --no-restore --output ObservApp/publish/android -p:AndroidPackageFormat=apk
 
       - name: Build Windows
         run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore

@@ -26,6 +26,7 @@
     <File Path=".github/workflows/build.yml" />
     <File Path="Directory.Build.props" />
     <File Path="gitversion.yml" />
+    <File Path="global.json" />
   </Folder>
   <Folder Name="/Elementos de la solución/Suprabase/">
     <File Path="Documentacion/Supabase/DOCUMENTACION_COMPLETADA.md" />
