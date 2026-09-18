@@ -2,7 +2,7 @@ name: Build ObservApp
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "develop" ]
   pull_request:
     branches: [ "master" ]
 
@@ -25,7 +25,8 @@ jobs:
           dotnet-version: 10.0.x
 
       - name: Install MAUI workload
-        run: dotnet workload install maui
+        run: dotnet workload install maui --include-previews
+        shell: pwsh
 
       - name: Install GitVersion tool
         run: dotnet tool install -g GitVersion.Tool
@@ -33,13 +34,8 @@ jobs:
       - name: Calculate version with GitVersion
         id: gitversion
         run: |
-          # GitVersion con /output buildserver establece env vars automáticamente
-          # en GitHub Actions: GITVERSION_*
           dotnet-gitversion /output buildserver /nofetch
-
-          # Variables ya están disponibles en env, extraer algunos valores
           Write-Host "GitVersion ejecutado correctamente" -ForegroundColor Green
-          Write-Host "Variables disponibles en env:" -ForegroundColor Cyan
           Get-ChildItem env: | Where-Object { $_.Name -like "GITVERSION*" } | ForEach-Object {
             Write-Host "  $($_.Name): $($_.Value)" -ForegroundColor Gray
           }
@@ -66,7 +62,7 @@ jobs:
         run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release
 
       - name: Publish Android
-        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release --no-restore --output ObservApp/publish/android
+        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-android --configuration Release --no-restore --output ObservApp/publish/android -p:AndroidPackageFormat=apk
 
       - name: Build Windows
         run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore
@@ -78,14 +74,14 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: ObservApp-Android
-          path: ObservApp/publish/android/*.apk
+          path: ObservApp/publish/android/**/*.apk
           if-no-files-found: warn
 
       - name: Upload Windows MSIX
         uses: actions/upload-artifact@v5
         with:
           name: ObservApp-Windows
-          path: ObservApp/publish/windows/*.msix
+          path: ObservApp/publish/windows/**/*.msix
           if-no-files-found: warn
 
   deploy-web:
