@@ -242,8 +242,7 @@
         try
         {
             // Primero intentar actualizar posición si ya existe
-            var existe = await JS.InvokeAsync<bool>("eval", 
-                $"!!document.getElementById('leaflet-fav-map')?._leaflet_map");
+            var existe = await JS.InvokeAsync<bool>("window.observApp.isMapInitialized", "leaflet-fav-map");
 
             if (existe)
             {
