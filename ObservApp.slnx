@@ -7,6 +7,7 @@
   </Folder>
   <Folder Name="/Elementos de la solución/changelog/">
     <File Path="2026_08-Efemerides.md" />
+    <File Path="2026_09_25_MejorasCopilot.md" />
     <File Path="Documentacion/changelog/2026_04-arquitectura-base.md" />
     <File Path="Documentacion/changelog/2026_05-calculadora-sol-luna.md" />
     <File Path="Documentacion/changelog/2026_05-fix-cambio-idioma-sidebar.md" />
@@ -26,6 +27,12 @@
     <File Path=".github/workflows/build.yml" />
     <File Path="Directory.Build.props" />
     <File Path="gitversion.yml" />
+    <File Path="global.json" />
+  </Folder>
+  <Folder Name="/Elementos de la solución/GitHub/Log/">
+    <File Path="../../../Users/ebenito/Downloads/logs_96815571053/1_build.txt" />
+    <File Path="../../../Users/ebenito/Downloads/logs_96815571053/build/system.txt" />
+    <File Path="LogBuildAndroid.txt" />
   </Folder>
   <Folder Name="/Elementos de la solución/Suprabase/">
     <File Path="Documentacion/Supabase/DOCUMENTACION_COMPLETADA.md" />

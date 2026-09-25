@@ -2,7 +2,7 @@ name: Build ObservApp
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "develop", "master" ]
   pull_request:
     branches: [ "master" ]
 
@@ -12,6 +12,9 @@ env:
 jobs:
   build:
     runs-on: windows-latest
+    env:
+      ANDROID_HOME: 'C:\\ProgramData\\Android\\Sdk'
+      ANDROID_SDK_ROOT: 'C:\\ProgramData\\Android\\Sdk'
 
     steps:
       - name: Checkout repository
@@ -24,8 +27,36 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      - name: Setup Java 17 (Temurin)
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Install MAUI workload
         run: dotnet workload install maui
+
+      - name: Accept Android SDK licenses (if sdkmanager available)
+        shell: pwsh
+        run: |
+          $sdkManagerPaths = @(
+            "$env:ANDROID_SDK_ROOT\cmdline-tools\latest\bin\sdkmanager",
+            "$env:ANDROID_SDK_ROOT\cmdline-tools\bin\sdkmanager",
+            "$env:ANDROID_SDK_ROOT\tools\bin\sdkmanager",
+            "C:\\ProgramData\\Android\\Sdk\\cmdline-tools\\latest\\bin\\sdkmanager"
+          )
+          $found = $false
+          foreach ($p in $sdkManagerPaths) {
+            if (Test-Path $p) {
+              Write-Host "Using sdkmanager at: $p"
+              echo y | & $p --licenses
+              $found = $true
+              break
+            }
+          }
+          if (-not $found) {
+            Write-Host "sdkmanager not found on runner; skipping license acceptance."
+          }
 
       - name: Install GitVersion tool
         run: dotnet tool install -g GitVersion.Tool
@@ -36,7 +67,6 @@ jobs:
           # GitVersion con /output buildserver establece env vars automáticamente
           # en GitHub Actions: GITVERSION_*
           dotnet-gitversion /output buildserver /nofetch
-
           # Variables ya están disponibles en env, extraer algunos valores
           Write-Host "GitVersion ejecutado correctamente" -ForegroundColor Green
           Write-Host "Variables disponibles en env:" -ForegroundColor Cyan
@@ -48,14 +78,12 @@ jobs:
       - name: Crear appsettings.Local.json para MAUI
         run: |
           echo '{"SyncfusionLicenseKey": "${{ secrets.SYNCFUSION_LICENSE_KEY }}"}' > ObservApp/appsettings.Local.json
-
       - name: Crear appsettings.Local.json para Web Host
         run: |
           echo '{
             "SupabaseUrl": "${{ secrets.SUPABASE_URL }}",
             "SupabaseAnonKey": "${{ secrets.SUPABASE_ANON_KEY }}"
           }' > ObservApp.Web/appsettings.Local.json
-
       - name: Restore Android
         run: dotnet restore ObservApp/ObservApp.csproj -p:TargetFramework=net10.0-android
 
@@ -91,7 +119,7 @@ jobs:
   deploy-web:
     runs-on: ubuntu-latest
     needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop')
 
     steps:
       - name: Checkout repository
@@ -103,7 +131,7 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.0.x
-
+          
       - name: Install GitVersion tool
         run: dotnet tool install -g GitVersion.Tool
 
@@ -115,15 +143,13 @@ jobs:
         run: |
           echo '{"SyncfusionLicenseKey": "${{ secrets.SYNCFUSION_LICENSE_KEY }}"}' \
             > ObservApp.Web.Client/wwwroot/appsettings.Local.json
-
-      - name: Restore Web Client
+      - name: Restore Web Client (solo net10.0)
         run: dotnet restore ObservApp.Web.Client/ObservApp.Web.Client.csproj -p:TargetFramework=net10.0
 
       - name: Publish Blazor WASM standalone
         run: |
           VER="${GITVERSION_FULLSEMVER:-1.0.0}"
           INFOVERS="${GITVERSION_INFORMATIONALVERSION:-1.0.0}"
-
           dotnet publish ObservApp.Web.Client/ObservApp.Web.Client.csproj \
             --configuration Release \
             --output ./publish/web \
@@ -134,12 +160,3 @@ jobs:
             -p:CopyOutputSymbolsToPublishDirectory=false \
             -p:Version="$VER" \
             -p:InformationalVersion="$INFOVERS"
-
-      - name: Deploy to Azure Static Web Apps
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: upload
-          app_location: ./publish/web
-          skip_app_build: true

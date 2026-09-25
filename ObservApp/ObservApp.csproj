@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
         <TargetFrameworks>net10.0-android</TargetFrameworks>
@@ -62,28 +62,27 @@
     </ItemGroup>
 
     <ItemGroup>
-        <!-- MAUI core -->
-        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.12" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.12" />
-        <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.12" />
-        <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.101" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.101" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.12" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.12" />
-        <PackageReference Include="Plugin.Maui.Audio" Version="4.0.0" />
+      <!-- MAUI core -->
+      <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.12" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.12" />
+      <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.12" />
+      <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.110" />
+      <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.110" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.12" />
+      <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.12" />
+      <PackageReference Include="Plugin.Maui.Audio" Version="4.0.0" />
+      <PackageReference Include="SkiaSharp" Version="3.116.1" />
 
-        <!-- Syncfusion licensing (el resto de paquetes SF van en Shared) -->
+      <!-- Supabase — nombre correcto del paquete desde v1.x -->
+      <PackageReference Include="Supabase" Version="8.1.1" />
 
-        <!-- Supabase — nombre correcto del paquete desde v1.x -->
-        <PackageReference Include="Supabase" Version="8.1.1" />
+      <!-- Astronomy Engine — cálculos offline de planetas, luna, eclipses -->
+      <PackageReference Include="CosineKitty.AstronomyEngine" Version="2.1.19" />
 
-        <!-- Astronomy Engine — cálculos offline de planetas, luna, eclipses -->
-        <PackageReference Include="CosineKitty.AstronomyEngine" Version="2.1.19" />
-
-        <!-- Community Toolkit MAUI — permisos, share, toast nativo Android -->
-        <PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
-        <PackageReference Include="Syncfusion.Licensing" Version="34.2.8" />
-    </ItemGroup>
+      <!-- Community Toolkit MAUI — permisos, share, toast nativo Android -->
+      <PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
+      <PackageReference Include="Syncfusion.Licensing" Version="34.2.9" />
+  </ItemGroup>
 
 	<ItemGroup>
 		<EmbeddedResource Include="appsettings.json" />
