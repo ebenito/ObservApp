@@ -375,13 +375,6 @@
         }), null, 0, 1000);
     }
 
-    void IDisposable.Dispose()
-    {
-        LocationState.LocationChanged -= OnLocationStateChanged;
-        _timer?.Dispose();
-        _simTimer?.Dispose();
-    }
-
     /// <summary>
     /// Se dispara cuando cambia la ubicación en el servicio centralizado.
     /// </summary>
@@ -1030,6 +1023,12 @@
     // ── Dispose ───────────────────────────────────────────────────────────────
     public void Dispose()
     {
+        LocationState.LocationChanged -= OnLocationStateChanged;
+
         _timer?.Dispose();
+        _timer = null;
+
+        _simTimer?.Dispose();
+        _simTimer = null;
     }
 }

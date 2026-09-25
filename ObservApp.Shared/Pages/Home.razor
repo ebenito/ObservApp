@@ -441,8 +441,6 @@
     private void Calcular()
     {
         _calculating = true;
-        _astroData = null;
-        StateHasChanged();
 
         var snapshot = HomeAstronomyService.CalculateSnapshot(_lat, _lon, _alt, DateTime.UtcNow);
         if (snapshot != null)
@@ -467,9 +465,12 @@
                 NextFullMoon = snapshot.NextFullMoonUtc?.ToLocalTime().ToString("d MMM") ?? ""
             };
         }
+        else
+        {
+            _astroData = null;
+        }
 
         _calculating = false;
-        StateHasChanged();
     }
 
     private void CargarProximoEclipse()

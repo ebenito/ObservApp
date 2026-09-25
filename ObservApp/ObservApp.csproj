@@ -71,7 +71,7 @@
       <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.12" />
       <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.12" />
       <PackageReference Include="Plugin.Maui.Audio" Version="4.0.0" />
-      <PackageReference Include="SkiaSharp" Version="4.152.1" />
+      <PackageReference Include="SkiaSharp" Version="3.116.1" />
 
       <!-- Supabase — nombre correcto del paquete desde v1.x -->
       <PackageReference Include="Supabase" Version="8.1.1" />

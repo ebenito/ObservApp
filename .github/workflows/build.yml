@@ -12,6 +12,9 @@ env:
 jobs:
   build:
     runs-on: windows-latest
+    env:
+      ANDROID_HOME: 'C:\\ProgramData\\Android\\Sdk'
+      ANDROID_SDK_ROOT: 'C:\\ProgramData\\Android\\Sdk'
 
     steps:
       - name: Checkout repository
@@ -24,8 +27,37 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      - name: Setup Java 17 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+
       - name: Install MAUI workload
         run: dotnet workload install maui
+
+      - name: Accept Android SDK licenses (if sdkmanager available)
+        shell: pwsh
+        run: |
+          $sdkManagerPaths = @(
+            "$env:ANDROID_SDK_ROOT\cmdline-tools\latest\bin\sdkmanager",
+            "$env:ANDROID_SDK_ROOT\cmdline-tools\bin\sdkmanager",
+            "$env:ANDROID_SDK_ROOT\tools\bin\sdkmanager",
+            "C:\\ProgramData\\Android\\Sdk\\cmdline-tools\\latest\\bin\\sdkmanager"
+          )
+          $found = $false
+          foreach ($p in $sdkManagerPaths) {
+            if (Test-Path $p) {
+              Write-Host "Using sdkmanager at: $p"
+              echo y | & $p --licenses
+              $found = $true
+              break
+            }
+          }
+          if (-not $found) {
+            Write-Host "sdkmanager not found on runner; skipping license acceptance."
+          }
 
       - name: Install GitVersion tool
         run: dotnet tool install -g GitVersion.Tool

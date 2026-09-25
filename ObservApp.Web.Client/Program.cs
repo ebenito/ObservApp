@@ -26,7 +26,7 @@ async Task LoadOptionalConfigurationAsync(string relativeUrl)
 	try
 	{
 		var json = await startupConfigHttp.GetStringAsync(relativeUrl);
-		try { Console.WriteLine($"[ConfigLoad] {relativeUrl} → {json}"); } catch { }
+		try { Console.WriteLine($"[ConfigLoad] configuración cargada desde {relativeUrl}"); } catch { }
 
 		var bytes = System.Text.Encoding.UTF8.GetBytes(json);
 		await using var ms = new System.IO.MemoryStream(bytes);
