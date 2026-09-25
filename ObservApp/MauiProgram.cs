@@ -138,37 +138,9 @@ public static class MauiProgram
 				sourceName: "Tubkala",
 				languageCode: "es");
 
-			// ── Fuentes RSS — Español ─────────────────────────────────────────
-			var astrobit   = new RssSource("astrobit", "Astrobitácora", "https://www.astrobitacora.com/feed/", IsBuiltIn: true);
-			var astrobites = new RssSource("astrobites", "Astrobites ES", "https://astrobitos.org/feed/", IsBuiltIn: true);
-			var esaes      = new RssSource("esaes", "ESA España", "https://www.esa.int/rssfeed/Spain", IsBuiltIn: true);
-			var nasaes     = new RssSource("nasaes", "Universo curioso de la NASA", "https://feeds.megaphone.fm/nationalaeronauticsandspaceadministration5412631684", IsBuiltIn: true);
-			//var eureka = new RssSource("eureka", "Eureka", "https://danielmarin.naukas.com/feed/", IsBuiltIn: true);
-			//var naukas = new RssSource("naukas", "Naukas", "https://naukas.com/feed/", IsBuiltIn: true);
-			//var csic = new RssSource("csic", "CSIC", "https://www.csic.es/es/actualidad-del-csic/rss.xml", IsBuiltIn: true);
-			//var muyint = new RssSource("muyint", "Muy Interesante", "https://www.muyinteresante.com/feed/", IsBuiltIn: true);
-
-			// ── Fuentes RSS — Inglés ──────────────────────────────────────────
-			var nasa     = new RssSource("nasa", "NASA", "https://www.nasa.gov/feed/", IsBuiltIn: true);
-			var nasaimg  = new RssSource("nasaimg", "NASA Image of the Day", "https://www.nasa.gov/feeds/iotd-feed/", IsBuiltIn: true);
-			var esa      = new RssSource("esa", "ESA", "http://www.esa.int/rssfeed/Our_Activities/Space_Science", IsBuiltIn: true);
-			var eso      = new RssSource("eso", "ESO", "https://www.eso.org/public/blog/feed/", IsBuiltIn: true);
-			var skytel   = new RssSource("skytel", "Sky & Telescope", "https://skyandtelescope.org/feed/", IsBuiltIn: true);
-			var astromag = new RssSource("astromag", "Astronomy Magazine", "https://www.astronomy.com/feed/", IsBuiltIn: true);
-
-			var rssProviders = new[]
-			{
-				new RssFeedArticleProvider(rss, astrobit, languageCode: "es"),
-				new RssFeedArticleProvider(rss, astrobites, languageCode: "es"),
-				new RssFeedArticleProvider(rss, esaes, languageCode: "es"),
-				new RssFeedArticleProvider(rss, nasaes, languageCode: "es"),
-				new RssFeedArticleProvider(rss, nasa, languageCode: "en"),
-				new RssFeedArticleProvider(rss, nasaimg, languageCode: "en"),
-				new RssFeedArticleProvider(rss, esa, languageCode: "en"),
-				new RssFeedArticleProvider(rss, eso, languageCode: "en"),
-				new RssFeedArticleProvider(rss, skytel, languageCode: "en"),
-				new RssFeedArticleProvider(rss, astromag, languageCode: "en"),
-			};
+			var rssProviders = RssCatalog.Sources
+				.Select(entry => new RssFeedArticleProvider(rss, entry.Source, languageCode: entry.LanguageCode))
+				.ToArray();
 
 			return new ArticleService(wpProvider, rssProviders);
 		});

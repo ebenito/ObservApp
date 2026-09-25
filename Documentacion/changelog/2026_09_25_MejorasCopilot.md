@@ -120,3 +120,33 @@ Esta sección amplía el detalle técnico de la Iteración 2: cambios exactos po
 ### Pasos siguientes propuestos
 1. Mover catálogo de fuentes RSS a configuración compartida para eliminar duplicación MAUI/WASM.
 2. Revisar inyecciones directas de `IJSRuntime`/`HttpClient` en páginas Shared para migrarlas a interfaces de servicio.
+
+## Iteración 3
+Estado: completada.
+
+### Alcance ejecutado
+1. Centralización del catálogo RSS en `ObservApp.Shared`.
+2. Eliminación de duplicación de fuentes RSS en arranque MAUI y WASM.
+
+### Registro de cambios
+- `ObservApp.Shared/Services/RssCatalog.cs`
+  - Nuevo catálogo compartido con `RssCatalogEntry(RssSource, LanguageCode)`.
+  - Se consolidan IDs, nombres, URLs e idioma de cada fuente en un único punto.
+- `ObservApp/MauiProgram.cs`
+  - `IArticleService` ahora crea `RssFeedArticleProvider` desde `RssCatalog.Sources`.
+  - Eliminado bloque local de definición manual de feeds.
+- `ObservApp.Web.Client/Program.cs`
+  - `IArticleService` ahora crea `RssFeedArticleProvider` desde `RssCatalog.Sources`.
+  - Eliminado bloque local de definición manual de feeds.
+
+### Impacto
+- Coherencia funcional MAUI/WASM al compartir exactamente el mismo catálogo.
+- Menor coste de mantenimiento al evitar divergencia entre hosts.
+- Mejor trazabilidad de cambios en fuentes RSS.
+
+### Validación
+- Compilación de solución: **correcta** (`ObservApp.slnx`).
+
+### Próxima iteración sugerida
+1. Introducir catálogo RSS embebido en JSON (datos fuera de código) y cargador tipado en Shared.
+2. Avanzar en abstracción de `HttpClient`/`IJSRuntime` directos en páginas Shared mediante interfaces de servicio.
