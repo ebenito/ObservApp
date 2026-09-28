@@ -29,11 +29,7 @@
     <File Path="gitversion.yml" />
     <File Path="global.json" />
   </Folder>
-  <Folder Name="/Elementos de la solución/GitHub/Log/">
-    <File Path="../../../Users/ebenito/Downloads/logs_96815571053/1_build.txt" />
-    <File Path="../../../Users/ebenito/Downloads/logs_96815571053/build/system.txt" />
-    <File Path="LogBuildAndroid.txt" />
-  </Folder>
+  <Folder Name="/Elementos de la solución/GitHub/Log/" />
   <Folder Name="/Elementos de la solución/Suprabase/">
     <File Path="Documentacion/Supabase/DOCUMENTACION_COMPLETADA.md" />
     <File Path="Documentacion/Supabase/Localization_Summary.md" />
