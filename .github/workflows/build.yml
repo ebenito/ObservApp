@@ -157,10 +157,10 @@ jobs:
         run: dotnet restore ObservApp/ObservApp.csproj -p:TargetFramework=net10.0-windows10.0.26100.0 -p:RuntimeIdentifier=win-x64
 
       - name: Build Windows
-        run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore
+        run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore -p:RuntimeIdentifier=win-x64
 
       - name: Publish Windows
-        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore --output ObservApp/publish/windows
+        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release --no-restore -p:RuntimeIdentifier=win-x64 --output ObservApp/publish/windows
 
       - name: Upload Windows MSIX
         uses: actions/upload-artifact@v5
