@@ -18,9 +18,6 @@
     <!-- Centro del observatorio -->
     <circle cx="228" cy="160" r="6" fill="#ffffff"/>
 
-    <!-- Texto "ObservApp" -->
-    <text x="228" y="320" font-family="Arial, sans-serif" font-size="48" font-weight="bold" text-anchor="middle" fill="#ffffff">ObservApp</text>
-
     <!-- Línea decorativa -->
     <line x1="80" y1="345" x2="376" y2="345" stroke="#ffffff" stroke-width="2" opacity="0.5"/>
 </svg>

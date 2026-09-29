@@ -39,3 +39,7 @@ window.observApp.updateMapPosition = function (containerId, lat, lon, zoom) {
         container._leaflet_marker.setLatLng(newPos);
     }
 };
+window.observApp.isMapInitialized = function (containerId) {
+    var container = document.getElementById(containerId);
+    return !!(container && container._leaflet_map && container._leaflet_marker);
+};
