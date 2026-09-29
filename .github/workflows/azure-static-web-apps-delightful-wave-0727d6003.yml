@@ -1,0 +1,81 @@
+name: Azure Static Web Apps CI/CD
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - develop
+      - master
+
+permissions:
+  contents: read
+  actions: read
+  id-token: write
+
+jobs:
+  build_and_deploy_job:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Install GitVersion tool
+        run: dotnet tool install -g GitVersion.Tool
+
+      - name: Calculate version with GitVersion
+        id: gitversion
+        shell: bash
+        run: |
+          dotnet-gitversion /output buildserver /nofetch
+          echo "GITVERSION_FULLSEMVER=${GITVERSION_FULLSEMVER:-1.0.0}"
+          echo "GITVERSION_INFORMATIONALVERSION=${GITVERSION_INFORMATIONALVERSION:-1.0.0}"
+
+      - name: Crear appsettings.Local.json para Web Client
+        run: |
+          mkdir -p ObservApp.Web.Client/wwwroot
+          echo '{"SyncfusionLicenseKey": "${{ secrets.SYNCFUSION_LICENSE_KEY }}"}' \
+            > ObservApp.Web.Client/wwwroot/appsettings.Local.json
+
+      - name: Restore Web Client
+        run: dotnet restore ObservApp.Web.Client/ObservApp.Web.Client.csproj -p:TargetFramework=net10.0
+
+      - name: Publish Blazor WASM standalone
+        run: |
+          VER="${GITVERSION_FULLSEMVER:-1.0.0}"
+          INFOVERS="${GITVERSION_INFORMATIONALVERSION:-1.0.0}"
+          dotnet publish ObservApp.Web.Client/ObservApp.Web.Client.csproj \
+            --configuration Release \
+            --output ./publish/web \
+            --no-restore \
+            -p:TargetFramework=net10.0 \
+            -p:DefineConstants=STANDALONE_WASM \
+            -p:DebuggerSupport=false \
+            -p:CopyOutputSymbolsToPublishDirectory=false \
+            -p:Version="$VER" \
+            -p:InformationalVersion="$INFOVERS"
+
+      - name: Deploy to Azure Static Web Apps
+        id: deploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_DELIGHTFUL_WAVE_0727D6003 }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "publish/web"
+          output_location: ""
+          skip_app_build: true
+          skip_api_build: true
