@@ -126,6 +126,7 @@
 
 .login-input {
     width: 100%;
+    box-sizing: border-box;
     background: var(--obs-midnight);
     color: var(--obs-moon);
     border: 1px solid var(--obs-border);
@@ -147,16 +148,20 @@
 .login-password-row {
     display: flex;
     align-items: stretch;
+    width: 100%;
     gap: 8px;
+    box-sizing: border-box;
 }
 
 .login-input--password {
-    flex: 1;
+    flex: 1 1 auto;
     min-width: 0;
+    width: auto;
 }
 
 .login-password-toggle {
     flex: 0 0 auto;
+    width: 46px;
     min-width: 46px;
     padding: 0 12px;
     border: 1px solid var(--obs-border);
@@ -164,6 +169,7 @@
     background: var(--obs-midnight);
     color: var(--obs-comet);
     cursor: pointer;
+    box-sizing: border-box;
     transition: all var(--transition);
 }
 
