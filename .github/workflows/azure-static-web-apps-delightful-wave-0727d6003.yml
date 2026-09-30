@@ -35,16 +35,31 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-      - name: Install GitVersion tool
-        run: dotnet tool install -g GitVersion.Tool
+      - name: Install GitVersion
+        shell: bash
+        run: |
+          dotnet tool install --global GitVersion.Tool --version 6.3.0
+          echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
 
       - name: Calculate version with GitVersion
         id: gitversion
         shell: bash
         run: |
-          dotnet-gitversion /output buildserver /nofetch
-          echo "GITVERSION_FULLSEMVER=${GITVERSION_FULLSEMVER:-1.0.0}"
-          echo "GITVERSION_INFORMATIONALVERSION=${GITVERSION_INFORMATIONALVERSION:-1.0.0}"
+          set -euo pipefail
+
+          dotnet-gitversion /output json /nofetch > gitversion.json
+
+          VERSION="$(jq -r '.SemVer' gitversion.json)"
+          FULL_VERSION="$(jq -r '.FullSemVer' gitversion.json)"
+          INFORMATIONAL_VERSION="$(jq -r '.InformationalVersion' gitversion.json)"
+
+          {
+            echo "GITVERSION_SEMVER=$VERSION"
+            echo "GITVERSION_FULLSEMVER=$FULL_VERSION"
+            echo "GITVERSION_INFORMATIONALVERSION=$INFORMATIONAL_VERSION"
+          } >> "$GITHUB_ENV"
+
+          echo "Version: $FULL_VERSION"
 
       - name: Crear appsettings.Local.json para Web Client
         run: |
@@ -56,9 +71,10 @@ jobs:
         run: dotnet restore ObservApp.Web.Client/ObservApp.Web.Client.csproj -p:TargetFramework=net10.0
 
       - name: Publish Blazor WASM standalone
+        shell: bash
         run: |
-          VER="${GITVERSION_FULLSEMVER:-1.0.0}"
-          INFOVERS="${GITVERSION_INFORMATIONALVERSION:-1.0.0}"
+          set -euo pipefail
+
           dotnet publish ObservApp.Web.Client/ObservApp.Web.Client.csproj \
             --configuration Release \
             --output ./publish/web \
@@ -67,8 +83,8 @@ jobs:
             -p:DefineConstants=STANDALONE_WASM \
             -p:DebuggerSupport=false \
             -p:CopyOutputSymbolsToPublishDirectory=false \
-            -p:Version="$VER" \
-            -p:InformationalVersion="$INFOVERS"
+            -p:Version="$GITVERSION_FULLSEMVER" \
+            -p:InformationalVersion="$GITVERSION_INFORMATIONALVERSION"
 
       - name: Deploy to Azure Static Web Apps
         if: env.AZURE_STATIC_WEB_APPS_API_TOKEN != ''
