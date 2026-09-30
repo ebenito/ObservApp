@@ -99,6 +99,16 @@ jobs:
 
           echo "Version calculated: $FULL_VERSION"
 
+      - name: Subir salida de GitVersion
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: gitversion-debug
+          path: |
+            gitversion.json
+            gitversion.err
+          if-no-files-found: warn
+
       - name: Crear appsettings.Local.json para Web Client
         run: |
           mkdir -p ObservApp.Web.Client/wwwroot
