@@ -21,6 +21,8 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
+    env:
+      AZURE_STATIC_WEB_APPS_API_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -69,7 +71,7 @@ jobs:
             -p:InformationalVersion="$INFOVERS"
 
       - name: Deploy to Azure Static Web Apps
-        if: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN != '' }}
+        if: env.AZURE_STATIC_WEB_APPS_API_TOKEN != ''
         id: deploy
         uses: Azure/static-web-apps-deploy@v1
         with:
