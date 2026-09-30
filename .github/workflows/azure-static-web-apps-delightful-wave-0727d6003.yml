@@ -134,6 +134,15 @@ jobs:
             -p:Version="$GITVERSION_FULLSEMVER" \
             -p:InformationalVersion="$GITVERSION_INFORMATIONALVERSION"
 
+      - name: Listar salida del publish
+        shell: bash
+        run: |
+          echo "Contenido de publish/web:"
+          ls -la publish/web
+          echo "Buscando index.html:"
+          find publish/web -name index.html
+
+
       - name: Deploy to Azure Static Web Apps
         if: env.AZURE_STATIC_WEB_APPS_API_TOKEN != ''
         id: deploy
@@ -142,6 +151,6 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "publish/web"
+          app_location: "publish/web/wwwroot"
           output_location: ""
           skip_app_build: true
