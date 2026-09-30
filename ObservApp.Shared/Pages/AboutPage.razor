@@ -6,6 +6,10 @@
 
 <PageTitle>@L["AppName"] · @L["Nav_About"]</PageTitle>
 
+<div class="about-header-back">
+    <BackButton Text="Action_Back" CssClass="about-back" DefaultUrl="/" />
+</div>
+
 <div class="about-container">
 
     <!-- ABOUT CARD -->
@@ -217,6 +221,29 @@
     font-size: 13px;
     font-weight: 600;
     transition: background-color 200ms ease;
+}
+
+/* Estilo del botón volver (consistente con el resto de la app) */
+.about-header-back {
+    margin-bottom: 12px;
+}
+
+.about-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ce-aurora);
+    text-decoration: none;
+    margin-bottom: 8px;
+    opacity: .8;
+    transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.about-back:hover {
+    opacity: 1;
+    transform: translateX(-3px);
 }
 
 .tech-badge:hover {

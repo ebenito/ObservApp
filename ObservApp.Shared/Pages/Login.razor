@@ -153,6 +153,8 @@
             NavManager.NavigateTo("/");
             return;
         }
+        // Limpiar cualquier mensaje de error residual al entrar en la página
+        AuthViewModel.ErrorMessage = null;
 
         AppState.OnStateChanged += HandleAppStateChanged;
     }
@@ -173,6 +175,8 @@
         _isSignInMode = !_isSignInMode;
         _showConfirmPassword = false;
         _confirmPassword = string.Empty;
+        // Si venimos de un error previo, asegurarnos de eliminarlo al cambiar de modo
+        AuthViewModel.ErrorMessage = null;
     }
 
     private void TogglePassword() => _showPassword = !_showPassword;

@@ -8,6 +8,29 @@
     padding: 20px 16px 56px;
 }
 
+/* Contenedor y estilo del botón volver */
+.signals-header-back {
+    margin-bottom: 12px;
+}
+
+.signals-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--obs-aurora);
+    text-decoration: none;
+    margin-bottom: 8px;
+    opacity: .8;
+    transition: opacity var(--transition), transform var(--transition);
+}
+
+.signals-back:hover {
+    opacity: 1;
+    transform: translateX(-3px);
+}
+
 /* ── Cabecera ── */
 .signals-header {
     display: flex;

@@ -31,7 +31,7 @@
     <File Path="global.json" />
   </Folder>
   <Folder Name="/Elementos de la solución/GitHub/Log/" />
-  <Folder Name="/Elementos de la solución/Suprabase/">
+  <Folder Name="/Elementos de la solución/Supabase/">
     <File Path="Documentacion/Supabase/DOCUMENTACION_COMPLETADA.md" />
     <File Path="Documentacion/Supabase/Localization_Summary.md" />
     <File Path="Documentacion/Supabase/QUICK_START.md" />

@@ -13,6 +13,9 @@
 
 <AuthGuard>
     <div class="plan-page">
+        <div class="plan-header-back">
+            <BackButton Text="Action_Back" CssClass="plan-back" DefaultUrl="/" />
+        </div>
         <div class="plan-header">
             <h1 class="plan-title">@(IsEditMode ? L["Plan_Title_Edit"] : L["Plan_Title_New"])</h1>
         </div>

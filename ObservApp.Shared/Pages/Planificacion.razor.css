@@ -5,6 +5,29 @@
     color: var(--obs-moon);
 }
 
+/* Contenedor y estilo del botón volver */
+.plan-header-back {
+    margin-bottom: 12px;
+}
+
+.plan-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--obs-aurora);
+    text-decoration: none;
+    margin-bottom: 8px;
+    opacity: .8;
+    transition: opacity var(--transition), transform var(--transition);
+}
+
+.plan-back:hover {
+    opacity: 1;
+    transform: translateX(-3px);
+}
+
 .plan-header {
     margin-bottom: 14px;
 }
