@@ -77,14 +77,17 @@ jobs:
           }
 
       - name: Install GitVersion
-        run: dotnet tool install --global GitVersion.Tool --version 6.3.0
+        shell: pwsh
+        run: |
+          dotnet tool install --global GitVersion.Tool --version 6.3.0
+          $env:Path += ";$env:USERPROFILE\.dotnet\tools"
 
       - name: Calculate version with GitVersion
         id: gitversion
         shell: pwsh
         run: |
-          Set-StrictMode -Version Latest
           $ErrorActionPreference = 'Stop'
+          Set-StrictMode -Version Latest
 
           dotnet-gitversion /output json /nofetch | Out-File -FilePath gitversion.json -Encoding UTF8
 
@@ -96,9 +99,6 @@ jobs:
           Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_SEMVER=$SEMVER"
           Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_FULLSEMVER=$FULLSEMVER"
           Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_INFORMATIONALVERSION=$INFOVERSION"
-
-          Write-Host "GitVersion ejecutado correctamente" -ForegroundColor Green
-          Write-Host "Versión: $FULLSEMVER" -ForegroundColor Cyan
 
       - name: Crear appsettings.Local.json para MAUI
         run: |
@@ -204,31 +204,33 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-      - name: Install GitVersion
-        shell: bash
-        run: |
-          dotnet tool install --global GitVersion.Tool --version 6.3.0
-          echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+    - name: Install GitVersion and jq
+      shell: bash
+      run: |
+        dotnet tool install --global GitVersion.Tool --version 6.3.0
+        echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+        sudo apt-get update
+        sudo apt-get install -y jq
 
-      - name: Calculate version with GitVersion
-        id: gitversion
-        shell: bash
-        run: |
-          set -euo pipefail
+    - name: Calculate version with GitVersion
+      id: gitversion
+      shell: bash
+      run: |
+        set -euo pipefail
 
-          dotnet-gitversion /output json /nofetch > gitversion.json
+        dotnet-gitversion /output json /nofetch > gitversion.json
 
-          VERSION="$(jq -r '.SemVer' gitversion.json)"
-          FULL_VERSION="$(jq -r '.FullSemVer' gitversion.json)"
-          INFORMATIONAL_VERSION="$(jq -r '.InformationalVersion' gitversion.json)"
+        VERSION="$(jq -r '.SemVer' gitversion.json)"
+        FULL_VERSION="$(jq -r '.FullSemVer' gitversion.json)"
+        INFORMATIONAL_VERSION="$(jq -r '.InformationalVersion' gitversion.json)"
 
-          {
-            echo "GITVERSION_SEMVER=$VERSION"
-            echo "GITVERSION_FULLSEMVER=$FULL_VERSION"
-            echo "GITVERSION_INFORMATIONALVERSION=$INFORMATIONAL_VERSION"
-          } >> "$GITHUB_ENV"
+        {
+          echo "GITVERSION_SEMVER=$VERSION"
+          echo "GITVERSION_FULLSEMVER=$FULL_VERSION"
+          echo "GITVERSION_INFORMATIONALVERSION=$INFORMATIONAL_VERSION"
+        } >> "$GITHUB_ENV"
 
-          echo "Version: $FULL_VERSION"
+        echo "Version: $FULL_VERSION"
 
       - name: Crear appsettings.Local.json para Web Client
         run: |
