@@ -30,6 +30,19 @@ jobs:
           submodules: true
           fetch-depth: 0
 
+      - name: Ensure full git history and tags
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Checking if repository is shallow..."
+          if [ -f .git/shallow ]; then
+            echo "Repository is shallow; fetching full history and tags..."
+            git fetch --prune --unshallow --tags
+          else
+            echo "Repository is already complete; fetching tags..."
+            git fetch --prune --tags
+          fi
+
       - name: Setup .NET 10
         uses: actions/setup-dotnet@v5
         with:
@@ -57,15 +70,32 @@ jobs:
 
           # Ensure the tool is in PATH for this step
           export PATH="$HOME/.dotnet/tools:$PATH"
-          
-          echo "Running GitVersion..."
-          dotnet-gitversion /output json /nofetch > gitversion.json
-          
+
+          echo "Running GitVersion (with extra diagnostics)..."
+
+          # Show some git diagnostics to help debug GitVersion failures
+          git --version || true
+          echo "Current HEAD: $(git rev-parse --verify HEAD 2>/dev/null || echo 'no HEAD')"
+          echo "Current branch: $(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'detached')"
+          git status --porcelain || true
+
+          # Ensure we have full history (if repo was shallow-cloned)
+          git fetch --prune --unshallow || true
+
+          # Run GitVersion and capture diagnostic log on failure
+          if ! dotnet-gitversion /output json /nofetch /diag gitversion.log > gitversion.json 2>&1; then
+            echo "dotnet-gitversion failed; dumping gitversion.log and git status"
+            [ -f gitversion.log ] && sed -n '1,200p' gitversion.log || true
+            git status --show-stash --porcelain --untracked-files=all || true
+            git --no-pager log -n 5 --pretty=oneline || true
+            exit 1
+          fi
+
           echo "Parsing version info..."
           VERSION="$(jq -r '.SemVer' gitversion.json)"
           FULL_VERSION="$(jq -r '.FullSemVer' gitversion.json)"
           INFORMATIONAL_VERSION="$(jq -r '.InformationalVersion' gitversion.json)"
-          
+
           echo "Writing to GITHUB_ENV..."
           {
             echo "GITVERSION_SEMVER=$VERSION"
