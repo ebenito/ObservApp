@@ -204,40 +204,40 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-    - name: Install GitVersion and jq
-      shell: bash
-      run: |
-        dotnet tool install --global GitVersion.Tool --version 6.3.0
-        echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
-        sudo apt-get update
-        sudo apt-get install -y jq
+      - name: Install GitVersion and jq
+        shell: bash
+        run: |
+          dotnet tool install --global GitVersion.Tool --version 6.3.0
+          echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+          sudo apt-get update
+          sudo apt-get install -y jq
 
-    - name: Calculate version with GitVersion
-      id: gitversion
-      shell: bash
-      run: |
-        set -euo pipefail
+      - name: Calculate version with GitVersion
+        id: gitversion
+        shell: bash
+        run: |
+          set -euo pipefail
 
-        dotnet-gitversion /output json /nofetch > gitversion.json
+          dotnet-gitversion /output json /nofetch > gitversion.json
 
-        VERSION="$(jq -r '.SemVer' gitversion.json)"
-        FULL_VERSION="$(jq -r '.FullSemVer' gitversion.json)"
-        INFORMATIONAL_VERSION="$(jq -r '.InformationalVersion' gitversion.json)"
+          VERSION="$(jq -r '.SemVer' gitversion.json)"
+          FULL_VERSION="$(jq -r '.FullSemVer' gitversion.json)"
+          INFORMATIONAL_VERSION="$(jq -r '.InformationalVersion' gitversion.json)"
 
-        {
-          echo "GITVERSION_SEMVER=$VERSION"
-          echo "GITVERSION_FULLSEMVER=$FULL_VERSION"
-          echo "GITVERSION_INFORMATIONALVERSION=$INFORMATIONAL_VERSION"
-        } >> "$GITHUB_ENV"
+          {
+            echo "GITVERSION_SEMVER=$VERSION"
+            echo "GITVERSION_FULLSEMVER=$FULL_VERSION"
+            echo "GITVERSION_INFORMATIONALVERSION=$INFORMATIONAL_VERSION"
+          } >> "$GITHUB_ENV"
 
-        echo "Version: $FULL_VERSION"
+          echo "Version: $FULL_VERSION"
 
       - name: Crear appsettings.Local.json para Web Client
         run: |
           echo '{"SyncfusionLicenseKey": "${{ secrets.SYNCFUSION_LICENSE_KEY }}"}' \
             > ObservApp.Web.Client/wwwroot/appsettings.Local.json
 
-      - name: Restore Web Client (solo net10.0)
+      - name: Restore Web Client (net10.0)
         run: dotnet restore ObservApp.Web.Client/ObservApp.Web.Client.csproj -p:TargetFramework=net10.0
 
       - name: Publish Blazor WASM standalone
