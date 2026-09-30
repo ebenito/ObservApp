@@ -134,6 +134,14 @@ jobs:
             -p:Version="$GITVERSION_FULLSEMVER" \
             -p:InformationalVersion="$GITVERSION_INFORMATIONALVERSION"
 
+      - name: Reducir tamaño del publish
+        shell: bash
+        run: |
+          cd publish/web/wwwroot
+          # Quita las versiones .gz (mantén .br, o al revés)
+          find . -name '*.gz' -delete
+          du -sh .
+
       - name: Listar salida del publish
         shell: bash
         run: |
@@ -142,6 +150,15 @@ jobs:
           echo "Buscando index.html:"
           find publish/web -name index.html
 
+      - name: Medir tamaño del publish
+        shell: bash
+        run: |
+          echo "Total wwwroot:"; du -sh publish/web/wwwroot
+          echo "Por carpeta:"; du -h --max-depth=2 publish/web/wwwroot | sort -rh | head -15
+          echo "Por extensión:"
+          find publish/web/wwwroot -type f | sed 's/.*\.//' | sort | uniq -c | sort -rn | head
+          echo "Ficheros más grandes:"
+          find publish/web/wwwroot -type f -printf '%s %p\n' | sort -rn | head -15
 
       - name: Deploy to Azure Static Web Apps
         if: env.AZURE_STATIC_WEB_APPS_API_TOKEN != ''
