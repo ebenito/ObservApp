@@ -35,10 +35,18 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-      - name: Install GitVersion
+      - name: Install GitVersion, jq and update PATH
         shell: bash
         run: |
+          set -euo pipefail
+          
+          echo "Installing GitVersion..."
           dotnet tool install --global GitVersion.Tool --version 6.3.0
+          
+          echo "Installing jq..."
+          sudo apt-get update && sudo apt-get install -y jq
+          
+          echo "Adding dotnet tools to PATH..."
           echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
 
       - name: Calculate version with GitVersion
@@ -47,19 +55,25 @@ jobs:
         run: |
           set -euo pipefail
 
+          # Ensure the tool is in PATH for this step
+          export PATH="$HOME/.dotnet/tools:$PATH"
+          
+          echo "Running GitVersion..."
           dotnet-gitversion /output json /nofetch > gitversion.json
-
+          
+          echo "Parsing version info..."
           VERSION="$(jq -r '.SemVer' gitversion.json)"
           FULL_VERSION="$(jq -r '.FullSemVer' gitversion.json)"
           INFORMATIONAL_VERSION="$(jq -r '.InformationalVersion' gitversion.json)"
-
+          
+          echo "Writing to GITHUB_ENV..."
           {
             echo "GITVERSION_SEMVER=$VERSION"
             echo "GITVERSION_FULLSEMVER=$FULL_VERSION"
             echo "GITVERSION_INFORMATIONALVERSION=$INFORMATIONAL_VERSION"
           } >> "$GITHUB_ENV"
 
-          echo "Version: $FULL_VERSION"
+          echo "Version calculated: $FULL_VERSION"
 
       - name: Crear appsettings.Local.json para Web Client
         run: |
