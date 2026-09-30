@@ -24,6 +24,7 @@
     <File Path="InstruccionesProyecto.txt" />
   </Folder>
   <Folder Name="/Elementos de la solución/GitHub/">
+    <File Path=".github/workflows/azure-static-web-apps-delightful-wave-0727d6003.yml" />
     <File Path=".github/workflows/build.yml" />
     <File Path="Directory.Build.props" />
     <File Path="gitversion.yml" />
