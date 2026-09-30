@@ -24,24 +24,20 @@ jobs:
     env:
       AZURE_STATIC_WEB_APPS_API_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
     steps:
-      - name: Checkout repository
+      - name: Checkout repository with full history and tags
         uses: actions/checkout@v5
         with:
           submodules: true
           fetch-depth: 0
 
-      - name: Ensure full git history and tags
+      - name: Fetch all tags
         shell: bash
         run: |
           set -euo pipefail
-          echo "Checking if repository is shallow..."
-          if [ -f .git/shallow ]; then
-            echo "Repository is shallow; fetching full history and tags..."
-            git fetch --prune --unshallow --tags
-          else
-            echo "Repository is already complete; fetching tags..."
-            git fetch --prune --tags
-          fi
+          echo "Fetching all tags from origin..."
+          git fetch --tags || true
+          echo "Tags available:"
+          git tag -l || true
 
       - name: Setup .NET 10
         uses: actions/setup-dotnet@v5
@@ -71,25 +67,23 @@ jobs:
           # Ensure the tool is in PATH for this step
           export PATH="$HOME/.dotnet/tools:$PATH"
 
-          echo "Running GitVersion (with extra diagnostics)..."
+          echo "Running GitVersion..."
+          echo "Git diagnostics:"
+          git --version
+          echo "Current HEAD: $(git rev-parse HEAD)"
+          echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
+          echo "Available tags:"
+          git tag -l || true
+          echo "Recent commits:"
+          git log --oneline -n 10 || true
 
-          # Show some git diagnostics to help debug GitVersion failures
-          git --version || true
-          echo "Current HEAD: $(git rev-parse --verify HEAD 2>/dev/null || echo 'no HEAD')"
-          echo "Current branch: $(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'detached')"
-          git status --porcelain || true
-
-          # Ensure we have full history (if repo was shallow-cloned)
-          git fetch --prune --unshallow || true
-
-          # Run GitVersion and capture diagnostic log on failure
-          if ! dotnet-gitversion /output json /nofetch /diag gitversion.log > gitversion.json 2>&1; then
-            echo "dotnet-gitversion failed; dumping gitversion.log and git status"
-            [ -f gitversion.log ] && sed -n '1,200p' gitversion.log || true
-            git status --show-stash --porcelain --untracked-files=all || true
-            git --no-pager log -n 5 --pretty=oneline || true
+          # Run GitVersion
+          dotnet-gitversion /output json /nofetch > gitversion.json || {
+            echo "GitVersion failed; showing available tags and recent history"
+            git tag -l || true
+            git log --oneline -n 10 || true
             exit 1
-          fi
+          }
 
           echo "Parsing version info..."
           VERSION="$(jq -r '.SemVer' gitversion.json)"
