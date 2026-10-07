@@ -77,18 +77,35 @@ jobs:
           echo "Recent commits:"
           git log --oneline -n 10 || true
 
-          # Run GitVersion
-          dotnet-gitversion /output json /nofetch > gitversion.json || {
-            echo "GitVersion failed; showing available tags and recent history"
-            git tag -l || true
-            git log --oneline -n 10 || true
-            exit 1
-          }
+          # The repository history is already complete from checkout (fetch-depth: 0),
+          # so we intentionally avoid `git fetch --unshallow` here.
+          # Run GitVersion and fallback to a safe version if it fails
+          set +e
+          dotnet-gitversion /output json /nofetch /diag gitversion.log > gitversion.json 2>&1
+          GV_EXIT=$?
+          set -e
 
-          echo "Parsing version info..."
-          VERSION="$(jq -r '.SemVer' gitversion.json)"
-          FULL_VERSION="$(jq -r '.FullSemVer' gitversion.json)"
-          INFORMATIONAL_VERSION="$(jq -r '.InformationalVersion' gitversion.json)"
+          if [ $GV_EXIT -ne 0 ]; then
+            echo "GitVersion failed with exit code $GV_EXIT; using fallback version"
+            echo "GitVersion diagnostics (first 200 lines):"
+            [ -f gitversion.log ] && sed -n '1,200p' gitversion.log || echo "(no gitversion.log generated)"
+            echo "Available tags:"
+            git tag -l || true
+            echo "Recent commits:"
+            git log --oneline -n 10 || true
+            echo "Git status:"
+            git status --porcelain || true
+
+            SHA_SHORT="$(git rev-parse --short HEAD 2>/dev/null || echo unknown)"
+            VERSION="0.0.0"
+            FULL_VERSION="0.0.0+$SHA_SHORT"
+            INFORMATIONAL_VERSION="0.0.0+$SHA_SHORT"
+          else
+            echo "Parsing version info..."
+            VERSION="$(jq -r '.SemVer' gitversion.json)"
+            FULL_VERSION="$(jq -r '.FullSemVer' gitversion.json)"
+            INFORMATIONAL_VERSION="$(jq -r '.InformationalVersion' gitversion.json)"
+          fi
 
           echo "Writing to GITHUB_ENV..."
           {
