@@ -156,7 +156,7 @@
         // Limpiar cualquier mensaje de error residual al entrar en la página
         AuthViewModel.ErrorMessage = null;
 
-        AppState.OnStateChanged += HandleAppStateChanged;
+        AppState.OnAuthChanged += HandleAppStateChanged;
     }
 
     private void HandleAppStateChanged()
@@ -261,6 +261,6 @@
 
     public void Dispose()
     {
-        AppState.OnStateChanged -= HandleAppStateChanged;
+        AppState.OnAuthChanged -= HandleAppStateChanged;
     }
 }
