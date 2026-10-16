@@ -185,8 +185,11 @@ jobs:
       - name: Restore Windows
         run: dotnet restore ObservApp/ObservApp.csproj -p:TargetFramework=net10.0-windows10.0.26100.0 -p:RuntimeIdentifierOverride=win-x64
 
+      # Sin --no-restore: el restore explicito corre en Debug y no descarga los runtime packs
+      # win-x64 que exige Release (PublishReadyToRun=true) -> NETSDK1112. El restore
+      # implicito aqui es seguro porque RuntimeIdentifierOverride no es un RID global.
       - name: Build Windows
-        run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release -p:RuntimeIdentifierOverride=win-x64 --no-restore
+        run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release -p:RuntimeIdentifierOverride=win-x64
 
       # El MSIX no se genera en --output: lo escribe el empaquetador en AppxPackageDir.
       # Sin certificado en CI: paquete sin firmar (AppxPackageSigningEnabled=false) y sin
