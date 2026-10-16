@@ -20,6 +20,8 @@ public class SsrLocalizationService : ILocalizationService
     public IReadOnlyList<LanguageOption> SupportedLanguages => _supportedLanguages;
     public CultureInfo CurrentCulture => CultureInfo.CurrentUICulture;
     public string CurrentLanguageCode => CurrentCulture.TwoLetterISOLanguageName;
+#pragma warning disable CS0067 // Lo exige ILocalizationService; el stub SSR no lo emite
     public event Action? OnLanguageChanged;
+#pragma warning restore CS0067
     public void SetLanguage(string languageCode) { /* no-op en SSR */ }
 }

@@ -1,13 +1,13 @@
 <Solution>
   <Folder Name="/Elementos de la solución/">
-    <File Path="../../../Users/ebenito/Downloads/dso-catalog-doc.md" />
     <File Path=".gitignore" />
+    <File Path="Documentacion/DSO-Catalog.md" />
     <File Path="Documentacion/implementation_plan.md" />
     <File Path="README.md" />
   </Folder>
   <Folder Name="/Elementos de la solución/changelog/">
-    <File Path="2026_08-Efemerides.md" />
-    <File Path="2026_09_25_MejorasCopilot.md" />
+    <File Path="Documentacion/changelog/2026_08-Efemerides.md" />
+    <File Path="Documentacion/changelog/2026_09_25_MejorasCopilot.md" />
     <File Path="Documentacion/changelog/2026_04-arquitectura-base.md" />
     <File Path="Documentacion/changelog/2026_05-calculadora-sol-luna.md" />
     <File Path="Documentacion/changelog/2026_05-fix-cambio-idioma-sidebar.md" />
@@ -17,20 +17,16 @@
     <File Path="Documentacion/DocumentacionTecnica.md" />
   </Folder>
   <Folder Name="/Elementos de la solución/Claude/">
-    <File Path="Documentacion/Claude/CLAUDE_AGENTS.md" />
     <File Path="Documentacion/Claude/CLAUDE_CONTEXT.md" />
-    <File Path="Documentacion/Claude/readme.md" />
-    <File Path="Documentacion/Claude/SETUP_CLAUDE_PROJECT.md" />
-    <File Path="InstruccionesProyecto.txt" />
   </Folder>
   <Folder Name="/Elementos de la solución/GitHub/">
+    <File Path=".github/workflows/azure-static-web-apps-delightful-wave-0727d6003.yml" />
     <File Path=".github/workflows/build.yml" />
     <File Path="Directory.Build.props" />
     <File Path="gitversion.yml" />
     <File Path="global.json" />
   </Folder>
-  <Folder Name="/Elementos de la solución/GitHub/Log/" />
-  <Folder Name="/Elementos de la solución/Suprabase/">
+  <Folder Name="/Elementos de la solución/Supabase/">
     <File Path="Documentacion/Supabase/DOCUMENTACION_COMPLETADA.md" />
     <File Path="Documentacion/Supabase/Localization_Summary.md" />
     <File Path="Documentacion/Supabase/QUICK_START.md" />

@@ -1,29 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
-	<!-- ========================================
-			 GitVersion Configuration
+	<!-- ========================================================================
+	     Versionado unificado por tags Git (GitVersion)
 
-			 En GitHub Actions: GitVersion /output buildserver establece env vars GITVERSION_*
-			 En compilaciones locales: usa fallback estático
-			 ======================================== -->
+	     Fuente de verdad: el último tag `vX.Y.Z` alcanzable desde la rama
+	     (gitversion.yml define cómo se incrementa en develop/master).
+
+	     1) CI (GitHub Actions): el workflow ejecuta dotnet-gitversion y exporta
+	        GITVERSION_* a GITHUB_ENV; estas propiedades los consumen.
+	     2) Local (Visual Studio / dotnet build): GitVersion.MsBuild calcula la
+	        misma versión en cada compilación a partir del repo. Se excluye en CI
+	        para no duplicar trabajo ni interferir con las variables anteriores.
+	     3) Sin git ni GitVersion (zip del código, etc.): valor de reserva.
+	     ======================================================================== -->
 
 	<PropertyGroup>
-		<!-- Si GitVersion ejecutó en CI/CD, estas variables de entorno están disponibles -->
-		<!-- buildserver output genera: GITVERSION_SEMVER, GITVERSION_MAJOR, etc. -->
-
+		<!-- 1) CI -->
 		<Version Condition="'$(GITVERSION_SEMVER)' != ''">$(GITVERSION_SEMVER)</Version>
 		<FileVersion Condition="'$(GITVERSION_FULLSEMVER)' != ''">$(GITVERSION_FULLSEMVER)</FileVersion>
 		<InformationalVersion Condition="'$(GITVERSION_INFORMATIONALVERSION)' != ''">$(GITVERSION_INFORMATIONALVERSION)</InformationalVersion>
-		<ApplicationDisplayVersion Condition="'$(GITVERSION_MAJOR)' != '' and '$(GITVERSION_MINOR)' != ''">$(GITVERSION_MAJOR).$(GITVERSION_MINOR)</ApplicationDisplayVersion>
 
-		<!-- Fallback para compilaciones locales sin GitVersion -->
-		<Version Condition="'$(Version)' == ''">1.3.3</Version>
-		<FileVersion Condition="'$(FileVersion)' == ''">1.3.3.0</FileVersion>
-		<InformationalVersion Condition="'$(InformationalVersion)' == ''">1.3.3</InformationalVersion>
-		<ApplicationDisplayVersion Condition="'$(ApplicationDisplayVersion)' == ''">1.3.3</ApplicationDisplayVersion>
+		<!-- Versión visible (APK versionName / MSIX Identity.Version): sin sufijos de prerelease.
+		     MSIX exige 4 números; MAUI compone ApplicationDisplayVersion + "." + ApplicationVersion. -->
+		<ApplicationDisplayVersion Condition="'$(GITVERSION_MAJORMINORPATCH)' != ''">$(GITVERSION_MAJORMINORPATCH)</ApplicationDisplayVersion>
+		<ApplicationDisplayVersion Condition="'$(ApplicationDisplayVersion)' == '' and '$(GITVERSION_MAJOR)' != '' and '$(GITVERSION_MINOR)' != ''">$(GITVERSION_MAJOR).$(GITVERSION_MINOR).0</ApplicationDisplayVersion>
+
+		<!-- 3) Reserva (solo si no hay CI ni GitVersion.MsBuild). Mantener alineado con el último tag. -->
+		<Version Condition="'$(Version)' == ''">1.4.0</Version>
+		<FileVersion Condition="'$(FileVersion)' == ''">1.4.0.0</FileVersion>
+		<InformationalVersion Condition="'$(InformationalVersion)' == ''">1.4.0</InformationalVersion>
+		<ApplicationDisplayVersion Condition="'$(ApplicationDisplayVersion)' == ''">1.4.0</ApplicationDisplayVersion>
 	</PropertyGroup>
+
+	<!-- 2) Local: GitVersion.MsBuild. Desactivable con -p:DisableGitVersionMsBuild=true -->
+	<PropertyGroup>
+		<_ObservAppUseGitVersionMsBuild>true</_ObservAppUseGitVersionMsBuild>
+		<_ObservAppUseGitVersionMsBuild Condition="'$(GITHUB_ACTIONS)' == 'true' or '$(GITVERSION_SEMVER)' != '' or '$(DisableGitVersionMsBuild)' == 'true'">false</_ObservAppUseGitVersionMsBuild>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(_ObservAppUseGitVersionMsBuild)' == 'true'">
+		<PackageReference Include="GitVersion.MsBuild" Version="6.3.0" PrivateAssets="all" />
+	</ItemGroup>
+
+	<!-- GitVersion.MsBuild rellena Version/FileVersion/InformationalVersion, pero no conoce
+	     ApplicationDisplayVersion (MAUI). Se toma de su MajorMinorPatch tras calcularla. -->
+	<Target Name="ObservAppApplyGitVersionDisplayVersion"
+	        AfterTargets="GetVersion"
+	        Condition="'$(_ObservAppUseGitVersionMsBuild)' == 'true' and '$(GitVersion_MajorMinorPatch)' != ''">
+		<PropertyGroup>
+			<ApplicationDisplayVersion>$(GitVersion_MajorMinorPatch)</ApplicationDisplayVersion>
+		</PropertyGroup>
+	</Target>
 </Project>
-
-
-
-

@@ -81,6 +81,13 @@
     border-radius: var(--radius-md);
     padding: 12px 14px;
     margin-bottom: 16px;
+    box-sizing: border-box;
+    display: block;
+    max-width: 100%;
+    overflow-wrap: anywhere; /* permite partir palabras largas */
+    word-break: break-word; /* compatibilidad extra */
+    white-space: pre-wrap; /* conserva saltos de línea y permite el ajuste */
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", "Helvetica Neue", monospace; /* opcional: mejor lectura de JSON */
 }
 
 .login-loading {

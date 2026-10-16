@@ -1348,9 +1348,6 @@
   <data name="Eph_DSO_BestMonths" xml:space="preserve">
     <value>Best months</value>
   </data>
-  <data name="Eph_DSO_Filter_Clear" xml:space="preserve">
-    <value>Clear filters</value>
-  </data>
   <data name="Auth_SignOut" xml:space="preserve">
     <value>Esci</value>
   </data>

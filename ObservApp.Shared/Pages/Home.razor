@@ -309,7 +309,7 @@
                 </div>
                 <span class="home-qcard-arrow">→</span>
             </a>
-            <a class="home-qcard home-qcard--planning @(AppState.IsAuthenticated ? string.Empty : "home-qcard--locked")" href="@(AppState.IsAuthenticated ? "/planificacion" : "/login")" title="@(AppState.IsAuthenticated ? null : L["Home_Lock_Hint"])">
+            <a class="home-qcard home-qcard--planning @(AppState.IsAuthenticated ? string.Empty : "home-qcard--locked")" href="@(AppState.IsAuthenticated ? "/planificacion" : "/login")" title="@(AppState.IsAuthenticated ? null : L["Home_Lock_Hint"].Value)">
                 <div class="home-qcard-icon">📅</div>
                 <div class="home-qcard-body">
                     <span class="home-qcard-title">
@@ -331,7 +331,7 @@
                 </div>
                 <span class="home-qcard-arrow">→</span>
             </a>
-            <a class="home-qcard home-qcard--calc @(AppState.IsAuthenticated ? string.Empty : "home-qcard--locked")" href="@(AppState.IsAuthenticated ? "/historial" : "/login")" title="@(AppState.IsAuthenticated ? null : L["Home_Lock_Hint"])">
+            <a class="home-qcard home-qcard--calc @(AppState.IsAuthenticated ? string.Empty : "home-qcard--locked")" href="@(AppState.IsAuthenticated ? "/historial" : "/login")" title="@(AppState.IsAuthenticated ? null : L["Home_Lock_Hint"].Value)">
                 <div class="home-qcard-icon">🧮</div>
                 <div class="home-qcard-body">
                     <span class="home-qcard-title">

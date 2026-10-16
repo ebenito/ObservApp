@@ -36,7 +36,9 @@ public class WebLocalizationService : ILocalizationService
 
     // En WASM el cambio de idioma requiere recarga de página.
     // El evento no se dispara — la recarga sustituye al re-render.
+#pragma warning disable CS0067 // Lo exige ILocalizationService; este host no lo emite
     public event Action? OnLanguageChanged;
+#pragma warning restore CS0067
 
     public void SetLanguage(string languageCode)
     {

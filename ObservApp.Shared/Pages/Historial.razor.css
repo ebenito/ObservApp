@@ -4,6 +4,29 @@
     padding: 20px 16px 56px;
 }
 
+/* Contenedor y estilo del botón volver, consistente con otras páginas */
+.hist-header-back {
+    margin-bottom: 12px;
+}
+
+.hist-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--obs-aurora);
+    text-decoration: none;
+    margin-bottom: 16px;
+    opacity: .8;
+    transition: opacity var(--transition), transform var(--transition);
+}
+
+.hist-back:hover {
+    opacity: 1;
+    transform: translateX(-3px);
+}
+
 .hist-header {
     display: flex;
     align-items: flex-start;

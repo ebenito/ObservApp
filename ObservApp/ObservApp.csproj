@@ -36,6 +36,15 @@
       <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
 
+    <!-- CI Windows: el RID solo debe aplicarse al TFM de Windows.
+         Pasar -p:RuntimeIdentifier=win-x64 como propiedad global contamina el TFM
+         Android de ObservApp.Shared (UseMonoRuntime=true) y el restore pide
+         Microsoft.NETCore.App.Runtime.Mono.win-x64, que no existe en NuGet.
+         Uso: dotnet build/publish -f net10.0-windows10.0.26100.0 -p:RuntimeIdentifierOverride=win-x64 -->
+    <PropertyGroup Condition="$(TargetFramework.Contains('-windows')) and '$(RuntimeIdentifierOverride)' != ''">
+        <RuntimeIdentifier>$(RuntimeIdentifierOverride)</RuntimeIdentifier>
+    </PropertyGroup>
+
     <ItemGroup>
         <!-- App Icon -->
         <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#0d1b2a" />
@@ -63,24 +72,24 @@
 
     <ItemGroup>
       <!-- MAUI core -->
-      <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.12" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.12" />
-      <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.12" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.13" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.13" />
+      <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.13" />
       <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.110" />
       <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.110" />
-      <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.12" />
-      <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.12" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.13" />
+      <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.13" />
       <PackageReference Include="Plugin.Maui.Audio" Version="4.0.0" />
 
       <!-- Supabase — nombre correcto del paquete desde v1.x -->
-      <PackageReference Include="Supabase" Version="8.1.1" />
+      <PackageReference Include="Supabase" Version="8.4.0" />
 
       <!-- Astronomy Engine — cálculos offline de planetas, luna, eclipses -->
       <PackageReference Include="CosineKitty.AstronomyEngine" Version="2.1.19" />
 
       <!-- Community Toolkit MAUI — permisos, share, toast nativo Android -->
       <PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
-      <PackageReference Include="Syncfusion.Licensing" Version="34.2.9" />
+      <PackageReference Include="Syncfusion.Licensing" Version="35.1.40" />
   </ItemGroup>
 
 	<ItemGroup>
