@@ -73,7 +73,8 @@ public static class MauiProgram
             var options = new SupabaseOptions
             {
                 AutoRefreshToken = true,
-                AutoConnectRealtime = true,
+                // La app no usa Realtime; evita abrir un websocket en cada arranque.
+                AutoConnectRealtime = false,
                 SessionHandler = new DefaultSupabaseSessionHandler()
             };
 
@@ -149,10 +150,6 @@ public static class MauiProgram
         builder.Services.AddBlazorWebViewDeveloperTools();
         builder.Logging.AddDebug();
 #endif
-
-        // TODO: registrar servicios a medida que se vayan creando:
-        // builder.Services.AddSingleton<SupabaseService>();
-        // builder.Services.AddSingleton<AuthService>();
 
         return builder.Build();
     }

@@ -262,9 +262,15 @@ jobs:
           echo "Version: $FULL_VERSION"
 
       - name: Crear appsettings.Local.json para Web Client
+        shell: bash
         run: |
-          echo '{"SyncfusionLicenseKey": "${{ secrets.SYNCFUSION_LICENSE_KEY }}"}' \
-            > ObservApp.Web.Client/wwwroot/appsettings.Local.json
+          cat > ObservApp.Web.Client/wwwroot/appsettings.Local.json <<'EOF'
+          {
+            "SyncfusionLicenseKey": "${{ secrets.SYNCFUSION_LICENSE_KEY }}",
+            "SupabaseUrl": "${{ secrets.SUPABASE_URL }}",
+            "SupabaseAnonKey": "${{ secrets.SUPABASE_ANON_KEY }}"
+          }
+          EOF
 
       - name: Restore Web Client (net10.0)
         run: dotnet restore ObservApp.Web.Client/ObservApp.Web.Client.csproj -p:TargetFramework=net10.0

@@ -145,9 +145,6 @@
         AppState.OnAuthChanged += OnAppStateChanged;
         AuthService.OnAuthStateChanged += OnAuthStateChanged;
 
-        // En Supabase v8 la restauración automática de sesión durante el primer render de la UI
-        // puede bloquear la navegación y los botones en Blazor WebAssembly. Se deja para uso
-        // explícito en la pantalla de login/usuario y no se ejecuta al arrancar el layout.
         AppState.CurrentUser = AuthService.CurrentUser;
 
         // Registrar la URL actual en el historial de navegación
@@ -158,7 +155,34 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
+        {
             await ApplyHtmlLangAsync();
+
+            // Restauración de sesión en segundo plano, tras el primer render, para no bloquear
+            // la UI. (El bloqueo que se observó antes venía del websocket de Realtime en
+            // InitializeAsync; ahora AutoConnectRealtime=false.) TryRestoreSessionAsync ya
+            // aplica un timeout interno.
+            _ = RestoreSessionInBackgroundAsync();
+        }
+    }
+
+    private async Task RestoreSessionInBackgroundAsync()
+    {
+        if (AppState.IsAuthenticated)
+            return;
+
+        try
+        {
+            if (await AuthService.TryRestoreSessionAsync())
+            {
+                AppState.CurrentUser = AuthService.CurrentUser;
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+        catch
+        {
+            // Sin sesión guardada o Supabase no disponible: el usuario puede iniciar sesión a mano.
+        }
     }
 
     private void OnLanguageChanged()

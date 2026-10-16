@@ -105,7 +105,10 @@ builder.Services.AddSingleton(sp =>
 	var options = new SupabaseOptions
 	{
 		AutoRefreshToken = true,
-		AutoConnectRealtime = true,
+		// La app no usa Realtime. Con true, InitializeAsync abre un websocket y, si
+		// SupabaseUrl falta o es inválida, falla con
+		// "Failed to start Websocket client ... net_WebSockets_Scheme" y bloquea el login.
+		AutoConnectRealtime = false,
 		SessionHandler = new DefaultSupabaseSessionHandler(),
 		HttpClient = httpClientFactory.Create(),
 		StorageClientOptions = new Supabase.Storage.ClientOptions

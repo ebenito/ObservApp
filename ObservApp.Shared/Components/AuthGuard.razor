@@ -1,4 +1,5 @@
 @inject AppState AppState
+@inject IAuthService AuthService
 @inject NavigationManager NavManager
 
 @if (AppState.IsAuthenticated)
@@ -15,11 +16,29 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (!AppState.IsAuthenticated)
+        if (AppState.IsAuthenticated)
         {
-            NavManager.NavigateTo(RedirectTo, forceLoad: true);
+            return;
         }
 
-        await Task.CompletedTask;
+        // Al recargar la página (o entrar por URL directa) AppState arranca vacío aunque
+        // haya una sesión guardada. Intentar restaurarla antes de expulsar al usuario.
+        try
+        {
+            if (await AuthService.TryRestoreSessionAsync())
+            {
+                AppState.CurrentUser = AuthService.CurrentUser;
+            }
+        }
+        catch
+        {
+            // Sin sesión restaurable: se redirige a continuación.
+        }
+
+        if (!AppState.IsAuthenticated)
+        {
+            // Sin forceLoad: una recarga completa reinicia el WASM y pierde el estado en memoria.
+            NavManager.NavigateTo(RedirectTo);
+        }
     }
 }

@@ -132,11 +132,25 @@ jobs:
             gitversion.err
           if-no-files-found: warn
 
+      # En modo STANDALONE_WASM no hay servidor que sirva /api/client-config: la
+      # configuración de Supabase tiene que ir en el appsettings.Local.json publicado.
+      # La anon key de Supabase es pública por diseño (la protege RLS en la BD).
       - name: Crear appsettings.Local.json para Web Client
+        shell: bash
         run: |
+          set -euo pipefail
           mkdir -p ObservApp.Web.Client/wwwroot
-          echo '{"SyncfusionLicenseKey": "${{ secrets.SYNCFUSION_LICENSE_KEY }}"}' \
-            > ObservApp.Web.Client/wwwroot/appsettings.Local.json
+          cat > ObservApp.Web.Client/wwwroot/appsettings.Local.json <<'EOF'
+          {
+            "SyncfusionLicenseKey": "${{ secrets.SYNCFUSION_LICENSE_KEY }}",
+            "SupabaseUrl": "${{ secrets.SUPABASE_URL }}",
+            "SupabaseAnonKey": "${{ secrets.SUPABASE_ANON_KEY }}"
+          }
+          EOF
+          if [ -z "${{ secrets.SUPABASE_URL }}" ] || [ -z "${{ secrets.SUPABASE_ANON_KEY }}" ]; then
+            echo "::error::Faltan los secretos SUPABASE_URL y/o SUPABASE_ANON_KEY: el login no funcionará en la web publicada."
+            exit 1
+          fi
 
       - name: Restore Web Client
         run: dotnet restore ObservApp.Web.Client/ObservApp.Web.Client.csproj -p:TargetFramework=net10.0

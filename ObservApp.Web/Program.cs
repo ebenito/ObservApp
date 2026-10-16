@@ -126,10 +126,14 @@ static void ConfigureApplication(WebApplication app)
 
 static void MapClientConfigEndpoint(WebApplication app)
 {
+    // Modo hosted (desarrollo local): el cliente WASM recibe aquí su configuración.
+    // La clave Syncfusion se lee de ObservApp.Web/appsettings.Local.json (gitignored)
+    // para no commitearla en ObservApp.Web.Client/wwwroot/appsettings.json.
     app.MapGet("/api/client-config", (IConfiguration configuration) => Results.Json(new
     {
         SupabaseUrl = (configuration["SupabaseUrl"] ?? string.Empty).Trim(),
-        SupabaseAnonKey = (configuration["SupabaseAnonKey"] ?? string.Empty).Trim()
+        SupabaseAnonKey = (configuration["SupabaseAnonKey"] ?? string.Empty).Trim(),
+        SyncfusionLicenseKey = (configuration["SyncfusionLicenseKey"] ?? string.Empty).Trim()
     }));
 }
 
