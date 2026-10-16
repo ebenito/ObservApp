@@ -99,6 +99,9 @@ jobs:
           Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_SEMVER=$SEMVER"
           Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_FULLSEMVER=$FULLSEMVER"
           Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_INFORMATIONALVERSION=$INFOVERSION"
+          # Directory.Build.props usa MAJOR/MINOR para ApplicationDisplayVersion (versión visible MSIX/APK)
+          Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_MAJOR=$($json.Major)"
+          Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_MINOR=$($json.Minor)"
 
       - name: Crear appsettings.Local.json para MAUI
         run: |
@@ -158,6 +161,9 @@ jobs:
           Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_SEMVER=$SEMVER"
           Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_FULLSEMVER=$FULLSEMVER"
           Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_INFORMATIONALVERSION=$INFOVERSION"
+          # Directory.Build.props usa MAJOR/MINOR para ApplicationDisplayVersion (versión visible MSIX/APK)
+          Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_MAJOR=$($json.Major)"
+          Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_MINOR=$($json.Minor)"
 
           Write-Host "GitVersion ejecutado correctamente" -ForegroundColor Green
           Write-Host "Versión: $FULLSEMVER" -ForegroundColor Cyan
@@ -173,21 +179,39 @@ jobs:
             "SupabaseAnonKey": "${{ secrets.SUPABASE_ANON_KEY }}"
           }' > ObservApp.Web/appsettings.Local.json
 
+      # RuntimeIdentifierOverride (no RuntimeIdentifier): el csproj lo aplica solo al TFM
+      # de Windows. Un RuntimeIdentifier global contamina el TFM Android de ObservApp.Shared
+      # y el restore pide Microsoft.NETCore.App.Runtime.Mono.win-x64, que no existe (NU1102).
       - name: Restore Windows
-        run: dotnet restore ObservApp/ObservApp.csproj -p:TargetFramework=net10.0-windows10.0.26100.0 -p:RuntimeIdentifier=win-x64
+        run: dotnet restore ObservApp/ObservApp.csproj -p:TargetFramework=net10.0-windows10.0.26100.0 -p:RuntimeIdentifierOverride=win-x64
 
       - name: Build Windows
-        run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release -p:RuntimeIdentifier=win-x64
+        run: dotnet build ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release -p:RuntimeIdentifierOverride=win-x64 --no-restore
 
+      # El MSIX no se genera en --output: lo escribe el empaquetador en AppxPackageDir.
+      # Sin certificado en CI: paquete sin firmar (AppxPackageSigningEnabled=false) y sin
+      # certificado temporal (GenerateTemporaryStoreCertificate=false evita MSB4044
+      # "CertificateThumbprint" en WinAppSdkRemoveDisposableSigningCertificate).
       - name: Publish Windows
-        run: dotnet publish ObservApp/ObservApp.csproj --framework net10.0-windows10.0.26100.0 --configuration Release -p:RuntimeIdentifier=win-x64 --output ObservApp/publish/windows
+        run: >
+          dotnet publish ObservApp/ObservApp.csproj
+          --framework net10.0-windows10.0.26100.0
+          --configuration Release
+          --no-restore
+          -p:RuntimeIdentifierOverride=win-x64
+          -p:GenerateAppxPackageOnBuild=true
+          -p:AppxPackageSigningEnabled=false
+          -p:GenerateTemporaryStoreCertificate=false
+          -p:AppxPackageDir=${{ github.workspace }}\ObservApp\publish\windows\
+          --output ObservApp/publish/windows-bin
 
       - name: Upload Windows MSIX
         uses: actions/upload-artifact@v5
         with:
           name: ObservApp-Windows
-          path: ObservApp/publish/windows/*.msix
-          if-no-files-found: warn
+          # Solo el paquete de la app; se excluye Dependencies/*/Microsoft.WindowsAppRuntime*.msix (~125 MB)
+          path: ObservApp/publish/windows/**/ObservApp_*.msix
+          if-no-files-found: error
 
   build-web:
     if: ${{ (github.event_name == 'workflow_dispatch' && inputs.build_web) || (github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop')) }}
@@ -228,6 +252,8 @@ jobs:
             echo "GITVERSION_SEMVER=$VERSION"
             echo "GITVERSION_FULLSEMVER=$FULL_VERSION"
             echo "GITVERSION_INFORMATIONALVERSION=$INFORMATIONAL_VERSION"
+            echo "GITVERSION_MAJOR=$(jq -r '.Major' gitversion.json)"
+            echo "GITVERSION_MINOR=$(jq -r '.Minor' gitversion.json)"
           } >> "$GITHUB_ENV"
 
           echo "Version: $FULL_VERSION"

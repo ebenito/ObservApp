@@ -100,11 +100,15 @@ jobs:
             VERSION="0.0.0"
             FULL_VERSION="0.0.0+$SHA_SHORT"
             INFORMATIONAL_VERSION="0.0.0+$SHA_SHORT"
+            MAJOR="0"
+            MINOR="0"
           else
             echo "Parsing version info..."
             VERSION="$(jq -r '.SemVer' gitversion.json)"
             FULL_VERSION="$(jq -r '.FullSemVer' gitversion.json)"
             INFORMATIONAL_VERSION="$(jq -r '.InformationalVersion' gitversion.json)"
+            MAJOR="$(jq -r '.Major' gitversion.json)"
+            MINOR="$(jq -r '.Minor' gitversion.json)"
           fi
 
           echo "Writing to GITHUB_ENV..."
@@ -112,6 +116,8 @@ jobs:
             echo "GITVERSION_SEMVER=$VERSION"
             echo "GITVERSION_FULLSEMVER=$FULL_VERSION"
             echo "GITVERSION_INFORMATIONALVERSION=$INFORMATIONAL_VERSION"
+            echo "GITVERSION_MAJOR=$MAJOR"
+            echo "GITVERSION_MINOR=$MINOR"
           } >> "$GITHUB_ENV"
 
           echo "Version calculated: $FULL_VERSION"
@@ -154,28 +160,38 @@ jobs:
       - name: Reducir tamaño del publish
         shell: bash
         run: |
+          set -euo pipefail
           cd publish/web/wwwroot
-          # Quita las versiones .gz (mantén .br, o al revés)
+
+          # 1) Quita las versiones .gz (se mantienen las .br)
           find . -name '*.gz' -delete
+
+          # 2) Syncfusion.Blazor.Themes publica TODOS los temas (~234 MB).
+          #    La app solo usa material3-dark.css (index.html). El plan Free de
+          #    Azure Static Web Apps limita la app a 250 MB, así que se eliminan
+          #    el resto de temas.
+          if [ -d _content/Syncfusion.Blazor.Themes ]; then
+            find _content/Syncfusion.Blazor.Themes -type f \
+              ! -name 'material3-dark.css' \
+              ! -name 'material3-dark.css.br' \
+              -delete
+            find _content/Syncfusion.Blazor.Themes -type d -empty -delete
+          fi
+
+          echo "Tamaño final de wwwroot:"
           du -sh .
 
-      - name: Listar salida del publish
+      - name: Resumen del publish
         shell: bash
+        # Solo diagnóstico: nunca debe tumbar el despliegue.
+        # (Con `pipefail`, `sort | head` devolvía exit 2 por SIGPIPE y abortaba el job.)
+        continue-on-error: true
         run: |
-          echo "Contenido de publish/web:"
-          ls -la publish/web
-          echo "Buscando index.html:"
-          find publish/web -name index.html
-
-      - name: Medir tamaño del publish
-        shell: bash
-        run: |
-          echo "Total wwwroot:"; du -sh publish/web/wwwroot
-          echo "Por carpeta:"; du -h --max-depth=2 publish/web/wwwroot | sort -rh | head -15
-          echo "Por extensión:"
-          find publish/web/wwwroot -type f | sed 's/.*\.//' | sort | uniq -c | sort -rn | head
-          echo "Ficheros más grandes:"
-          find publish/web/wwwroot -type f -printf '%s %p\n' | sort -rn | head -15
+          echo "index.html:"; find publish/web -name index.html
+          echo "Por carpeta (top 15):"
+          du -h --max-depth=2 publish/web/wwwroot | sort -rh | sed -n '1,15p' || true
+          echo "Ficheros más grandes (top 15):"
+          find publish/web/wwwroot -type f -printf '%s %p\n' | sort -rn | sed -n '1,15p' || true
 
       - name: Deploy to Azure Static Web Apps
         if: env.AZURE_STATIC_WEB_APPS_API_TOKEN != ''
