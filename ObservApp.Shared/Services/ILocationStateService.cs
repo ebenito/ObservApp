@@ -75,6 +75,6 @@ public interface ILocationStateService
 /// </summary>
 public class LocationStateChangedEventArgs : EventArgs
 {
-	public LocationState OldLocation { get; init; }
-	public LocationState NewLocation { get; init; }
+	public required LocationState OldLocation { get; init; }
+	public required LocationState NewLocation { get; init; }
 }

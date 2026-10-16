@@ -157,7 +157,7 @@ public partial class RssFeedService : IRssFeedService
                 PublishedUtc: pubDate,
                 ImageUrl: imageUrl,
                 SourceName: source.Name,
-                LanguageCode: channelLang));
+                LanguageCode: channelLang ?? string.Empty));
         }
 
         return items;
