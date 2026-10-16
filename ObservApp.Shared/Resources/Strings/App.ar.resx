@@ -1531,4 +1531,76 @@
   <data name="Auth_Otp_EmailMissing" xml:space="preserve">
     <value>لم يتم استلام بريد للتحقق. ارجع إلى التسجيل.</value>
   </data>
+  <data name="Eph_DSO_Filter_Search" xml:space="preserve">
+    <value>ابحث بالاسم…</value>
+  </data>
+  <data name="Eph_DSO_Filter_Catalog" xml:space="preserve">
+    <value>الفهرس</value>
+  </data>
+  <data name="Eph_DSO_Filter_Constellation" xml:space="preserve">
+    <value>الكوكبة</value>
+  </data>
+  <data name="Eph_DSO_Filter_Instrument" xml:space="preserve">
+    <value>الأداة</value>
+  </data>
+  <data name="Eph_DSO_Filter_Sky" xml:space="preserve">
+    <value>جودة السماء</value>
+  </data>
+  <data name="Eph_DSO_Filter_All" xml:space="preserve">
+    <value>الكل</value>
+  </data>
+  <data name="Eph_DSO_Filter_NoResults" xml:space="preserve">
+    <value>لا توجد أجرام تطابق المرشحات المطبقة.</value>
+  </data>
+  <data name="Eph_DSO_Cat_Messier" xml:space="preserve">
+    <value>مسييه</value>
+  </data>
+  <data name="Eph_DSO_Cat_Caldwell" xml:space="preserve">
+    <value>كالدويل</value>
+  </data>
+  <data name="Eph_DSO_Cat_NGC" xml:space="preserve">
+    <value>NGC</value>
+  </data>
+  <data name="Eph_DSO_Cat_IC" xml:space="preserve">
+    <value>IC</value>
+  </data>
+  <data name="Eph_DSO_Cat_Collinder" xml:space="preserve">
+    <value>كوليندر</value>
+  </data>
+  <data name="Eph_DSO_Cat_Melotte" xml:space="preserve">
+    <value>ميلوت</value>
+  </data>
+  <data name="Eph_DSO_Cat_Barnard" xml:space="preserve">
+    <value>بارنارد</value>
+  </data>
+  <data name="Eph_DSO_Sky_Urban" xml:space="preserve">
+    <value>حضري</value>
+  </data>
+  <data name="Eph_DSO_Sky_Suburban" xml:space="preserve">
+    <value>ضواحي</value>
+  </data>
+  <data name="Eph_DSO_Sky_SuburbanDarkSky" xml:space="preserve">
+    <value>ضواحي / سماء مظلمة</value>
+  </data>
+  <data name="Eph_DSO_Sky_DarkSky" xml:space="preserve">
+    <value>سماء مظلمة</value>
+  </data>
+  <data name="Eph_DSO_Instr_NakedEye" xml:space="preserve">
+    <value>بالعين المجردة</value>
+  </data>
+  <data name="Eph_DSO_Instr_Binoculars" xml:space="preserve">
+    <value>منظار ثنائي</value>
+  </data>
+  <data name="Eph_DSO_Instr_SmallTelescope" xml:space="preserve">
+    <value>تلسكوب صغير</value>
+  </data>
+  <data name="Eph_DSO_Instr_MediumTelescope" xml:space="preserve">
+    <value>تلسكوب متوسط</value>
+  </data>
+  <data name="Eph_DSO_Instr_LargeTelescope" xml:space="preserve">
+    <value>تلسكوب كبير</value>
+  </data>
+  <data name="Eph_DSO_Filter_ResultCount" xml:space="preserve">
+    <value>أجرام</value>
+  </data>
 </root>

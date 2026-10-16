@@ -14,7 +14,10 @@
 		<Version Condition="'$(GITVERSION_SEMVER)' != ''">$(GITVERSION_SEMVER)</Version>
 		<FileVersion Condition="'$(GITVERSION_FULLSEMVER)' != ''">$(GITVERSION_FULLSEMVER)</FileVersion>
 		<InformationalVersion Condition="'$(GITVERSION_INFORMATIONALVERSION)' != ''">$(GITVERSION_INFORMATIONALVERSION)</InformationalVersion>
-		<ApplicationDisplayVersion Condition="'$(GITVERSION_MAJOR)' != '' and '$(GITVERSION_MINOR)' != ''">$(GITVERSION_MAJOR).$(GITVERSION_MINOR)</ApplicationDisplayVersion>
+		<!-- Versión visible (APK versionName / MSIX Identity.Version): sin sufijos de prerelease.
+		     MSIX exige 4 números; MAUI compone ApplicationDisplayVersion + "." + ApplicationVersion. -->
+		<ApplicationDisplayVersion Condition="'$(GITVERSION_MAJORMINORPATCH)' != ''">$(GITVERSION_MAJORMINORPATCH)</ApplicationDisplayVersion>
+		<ApplicationDisplayVersion Condition="'$(ApplicationDisplayVersion)' == '' and '$(GITVERSION_MAJOR)' != '' and '$(GITVERSION_MINOR)' != ''">$(GITVERSION_MAJOR).$(GITVERSION_MINOR).0</ApplicationDisplayVersion>
 
 		<!-- Fallback para compilaciones locales sin GitVersion -->
 		<Version Condition="'$(Version)' == ''">1.3.3</Version>

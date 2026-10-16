@@ -13,7 +13,7 @@ Disponible como app nativa (Android y Windows) y como aplicación web progresiva
 | Módulo | Descripción | Estado |
 |---|---|---|
 | 🏠 **Inicio** | Panel de bienvenida y acceso rápido | ✅ Disponible |
-| 🗺️ **Mapa** | Selección de ubicación de observación | 🔜 Próximamente |
+| 🗺️ **Mapa** | Gestión de ubicaciones con mapa interactivo (`/mapa`) | ✅ Disponible |
 | 📅 **Planificación** | Crear y gestionar sesiones de observación | ✅ Disponible |
 | 🌌 **Efemérides** | Datos de posición de cuerpos celestes | ✅ Disponible |
 | 🧮 **Calculadoras** | Suite de herramientas de cálculo astronómico | ✅ Disponible |
@@ -362,11 +362,13 @@ dotnet build
 
 ### Configuración requerida
 
-#### Variables de entorno (Supabase y Syncfusion)
+#### Credenciales (Supabase y Syncfusion)
 
 Antes de ejecutar, debes crear archivos `appsettings.Local.json` en:
-- `ObservApp/appsettings.Local.json` (para MAUI)
-- `ObservApp.Web.Client/wwwroot/appsettings.Local.json` (para Web)
+- `ObservApp/appsettings.Local.json` (para MAUI; se embebe en la app)
+- `ObservApp.Web/appsettings.Local.json` (para la web en desarrollo; el host la sirve al cliente WASM vía `/api/client-config`)
+
+En CI estos ficheros se generan desde los secretos `SUPABASE_URL`, `SUPABASE_ANON_KEY` y `SYNCFUSION_LICENSE_KEY` del repositorio.
 
 **Plantilla:**
 
@@ -397,7 +399,8 @@ Antes de ejecutar, debes crear archivos `appsettings.Local.json` en:
 - **[Guía rápida de Supabase](Documentacion/Supabase/QUICK_START.md)** — Configurar backend, autenticación y BD
 - **[Catálogo DSO](Documentacion/DSO-Catalog.md)** — Objetos de cielo profundo y API de acceso
 - **[Arquitectura en detalle](Documentacion/DocumentacionTecnica.md)** — Diagramas y patrones de diseño
-- **[Desarrollo local](Documentacion/DEVELOPMENT.md)** — Guía paso a paso
+- **[Contexto para asistentes de IA](Documentacion/Claude/CLAUDE_CONTEXT.md)** — Estado real del proyecto, rutas, CI/CD y lecciones aprendidas
+- **[Arquitectura web y depuración](Documentacion/arquitectura-web-depuracion.md)** — Cómo ejecutar y depurar la versión web
 
 ---
 
@@ -445,7 +448,7 @@ ObservApp.Shared/
 ├── Pages/                # Páginas Razor (Home, CalculadoraSolLuna, Configuracion…)
 ├── Components/           # Componentes reutilizables
 ├── Models/               # ObservationSession, ObservationTarget, enumeraciones
-├── Resources/Strings/    # Archivos .resx de localización (es, en, fr, de, it, ar)
+├── Resources/Strings/    # Archivos .resx de localización (es, en, fr, de, it, pt, ru, ar)
 ├── Services/             # Interfaces: ISettingsService, ILocalizationService, IGeolocationService
 ├── State/                # AppState — estado global reactivo
 ├── ViewModels/           # BaseViewModel, HistorialViewModel, ConfiguracionViewModel
@@ -470,6 +473,9 @@ El historial de cambios y releases se mantiene en la carpeta `Documentacion/chan
 
 | Archivo | Descripción |
 |---------|-------------|
+| [2026_09_25_MejorasCopilot.md](Documentacion/changelog/2026_09_25_MejorasCopilot.md) | Mejoras técnicas: DI, eliminación de `eval`, catálogo RSS centralizado |
+| [2026_08-Efemerides.md](Documentacion/changelog/2026_08-Efemerides.md) | Feature: página de Efemérides con catálogo DSO embebido y filtros |
+| [2025_01-autenticacion-supabase.md](Documentacion/changelog/2025_01-autenticacion-supabase.md) | Feature: autenticación Supabase y persistencia de sesiones de observación |
 | [2026_07-calculadora-tiempos-eclipse.md](Documentacion/changelog/2026_07-calculadora-tiempos-eclipse.md) | Feature: Calculadora de tiempos de eclipse solar con avisos sonoros y simulación en tiempo real |
 | [2026_06-refactoring-arquitectura-completa.md](Documentacion/changelog/2026_06-refactoring-arquitectura-completa.md) | Refactoring: arquitectura con abstracción de servicios, MVVM, geolocalización multiplataforma |
 | [2026_05-fix-cambio-idioma-sidebar.md](Documentacion/changelog/2026_05-fix-cambio-idioma-sidebar.md) | Fix: cambio de idioma y menú hamburguesa inoperativos en Blazor WASM |
@@ -485,4 +491,4 @@ Las contribuciones son bienvenidas. Por favor, abre un *issue* antes de enviar u
 
 ## 📄 Licencia
 
-Este proyecto está bajo la licencia **MIT**. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+Este proyecto está bajo la licencia **MIT**.

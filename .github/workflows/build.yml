@@ -102,6 +102,7 @@ jobs:
           # Directory.Build.props usa MAJOR/MINOR para ApplicationDisplayVersion (versión visible MSIX/APK)
           Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_MAJOR=$($json.Major)"
           Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_MINOR=$($json.Minor)"
+          Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_MAJORMINORPATCH=$($json.MajorMinorPatch)"
 
       - name: Crear appsettings.Local.json para MAUI
         run: |
@@ -164,6 +165,7 @@ jobs:
           # Directory.Build.props usa MAJOR/MINOR para ApplicationDisplayVersion (versión visible MSIX/APK)
           Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_MAJOR=$($json.Major)"
           Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_MINOR=$($json.Minor)"
+          Add-Content -Path $env:GITHUB_ENV -Value "GITVERSION_MAJORMINORPATCH=$($json.MajorMinorPatch)"
 
           Write-Host "GitVersion ejecutado correctamente" -ForegroundColor Green
           Write-Host "Versión: $FULLSEMVER" -ForegroundColor Cyan
