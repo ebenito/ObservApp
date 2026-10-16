@@ -184,99 +184,43 @@ await FavoriteLocationsService.SaveFavoriteLocationAsync(new FavoriteLocation { 
 
 ## 📦 Versionado con GitVersion
 
-El número de versión se **genera automáticamente** basándose en tags Git semánticos.
+La **única fuente de verdad** del número de versión son los **tags Git** `vX.Y.Z` (y las releases de GitHub asociadas a ellos). Nadie escribe la versión a mano: la calcula GitVersion a partir del último tag alcanzable desde la rama.
 
-### Cómo funciona:
+### Cómo funciona
 
-1. **Tags Git semánticos** — Define la versión usando tags: `v1.3.2`, `v1.4.0`, `v2.0.0`
-2. **GitVersion calcula versión** — Determina versión automáticamente en cada compilación
-3. **Se inyecta en assembly** — La versión se propaga a todos los binarios
+| Dónde | Quién calcula | Resultado |
+|---|---|---|
+| Visual Studio / `dotnet build` local | `GitVersion.MsBuild` (referenciado desde `Directory.Build.props`) | Misma versión que CI, en cada compilación |
+| GitHub Actions | `dotnet-gitversion` en el workflow, exportado como variables `GITVERSION_*` | Se inyecta en APK, MSIX y Web |
+| Sin repo git (zip del código) | Valor de reserva en `Directory.Build.props` | Mantenerlo alineado con el último tag |
 
-#### Ejemplos de flujo:
+Reglas de `gitversion.yml`:
 
-```
-branch: main
-tag: v1.3.2
-  ↓
-[commit 3 nuevos cambios]
-  ↓
-dotnet build
-  → Version: 1.3.2
-  → SemVer: 1.3.2
+- `master`: la versión es exactamente el último tag; commits posteriores incrementan **patch**.
+- `develop`: a partir del último tag incrementa **minor** (`v1.3.5` → `1.4.0`), sin sufijo de prerelease.
+- Solo cuentan tags con el formato **`v` + tres números** (`v1.4.0`). Tags como `v.1.3.4` o `v1.3.3.1` se ignoran.
 
-Después de faire merge en main:
-[nuevo tag: v1.4.0 (feature)]
-  ↓
-dotnet build
-  → Version: 1.4.0
-  → SemVer: 1.4.0
-```
+La versión visible en Android (`versionName`) y en el MSIX de Windows sale de `ApplicationDisplayVersion`, que toma `MajorMinorPatch` de GitVersion. El manifiesto `Package.appxmanifest` lleva `Version="0.0.0.0"` a propósito: MAUI lo rellena.
 
-### Incrementar versión:
+### Publicar una release
 
 ```powershell
-# Feature (incrementa minor): 1.3.2 → 1.4.0
+# 1. Fusionar develop en master (PR) y situarse en el commit de merge
+git checkout master && git pull
+
+# 2. Crear el tag y la release en GitHub (el tag define la versión)
 git tag v1.4.0
 git push origin v1.4.0
+gh release create v1.4.0 --generate-notes
 
-# Bugfix (incrementa patch): 1.3.2 → 1.3.3
-git tag v1.3.3
-git push origin v1.3.3
-
-# Breaking change (incrementa major): 1.3.2 → 2.0.0
-git tag v2.0.0
-git push origin v2.0.0
+# 3. Llevar el tag de vuelta a develop para que la siguiente versión parta de él
+git checkout develop && git merge master && git push
 ```
 
-### Ver versión actual:
+### Ver la versión actual
 
 ```powershell
-# Script local (requiere GitVersion.Tool instalado)
-.\Get-Version.ps1
-
-# Salida:
-# ✓ Version: 1.3.2
-#   Major: 1, Minor: 3
-#   Full Version: 1.3.2.0
-#   Informational: 1.3.2
-#   Branch: develop
-#   Commits: 0
-```
-
-### Configuración:
-
-El archivo `gitversion.yml` en la raíz controla el comportamiento:
-
-```yaml
-configuration:
-  tag-prefix: v                    # Tags deben empezar con 'v'
-  mode: Mainline                   # Usa estrategia Mainline
-  increment: Patch
-
-  branches:
-    main:
-      mode: Mainline
-      increment: Patch
-      regex: ^main$|^master$
-
-    develop:
-      mode: ContinuousDeployment
-      increment: Minor
-      regex: ^develop$
-```
-
-### En GitHub Actions:
-
-El workflow `.github/workflows/build.yml` automáticamente:
-
-```yaml
-- name: Calculate version with GitVersion
-  run: dotnet-gitversion /output buildserver /nofetch
-  # Establece env vars: GITVERSION_SEMVER, GITVERSION_MAJOR, etc.
-
-- name: Build Android
-  run: dotnet build ... 
-  # Usa las env vars para versionar el APK
+.\Get-Version.ps1          # requiere GitVersion.Tool: dotnet tool install -g GitVersion.Tool
 ```
 
 ---
