@@ -75,8 +75,8 @@
       <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.13" />
       <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.13" />
       <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.13" />
-      <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.110" />
-      <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.110" />
+      <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.120" />
+      <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.120" />
       <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.13" />
       <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.13" />
       <PackageReference Include="Plugin.Maui.Audio" Version="4.0.0" />
@@ -89,11 +89,15 @@
 
       <!-- Community Toolkit MAUI — permisos, share, toast nativo Android -->
       <PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
-      <PackageReference Include="Syncfusion.Licensing" Version="35.1.40" />
+      <PackageReference Include="Syncfusion.Licensing" Version="35.1.41" />
   </ItemGroup>
 
 	<ItemGroup>
 		<EmbeddedResource Include="appsettings.json" />
 		<EmbeddedResource Include="appsettings.Local.json" Condition="Exists('appsettings.Local.json')" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="GitVersion.MsBuild" Version="6.8.2" />
 	</ItemGroup>
 </Project>

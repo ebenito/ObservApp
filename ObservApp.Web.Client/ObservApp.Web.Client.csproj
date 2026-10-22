@@ -13,7 +13,7 @@
   <ItemGroup>
 	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.13" />
 	<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.13" />
-	<PackageReference Include="Syncfusion.Licensing" Version="35.1.40" />
+	<PackageReference Include="Syncfusion.Licensing" Version="35.1.41" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -30,6 +30,10 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="GitVersion.MsBuild" Version="6.8.2" />
   </ItemGroup>
 
 </Project>
