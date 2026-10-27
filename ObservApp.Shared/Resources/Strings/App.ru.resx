@@ -333,6 +333,159 @@
   <data name="Calc_Magnification_Desc" xml:space="preserve">
     <value>Определите оптимальное увеличение и выходной зрачок для вашего телескопа и окуляра</value>
   </data>
+  <data name="Nav_Calc_Magnification" xml:space="preserve">
+    <value>Увеличение и зрачок</value>
+  </data>
+  <data name="MagCalc_Title" xml:space="preserve">
+    <value>Калькулятор увеличения и выходного зрачка</value>
+  </data>
+  <data name="MagCalc_Subtitle" xml:space="preserve">
+    <value>Оценивает увеличение, выходной зрачок, истинное поле зрения и полезные пределы для вашей визуальной конфигурации.</value>
+  </data>
+  <data name="MagCalc_InputSection" xml:space="preserve">
+    <value>Входные данные</value>
+  </data>
+  <data name="MagCalc_Aperture" xml:space="preserve">
+    <value>Апертура телескопа</value>
+  </data>
+  <data name="MagCalc_TelescopeFocal" xml:space="preserve">
+    <value>Фокусное расстояние телескопа</value>
+  </data>
+  <data name="MagCalc_EyepieceFocal" xml:space="preserve">
+    <value>Фокусное расстояние окуляра</value>
+  </data>
+  <data name="MagCalc_Afov" xml:space="preserve">
+    <value>Видимое поле окуляра (AFOV)</value>
+  </data>
+  <data name="MagCalc_Factor" xml:space="preserve">
+    <value>Коэффициент Барлоу/редуктора</value>
+  </data>
+  <data name="MagCalc_AdvancedSection" xml:space="preserve">
+    <value>Дополнительно</value>
+  </data>
+  <data name="MagCalc_FieldStop" xml:space="preserve">
+    <value>Диаметр полевой диафрагмы (опционально)</value>
+  </data>
+  <data name="MagCalc_FillDataHint" xml:space="preserve">
+    <value>Введите корректные значения, чтобы увидеть результаты.</value>
+  </data>
+  <data name="MagCalc_GroupBasic" xml:space="preserve">
+    <value>Основное</value>
+  </data>
+  <data name="MagCalc_Magnification" xml:space="preserve">
+    <value>Увеличение</value>
+  </data>
+  <data name="MagCalc_FocalRatio" xml:space="preserve">
+    <value>Эффективное фокусное отношение</value>
+  </data>
+  <data name="MagCalc_ExitPupil" xml:space="preserve">
+    <value>Выходной зрачок</value>
+  </data>
+  <data name="MagCalc_EffectiveFocal" xml:space="preserve">
+    <value>Эффективное фокусное расстояние</value>
+  </data>
+  <data name="MagCalc_GroupFieldResolution" xml:space="preserve">
+    <value>Поле и разрешение</value>
+  </data>
+  <data name="MagCalc_TrueField" xml:space="preserve">
+    <value>Истинное поле зрения</value>
+  </data>
+  <data name="MagCalc_Dawes" xml:space="preserve">
+    <value>Предел Дауэса</value>
+  </data>
+  <data name="MagCalc_Rayleigh" xml:space="preserve">
+    <value>Предел Рэлея</value>
+  </data>
+  <data name="MagCalc_TrueFieldMethod" xml:space="preserve">
+    <value>Метод расчёта истинного поля</value>
+  </data>
+  <data name="MagCalc_Method_FieldStop" xml:space="preserve">
+    <value>Полевая диафрагма</value>
+  </data>
+  <data name="MagCalc_Method_Afov" xml:space="preserve">
+    <value>AFOV ÷ увеличение (прибл.)</value>
+  </data>
+  <data name="MagCalc_GroupUsefulLimits" xml:space="preserve">
+    <value>Полезные пределы</value>
+  </data>
+  <data name="MagCalc_MinUseful" xml:space="preserve">
+    <value>Минимально полезное увеличение</value>
+  </data>
+  <data name="MagCalc_MaxUseful" xml:space="preserve">
+    <value>Максимально полезное увеличение</value>
+  </data>
+  <data name="MagCalc_LimitingMagnitude" xml:space="preserve">
+    <value>Приблизительная предельная звёздная величина</value>
+  </data>
+  <data name="MagCalc_LightGain" xml:space="preserve">
+    <value>Прирост света относительно невооружённого глаза</value>
+  </data>
+  <data name="MagCalc_RefPupil5" xml:space="preserve">
+    <value>Зрачок 5 мм</value>
+  </data>
+  <data name="MagCalc_RefPupil2" xml:space="preserve">
+    <value>Зрачок 2 мм</value>
+  </data>
+  <data name="MagCalc_RefPupil1" xml:space="preserve">
+    <value>Зрачок 1 мм</value>
+  </data>
+  <data name="MagCalc_RefPupil05" xml:space="preserve">
+    <value>Зрачок 0,5 мм</value>
+  </data>
+  <data name="MagCalc_RefPupilLabel" xml:space="preserve">
+    <value>Зрачок {0} мм</value>
+  </data>
+  <data name="MagCalc_RefEyepieceFocal" xml:space="preserve">
+    <value>Фокус окуляра</value>
+  </data>
+  <data name="MagCalc_RefWarning_ShortEyepiece" xml:space="preserve">
+    <value>Очень короткий окуляр: меньше 4 мм.</value>
+  </data>
+  <data name="MagCalc_PupilContextTitle" xml:space="preserve">
+    <value>Интерпретация выходного зрачка</value>
+  </data>
+  <data name="MagCalc_Pupil_Above7" xml:space="preserve">
+    <value>Выходной зрачок больше, чем может использовать глаз в темноте, поэтому часть света теряется.</value>
+  </data>
+  <data name="MagCalc_Pupil_4_7" xml:space="preserve">
+    <value>Широкопольный диапазон, идеален для протяжённых объектов под тёмным небом.</value>
+  </data>
+  <data name="MagCalc_Pupil_2_4" xml:space="preserve">
+    <value>Универсальный диапазон с хорошим балансом яркости и деталей.</value>
+  </data>
+  <data name="MagCalc_Pupil_1_2" xml:space="preserve">
+    <value>Подходит для планет, Луны и двойных звёзд; больше деталей при более тёмном изображении.</value>
+  </data>
+  <data name="MagCalc_Pupil_05_1" xml:space="preserve">
+    <value>Высокое увеличение: требуется хороший seeing, изображение будет тусклее.</value>
+  </data>
+  <data name="MagCalc_Pupil_Below05" xml:space="preserve">
+    <value>Переувеличение: эта конфигурация выше практического полезного предела.</value>
+  </data>
+  <data name="MagCalc_Warn_AboveMaxUseful" xml:space="preserve">
+    <value>Это увеличение выше теоретически полезного максимума (2×D).</value>
+  </data>
+  <data name="MagCalc_Warn_BelowMinUseful" xml:space="preserve">
+    <value>Это увеличение ниже полезного минимума (D/7).</value>
+  </data>
+  <data name="MagCalc_Warn_FieldStop" xml:space="preserve">
+    <value>Значение полевой диафрагмы выше типичного диапазона окуляров; проверьте значение.</value>
+  </data>
+  <data name="MagCalc_Note" xml:space="preserve">
+    <value>Пределы Дауэса и Рэлея теоретические и зависят от seeing, коллимации и качества оптики. Истинное поле из AFOV/увеличения является приближением.</value>
+  </data>
+  <data name="MagCalc_Error_Required" xml:space="preserve">
+    <value>Поле "{0}" обязательно.</value>
+  </data>
+  <data name="MagCalc_Error_Positive" xml:space="preserve">
+    <value>Поле "{0}" должно быть числом больше нуля.</value>
+  </data>
+  <data name="MagCalc_Error_NoNaN" xml:space="preserve">
+    <value>Невозможно показать результат, так как он содержит недопустимые значения.</value>
+  </data>
+  <data name="MagCalc_Error_Generic" xml:space="preserve">
+    <value>Не удалось выполнить расчёт с указанными значениями.</value>
+  </data>
   <data name="Calc_Resolution_Title" xml:space="preserve">
     <value>Предел разрешения</value>
   </data>

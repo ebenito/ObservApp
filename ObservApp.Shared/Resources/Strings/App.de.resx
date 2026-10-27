@@ -333,6 +333,159 @@
   <data name="Calc_Magnification_Desc" xml:space="preserve">
     <value>Bestimmt die optimale Vergrößerung und Austrittspupille gemäß deinem Teleskop und Okular</value>
   </data>
+  <data name="Nav_Calc_Magnification" xml:space="preserve">
+    <value>Vergrößerung &amp; Pupille</value>
+  </data>
+  <data name="MagCalc_Title" xml:space="preserve">
+    <value>Rechner für Vergrößerung und Austrittspupille</value>
+  </data>
+  <data name="MagCalc_Subtitle" xml:space="preserve">
+    <value>Schätzt Vergrößerung, Austrittspupille, wahres Gesichtsfeld und sinnvolle Grenzen für dein visuelles Setup.</value>
+  </data>
+  <data name="MagCalc_InputSection" xml:space="preserve">
+    <value>Eingabedaten</value>
+  </data>
+  <data name="MagCalc_Aperture" xml:space="preserve">
+    <value>Öffnung des Teleskops</value>
+  </data>
+  <data name="MagCalc_TelescopeFocal" xml:space="preserve">
+    <value>Brennweite des Teleskops</value>
+  </data>
+  <data name="MagCalc_EyepieceFocal" xml:space="preserve">
+    <value>Brennweite des Okulars</value>
+  </data>
+  <data name="MagCalc_Afov" xml:space="preserve">
+    <value>Scheinbares Gesichtsfeld des Okulars (AFOV)</value>
+  </data>
+  <data name="MagCalc_Factor" xml:space="preserve">
+    <value>Barlow-/Reduktorfaktor</value>
+  </data>
+  <data name="MagCalc_AdvancedSection" xml:space="preserve">
+    <value>Erweitert</value>
+  </data>
+  <data name="MagCalc_FieldStop" xml:space="preserve">
+    <value>Durchmesser der Feldblende (optional)</value>
+  </data>
+  <data name="MagCalc_FillDataHint" xml:space="preserve">
+    <value>Gib gültige Werte ein, um Ergebnisse zu sehen.</value>
+  </data>
+  <data name="MagCalc_GroupBasic" xml:space="preserve">
+    <value>Grundlagen</value>
+  </data>
+  <data name="MagCalc_Magnification" xml:space="preserve">
+    <value>Vergrößerung</value>
+  </data>
+  <data name="MagCalc_FocalRatio" xml:space="preserve">
+    <value>Effektives Öffnungsverhältnis</value>
+  </data>
+  <data name="MagCalc_ExitPupil" xml:space="preserve">
+    <value>Austrittspupille</value>
+  </data>
+  <data name="MagCalc_EffectiveFocal" xml:space="preserve">
+    <value>Effektive Brennweite</value>
+  </data>
+  <data name="MagCalc_GroupFieldResolution" xml:space="preserve">
+    <value>Gesichtsfeld und Auflösung</value>
+  </data>
+  <data name="MagCalc_TrueField" xml:space="preserve">
+    <value>Wahres Gesichtsfeld</value>
+  </data>
+  <data name="MagCalc_Dawes" xml:space="preserve">
+    <value>Dawes-Grenze</value>
+  </data>
+  <data name="MagCalc_Rayleigh" xml:space="preserve">
+    <value>Rayleigh-Grenze</value>
+  </data>
+  <data name="MagCalc_TrueFieldMethod" xml:space="preserve">
+    <value>Methode für das wahre Gesichtsfeld</value>
+  </data>
+  <data name="MagCalc_Method_FieldStop" xml:space="preserve">
+    <value>Feldblende</value>
+  </data>
+  <data name="MagCalc_Method_Afov" xml:space="preserve">
+    <value>AFOV ÷ Vergrößerung (Näherung)</value>
+  </data>
+  <data name="MagCalc_GroupUsefulLimits" xml:space="preserve">
+    <value>Sinnvolle Grenzen</value>
+  </data>
+  <data name="MagCalc_MinUseful" xml:space="preserve">
+    <value>Minimale sinnvolle Vergrößerung</value>
+  </data>
+  <data name="MagCalc_MaxUseful" xml:space="preserve">
+    <value>Maximale sinnvolle Vergrößerung</value>
+  </data>
+  <data name="MagCalc_LimitingMagnitude" xml:space="preserve">
+    <value>Ungefähre Grenzgröße</value>
+  </data>
+  <data name="MagCalc_LightGain" xml:space="preserve">
+    <value>Lichtgewinn gegenüber bloßem Auge</value>
+  </data>
+  <data name="MagCalc_RefPupil5" xml:space="preserve">
+    <value>Pupille 5 mm</value>
+  </data>
+  <data name="MagCalc_RefPupil2" xml:space="preserve">
+    <value>Pupille 2 mm</value>
+  </data>
+  <data name="MagCalc_RefPupil1" xml:space="preserve">
+    <value>Pupille 1 mm</value>
+  </data>
+  <data name="MagCalc_RefPupil05" xml:space="preserve">
+    <value>Pupille 0,5 mm</value>
+  </data>
+  <data name="MagCalc_RefPupilLabel" xml:space="preserve">
+    <value>Pupille {0} mm</value>
+  </data>
+  <data name="MagCalc_RefEyepieceFocal" xml:space="preserve">
+    <value>Okularbrennweite</value>
+  </data>
+  <data name="MagCalc_RefWarning_ShortEyepiece" xml:space="preserve">
+    <value>Sehr kurze Okularbrennweite: unter 4 mm.</value>
+  </data>
+  <data name="MagCalc_PupilContextTitle" xml:space="preserve">
+    <value>Einordnung der Austrittspupille</value>
+  </data>
+  <data name="MagCalc_Pupil_Above7" xml:space="preserve">
+    <value>Die Austrittspupille ist größer als ein dunkeladaptiertes Auge nutzen kann; ein Teil des Lichts geht verloren.</value>
+  </data>
+  <data name="MagCalc_Pupil_4_7" xml:space="preserve">
+    <value>Weitfeldbereich, ideal für ausgedehnte Objekte unter dunklem Himmel.</value>
+  </data>
+  <data name="MagCalc_Pupil_2_4" xml:space="preserve">
+    <value>Allgemeiner Bereich mit gutem Gleichgewicht aus Helligkeit und Detail.</value>
+  </data>
+  <data name="MagCalc_Pupil_1_2" xml:space="preserve">
+    <value>Geeignet für Planeten, Mond und Doppelsterne; mehr Detail bei dunklerem Bild.</value>
+  </data>
+  <data name="MagCalc_Pupil_05_1" xml:space="preserve">
+    <value>Hohe Vergrößerung: erfordert gutes Seeing und das Bild wird dunkler.</value>
+  </data>
+  <data name="MagCalc_Pupil_Below05" xml:space="preserve">
+    <value>Übervergrößerung: diese Konfiguration liegt über der praktisch sinnvollen Leistung.</value>
+  </data>
+  <data name="MagCalc_Warn_AboveMaxUseful" xml:space="preserve">
+    <value>Diese Vergrößerung liegt über dem theoretisch sinnvollen Maximum (2×D).</value>
+  </data>
+  <data name="MagCalc_Warn_BelowMinUseful" xml:space="preserve">
+    <value>Diese Vergrößerung liegt unter dem sinnvollen Minimum (D/7).</value>
+  </data>
+  <data name="MagCalc_Warn_FieldStop" xml:space="preserve">
+    <value>Der Feldblendenwert liegt über dem typischen Okularbereich; bitte Wert prüfen.</value>
+  </data>
+  <data name="MagCalc_Note" xml:space="preserve">
+    <value>Dawes- und Rayleigh-Grenzen sind theoretisch und hängen von Seeing, Kollimation und optischer Qualität ab. Das wahre Gesichtsfeld aus AFOV/Vergrößerung ist eine Näherung.</value>
+  </data>
+  <data name="MagCalc_Error_Required" xml:space="preserve">
+    <value>Das Feld "{0}" ist erforderlich.</value>
+  </data>
+  <data name="MagCalc_Error_Positive" xml:space="preserve">
+    <value>Das Feld "{0}" muss eine Zahl größer als null sein.</value>
+  </data>
+  <data name="MagCalc_Error_NoNaN" xml:space="preserve">
+    <value>Das Ergebnis kann nicht angezeigt werden, da es ungültige Werte enthält.</value>
+  </data>
+  <data name="MagCalc_Error_Generic" xml:space="preserve">
+    <value>Mit den angegebenen Werten konnte nicht gerechnet werden.</value>
+  </data>
   <data name="Calc_Resolution_Title" xml:space="preserve">
     <value>Auflösungsgrenze</value>
   </data>

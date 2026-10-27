@@ -1,0 +1,283 @@
+.mag-page {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.mag-header-back {
+    display: flex;
+    align-items: center;
+}
+
+.mag-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--obs-aurora);
+    text-decoration: none;
+    opacity: .85;
+}
+
+.mag-header {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    border-bottom: 1px solid var(--obs-border);
+    padding-bottom: 0.8rem;
+}
+
+.mag-header-icon {
+    font-size: 2.1rem;
+}
+
+.mag-title {
+    margin: 0;
+    color: var(--obs-star);
+    font-size: 1.6rem;
+}
+
+.mag-subtitle {
+    margin: 0.2rem 0 0;
+    color: var(--obs-comet);
+    font-size: 0.9rem;
+}
+
+.mag-main-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 1rem;
+    align-items: start;
+}
+
+@media (max-width: 920px) {
+    .mag-main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.mag-card {
+    background: var(--obs-navy);
+    border: 1px solid var(--obs-border);
+    border-radius: 14px;
+    padding: 1rem;
+}
+
+.mag-card-title {
+    margin: 0 0 0.9rem;
+    color: var(--obs-moon);
+    font-size: 1rem;
+}
+
+.mag-field-grid {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.mag-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.mag-field label {
+    font-size: 0.84rem;
+    color: var(--obs-comet);
+    font-weight: 600;
+}
+
+.mag-input-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mag-input {
+    width: 100%;
+    min-height: 44px;
+    border-radius: 10px;
+    border: 1px solid var(--obs-border);
+    background: rgba(13, 27, 42, 0.6);
+    color: var(--obs-moon);
+    padding: 0.55rem 0.75rem;
+    font-size: 0.95rem;
+}
+
+.mag-input:focus {
+    outline: 2px solid rgba(46, 196, 182, 0.65);
+    outline-offset: 2px;
+    border-color: var(--obs-aurora);
+}
+
+.mag-unit {
+    min-width: 30px;
+    text-align: right;
+    color: var(--obs-comet);
+    font-size: 0.84rem;
+}
+
+.mag-error {
+    color: #ff9ea2;
+    font-size: 0.78rem;
+}
+
+.mag-hint {
+    margin: 0;
+    color: var(--obs-comet);
+    font-size: 0.9rem;
+}
+
+.mag-advanced {
+    margin-top: 1rem;
+    border-top: 1px solid var(--obs-border);
+    padding-top: 0.75rem;
+}
+
+.mag-advanced summary {
+    cursor: pointer;
+    color: var(--obs-aurora);
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+}
+
+.mag-results {
+    display: grid;
+    gap: 0.8rem;
+}
+
+.mag-result-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+}
+
+@media (max-width: 620px) {
+    .mag-result-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.mag-metric {
+    background: rgba(13, 27, 42, 0.55);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 10px;
+    padding: 0.65rem 0.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.mag-metric span {
+    font-size: 0.75rem;
+    color: var(--obs-comet);
+}
+
+.mag-metric strong {
+    color: var(--obs-moon);
+    font-size: 1.02rem;
+}
+
+.mag-ref-table-wrap {
+    margin-top: 0.8rem;
+    overflow-x: auto;
+}
+
+.mag-ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+}
+
+.mag-ref-table th,
+.mag-ref-table td {
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    padding: 0.45rem 0.35rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+.mag-ref-table th {
+    color: var(--obs-comet);
+    font-weight: 600;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.mag-ref-table td {
+    color: var(--obs-moon);
+}
+
+.mag-ref-table tr.is-nearest td {
+    background: rgba(46, 196, 182, 0.12);
+}
+
+.mag-ref-warning {
+    color: #ffd28f;
+    font-size: 0.74rem;
+}
+
+.mag-range {
+    position: relative;
+    margin: 0.2rem 0 0.8rem;
+    height: 18px;
+}
+
+.mag-range-track {
+    height: 8px;
+    margin-top: 5px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #ff8f70 0%, #67d7ca 20%, #4ec8dc 40%, #7db8ff 60%, #9a96ff 80%, #f4c430 100%);
+    opacity: 0.9;
+}
+
+.mag-range-marker {
+    position: absolute;
+    top: 0;
+    width: 14px;
+    height: 18px;
+    border: 2px solid var(--obs-moon);
+    border-radius: 6px;
+    transform: translateX(-50%);
+    background: rgba(13, 27, 42, 0.95);
+    transition: left 120ms linear;
+}
+
+.mag-context {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.45;
+}
+
+.state-good {
+    color: #7de5b6;
+}
+
+.state-info {
+    color: #a7d8ff;
+}
+
+.state-caution {
+    color: #ffd28f;
+}
+
+.state-danger {
+    color: #ff9ea2;
+}
+
+.mag-warning {
+    margin: 0.5rem 0 0;
+    color: #ffd28f;
+    font-size: 0.82rem;
+}
+
+.mag-note {
+    margin: 0.75rem 0 0;
+    color: var(--obs-comet);
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
