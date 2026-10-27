@@ -333,6 +333,159 @@
   <data name="Calc_Magnification_Desc" xml:space="preserve">
     <value>يحدد التكبير الأمثل وبؤبة الخروج وفقاً لتلسكوبك وعدستك العينية</value>
   </data>
+  <data name="Nav_Calc_Magnification" xml:space="preserve">
+    <value>التكبير والحدقة</value>
+  </data>
+  <data name="MagCalc_Title" xml:space="preserve">
+    <value>حاسبة التكبير وحدقة الخروج</value>
+  </data>
+  <data name="MagCalc_Subtitle" xml:space="preserve">
+    <value>تقدّر التكبير وحدقة الخروج والحقل الحقيقي والحدود المفيدة لإعدادك الرصدي البصري.</value>
+  </data>
+  <data name="MagCalc_InputSection" xml:space="preserve">
+    <value>بيانات الإدخال</value>
+  </data>
+  <data name="MagCalc_Aperture" xml:space="preserve">
+    <value>فتحة التلسكوب</value>
+  </data>
+  <data name="MagCalc_TelescopeFocal" xml:space="preserve">
+    <value>البعد البؤري للتلسكوب</value>
+  </data>
+  <data name="MagCalc_EyepieceFocal" xml:space="preserve">
+    <value>البعد البؤري للعدسة العينية</value>
+  </data>
+  <data name="MagCalc_Afov" xml:space="preserve">
+    <value>الحقل الظاهري للعدسة العينية (AFOV)</value>
+  </data>
+  <data name="MagCalc_Factor" xml:space="preserve">
+    <value>معامل بارلو/المخفض</value>
+  </data>
+  <data name="MagCalc_AdvancedSection" xml:space="preserve">
+    <value>متقدم</value>
+  </data>
+  <data name="MagCalc_FieldStop" xml:space="preserve">
+    <value>قطر حاجز الحقل (اختياري)</value>
+  </data>
+  <data name="MagCalc_FillDataHint" xml:space="preserve">
+    <value>أدخل قيماً صحيحة لعرض النتائج.</value>
+  </data>
+  <data name="MagCalc_GroupBasic" xml:space="preserve">
+    <value>أساسيات</value>
+  </data>
+  <data name="MagCalc_Magnification" xml:space="preserve">
+    <value>التكبير</value>
+  </data>
+  <data name="MagCalc_FocalRatio" xml:space="preserve">
+    <value>النسبة البؤرية الفعالة</value>
+  </data>
+  <data name="MagCalc_ExitPupil" xml:space="preserve">
+    <value>حدقة الخروج</value>
+  </data>
+  <data name="MagCalc_EffectiveFocal" xml:space="preserve">
+    <value>البعد البؤري الفعّال</value>
+  </data>
+  <data name="MagCalc_GroupFieldResolution" xml:space="preserve">
+    <value>الحقل والدقة</value>
+  </data>
+  <data name="MagCalc_TrueField" xml:space="preserve">
+    <value>الحقل الحقيقي</value>
+  </data>
+  <data name="MagCalc_Dawes" xml:space="preserve">
+    <value>حد داوز</value>
+  </data>
+  <data name="MagCalc_Rayleigh" xml:space="preserve">
+    <value>حد رايلي</value>
+  </data>
+  <data name="MagCalc_TrueFieldMethod" xml:space="preserve">
+    <value>طريقة حساب الحقل الحقيقي</value>
+  </data>
+  <data name="MagCalc_Method_FieldStop" xml:space="preserve">
+    <value>حاجز الحقل</value>
+  </data>
+  <data name="MagCalc_Method_Afov" xml:space="preserve">
+    <value>AFOV ÷ التكبير (تقريبي)</value>
+  </data>
+  <data name="MagCalc_GroupUsefulLimits" xml:space="preserve">
+    <value>الحدود المفيدة</value>
+  </data>
+  <data name="MagCalc_MinUseful" xml:space="preserve">
+    <value>أدنى تكبير مفيد</value>
+  </data>
+  <data name="MagCalc_MaxUseful" xml:space="preserve">
+    <value>أقصى تكبير مفيد</value>
+  </data>
+  <data name="MagCalc_LimitingMagnitude" xml:space="preserve">
+    <value>القدر الحدي التقريبي</value>
+  </data>
+  <data name="MagCalc_LightGain" xml:space="preserve">
+    <value>كسب الضوء مقارنة بالعين المجردة</value>
+  </data>
+  <data name="MagCalc_RefPupil5" xml:space="preserve">
+    <value>حدقة 5 مم</value>
+  </data>
+  <data name="MagCalc_RefPupil2" xml:space="preserve">
+    <value>حدقة 2 مم</value>
+  </data>
+  <data name="MagCalc_RefPupil1" xml:space="preserve">
+    <value>حدقة 1 مم</value>
+  </data>
+  <data name="MagCalc_RefPupil05" xml:space="preserve">
+    <value>حدقة 0.5 مم</value>
+  </data>
+  <data name="MagCalc_RefPupilLabel" xml:space="preserve">
+    <value>حدقة {0} مم</value>
+  </data>
+  <data name="MagCalc_RefEyepieceFocal" xml:space="preserve">
+    <value>البعد البؤري للعدسة العينية</value>
+  </data>
+  <data name="MagCalc_RefWarning_ShortEyepiece" xml:space="preserve">
+    <value>عدسة عينية قصيرة جدًا: أقل من 4 مم.</value>
+  </data>
+  <data name="MagCalc_PupilContextTitle" xml:space="preserve">
+    <value>تفسير حدقة الخروج</value>
+  </data>
+  <data name="MagCalc_Pupil_Above7" xml:space="preserve">
+    <value>حدقة الخروج أكبر مما يمكن للعين المتكيفة مع الظلام استخدامه، لذا يُهدر جزء من الضوء.</value>
+  </data>
+  <data name="MagCalc_Pupil_4_7" xml:space="preserve">
+    <value>مجال واسع، مثالي للأجرام الممتدة تحت سماء مظلمة.</value>
+  </data>
+  <data name="MagCalc_Pupil_2_4" xml:space="preserve">
+    <value>نطاق عام بتوازن جيد بين السطوع والتفاصيل.</value>
+  </data>
+  <data name="MagCalc_Pupil_1_2" xml:space="preserve">
+    <value>مناسب للكواكب والقمر والنجوم المزدوجة؛ تفاصيل أكثر مع صورة أكثر عتماً.</value>
+  </data>
+  <data name="MagCalc_Pupil_05_1" xml:space="preserve">
+    <value>تكبير عالٍ: يتطلب رؤية جوية جيدة وستكون الصورة أكثر خفوتاً.</value>
+  </data>
+  <data name="MagCalc_Pupil_Below05" xml:space="preserve">
+    <value>تكبير مفرط: هذا الإعداد يتجاوز القدرة العملية المفيدة.</value>
+  </data>
+  <data name="MagCalc_Warn_AboveMaxUseful" xml:space="preserve">
+    <value>هذا التكبير أعلى من الحد النظري الأقصى المفيد (2×D).</value>
+  </data>
+  <data name="MagCalc_Warn_BelowMinUseful" xml:space="preserve">
+    <value>هذا التكبير أدنى من الحد الأدنى المفيد (D/7).</value>
+  </data>
+  <data name="MagCalc_Warn_FieldStop" xml:space="preserve">
+    <value>قيمة حاجز الحقل أعلى من النطاق المعتاد للعدسات العينية؛ يرجى التحقق من القيمة.</value>
+  </data>
+  <data name="MagCalc_Note" xml:space="preserve">
+    <value>حدود داوز ورايلي نظرية وتعتمد على جودة الرؤية الجوية والمواءمة وجودة البصريات. الحقل الحقيقي المحسوب من AFOV/التكبير هو تقريب.</value>
+  </data>
+  <data name="MagCalc_Error_Required" xml:space="preserve">
+    <value>الحقل "{0}" مطلوب.</value>
+  </data>
+  <data name="MagCalc_Error_Positive" xml:space="preserve">
+    <value>الحقل "{0}" يجب أن يكون رقماً أكبر من الصفر.</value>
+  </data>
+  <data name="MagCalc_Error_NoNaN" xml:space="preserve">
+    <value>لا يمكن عرض النتيجة لأنها تحتوي على قيم غير صالحة.</value>
+  </data>
+  <data name="MagCalc_Error_Generic" xml:space="preserve">
+    <value>تعذر إكمال الحساب بالقيم المدخلة.</value>
+  </data>
   <data name="Calc_Resolution_Title" xml:space="preserve">
     <value>حد الدقة</value>
   </data>

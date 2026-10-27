@@ -1,0 +1,418 @@
+@page "/calculadoras/aumentos"
+@using System.Globalization
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+@inject IAumentosCalculatorService CalculatorService
+
+<PageTitle>@L["MagCalc_Title"]</PageTitle>
+
+<div class="mag-page">
+    <div class="mag-header-back">
+        <BackButton Text="Action_Back" CssClass="mag-back" DefaultUrl="/calculadoras" />
+    </div>
+
+    <div class="mag-header">
+        <div class="mag-header-icon">🔭</div>
+        <div>
+            <h1 class="mag-title">@L["MagCalc_Title"]</h1>
+            <p class="mag-subtitle">@L["MagCalc_Subtitle"]</p>
+        </div>
+    </div>
+
+    <div class="mag-main-grid">
+        <section class="mag-card">
+            <h2 class="mag-card-title">@L["MagCalc_InputSection"]</h2>
+
+            <div class="mag-field-grid">
+                <div class="mag-field">
+                    <label for="mag-aperture">@L["MagCalc_Aperture"]</label>
+                    <div class="mag-input-row">
+                        <input id="mag-aperture" class="mag-input" type="text" inputmode="decimal" value="@_apertureInput" @oninput="OnApertureInput" aria-describedby="mag-aperture-error" />
+                        <span class="mag-unit">mm</span>
+                    </div>
+                    @if (_errors.TryGetValue(nameof(_apertureInput), out var apertureError))
+                    {
+                        <span id="mag-aperture-error" class="mag-error">@apertureError</span>
+                    }
+                </div>
+
+                <div class="mag-field">
+                    <label for="mag-focal">@L["MagCalc_TelescopeFocal"]</label>
+                    <div class="mag-input-row">
+                        <input id="mag-focal" class="mag-input" type="text" inputmode="decimal" value="@_telescopeFocalInput" @oninput="OnTelescopeFocalInput" aria-describedby="mag-focal-error" />
+                        <span class="mag-unit">mm</span>
+                    </div>
+                    @if (_errors.TryGetValue(nameof(_telescopeFocalInput), out var telescopeError))
+                    {
+                        <span id="mag-focal-error" class="mag-error">@telescopeError</span>
+                    }
+                </div>
+
+                <div class="mag-field">
+                    <label for="mag-eyepiece">@L["MagCalc_EyepieceFocal"]</label>
+                    <div class="mag-input-row">
+                        <input id="mag-eyepiece" class="mag-input" type="text" inputmode="decimal" value="@_eyepieceFocalInput" @oninput="OnEyepieceFocalInput" aria-describedby="mag-eyepiece-error" />
+                        <span class="mag-unit">mm</span>
+                    </div>
+                    @if (_errors.TryGetValue(nameof(_eyepieceFocalInput), out var eyepieceError))
+                    {
+                        <span id="mag-eyepiece-error" class="mag-error">@eyepieceError</span>
+                    }
+                </div>
+
+                <div class="mag-field">
+                    <label for="mag-afov">@L["MagCalc_Afov"]</label>
+                    <div class="mag-input-row">
+                        <input id="mag-afov" class="mag-input" type="text" inputmode="decimal" value="@_afovInput" @oninput="OnAfovInput" aria-describedby="mag-afov-error" />
+                        <span class="mag-unit">°</span>
+                    </div>
+                    @if (_errors.TryGetValue(nameof(_afovInput), out var afovError))
+                    {
+                        <span id="mag-afov-error" class="mag-error">@afovError</span>
+                    }
+                </div>
+
+                <div class="mag-field">
+                    <label for="mag-factor">@L["MagCalc_Factor"]</label>
+                    <div class="mag-input-row">
+                        <input id="mag-factor" class="mag-input" type="text" inputmode="decimal" value="@_factorInput" @oninput="OnFactorInput" aria-describedby="mag-factor-error" />
+                        <span class="mag-unit">x</span>
+                    </div>
+                    @if (_errors.TryGetValue(nameof(_factorInput), out var factorError))
+                    {
+                        <span id="mag-factor-error" class="mag-error">@factorError</span>
+                    }
+                </div>
+            </div>
+
+            <details class="mag-advanced" open>
+                <summary>@L["MagCalc_AdvancedSection"]</summary>
+                <div class="mag-field">
+                    <label for="mag-fieldstop">@L["MagCalc_FieldStop"]</label>
+                    <div class="mag-input-row">
+                        <input id="mag-fieldstop" class="mag-input" type="text" inputmode="decimal" value="@_fieldStopInput" @oninput="OnFieldStopInput" aria-describedby="mag-fieldstop-error" />
+                        <span class="mag-unit">mm</span>
+                    </div>
+                    @if (_errors.TryGetValue(nameof(_fieldStopInput), out var fieldStopError))
+                    {
+                        <span id="mag-fieldstop-error" class="mag-error">@fieldStopError</span>
+                    }
+                </div>
+            </details>
+
+            @if (_errors.TryGetValue("general", out var generalError))
+            {
+                <div class="mag-warning">@generalError</div>
+            }
+        </section>
+
+        <section class="mag-results">
+            @if (_result is null)
+            {
+                <div class="mag-card">
+                    <p class="mag-hint">@L["MagCalc_FillDataHint"]</p>
+                </div>
+            }
+            else
+            {
+                <div class="mag-card">
+                    <h2 class="mag-card-title">@L["MagCalc_GroupBasic"]</h2>
+                    <div class="mag-result-grid">
+                        <div class="mag-metric"><span>@L["MagCalc_Magnification"]</span><strong>@Format0(_result.Magnification)x</strong></div>
+                        <div class="mag-metric"><span>@L["MagCalc_FocalRatio"]</span><strong>f/@Format1(_result.EffectiveFocalRatio)</strong></div>
+                        <div class="mag-metric"><span>@L["MagCalc_ExitPupil"]</span><strong>@Format2(_result.ExitPupilMm) mm</strong></div>
+                        <div class="mag-metric"><span>@L["MagCalc_EffectiveFocal"]</span><strong>@Format0(_result.EffectiveFocalLengthMm) mm</strong></div>
+                    </div>
+                </div>
+
+                <div class="mag-card">
+                    <h2 class="mag-card-title">@L["MagCalc_GroupFieldResolution"]</h2>
+                    <div class="mag-result-grid">
+                        <div class="mag-metric"><span>@L["MagCalc_TrueField"]</span><strong>@Format2(_result.TrueFieldDeg)°</strong></div>
+                        <div class="mag-metric"><span>@L["MagCalc_Dawes"]</span><strong>@Format2(_result.DawesLimitArcsec)″</strong></div>
+                        <div class="mag-metric"><span>@L["MagCalc_Rayleigh"]</span><strong>@Format2(_result.RayleighLimitArcsec)″</strong></div>
+                        <div class="mag-metric"><span>@L["MagCalc_TrueFieldMethod"]</span><strong>@L[_result.TrueFieldMethod == TrueFieldMethod.FieldStop ? "MagCalc_Method_FieldStop" : "MagCalc_Method_Afov"]</strong></div>
+                    </div>
+                </div>
+
+                <div class="mag-card">
+                    <h2 class="mag-card-title">@L["MagCalc_GroupUsefulLimits"]</h2>
+                    <div class="mag-result-grid">
+                        <div class="mag-metric"><span>@L["MagCalc_MinUseful"]</span><strong>@Format1(_result.MinUsefulMagnification)x</strong></div>
+                        <div class="mag-metric"><span>@L["MagCalc_MaxUseful"]</span><strong>@Format0(_result.MaxUsefulMagnification)x</strong></div>
+                        <div class="mag-metric"><span>@L["MagCalc_LimitingMagnitude"]</span><strong>@Format1(_result.LimitingMagnitude)</strong></div>
+                        <div class="mag-metric"><span>@L["MagCalc_LightGain"]</span><strong>@Format1(_result.LightGainVsNakedEye)x</strong></div>
+                    </div>
+
+                    <div class="mag-ref-table-wrap">
+                        <table class="mag-ref-table">
+                            <thead>
+                                <tr>
+                                    <th>@L["MagCalc_ExitPupil"]</th>
+                                    <th>@L["MagCalc_RefEyepieceFocal"]</th>
+                                    <th>@L["MagCalc_Magnification"]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var reference in BuildReferenceRows(_result, _result.ExitPupilMm))
+                                {
+                                    <tr class="@(reference.IsClosest ? "is-nearest" : null)">
+                                        <td>@Format1(reference.PupilMm) mm</td>
+                                        <td>
+                                            @Format1(reference.EyepieceFocalMm) mm
+                                            @if (reference.IsShortEyepiece)
+                                            {
+                                                <span class="mag-ref-warning"> · @L["MagCalc_RefWarning_ShortEyepiece"]</span>
+                                            }
+                                        </td>
+                                        <td>@Format0(reference.Magnification)x</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mag-card">
+                    <h2 class="mag-card-title">@L["MagCalc_PupilContextTitle"]</h2>
+                    <div class="mag-range">
+                        <div class="mag-range-track" style="@RangeTrackStyle"></div>
+                        <div class="mag-range-marker @ExitPupilClass" style="left:@ExitPupilMarkerLeft;"></div>
+                    </div>
+                    <p class="mag-context @ExitPupilClass">@L[ExitPupilMessageKey]</p>
+
+                    @if (_result.IsAboveMaximumUseful)
+                    {
+                        <p class="mag-warning">@L["MagCalc_Warn_AboveMaxUseful"]</p>
+                    }
+                    @if (_result.IsBelowMinimumUseful)
+                    {
+                        <p class="mag-warning">@L["MagCalc_Warn_BelowMinUseful"]</p>
+                    }
+                    @if (_result.IsFieldStopOutOfTypicalRange)
+                    {
+                        <p class="mag-warning">@L["MagCalc_Warn_FieldStop"]</p>
+                    }
+
+                    <p class="mag-note">@L["MagCalc_Note"]</p>
+                </div>
+            }
+        </section>
+    </div>
+</div>
+
+@code {
+    private string _apertureInput = "200";
+    private string _telescopeFocalInput = "1200";
+    private string _eyepieceFocalInput = "25";
+    private string _afovInput = "52";
+    private string _factorInput = "1";
+    private string _fieldStopInput = string.Empty;
+
+    private readonly Dictionary<string, string> _errors = new(StringComparer.Ordinal);
+    private AumentosCalculationResult? _result;
+
+    private string ExitPupilClass => _result?.ExitPupilBand switch
+    {
+        ExitPupilBand.AboveEyeLimit => "state-caution",
+        ExitPupilBand.WideField => "state-good",
+        ExitPupilBand.GeneralPurpose => "state-good",
+        ExitPupilBand.Planetary => "state-info",
+        ExitPupilBand.HighPower => "state-caution",
+        ExitPupilBand.Overmagnified => "state-danger",
+        _ => "state-info"
+    };
+
+    private string ExitPupilMessageKey => _result?.ExitPupilBand switch
+    {
+        ExitPupilBand.AboveEyeLimit => "MagCalc_Pupil_Above7",
+        ExitPupilBand.WideField => "MagCalc_Pupil_4_7",
+        ExitPupilBand.GeneralPurpose => "MagCalc_Pupil_2_4",
+        ExitPupilBand.Planetary => "MagCalc_Pupil_1_2",
+        ExitPupilBand.HighPower => "MagCalc_Pupil_05_1",
+        ExitPupilBand.Overmagnified => "MagCalc_Pupil_Below05",
+        _ => "MagCalc_Pupil_2_4"
+    };
+
+    private string ExitPupilMarkerLeft
+    {
+        get
+        {
+            var value = _result?.ExitPupilMm ?? ExitPupilScale.MaxPupilMm;
+            var position = ExitPupilScale.PupilToPosition(value);
+            return string.Create(CultureInfo.InvariantCulture, $"{position:0.##}%");
+        }
+    }
+
+    private string RangeTrackStyle => BuildRangeTrackStyle();
+
+    protected override void OnInitialized()
+    {
+        Recalculate();
+    }
+
+    private void OnApertureInput(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        _apertureInput = args.Value?.ToString() ?? string.Empty;
+        Recalculate();
+    }
+
+    private void OnTelescopeFocalInput(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        _telescopeFocalInput = args.Value?.ToString() ?? string.Empty;
+        Recalculate();
+    }
+
+    private void OnEyepieceFocalInput(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        _eyepieceFocalInput = args.Value?.ToString() ?? string.Empty;
+        Recalculate();
+    }
+
+    private void OnAfovInput(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        _afovInput = args.Value?.ToString() ?? string.Empty;
+        Recalculate();
+    }
+
+    private void OnFactorInput(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        _factorInput = args.Value?.ToString() ?? string.Empty;
+        Recalculate();
+    }
+
+    private void OnFieldStopInput(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        _fieldStopInput = args.Value?.ToString() ?? string.Empty;
+        Recalculate();
+    }
+
+    private void Recalculate()
+    {
+        _errors.Clear();
+
+        var aperture = ParsePositive(nameof(_apertureInput), _apertureInput, L["MagCalc_Aperture"]);
+        var telescopeFocal = ParsePositive(nameof(_telescopeFocalInput), _telescopeFocalInput, L["MagCalc_TelescopeFocal"]);
+        var eyepieceFocal = ParsePositive(nameof(_eyepieceFocalInput), _eyepieceFocalInput, L["MagCalc_EyepieceFocal"]);
+        var afov = ParsePositive(nameof(_afovInput), _afovInput, L["MagCalc_Afov"]);
+        var factor = ParsePositive(nameof(_factorInput), _factorInput, L["MagCalc_Factor"]);
+
+        double? fieldStop = null;
+        if (!string.IsNullOrWhiteSpace(_fieldStopInput))
+        {
+            fieldStop = ParsePositive(nameof(_fieldStopInput), _fieldStopInput, L["MagCalc_FieldStop"]);
+        }
+
+        if (_errors.Count > 0 || aperture is null || telescopeFocal is null || eyepieceFocal is null || afov is null || factor is null)
+        {
+            _result = null;
+            return;
+        }
+
+        try
+        {
+            var calculated = CalculatorService.Calculate(new AumentosCalculationInput(
+                ApertureMm: aperture.Value,
+                TelescopeFocalLengthMm: telescopeFocal.Value,
+                EyepieceFocalLengthMm: eyepieceFocal.Value,
+                EyepieceApparentFieldDeg: afov.Value,
+                MultiplierFactor: factor.Value,
+                EyepieceFieldStopMm: fieldStop));
+
+            if (!IsFinite(calculated))
+            {
+                _errors["general"] = L["MagCalc_Error_NoNaN"];
+                _result = null;
+                return;
+            }
+
+            _result = calculated;
+        }
+        catch
+        {
+            _errors["general"] = L["MagCalc_Error_Generic"];
+            _result = null;
+        }
+    }
+
+    private double? ParsePositive(string fieldKey, string rawValue, string fieldLabel)
+    {
+        if (string.IsNullOrWhiteSpace(rawValue))
+        {
+            _errors[fieldKey] = string.Format(L["MagCalc_Error_Required"], fieldLabel);
+            return null;
+        }
+
+        var normalized = rawValue.Trim().Replace(',', '.');
+
+        if (!double.TryParse(normalized, NumberStyles.Float, CultureInfo.InvariantCulture, out var value) || value <= 0)
+        {
+            _errors[fieldKey] = string.Format(L["MagCalc_Error_Positive"], fieldLabel);
+            return null;
+        }
+
+        return value;
+    }
+
+    private static bool IsFinite(AumentosCalculationResult result)
+    {
+        return double.IsFinite(result.EffectiveFocalLengthMm)
+            && double.IsFinite(result.Magnification)
+            && double.IsFinite(result.EffectiveFocalRatio)
+            && double.IsFinite(result.ExitPupilMm)
+            && double.IsFinite(result.TrueFieldDeg)
+            && double.IsFinite(result.DawesLimitArcsec)
+            && double.IsFinite(result.RayleighLimitArcsec)
+            && double.IsFinite(result.MinUsefulMagnification)
+            && double.IsFinite(result.MaxUsefulMagnification)
+            && double.IsFinite(result.LightGainVsNakedEye)
+            && double.IsFinite(result.LimitingMagnitude);
+    }
+
+    private static string Format0(double value) => value.ToString("N0", CultureInfo.CurrentCulture);
+    private static string Format1(double value) => value.ToString("N1", CultureInfo.CurrentCulture);
+    private static string Format2(double value) => value.ToString("N2", CultureInfo.CurrentCulture);
+
+    private static IReadOnlyList<ReferencePupilRow> BuildReferenceRows(AumentosCalculationResult result, double currentPupil)
+    {
+        var pupils = new[] { 5d, 2d, 1d, 0.7d };
+        var nearest = pupils
+            .OrderBy(p => Math.Abs(p - currentPupil))
+            .First();
+
+        var rows = new List<ReferencePupilRow>(pupils.Length);
+
+        foreach (var pupil in pupils)
+        {
+            var magnification = result.RecommendedMagnificationMax / 2d / pupil;
+            var eyepieceFocal = pupil * result.EffectiveFocalRatio;
+
+            rows.Add(new ReferencePupilRow(
+                PupilMm: pupil,
+                EyepieceFocalMm: eyepieceFocal,
+                Magnification: magnification,
+                IsShortEyepiece: eyepieceFocal < 4d,
+                IsClosest: Math.Abs(pupil - nearest) < 0.0001d));
+        }
+
+        return rows;
+    }
+
+    private static string BuildRangeTrackStyle()
+    {
+        var thresholds = new[] { 7d, 4d, 2d, 1d, 0.5d };
+        var stops = thresholds
+            .Select(ExitPupilScale.PupilToPosition)
+            .Select(v => v.ToString("0.##", CultureInfo.InvariantCulture))
+            .ToArray();
+
+        return string.Create(CultureInfo.InvariantCulture,
+            $"background: linear-gradient(90deg, #ff8f70 0%, #ff8f70 {stops[0]}%, #67d7ca {stops[0]}%, #67d7ca {stops[1]}%, #4ec8dc {stops[1]}%, #4ec8dc {stops[2]}%, #7db8ff {stops[2]}%, #7db8ff {stops[3]}%, #9a96ff {stops[3]}%, #9a96ff {stops[4]}%, #f4c430 {stops[4]}%, #f4c430 100%);");
+    }
+
+    private sealed record ReferencePupilRow(
+        double PupilMm,
+        double EyepieceFocalMm,
+        double Magnification,
+        bool IsShortEyepiece,
+        bool IsClosest);
+}

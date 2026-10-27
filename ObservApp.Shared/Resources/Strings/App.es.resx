@@ -333,6 +333,159 @@
   <data name="Calc_Magnification_Desc" xml:space="preserve">
     <value>Determina el aumento óptimo y la pupila de salida según tu telescopio y ocular</value>
   </data>
+  <data name="Nav_Calc_Magnification" xml:space="preserve">
+    <value>Aumentos y pupila</value>
+  </data>
+  <data name="MagCalc_Title" xml:space="preserve">
+    <value>Calculadora de aumentos y pupila de salida</value>
+  </data>
+  <data name="MagCalc_Subtitle" xml:space="preserve">
+    <value>Evalúa aumento, pupila de salida, campo real y límites útiles para tu equipo visual.</value>
+  </data>
+  <data name="MagCalc_InputSection" xml:space="preserve">
+    <value>Datos de entrada</value>
+  </data>
+  <data name="MagCalc_Aperture" xml:space="preserve">
+    <value>Apertura del telescopio</value>
+  </data>
+  <data name="MagCalc_TelescopeFocal" xml:space="preserve">
+    <value>Distancia focal del telescopio</value>
+  </data>
+  <data name="MagCalc_EyepieceFocal" xml:space="preserve">
+    <value>Distancia focal del ocular</value>
+  </data>
+  <data name="MagCalc_Afov" xml:space="preserve">
+    <value>Campo aparente del ocular (AFOV)</value>
+  </data>
+  <data name="MagCalc_Factor" xml:space="preserve">
+    <value>Factor Barlow/reductor</value>
+  </data>
+  <data name="MagCalc_AdvancedSection" xml:space="preserve">
+    <value>Avanzado</value>
+  </data>
+  <data name="MagCalc_FieldStop" xml:space="preserve">
+    <value>Diámetro del field stop (opcional)</value>
+  </data>
+  <data name="MagCalc_FillDataHint" xml:space="preserve">
+    <value>Introduce valores válidos para ver resultados.</value>
+  </data>
+  <data name="MagCalc_GroupBasic" xml:space="preserve">
+    <value>Básicos</value>
+  </data>
+  <data name="MagCalc_Magnification" xml:space="preserve">
+    <value>Aumentos</value>
+  </data>
+  <data name="MagCalc_FocalRatio" xml:space="preserve">
+    <value>Relación focal efectiva</value>
+  </data>
+  <data name="MagCalc_ExitPupil" xml:space="preserve">
+    <value>Pupila de salida</value>
+  </data>
+  <data name="MagCalc_EffectiveFocal" xml:space="preserve">
+    <value>Distancia focal efectiva</value>
+  </data>
+  <data name="MagCalc_GroupFieldResolution" xml:space="preserve">
+    <value>Campo y resolución</value>
+  </data>
+  <data name="MagCalc_TrueField" xml:space="preserve">
+    <value>Campo real</value>
+  </data>
+  <data name="MagCalc_Dawes" xml:space="preserve">
+    <value>Límite de Dawes</value>
+  </data>
+  <data name="MagCalc_Rayleigh" xml:space="preserve">
+    <value>Límite de Rayleigh</value>
+  </data>
+  <data name="MagCalc_TrueFieldMethod" xml:space="preserve">
+    <value>Método de campo real</value>
+  </data>
+  <data name="MagCalc_Method_FieldStop" xml:space="preserve">
+    <value>Field stop</value>
+  </data>
+  <data name="MagCalc_Method_Afov" xml:space="preserve">
+    <value>AFOV ÷ aumentos (aprox.)</value>
+  </data>
+  <data name="MagCalc_GroupUsefulLimits" xml:space="preserve">
+    <value>Límites útiles</value>
+  </data>
+  <data name="MagCalc_MinUseful" xml:space="preserve">
+    <value>Aumento mínimo útil</value>
+  </data>
+  <data name="MagCalc_MaxUseful" xml:space="preserve">
+    <value>Aumento máximo útil teórico</value>
+  </data>
+  <data name="MagCalc_LimitingMagnitude" xml:space="preserve">
+    <value>Magnitud límite aproximada</value>
+  </data>
+  <data name="MagCalc_LightGain" xml:space="preserve">
+    <value>Ganancia de luz vs ojo desnudo</value>
+  </data>
+  <data name="MagCalc_RefPupil5" xml:space="preserve">
+    <value>Pupila 5 mm</value>
+  </data>
+  <data name="MagCalc_RefPupil2" xml:space="preserve">
+    <value>Pupila 2 mm</value>
+  </data>
+  <data name="MagCalc_RefPupil1" xml:space="preserve">
+    <value>Pupila 1 mm</value>
+  </data>
+  <data name="MagCalc_RefPupil05" xml:space="preserve">
+    <value>Pupila 0,5 mm</value>
+  </data>
+  <data name="MagCalc_RefPupilLabel" xml:space="preserve">
+    <value>Pupila {0} mm</value>
+  </data>
+  <data name="MagCalc_RefEyepieceFocal" xml:space="preserve">
+    <value>Focal ocular</value>
+  </data>
+  <data name="MagCalc_RefWarning_ShortEyepiece" xml:space="preserve">
+    <value>Ocular muy corto: por debajo de 4 mm.</value>
+  </data>
+  <data name="MagCalc_PupilContextTitle" xml:space="preserve">
+    <value>Interpretación de pupila de salida</value>
+  </data>
+  <data name="MagCalc_Pupil_Above7" xml:space="preserve">
+    <value>La pupila supera lo que admite un ojo adaptado a la oscuridad; parte de la luz se pierde.</value>
+  </data>
+  <data name="MagCalc_Pupil_4_7" xml:space="preserve">
+    <value>Rango de campo amplio, ideal para objetos extensos en cielos oscuros.</value>
+  </data>
+  <data name="MagCalc_Pupil_2_4" xml:space="preserve">
+    <value>Uso general: buen equilibrio entre brillo y detalle.</value>
+  </data>
+  <data name="MagCalc_Pupil_1_2" xml:space="preserve">
+    <value>Adecuado para planetas, Luna y dobles; más detalle con imagen más oscura.</value>
+  </data>
+  <data name="MagCalc_Pupil_05_1" xml:space="preserve">
+    <value>Alto aumento: requiere buen seeing y la imagen será tenue.</value>
+  </data>
+  <data name="MagCalc_Pupil_Below05" xml:space="preserve">
+    <value>Sobreampliación: aumento excesivo, por encima de lo recomendable.</value>
+  </data>
+  <data name="MagCalc_Warn_AboveMaxUseful" xml:space="preserve">
+    <value>Este aumento supera el máximo útil teórico (2×D).</value>
+  </data>
+  <data name="MagCalc_Warn_BelowMinUseful" xml:space="preserve">
+    <value>Este aumento está por debajo del mínimo útil (D/7).</value>
+  </data>
+  <data name="MagCalc_Warn_FieldStop" xml:space="preserve">
+    <value>El field stop es mayor de lo habitual; revisa si ese valor es realista para el ocular.</value>
+  </data>
+  <data name="MagCalc_Note" xml:space="preserve">
+    <value>Los límites de Dawes y Rayleigh son teóricos y dependen del seeing, colimación y calidad óptica. El campo real por AFOV/aumentos es una aproximación.</value>
+  </data>
+  <data name="MagCalc_Error_Required" xml:space="preserve">
+    <value>El campo "{0}" es obligatorio.</value>
+  </data>
+  <data name="MagCalc_Error_Positive" xml:space="preserve">
+    <value>El campo "{0}" debe ser un número mayor que cero.</value>
+  </data>
+  <data name="MagCalc_Error_NoNaN" xml:space="preserve">
+    <value>No se puede mostrar el resultado porque contiene valores no válidos.</value>
+  </data>
+  <data name="MagCalc_Error_Generic" xml:space="preserve">
+    <value>No se pudo calcular con los valores indicados.</value>
+  </data>
   <data name="Calc_Resolution_Title" xml:space="preserve">
     <value>Límite de resolución</value>
   </data>

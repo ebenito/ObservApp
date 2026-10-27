@@ -77,6 +77,7 @@ builder.Services.AddSingleton<ILocationStateService, LocationStateService>();
 builder.Services.AddSingleton<IExternalLinkService, WebExternalLinkService>();
 builder.Services.AddSingleton<ITextToSpeechService, WebTextToSpeechService>();
 builder.Services.AddSingleton<IEclipseCalculatorService, EclipseCalculatorService>();
+builder.Services.AddSingleton<IAumentosCalculatorService, AumentosCalculatorService>();
 builder.Services.AddSingleton<IHomeAstronomyService, HomeAstronomyService>();
 builder.Services.AddSingleton<IEfemeridesAstronomyService, EfemeridesAstronomyService>();
 builder.Services.AddSingleton<IEclipseAudioService, WebEclipseAudioService>();

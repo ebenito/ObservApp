@@ -33,6 +33,7 @@
     <File Path="Documentacion/Supabase/Supabase_SQL_Schema.sql" />
   </Folder>
   <Project Path="ObservApp.Shared/ObservApp.Shared.csproj" />
+  <Project Path="ObservApp.Shared.Tests/ObservApp.Shared.Tests.csproj" />
   <Project Path="ObservApp.Web.Client/ObservApp.Web.Client.csproj" />
   <Project Path="ObservApp.Web/ObservApp.Web.csproj" />
   <Project Path="ObservApp/ObservApp.csproj">
