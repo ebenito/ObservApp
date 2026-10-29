@@ -299,3 +299,58 @@ jobs:
           name: ObservApp-Web
           path: publish/web
           if-no-files-found: warn
+
+  # Despliega en Netlify el artefacto generado por build-web.
+  # Requiere los secretos NETLIFY_AUTH_TOKEN (token personal de Netlify) y
+  # NETLIFY_SITE_ID (ID del proyecto "observapp"). Si faltan, se omite el despliegue.
+  deploy-netlify:
+    if: ${{ secrets.NETLIFY_AUTH_TOKEN != '' && secrets.NETLIFY_SITE_ID != '' }}
+    needs: build-web
+    runs-on: ubuntu-latest
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+    steps:
+      # Solo se necesita netlify.toml (redirecciones y cabeceras).
+      - name: Checkout netlify.toml
+        uses: actions/checkout@v5
+        with:
+          sparse-checkout: netlify.toml
+          sparse-checkout-cone-mode: false
+
+      - name: Download Web artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: ObservApp-Web
+          path: publish/web
+
+      - name: Reducir tamaño del publish
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd publish/web/wwwroot
+
+          # Netlify comprime en el CDN: sobran las versiones precomprimidas.
+          find . \( -name '*.gz' -o -name '*.br' \) -delete
+
+          # La app solo usa el tema material3-dark de Syncfusion (index.html).
+          if [ -d _content/Syncfusion.Blazor.Themes ]; then
+            find _content/Syncfusion.Blazor.Themes -type f ! -name 'material3-dark.css' -delete
+            find _content/Syncfusion.Blazor.Themes -type d -empty -delete
+          fi
+
+          # Configuración exclusiva de Azure Static Web Apps.
+          rm -f staticwebapp.config.json
+
+          du -sh .
+
+      - name: Deploy to Netlify
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes netlify-cli@latest deploy \
+            --prod \
+            --dir publish/web/wwwroot \
+            --no-build \
+            --message "GitHub Actions ${GITHUB_SHA::7} (${GITHUB_REF_NAME})"
