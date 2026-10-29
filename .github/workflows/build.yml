@@ -304,7 +304,6 @@ jobs:
   # Requiere los secretos NETLIFY_AUTH_TOKEN (token personal de Netlify) y
   # NETLIFY_SITE_ID (ID del proyecto "observapp"). Si faltan, se omite el despliegue.
   deploy-netlify:
-    if: ${{ secrets.NETLIFY_AUTH_TOKEN != '' && secrets.NETLIFY_SITE_ID != '' }}
     needs: build-web
     runs-on: ubuntu-latest
     env:
@@ -312,20 +311,34 @@ jobs:
       NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
     steps:
+      - name: Check Netlify secrets
+        id: netlify-secrets
+        shell: bash
+        run: |
+          if [ -n "${NETLIFY_AUTH_TOKEN:-}" ] && [ -n "${NETLIFY_SITE_ID:-}" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "NETLIFY_AUTH_TOKEN o NETLIFY_SITE_ID no definidos. Se omite deploy-netlify."
+          fi
+
       # Solo se necesita netlify.toml (redirecciones y cabeceras).
       - name: Checkout netlify.toml
+        if: steps.netlify-secrets.outputs.enabled == 'true'
         uses: actions/checkout@v5
         with:
           sparse-checkout: netlify.toml
           sparse-checkout-cone-mode: false
 
       - name: Download Web artifact
+        if: steps.netlify-secrets.outputs.enabled == 'true'
         uses: actions/download-artifact@v5
         with:
           name: ObservApp-Web
           path: publish/web
 
       - name: Reducir tamaño del publish
+        if: steps.netlify-secrets.outputs.enabled == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -346,6 +359,7 @@ jobs:
           du -sh .
 
       - name: Deploy to Netlify
+        if: steps.netlify-secrets.outputs.enabled == 'true'
         shell: bash
         run: |
           set -euo pipefail
