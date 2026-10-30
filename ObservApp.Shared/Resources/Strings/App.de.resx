@@ -204,6 +204,9 @@
   <data name="Auth_ReconnectSession" xml:space="preserve">
     <value>Sitzung wiederherstellen</value>
   </data>
+  <data name="Auth_RememberMe" xml:space="preserve">
+    <value>Auf diesem Gerät angemeldet bleiben</value>
+  </data>
   <data name="Auth_PasswordMismatch" xml:space="preserve">
     <value>Passwörter stimmen nicht überein</value>
   </data>

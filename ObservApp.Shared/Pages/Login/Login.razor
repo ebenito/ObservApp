@@ -126,6 +126,17 @@
 
             @if (_isSignInMode)
             {
+                <label class="login-remember">
+                    <input type="checkbox"
+                           checked="@AuthViewModel.RememberMe"
+                           @onchange="OnRememberMeChanged"
+                           disabled="@AuthViewModel.IsLoading" />
+                    <span>@L["Auth_RememberMe"]</span>
+                </label>
+            }
+
+            @if (_isSignInMode)
+            {
                 <p class="login-forgot">@L["Auth_ForgotPassword"]</p>
             }
 
@@ -187,6 +198,9 @@
 
     private void OnPasswordInput(Microsoft.AspNetCore.Components.ChangeEventArgs e)
         => AuthViewModel.Password = e.Value?.ToString() ?? string.Empty;
+
+    private void OnRememberMeChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+        => AuthViewModel.RememberMe = e.Value is bool remember && remember;
 
     private void OnDisplayNameInput(Microsoft.AspNetCore.Components.ChangeEventArgs e)
         => AuthViewModel.DisplayName = e.Value?.ToString() ?? string.Empty;

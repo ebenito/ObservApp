@@ -82,6 +82,7 @@ public static class MauiProgram
         });
 
         builder.Services.AddSingleton<IAuthSessionStore, MauiAuthSessionStore>();
+        builder.Services.AddSingleton<IAuthCredentialStore, MauiAuthCredentialStore>();
         builder.Services.AddSingleton<IAuthService, AuthService>();
         builder.Services.AddSingleton<SupabaseService>();
         builder.Services.AddSingleton<IObservationService>(sp => sp.GetRequiredService<SupabaseService>());

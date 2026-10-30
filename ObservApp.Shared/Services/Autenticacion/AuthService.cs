@@ -11,6 +11,7 @@ public sealed class AuthService : IAuthService
 	private static readonly TimeSpan SupabaseOperationTimeout = TimeSpan.FromSeconds(8);
 	private readonly SupabaseClient _supabase;
 	private readonly IAuthSessionStore _sessionStore;
+	private readonly IAuthCredentialStore _credentialStore;
 	private readonly SemaphoreSlim _initializeLock = new(1, 1);
 	private bool _initialized;
 
@@ -22,10 +23,11 @@ public sealed class AuthService : IAuthService
 
 	public bool IsAuthenticated => CurrentUser is not null;
 
-	public AuthService(SupabaseClient supabase, IAuthSessionStore sessionStore)
+	public AuthService(SupabaseClient supabase, IAuthSessionStore sessionStore, IAuthCredentialStore credentialStore)
 	{
 		_supabase = supabase;
 		_sessionStore = sessionStore;
+		_credentialStore = credentialStore;
 	}
 
 	public async Task<bool> SignUpAsync(string email, string password)
@@ -52,7 +54,7 @@ public sealed class AuthService : IAuthService
 		}
 	}
 
-	public async Task<bool> LoginAsync(string email, string password)
+	public async Task<bool> LoginAsync(string email, string password, bool rememberCredentials = false)
 	{
 		try
 		{
@@ -67,6 +69,15 @@ public sealed class AuthService : IAuthService
 			}
 
 			await PersistSessionAsync(session);
+			if (rememberCredentials)
+			{
+				await PersistCredentialsAsync(email, password);
+			}
+			else
+			{
+				await _credentialStore.ClearAsync();
+			}
+
 			OnAuthStateChanged?.Invoke(CurrentUser);
 			return true;
 		}
@@ -122,6 +133,7 @@ public sealed class AuthService : IAuthService
 		finally
 		{
 			await _sessionStore.ClearAsync();
+			await _credentialStore.ClearAsync();
 			OnAuthStateChanged?.Invoke(null);
 		}
 	}
@@ -143,26 +155,37 @@ public sealed class AuthService : IAuthService
 			await initTask;
 
 			var (accessToken, refreshToken) = await _sessionStore.LoadAsync();
-			if (string.IsNullOrWhiteSpace(accessToken) || string.IsNullOrWhiteSpace(refreshToken))
+			if (!string.IsNullOrWhiteSpace(accessToken) && !string.IsNullOrWhiteSpace(refreshToken))
 			{
-				return false;
-			}
+				var session = await _supabase.Auth.SetSession(accessToken, refreshToken);
+				if (session?.User is null)
+				{
+					session = await _supabase.Auth.RefreshSession();
+				}
 
-			var session = await _supabase.Auth.SetSession(accessToken, refreshToken);
-			if (session?.User is null)
-			{
-				session = await _supabase.Auth.RefreshSession();
-			}
+				if (session?.User is not null)
+				{
+					await PersistSessionAsync(session);
+					OnAuthStateChanged?.Invoke(CurrentUser);
+					return true;
+				}
 
-			if (session?.User is null)
-			{
 				await _sessionStore.ClearAsync();
+			}
+
+			var (email, password) = await _credentialStore.LoadAsync();
+			if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+			{
 				return false;
 			}
 
-			await PersistSessionAsync(session);
-			OnAuthStateChanged?.Invoke(CurrentUser);
-			return true;
+			var loggedIn = await LoginAsync(email, password, rememberCredentials: true);
+			if (!loggedIn && string.Equals(LastError, "Credenciales inválidas.", StringComparison.Ordinal))
+			{
+				await _credentialStore.ClearAsync();
+			}
+
+			return loggedIn;
 		}
 		catch (Exception ex)
 		{
@@ -207,6 +230,16 @@ public sealed class AuthService : IAuthService
 		}
 
 		await _sessionStore.SaveAsync(accessToken, refreshToken);
+	}
+
+	private async Task PersistCredentialsAsync(string email, string password)
+	{
+		if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+		{
+			return;
+		}
+
+		await _credentialStore.SaveAsync(email, password);
 	}
 
 	private static string NormalizeAuthError(string? message)

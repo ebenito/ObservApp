@@ -30,7 +30,7 @@ public interface IAuthService
 	/// <summary>
 	/// Inicia sesión con email y contraseña.
 	/// </summary>
-	Task<bool> LoginAsync(string email, string password);
+	Task<bool> LoginAsync(string email, string password, bool rememberCredentials = false);
 
 	/// <summary>
 	/// Verifica el OTP de registro enviado por email.

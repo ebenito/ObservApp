@@ -198,6 +198,19 @@
     margin-bottom: 14px;
 }
 
+.login-remember {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--obs-comet);
+    font-size: .9rem;
+    margin: 0 0 6px;
+}
+
+.login-remember input {
+    accent-color: var(--obs-aurora);
+}
+
 .login-primary,
 .login-secondary {
     border-radius: var(--radius-md);

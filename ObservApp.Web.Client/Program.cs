@@ -126,6 +126,7 @@ builder.Services.AddSingleton(sp =>
 
 
 builder.Services.AddSingleton<IAuthSessionStore, BrowserAuthSessionStore>();
+builder.Services.AddSingleton<IAuthCredentialStore, BrowserAuthCredentialStore>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<SupabaseService>();
 builder.Services.AddSingleton<IObservationService>(

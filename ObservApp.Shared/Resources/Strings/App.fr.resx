@@ -204,6 +204,9 @@
   <data name="Auth_ReconnectSession" xml:space="preserve">
     <value>Reconnecter la session</value>
   </data>
+  <data name="Auth_RememberMe" xml:space="preserve">
+    <value>Se souvenir de moi sur cet appareil</value>
+  </data>
   <data name="Auth_PasswordMismatch" xml:space="preserve">
     <value>Les mots de passe ne correspondent pas</value>
   </data>

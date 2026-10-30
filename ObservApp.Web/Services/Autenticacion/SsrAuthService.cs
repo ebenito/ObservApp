@@ -22,7 +22,7 @@ public class SsrAuthService : IAuthService
 		return Task.FromResult(false);
 	}
 
-	public Task<bool> LoginAsync(string email, string password)
+	public Task<bool> LoginAsync(string email, string password, bool rememberCredentials = false)
 	{
 		LastError = "SSR: Autenticación no disponible";
 		return Task.FromResult(false);
