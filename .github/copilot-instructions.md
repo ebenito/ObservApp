@@ -7,3 +7,4 @@
 - Antes de implementar páginas dependientes, verificar la existencia real de modelos y ViewModels en el workspace. La arquitectura anticipada no presente aún en el repo puede ser descrita en CLAUDE_CONTEXT.md.
 - Preferencia de arquitectura: almacenar el catálogo DSO en un JSON embebido en lugar de hardcodearlo en `DsoCatalogProvider.cs` para separar datos del código.
 - No deduzcas problemas por compartir dominio; distingue entre dominio de URL e identificadores lógicos al evaluar colisiones.
+- En filtros DSO, el valor seleccionado de instrumento y calidad de cielo representa la capacidad disponible del usuario; debe incluir objetos cuyo requisito mínimo sea igual o inferior (comparación selectedRank >= itemRank).

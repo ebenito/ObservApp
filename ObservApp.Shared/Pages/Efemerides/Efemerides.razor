@@ -499,8 +499,8 @@
         (string.IsNullOrEmpty(_dsoFilterSearch) || DsoMatchesSearch(item.Dso, _dsoFilterSearch)) &&
         (string.IsNullOrEmpty(_dsoFilterCatalog) || GetDsoCatalogPrefix(item.Dso) == _dsoFilterCatalog) &&
         (string.IsNullOrEmpty(_dsoFilterConstellation) || item.Dso.Constellation == _dsoFilterConstellation) &&
-        (string.IsNullOrEmpty(_dsoFilterInstrument) || GetDsoInstrumentCategory(item.Dso.RecommendedInstrument) == _dsoFilterInstrument) &&
-        (string.IsNullOrEmpty(_dsoFilterSky) || item.Dso.SkyRequirement == _dsoFilterSky));
+        MatchesInstrumentFilter(item.Dso.RecommendedInstrument, _dsoFilterInstrument) &&
+        MatchesSkyFilter(item.Dso.SkyRequirement, _dsoFilterSky));
 
     private IEnumerable<DsoFilterOption> DsoCatalogOptions =>
     [
@@ -538,7 +538,7 @@
             .Select(d => GetDsoInstrumentCategory(d.RecommendedInstrument))
             .Where(i => !string.IsNullOrEmpty(i))
             .Distinct()
-            .OrderBy(i => i)
+            .OrderBy(i => GetInstrumentRankForSort(i))
             .Select(i => new DsoFilterOption(i, DsoInstrumentLabel(i), DsoInstrumentIcon(i), string.Empty, "eph-dso-cb-avatar--instrument"))
     ];
 
@@ -546,10 +546,10 @@
     [
         new(string.Empty, $"{L["Eph_DSO_Filter_Sky"]} — {L["Eph_DSO_Filter_All"]}", string.Empty, string.Empty, "eph-dso-cb-avatar--sky"),
         .. DsoCatalog
-            .Select(d => d.SkyRequirement ?? string.Empty)
+            .Select(d => NormalizeSkyCategory(d.SkyRequirement))
             .Where(s => !string.IsNullOrEmpty(s))
             .Distinct()
-            .OrderBy(s => s)
+            .OrderBy(s => GetSkyRankForSort(s))
             .Select(s => new DsoFilterOption(s, DsoSkyLabel(s), DsoSkyIcon(s), string.Empty, "eph-dso-cb-avatar--sky"))
     ];
 
@@ -562,6 +562,23 @@
         { "Cr",  "Collinder" },
         { "Mel", "Melotte"   },
         { "B",   "Barnard"   },
+    };
+
+    private static readonly Dictionary<string, int> InstrumentRankMap = new(StringComparer.Ordinal)
+    {
+        { "NakedEye", 0 },
+        { "Binoculars", 1 },
+        { "SmallTelescope", 2 },
+        { "MediumTelescope", 3 },
+        { "LargeTelescope", 4 }
+    };
+
+    private static readonly Dictionary<string, int> SkyRankMap = new(StringComparer.Ordinal)
+    {
+        { "Urban", 0 },
+        { "Suburban", 1 },
+        { "Suburban/DarkSky", 2 },
+        { "DarkSky", 3 }
     };
 
     private static string GetCatalogEntryPrefix(string entry)
@@ -589,13 +606,73 @@
 
     private static string GetDsoInstrumentCategory(string? raw)
     {
-        if (string.IsNullOrEmpty(raw)) return string.Empty;
+        if (string.IsNullOrWhiteSpace(raw)) return string.Empty;
         if (raw.Contains("Naked eye", StringComparison.OrdinalIgnoreCase)) return "NakedEye";
         if (raw.StartsWith("Binoculars", StringComparison.OrdinalIgnoreCase)) return "Binoculars";
         if (raw.StartsWith("Small", StringComparison.OrdinalIgnoreCase)) return "SmallTelescope";
         if (raw.Contains("Medium to large", StringComparison.OrdinalIgnoreCase)) return "LargeTelescope";
         if (raw.StartsWith("Medium", StringComparison.OrdinalIgnoreCase)) return "MediumTelescope";
+        if (raw.StartsWith("Large", StringComparison.OrdinalIgnoreCase)) return "LargeTelescope";
         return string.Empty;
+    }
+
+    private static string NormalizeSkyCategory(string? raw)
+    {
+        if (string.IsNullOrWhiteSpace(raw)) return string.Empty;
+
+        var value = raw.Trim();
+        if (value.Equals("Urban", StringComparison.OrdinalIgnoreCase)) return "Urban";
+        if (value.Equals("Suburban", StringComparison.OrdinalIgnoreCase)) return "Suburban";
+        if (value.Equals("DarkSky", StringComparison.OrdinalIgnoreCase)) return "DarkSky";
+
+        if (value.Equals("Suburban/DarkSky", StringComparison.OrdinalIgnoreCase)
+            || value.Equals("Suburban / DarkSky", StringComparison.OrdinalIgnoreCase)
+            || value.Equals("Suburban / Dark Sky", StringComparison.OrdinalIgnoreCase))
+        {
+            return "Suburban/DarkSky";
+        }
+
+        return string.Empty;
+    }
+
+    private static int GetInstrumentRankForSort(string category)
+        => InstrumentRankMap.TryGetValue(category, out var rank) ? rank : int.MaxValue;
+
+    private static int GetSkyRankForSort(string category)
+        => SkyRankMap.TryGetValue(category, out var rank) ? rank : int.MaxValue;
+
+    private static bool MatchesInstrumentFilter(string? rawInstrument, string selectedInstrument)
+    {
+        if (string.IsNullOrEmpty(selectedInstrument)) return true;
+
+        var itemCategory = GetDsoInstrumentCategory(rawInstrument);
+        if (string.IsNullOrEmpty(itemCategory)) return false;
+
+        if (!InstrumentRankMap.TryGetValue(selectedInstrument, out var selectedRank)
+            || !InstrumentRankMap.TryGetValue(itemCategory, out var itemRank))
+        {
+            return false;
+        }
+
+        // El filtro representa el instrumento disponible: debe ser igual o superior al mínimo del objeto.
+        return selectedRank >= itemRank;
+    }
+
+    private static bool MatchesSkyFilter(string? rawSkyRequirement, string selectedSky)
+    {
+        if (string.IsNullOrEmpty(selectedSky)) return true;
+
+        var itemCategory = NormalizeSkyCategory(rawSkyRequirement);
+        if (string.IsNullOrEmpty(itemCategory)) return false;
+
+        if (!SkyRankMap.TryGetValue(selectedSky, out var selectedRank)
+            || !SkyRankMap.TryGetValue(itemCategory, out var itemRank))
+        {
+            return false;
+        }
+
+        // El filtro representa la calidad de cielo disponible: debe ser igual o mejor que la mínima del objeto.
+        return selectedRank >= itemRank;
     }
 
     private static bool DsoMatchesSearch(DsoEntry dso, string search)
