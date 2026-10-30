@@ -5,8 +5,23 @@ using Microsoft.Extensions.Localization;
 using ObservApp.Shared.Models.PageModels;
 using ObservApp.Shared.Services;
 
+public enum DsoImageProvider
+{
+	StsciDss,
+	SkyView,
+	CdsHips2Fits,
+	LegacySurveys
+}
+
 public static class EfemeridesUiFormatter
 {
+	/// <summary>
+	/// Si no es null, fuerza el uso de este proveedor para todos los objetos
+	/// (útil para reactivar CDS cuando vuelva el servicio o para probar Legacy Surveys).
+	/// Con null se aplican las reglas de <see cref="SelectProvider"/>.
+	/// </summary>
+	public static DsoImageProvider? ForcedProvider { get; set; } = null;
+
 	public static string FormatTimeOpt(DateTime? dt)
 		=> dt.HasValue ? dt.Value.ToLocalTime().ToString("HH:mm") : "—";
 
@@ -68,23 +83,10 @@ public static class EfemeridesUiFormatter
 		=> $"left:{item.VisibleStartPercent.ToString("F2", CultureInfo.InvariantCulture)}%;width:{item.VisibleWidthPercent.ToString("F2", CultureInfo.InvariantCulture)}%;";
 
 	public static string BuildDsoThumbnailUrl(DsoEntry dso)
-	{
-		var fov = DsoFieldOfView(dso).ToString("F3", CultureInfo.InvariantCulture);
-		var ra = dso.RaDeg.ToString("F4", CultureInfo.InvariantCulture);
-		var dec = dso.DecDeg.ToString("F4", CultureInfo.InvariantCulture);
-
-		return $"https://alasky.cds.unistra.fr/hips-image-services/hips2fits?hips=CDS%2FP%2FDSS2%2Fcolor&width=320&height=220&projection=TAN&fov={fov}&ra={ra}&dec={dec}&format=jpg";
-	}
+		=> BuildImageUrl(dso, width: 320, height: 220);
 
 	public static string BuildDsoLargeImageUrl(DsoEntry dso)
-	{
-		var fov = DsoFieldOfView(dso).ToString("F3", CultureInfo.InvariantCulture);
-		var ra = dso.RaDeg.ToString("F4", CultureInfo.InvariantCulture);
-		var dec = dso.DecDeg.ToString("F4", CultureInfo.InvariantCulture);
-
-		// Imagen de mayor resolución para el lightbox
-		return $"https://alasky.cds.unistra.fr/hips-image-services/hips2fits?hips=CDS%2FP%2FDSS2%2Fcolor&width=900&height=675&projection=TAN&fov={fov}&ra={ra}&dec={dec}&format=jpg";
-	}
+		=> BuildImageUrl(dso, width: 900, height: 675);
 
 	public static string DsoThumbnailAltText(DsoEntry dso)
 		=> $"{dso.Id} {dso.Name}";
@@ -114,6 +116,86 @@ public static class EfemeridesUiFormatter
 		< 337.5 => "🌘",
 		_ => "🌑"
 	};
+
+	private static string BuildImageUrl(DsoEntry dso, int width, int height)
+	{
+		var provider = ForcedProvider ?? SelectProvider(dso);
+		return provider switch
+		{
+			DsoImageProvider.StsciDss => BuildStsciDssUrl(dso, width, height),
+			DsoImageProvider.LegacySurveys => BuildLegacySurveysUrl(dso, width, height),
+			DsoImageProvider.SkyView => BuildSkyViewUrl(dso, width, height),
+			_ => BuildCdsHips2FitsUrl(dso, width, height)
+		};
+	}
+
+	private static DsoImageProvider SelectProvider(DsoEntry dso)
+	{
+		// Reglas editables de selección de proveedor (ambos cubren todo el cielo):
+		// - Galaxias => NASA SkyView (DSS2 Red).
+		// - Resto de tipos => STScI DSS.
+		// Respaldos disponibles con ForcedProvider: CdsHips2Fits (cuando vuelva el servicio)
+		// y LegacySurveys (color, pero solo con cobertura parcial: ver nota en BuildLegacySurveysUrl).
+		if (IsGalaxy(dso))
+		{
+			return DsoImageProvider.SkyView;
+		}
+
+		return DsoImageProvider.StsciDss;
+	}
+
+	private static bool IsGalaxy(DsoEntry dso)
+		=> string.Equals(dso.Type, "Galaxy", StringComparison.OrdinalIgnoreCase);
+
+	private static string BuildStsciDssUrl(DsoEntry dso, int width, int height)
+	{
+		var fovDeg = DsoFieldOfView(dso);
+		// STScI DSS limita el campo a 60' por lado.
+		var wArcmin = Math.Min(fovDeg * 60d, 60d);
+		var hArcmin = wArcmin * height / width;
+		var ra = dso.RaDeg.ToString("F4", CultureInfo.InvariantCulture);
+		var dec = dso.DecDeg.ToString("F4", CultureInfo.InvariantCulture);
+		var w = wArcmin.ToString("F3", CultureInfo.InvariantCulture);
+		var h = hArcmin.ToString("F3", CultureInfo.InvariantCulture);
+
+		return $"https://archive.stsci.edu/cgi-bin/dss_search?v=poss2ukstu_red&r={ra}&d={dec}&e=J2000&h={h}&w={w}&f=gif&c=none&fov=NONE";
+	}
+
+	// Respaldo (solo con ForcedProvider). Cobertura parcial: DR9 no cubre el plano galáctico (|b| < ~20°)
+	// ni el sur lejano (Dec < ~-20°); fuera de la huella devuelve imágenes negras. DR10 solo llega hasta Dec ~ +30°.
+	private static string BuildLegacySurveysUrl(DsoEntry dso, int width, int height)
+	{
+		var fovDeg = DsoFieldOfView(dso);
+		// Recorte cuadrado, máximo 512 px.
+		var size = Math.Min(Math.Max(width, height), 512);
+		var pixscale = fovDeg * 3600d / size;
+		var ra = dso.RaDeg.ToString("F4", CultureInfo.InvariantCulture);
+		var dec = dso.DecDeg.ToString("F4", CultureInfo.InvariantCulture);
+		var pix = pixscale.ToString("F3", CultureInfo.InvariantCulture);
+
+		return $"https://www.legacysurvey.org/viewer/jpeg-cutout?ra={ra}&dec={dec}&layer=ls-dr9&pixscale={pix}&size={size}";
+	}
+
+	// NASA SkyView (DSS2 Red, monocromo). Verificado: devuelve la imagen directamente. Puede ser lento.
+	private static string BuildSkyViewUrl(DsoEntry dso, int width, int height)
+	{
+		var fovDeg = DsoFieldOfView(dso);
+		var ra = dso.RaDeg.ToString("F4", CultureInfo.InvariantCulture);
+		var dec = dso.DecDeg.ToString("F4", CultureInfo.InvariantCulture);
+		var sizeW = fovDeg.ToString("F3", CultureInfo.InvariantCulture);
+		var sizeH = (fovDeg * height / width).ToString("F3", CultureInfo.InvariantCulture);
+
+		return $"https://skyview.gsfc.nasa.gov/cgi-bin/images?Survey=DSS2+Red&position={ra},{dec}&Size={sizeW},{sizeH}&Pixels={width},{height}&Return=JPEG";
+	}
+
+	private static string BuildCdsHips2FitsUrl(DsoEntry dso, int width, int height)
+	{
+		var fov = DsoFieldOfView(dso).ToString("F3", CultureInfo.InvariantCulture);
+		var ra = dso.RaDeg.ToString("F4", CultureInfo.InvariantCulture);
+		var dec = dso.DecDeg.ToString("F4", CultureInfo.InvariantCulture);
+
+		return $"https://alasky.cds.unistra.fr/hips-image-services/hips2fits?hips=CDS%2FP%2FDSS2%2Fcolor&width={width}&height={height}&projection=TAN&fov={fov}&ra={ra}&dec={dec}&format=jpg";
+	}
 
 	private static double DsoFieldOfView(DsoEntry dso) => dso.Type switch
 	{
