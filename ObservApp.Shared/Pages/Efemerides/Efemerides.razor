@@ -96,6 +96,12 @@
         // contador de la cabecera como para la lista, en vez de recorrer
         // _dsoVisibles dos veces con el mismo filtro.
         var dsoFiltered = DsoFiltered.ToList();
+        var dsoTotalPages = GetDsoTotalPages(dsoFiltered.Count);
+        var dsoCurrentPage = GetDsoCurrentPage(dsoFiltered.Count);
+        var dsoPageItems = dsoFiltered
+            .Skip((dsoCurrentPage - 1) * _dsoPageSize)
+            .Take(_dsoPageSize)
+            .ToList();
     }
     <div class="eph-card eph-card--full eph-section">
         <div class="eph-card-header eph-dso-header">
@@ -125,7 +131,7 @@
                         TItem="DsoFilterOption"
                         DataSource="@DsoCatalogOptions"
                         Placeholder="@L["Eph_DSO_Filter_Catalog"]"
-                        @bind-Value="_dsoFilterCatalog"
+                        @bind-Value="DsoFilterCatalog"
                         AllowFiltering="true"
                         AllowCustom="false"
                         PopupHeight="280px">
@@ -143,7 +149,7 @@
                         TItem="DsoFilterOption"
                         DataSource="@DsoConstellationOptions"
                         Placeholder="@L["Eph_DSO_Filter_Constellation"]"
-                        @bind-Value="_dsoFilterConstellation"
+                        @bind-Value="DsoFilterConstellation"
                         AllowFiltering="true"
                         AllowCustom="false"
                         PopupHeight="280px">
@@ -161,7 +167,7 @@
                         TItem="DsoFilterOption"
                         DataSource="@DsoInstrumentOptions"
                         Placeholder="@L["Eph_DSO_Filter_Instrument"]"
-                        @bind-Value="_dsoFilterInstrument"
+                        @bind-Value="DsoFilterInstrument"
                         AllowFiltering="true"
                         AllowCustom="false"
                         PopupHeight="280px">
@@ -179,7 +185,7 @@
                         TItem="DsoFilterOption"
                         DataSource="@DsoSkyOptions"
                         Placeholder="@L["Eph_DSO_Filter_Sky"]"
-                        @bind-Value="_dsoFilterSky"
+                        @bind-Value="DsoFilterSky"
                         AllowFiltering="true"
                         AllowCustom="false"
                         PopupHeight="280px">
@@ -211,8 +217,34 @@
             }
             else
             {
+            <div class="eph-dso-pagination-bar">
+                <div class="eph-dso-page-size">
+                    <label class="eph-label eph-dso-page-size-label" for="eph-dso-page-size">@L["Eph_DSO_Filter_ResultCount"] / @L["Signals_Page"]</label>
+                    <select id="eph-dso-page-size"
+                            class="eph-input eph-dso-page-size-select"
+                            value="@_dsoPageSize.ToString(CultureInfo.InvariantCulture)"
+                            @onchange="OnDsoPageSizeChanged">
+                        @foreach (var pageSize in DsoPageSizeOptions)
+                        {
+                            <option value="@pageSize.ToString(CultureInfo.InvariantCulture)">@pageSize.ToString(CultureInfo.InvariantCulture)</option>
+                        }
+                    </select>
+                </div>
+                <div class="eph-dso-page-nav">
+                    <button type="button"
+                            class="eph-dso-page-btn"
+                            @onclick="() => ChangeDsoPage(dsoFiltered.Count, -1)"
+                            disabled="@(dsoCurrentPage <= 1)">@L["Signals_PrevPage"]</button>
+                    <span class="eph-dso-page-indicator">@L["Signals_Page"] @dsoCurrentPage / @dsoTotalPages</span>
+                    <button type="button"
+                            class="eph-dso-page-btn"
+                            @onclick="() => ChangeDsoPage(dsoFiltered.Count, 1)"
+                            disabled="@(dsoCurrentPage >= dsoTotalPages)">@L["Signals_NextPage"]</button>
+                </div>
+            </div>
+
             <div class="eph-dso-list">
-                @foreach (var item in dsoFiltered)
+                @foreach (var item in dsoPageItems)
                 {
                     <div class="eph-dso-card @EfemeridesUiFormatter.DsoAccentClass(item.Dso.Type)" @key="item.Dso.Id">
                         <div class="eph-dso-media-layout">
@@ -358,6 +390,20 @@
                     </div>
                 }
             </div>
+
+            <div class="eph-dso-pagination-bar eph-dso-pagination-bar--bottom">
+                <div class="eph-dso-page-nav">
+                    <button type="button"
+                            class="eph-dso-page-btn"
+                            @onclick="() => ChangeDsoPage(dsoFiltered.Count, -1)"
+                            disabled="@(dsoCurrentPage <= 1)">@L["Signals_PrevPage"]</button>
+                    <span class="eph-dso-page-indicator">@L["Signals_Page"] @dsoCurrentPage / @dsoTotalPages</span>
+                    <button type="button"
+                            class="eph-dso-page-btn"
+                            @onclick="() => ChangeDsoPage(dsoFiltered.Count, 1)"
+                            disabled="@(dsoCurrentPage >= dsoTotalPages)">@L["Signals_NextPage"]</button>
+                </div>
+            </div>
             }
         }
     </div>
@@ -407,12 +453,41 @@
     private DateTime? _dsoNightEndUtc;
     private CancellationTokenSource? _calcCts;
 
-    // ── Filtros DSO ──────────────────────────────────────────────────────────
+    // ── Filtros y paginación DSO ─────────────────────────────────────────────
+    private const int DsoDefaultPageSize = 20;
+    private static readonly int[] DsoPageSizeOptions = [10, 20, 30, 50];
+
     private string _dsoFilterSearch = string.Empty;
     private string _dsoFilterCatalog = string.Empty;
     private string _dsoFilterConstellation = string.Empty;
     private string _dsoFilterInstrument = string.Empty;
     private string _dsoFilterSky = string.Empty;
+    private int _dsoPageSize = DsoDefaultPageSize;
+    private int _dsoCurrentPage = 1;
+
+    private string DsoFilterCatalog
+    {
+        get => _dsoFilterCatalog;
+        set => SetDsoFilter(ref _dsoFilterCatalog, value);
+    }
+
+    private string DsoFilterConstellation
+    {
+        get => _dsoFilterConstellation;
+        set => SetDsoFilter(ref _dsoFilterConstellation, value);
+    }
+
+    private string DsoFilterInstrument
+    {
+        get => _dsoFilterInstrument;
+        set => SetDsoFilter(ref _dsoFilterInstrument, value);
+    }
+
+    private string DsoFilterSky
+    {
+        get => _dsoFilterSky;
+        set => SetDsoFilter(ref _dsoFilterSky, value);
+    }
 
     // Referencias a los SfComboBox para abrir el popup con foco
     private SfComboBox<string, DsoFilterOption>? _catalogCombo;
@@ -588,8 +663,58 @@
     private void OnDsoSearchChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
     {
         _dsoFilterSearch = e.Value?.ToString() ?? string.Empty;
+        _dsoCurrentPage = 1;
         StateHasChanged();
     }
+
+    private void OnDsoPageSizeChanged(Microsoft.AspNetCore.Components.ChangeEventArgs e)
+    {
+        if (!int.TryParse(e.Value?.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var pageSize))
+        {
+            return;
+        }
+
+        if (!DsoPageSizeOptions.Contains(pageSize))
+        {
+            return;
+        }
+
+        _dsoPageSize = pageSize;
+        _dsoCurrentPage = 1;
+    }
+
+    private void ChangeDsoPage(int totalItems, int delta)
+    {
+        var totalPages = GetDsoTotalPages(totalItems);
+        var currentPage = GetDsoCurrentPage(totalItems);
+        _dsoCurrentPage = Math.Clamp(currentPage + delta, 1, totalPages);
+    }
+
+    private int GetDsoTotalPages(int totalItems)
+    {
+        if (totalItems <= 0)
+        {
+            return 1;
+        }
+
+        return (int)Math.Ceiling(totalItems / (double)_dsoPageSize);
+    }
+
+    private int GetDsoCurrentPage(int totalItems)
+        => Math.Clamp(_dsoCurrentPage, 1, GetDsoTotalPages(totalItems));
+
+    private void SetDsoFilter(ref string target, string? value)
+    {
+        var normalized = value ?? string.Empty;
+        if (string.Equals(target, normalized, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        target = normalized;
+        _dsoCurrentPage = 1;
+    }
+
     private static string GetFilterSvgKey(DsoFilterOption item)
     {
         if (item.AvatarClass.Contains("catalog"))
@@ -804,6 +929,7 @@
             _nextLocalEclipse = null;
             _nextLocalEclipseResult = null;
             _dsoVisibles = new();
+            _dsoCurrentPage = 1;
             _dsoNightStartUtc = null;
             _dsoNightEndUtc = null;
             _dsoLoading = false;
@@ -819,6 +945,7 @@
 
         _dsoLoading = true;
         _dsoVisibles = new();
+        _dsoCurrentPage = 1;
         _dsoNightStartUtc = null;
         _dsoNightEndUtc = null;
         await InvokeAsync(StateHasChanged);
@@ -881,6 +1008,7 @@
                     _dsoNightStartUtc = window?.StartUtc;
                     _dsoNightEndUtc = window?.EndUtc;
                     _dsoVisibles = mapped;
+                    _dsoCurrentPage = 1;
                     StateHasChanged();
                 });
             }, token);
