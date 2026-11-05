@@ -168,7 +168,7 @@ public sealed class EfemeridesAstronomyServiceTests
 		var orion = new EphDsoCoordinate { Id = "M42", RaDeg = 83.82, DecDeg = -5.39, Magnitude = 4.0 };
 
 		var (window, visible) = Sut.ComputeDsoVisibility(
-			arcticSummer, 78.0, 15.0, 0.0, [orion]);
+			arcticSummer, 78.0, 15.0, 0.0, [orion], TestContext.Current.CancellationToken);
 
 		Assert.Null(window);
 		Assert.Empty(visible);
@@ -178,7 +178,7 @@ public sealed class EfemeridesAstronomyServiceTests
 	public void ComputeDsoVisibility_EmptyInput_ReturnsEmpty()
 	{
 		var (_, visible) = Sut.ComputeDsoVisibility(
-			WinterDate, MadridLat, MadridLon, MadridAltM, []);
+			WinterDate, MadridLat, MadridLon, MadridAltM, [], TestContext.Current.CancellationToken);
 
 		Assert.Empty(visible);
 	}
@@ -190,7 +190,7 @@ public sealed class EfemeridesAstronomyServiceTests
 		var m42 = new EphDsoCoordinate { Id = "M42", RaDeg = 83.82, DecDeg = -5.39, Magnitude = 4.0 };
 
 		var (window, visible) = Sut.ComputeDsoVisibility(
-			WinterDate, MadridLat, MadridLon, MadridAltM, [m42]);
+			WinterDate, MadridLat, MadridLon, MadridAltM, [m42], TestContext.Current.CancellationToken);
 
 		// Si hay ventana nocturna en enero desde Madrid, M42 debe estar visible
 		if (window is not null)
@@ -208,7 +208,7 @@ public sealed class EfemeridesAstronomyServiceTests
 		var m42 = new EphDsoCoordinate { Id = "M42", RaDeg = 83.82, DecDeg = -5.39, Magnitude = 4.0 };
 
 		var (_, visible) = Sut.ComputeDsoVisibility(
-			WinterDate, MadridLat, MadridLon, MadridAltM, [m42]);
+			WinterDate, MadridLat, MadridLon, MadridAltM, [m42], TestContext.Current.CancellationToken);
 
 		foreach (var dso in visible)
 		{
