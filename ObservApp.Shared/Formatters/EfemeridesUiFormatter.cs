@@ -138,7 +138,9 @@ public static class EfemeridesUiFormatter
 		// y LegacySurveys (color, pero solo con cobertura parcial: ver nota en BuildLegacySurveysUrl).
 		if (IsGalaxy(dso))
 		{
-			return DsoImageProvider.SkyView;
+			return dso.DecDeg >= -20.0
+				? DsoImageProvider.LegacySurveys
+				: DsoImageProvider.StsciDss;
 		}
 
 		return DsoImageProvider.StsciDss;

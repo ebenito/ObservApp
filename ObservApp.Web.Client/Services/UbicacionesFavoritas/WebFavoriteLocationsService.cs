@@ -44,8 +44,15 @@ namespace ObservApp.Web.Client.Services
                     .Get();
 
                 var remote = result?.Models ?? new List<FavoriteLocation>();
-                await SaveLocalFavoriteLocationsAsync(remote);
-                return remote;
+                var merged = MergeRemoteWithPendingLocal(local, remote, userId);
+
+                foreach (var candidate in merged.Where(l => !remote.Any(r => r.Id == l.Id)))
+                {
+                    await UpsertRemoteAsync(candidate, userId);
+                }
+
+                await SaveLocalFavoriteLocationsAsync(merged);
+                return merged;
             }
             catch
             {
@@ -55,6 +62,13 @@ namespace ObservApp.Web.Client.Services
 
         public async Task SaveFavoriteLocationAsync(FavoriteLocation location)
         {
+            if (location.Id == Guid.Empty)
+            {
+                location.Id = Guid.NewGuid();
+            }
+
+            location.IsFavorite = true;
+
             var local = await GetLocalFavoriteLocationsAsync();
             UpsertLocal(local, location);
             await SaveLocalFavoriteLocationsAsync(local);
@@ -69,31 +83,7 @@ namespace ObservApp.Web.Client.Services
                     return;
                 }
 
-                location.UserId = userId;
-                location.IsFavorite = true;
-                if (location.Id == Guid.Empty)
-                {
-                    location.Id = Guid.NewGuid();
-                }
-
-                var existing = await _supabase
-                    .From<FavoriteLocation>()
-                    .Where(l => l.Id == location.Id && l.UserId == userId)
-                    .Single();
-
-                if (existing != null)
-                {
-                    await _supabase
-                        .From<FavoriteLocation>()
-                        .Where(l => l.Id == location.Id && l.UserId == userId)
-                        .Update(location);
-                }
-                else
-                {
-                    await _supabase
-                        .From<FavoriteLocation>()
-                        .Insert(location);
-                }
+                await UpsertRemoteAsync(location, userId);
             }
             catch
             {
@@ -155,16 +145,86 @@ namespace ObservApp.Web.Client.Services
             }
         }
 
+        private async Task UpsertRemoteAsync(FavoriteLocation location, string userId)
+        {
+            location.UserId = userId;
+            location.IsFavorite = true;
+
+            var existing = await _supabase
+                .From<FavoriteLocation>()
+                .Where(l => l.Id == location.Id && l.UserId == userId)
+                .Single();
+
+            if (existing != null)
+            {
+                await _supabase
+                    .From<FavoriteLocation>()
+                    .Where(l => l.Id == location.Id && l.UserId == userId)
+                    .Update(location);
+            }
+            else
+            {
+                await _supabase
+                    .From<FavoriteLocation>()
+                    .Insert(location);
+            }
+        }
+
+        private static List<FavoriteLocation> MergeRemoteWithPendingLocal(
+            List<FavoriteLocation> local,
+            List<FavoriteLocation> remote,
+            string userId)
+        {
+            var merged = remote
+                .Select(Clone)
+                .ToDictionary(l => l.Id, l => l);
+
+            foreach (var item in local)
+            {
+                if (item.Id == Guid.Empty)
+                {
+                    item.Id = Guid.NewGuid();
+                }
+
+                if (!string.IsNullOrWhiteSpace(item.UserId) && !string.Equals(item.UserId, userId, StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                item.UserId = userId;
+                item.IsFavorite = true;
+
+                if (!merged.ContainsKey(item.Id))
+                {
+                    merged[item.Id] = Clone(item);
+                }
+            }
+
+            return merged.Values.OrderBy(l => l.CreatedAt).ToList();
+        }
+
+        private static FavoriteLocation Clone(FavoriteLocation source) => new()
+        {
+            Id = source.Id,
+            UserId = source.UserId,
+            Name = source.Name,
+            Latitude = source.Latitude,
+            Longitude = source.Longitude,
+            AltitudeMeters = source.AltitudeMeters,
+            IsFavorite = source.IsFavorite,
+            CreatedAt = source.CreatedAt
+        };
+
         private static void UpsertLocal(List<FavoriteLocation> list, FavoriteLocation location)
         {
             var existingIndex = list.FindIndex(l => l.Id == location.Id);
             if (existingIndex >= 0)
             {
-                list[existingIndex] = location;
+                list[existingIndex] = Clone(location);
             }
             else
             {
-                list.Add(location);
+                list.Add(Clone(location));
             }
         }
 
