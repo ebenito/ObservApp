@@ -4,7 +4,7 @@ public record EclipseDefinition(
     string Id,
     DateTime Date,          // fecha UTC aproximada del máximo
     EclipseType MaxType,    // tipo máximo global
-    string RegionLabel,      // "América del Norte", "Europa", etc.
+    string RegionKey,        // clave i18n de la región (Eclipse_Region_*)
     int SarosNumber,
     int SarosMember,
     int SarosTotal

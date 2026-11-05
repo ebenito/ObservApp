@@ -8,7 +8,7 @@ public sealed class HomeAstronomyService : IHomeAstronomyService
 	{
 		try
 		{
-			var observer = new Observer(latitude, longitude, altitudeMeters / 1000.0);
+			var observer = new Observer(latitude, longitude, altitudeMeters);
 			var today = new AstroTime(nowUtc.Year, nowUtc.Month, nowUtc.Day, 12, 0, 0);
 			var nowTime = new AstroTime(nowUtc);
 

@@ -38,6 +38,9 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
     builder.Services.AddScoped<ITextToSpeechService, SsrTextToSpeechService>();
     builder.Services.AddScoped<IEclipseCalculatorService, EclipseCalculatorService>();
     builder.Services.AddScoped<IAumentosCalculatorService, AumentosCalculatorService>();
+    builder.Services.AddScoped<IFovCalculatorService, FovCalculatorService>();
+    builder.Services.AddScoped<IEclipseExposureCalculatorService, EclipseExposureCalculatorService>();
+    builder.Services.AddScoped<ISolLunaCalculatorService, SolLunaCalculatorService>();
     builder.Services.AddScoped<IHomeAstronomyService, HomeAstronomyService>();
     builder.Services.AddScoped<IEfemeridesAstronomyService, EfemeridesAstronomyService>();
     builder.Services.AddScoped<IEclipseAudioService, SsrEclipseAudioService>();

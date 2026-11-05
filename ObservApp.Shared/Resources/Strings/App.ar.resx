@@ -1759,4 +1759,112 @@
   <data name="Eph_DSO_Filter_ResultCount" xml:space="preserve">
     <value>أجرام</value>
   </data>
+  <data name="FOV_Placeholder_Example" xml:space="preserve">
+    <value>مثال: {0}</value>
+  </data>
+  <data name="FOV_Comparison_Label" xml:space="preserve">
+    <value>مجال الرؤية الحقيقي مقارنةً بأجسام مرجعية</value>
+  </data>
+  <data name="FOV_Ref_SmallerThanMoon" xml:space="preserve">
+    <value>&lt; البدر</value>
+  </data>
+  <data name="FOV_Ref_AboutMoon" xml:space="preserve">
+    <value>~ البدر</value>
+  </data>
+  <data name="FOV_Ref_SmallerThanPleiades" xml:space="preserve">
+    <value>&lt; الثريا</value>
+  </data>
+  <data name="FOV_Ref_AboutPleiades" xml:space="preserve">
+    <value>~ الثريا</value>
+  </data>
+  <data name="FOV_EmptyState" xml:space="preserve">
+    <value>أدخل بيانات التلسكوب والعدسة العينية لرؤية النتائج والمحاكاة المرئية</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_PartialOd50" xml:space="preserve">
+    <value>OD 5.0 (جزئي)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_PartialOd40" xml:space="preserve">
+    <value>OD 4.0 (جزئي)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_BailysBeads" xml:space="preserve">
+    <value>خرز بايلي</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Chromosphere" xml:space="preserve">
+    <value>الكروموسفير</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Prominences" xml:space="preserve">
+    <value>الشواظ الشمسية</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Corona" xml:space="preserve">
+    <value>الهالة ({0}R☉)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Earthshine" xml:space="preserve">
+    <value>ضوء الأرض</value>
+  </data>
+  <data name="SolLuna_Unit_AU" xml:space="preserve">
+    <value>و.ف.</value>
+  </data>
+  <data name="About_Title" xml:space="preserve">
+    <value>حول هذا التطبيق</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>الإصدار:</value>
+  </data>
+  <data name="About_Developer" xml:space="preserve">
+    <value>المطوّر:</value>
+  </data>
+  <data name="About_Email" xml:space="preserve">
+    <value>البريد الإلكتروني:</value>
+  </data>
+  <data name="About_Technologies" xml:space="preserve">
+    <value>التقنيات المستخدمة:</value>
+  </data>
+  <data name="About_ViewOnGitHub" xml:space="preserve">
+    <value>عرض على GitHub</value>
+  </data>
+  <data name="About_DownloadTitle" xml:space="preserve">
+    <value>التنزيل والتقييم</value>
+  </data>
+  <data name="About_DownloadDescription" xml:space="preserve">
+    <value>نزّل التطبيق مجانًا من متجرك المفضل، وإن وجدته مفيدًا فاترك لنا تقييمًا!</value>
+  </data>
+  <data name="About_AvailableOn" xml:space="preserve">
+    <value>متوفر على</value>
+  </data>
+  <data name="About_ComingSoonOn" xml:space="preserve">
+    <value>قريبًا على</value>
+  </data>
+  <data name="FavLoc_Gps_Error" xml:space="preserve">
+    <value>تعذّر الحصول على موقع GPS.</value>
+  </data>
+  <data name="Eclipse_Region_NorthAmerica" xml:space="preserve">
+    <value>أمريكا الشمالية</value>
+  </data>
+  <data name="Eclipse_Region_SouthPacificSouthAmerica" xml:space="preserve">
+    <value>جنوب المحيط الهادئ / أمريكا الجنوبية</value>
+  </data>
+  <data name="Eclipse_Region_Antarctica" xml:space="preserve">
+    <value>القارة القطبية الجنوبية</value>
+  </data>
+  <data name="Eclipse_Region_ArcticEuropeAfrica" xml:space="preserve">
+    <value>القطب الشمالي / أوروبا / أفريقيا</value>
+  </data>
+  <data name="Eclipse_Region_SouthAmericaAtlantic" xml:space="preserve">
+    <value>أمريكا الجنوبية / الأطلسي</value>
+  </data>
+  <data name="Eclipse_Region_AfricaEuropeAsia" xml:space="preserve">
+    <value>أفريقيا / أوروبا / آسيا</value>
+  </data>
+  <data name="Eclipse_Region_SouthAmerica" xml:space="preserve">
+    <value>أمريكا الجنوبية</value>
+  </data>
+  <data name="Eclipse_Region_AustraliaAsia" xml:space="preserve">
+    <value>أستراليا / آسيا</value>
+  </data>
+  <data name="Eclipse_Region_EuropeAsia" xml:space="preserve">
+    <value>أوروبا / آسيا</value>
+  </data>
+  <data name="Eclipse_Region_SouthAfricaOceania" xml:space="preserve">
+    <value>جنوب أفريقيا / أوقيانوسيا</value>
+  </data>
 </root>

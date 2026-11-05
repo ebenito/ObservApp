@@ -1759,4 +1759,112 @@
   <data name="Auth_Otp_EmailMissing" xml:space="preserve">
     <value>Es wurde keine E-Mail zur Verifizierung übergeben. Zur Registrierung zurückkehren.</value>
   </data>
+  <data name="FOV_Placeholder_Example" xml:space="preserve">
+    <value>z. B. {0}</value>
+  </data>
+  <data name="FOV_Comparison_Label" xml:space="preserve">
+    <value>TFOV vs. Referenzobjekte</value>
+  </data>
+  <data name="FOV_Ref_SmallerThanMoon" xml:space="preserve">
+    <value>&lt; Vollmond</value>
+  </data>
+  <data name="FOV_Ref_AboutMoon" xml:space="preserve">
+    <value>~ Vollmond</value>
+  </data>
+  <data name="FOV_Ref_SmallerThanPleiades" xml:space="preserve">
+    <value>&lt; Plejaden</value>
+  </data>
+  <data name="FOV_Ref_AboutPleiades" xml:space="preserve">
+    <value>~ Plejaden</value>
+  </data>
+  <data name="FOV_EmptyState" xml:space="preserve">
+    <value>Gib die Daten deines Teleskops und Okulars ein, um die Ergebnisse und die visuelle Simulation zu sehen</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_PartialOd50" xml:space="preserve">
+    <value>OD 5.0 (partiell)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_PartialOd40" xml:space="preserve">
+    <value>OD 4.0 (partiell)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_BailysBeads" xml:space="preserve">
+    <value>Baily-Perlen</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Chromosphere" xml:space="preserve">
+    <value>Chromosphäre</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Prominences" xml:space="preserve">
+    <value>Protuberanzen</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Corona" xml:space="preserve">
+    <value>Korona ({0}R☉)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Earthshine" xml:space="preserve">
+    <value>Erdschein</value>
+  </data>
+  <data name="SolLuna_Unit_AU" xml:space="preserve">
+    <value>AE</value>
+  </data>
+  <data name="About_Title" xml:space="preserve">
+    <value>Über diese App</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>Version:</value>
+  </data>
+  <data name="About_Developer" xml:space="preserve">
+    <value>Entwickler:</value>
+  </data>
+  <data name="About_Email" xml:space="preserve">
+    <value>E-Mail:</value>
+  </data>
+  <data name="About_Technologies" xml:space="preserve">
+    <value>Verwendete Technologien:</value>
+  </data>
+  <data name="About_ViewOnGitHub" xml:space="preserve">
+    <value>AUF GITHUB ANSEHEN</value>
+  </data>
+  <data name="About_DownloadTitle" xml:space="preserve">
+    <value>Herunterladen und bewerten</value>
+  </data>
+  <data name="About_DownloadDescription" xml:space="preserve">
+    <value>Lade die App kostenlos aus deinem bevorzugten Store herunter und hinterlass uns eine Bewertung, wenn sie dir nützt!</value>
+  </data>
+  <data name="About_AvailableOn" xml:space="preserve">
+    <value>ERHÄLTLICH IM</value>
+  </data>
+  <data name="About_ComingSoonOn" xml:space="preserve">
+    <value>DEMNÄCHST IM</value>
+  </data>
+  <data name="FavLoc_Gps_Error" xml:space="preserve">
+    <value>GPS-Standort konnte nicht ermittelt werden.</value>
+  </data>
+  <data name="Eclipse_Region_NorthAmerica" xml:space="preserve">
+    <value>Nordamerika</value>
+  </data>
+  <data name="Eclipse_Region_SouthPacificSouthAmerica" xml:space="preserve">
+    <value>Südpazifik / Südamerika</value>
+  </data>
+  <data name="Eclipse_Region_Antarctica" xml:space="preserve">
+    <value>Antarktis</value>
+  </data>
+  <data name="Eclipse_Region_ArcticEuropeAfrica" xml:space="preserve">
+    <value>Arktis / Europa / Afrika</value>
+  </data>
+  <data name="Eclipse_Region_SouthAmericaAtlantic" xml:space="preserve">
+    <value>Südamerika / Atlantik</value>
+  </data>
+  <data name="Eclipse_Region_AfricaEuropeAsia" xml:space="preserve">
+    <value>Afrika / Europa / Asien</value>
+  </data>
+  <data name="Eclipse_Region_SouthAmerica" xml:space="preserve">
+    <value>Südamerika</value>
+  </data>
+  <data name="Eclipse_Region_AustraliaAsia" xml:space="preserve">
+    <value>Australien / Asien</value>
+  </data>
+  <data name="Eclipse_Region_EuropeAsia" xml:space="preserve">
+    <value>Europa / Asien</value>
+  </data>
+  <data name="Eclipse_Region_SouthAfricaOceania" xml:space="preserve">
+    <value>Südliches Afrika / Ozeanien</value>
+  </data>
 </root>

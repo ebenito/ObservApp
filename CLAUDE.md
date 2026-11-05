@@ -40,7 +40,7 @@ No inventar rutas, ViewModels ni servicios. Verificar su existencia real con las
 | `ObservApp.Shared/` | **Núcleo.** Pages, Components, Layout, ViewModels, Models, Services (interfaces + impl. compartidas), i18n (8 idiomas). |
 | `ObservApp.Web/` | Host SSR para desarrollo local. Stubs `Ssr*.cs`. APIs proxy en `Program.cs`. |
 | `ObservApp.Web.Client/` | Cliente WASM. Servicios `Web*.cs`. Deploy en Azure Static Web Apps. |
-| `ObservApp.Shared.Tests/` | Tests unitarios xUnit. |
+| `ObservApp.Shared.Tests/` | Tests unitarios xUnit v3 (Microsoft Testing Platform, activado en `global.json`). |
 
 ---
 
@@ -48,10 +48,10 @@ No inventar rutas, ViewModels ni servicios. Verificar su existencia real con las
 
 | Qué | Cómo |
 |---|---|
-| Texto en componentes | `@L["Clave"]` con `@inject IStringLocalizer<App> L` |
+| Texto en componentes | `@L["Clave"]` con `@inject IStringLocalizer<App> L`; clave nueva siempre en los 8 `.resx` a la vez |
 | Formularios | `<div>` + `@onclick`, **nunca** `<form>` |
 | Nuevo servicio multiplataforma | Interfaz en `Shared/Services/`, implementaciones `Maui*`, `Web*`, `Ssr*` |
-| Cálculo astronómico | En `EfemeridesAstronomyService` / `HomeAstronomyService`, altitud en **km** |
+| Cálculo astronómico | En servicios (`Services/Astronomia/`, `Services/Calculadoras/<Nombre>/`) con tests; `Observer` con altitud en **metros** |
 | Variables efemerides | Prefijo `Eph_` |
 | Calculadoras nuevas | Activar en `Calculadoras.razor` (cambiar clase CSS), **no** tocar el menú lateral |
 | Páginas privadas | Envolver con `<AuthGuard>` |

@@ -1,5 +1,6 @@
 ﻿@page "/calculadoras/eclipse"
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+@inject IEclipseExposureCalculatorService ExposureCalculator
 
 <PageTitle>@L["Calc_Eclipse_Title"]</PageTitle>
 
@@ -158,30 +159,29 @@
         ["MFT"]  = new("Micro 4/3",   "17.3 × 13.0 mm", 17.3, 13.0),
     };
 
-    // ── Fases del eclipse (NASA Q values) ────────────────────
-    private record PhaseEntry(string Phase, int Q, bool IsTotality, bool IsPartial, string Color);
-
-    private static readonly List<PhaseEntry> Phases = new()
+    // ── Presentación de las fases (nombre y color) ───────────
+    private string PhaseName(EclipsePhotoPhase phase) => phase switch
     {
-        new("OD 5.0 (parcial)",         -6,  false, true,  "var(--obs-comet)"),
-        new("OD 4.0 (parcial)",         -4,  false, true,  "var(--obs-comet)"),
-        new("Baily's Beads",             2,  false, false, "var(--obs-star)"),
-        new("Cromosfera",                3,  true,  false, "var(--obs-mars)"),
-        new("Protuberancias",            4,  true,  false, "var(--obs-mars)"),
-        new("Corona (0.1R☉)",           5,  true,  false, "var(--obs-aurora)"),
-        new("Corona (0.5R☉)",           6,  true,  false, "var(--obs-aurora)"),
-        new("Corona (1.0R☉)",           7,  true,  false, "var(--obs-aurora)"),
-        new("Corona (2.0R☉)",           8,  true,  false, "var(--obs-aurora)"),
-        new("Corona (4.0R☉)",           9,  true,  false, "var(--obs-aurora)"),
-        new("Tierra iluminada",         10,  true,  false, "var(--obs-nebula)"),
+        EclipsePhotoPhase.PartialOd50  => L["Calc_Eclipse_Phase_PartialOd50"],
+        EclipsePhotoPhase.PartialOd40  => L["Calc_Eclipse_Phase_PartialOd40"],
+        EclipsePhotoPhase.BailysBeads  => L["Calc_Eclipse_Phase_BailysBeads"],
+        EclipsePhotoPhase.Chromosphere => L["Calc_Eclipse_Phase_Chromosphere"],
+        EclipsePhotoPhase.Prominences  => L["Calc_Eclipse_Phase_Prominences"],
+        EclipsePhotoPhase.Corona01     => L["Calc_Eclipse_Phase_Corona", 0.1.ToString("0.0")],
+        EclipsePhotoPhase.Corona05     => L["Calc_Eclipse_Phase_Corona", 0.5.ToString("0.0")],
+        EclipsePhotoPhase.Corona10     => L["Calc_Eclipse_Phase_Corona", 1.0.ToString("0.0")],
+        EclipsePhotoPhase.Corona20     => L["Calc_Eclipse_Phase_Corona", 2.0.ToString("0.0")],
+        EclipsePhotoPhase.Corona40     => L["Calc_Eclipse_Phase_Corona", 4.0.ToString("0.0")],
+        _                              => L["Calc_Eclipse_Phase_Earthshine"]
     };
 
-    // ── Velocidades estándar (en segundos) ────────────────────
-    private static readonly double[] StandardSpeeds =
+    private static string PhaseColor(EclipsePhotoPhase phase) => phase switch
     {
-        1.0/8000, 1.0/4000, 1.0/2000, 1.0/1000, 1.0/500,
-        1.0/250, 1.0/125, 1.0/60, 1.0/30, 1.0/15,
-        1.0/8, 1.0/4, 1.0/2, 1.0, 2.0
+        EclipsePhotoPhase.PartialOd50 or EclipsePhotoPhase.PartialOd40   => "var(--obs-comet)",
+        EclipsePhotoPhase.BailysBeads                                     => "var(--obs-star)",
+        EclipsePhotoPhase.Chromosphere or EclipsePhotoPhase.Prominences   => "var(--obs-mars)",
+        EclipsePhotoPhase.Earthshine                                      => "var(--obs-nebula)",
+        _                                                                 => "var(--obs-aurora)"
     };
 
     // ── Salida calculada ──────────────────────────────────────
@@ -212,33 +212,25 @@
 
         var sensor = _sensors[_selectedSensor];
 
-        // Diámetro del Sol en el plano focal
-        _solarDiamMm  = _focal / 109.0;
-        _solarPercent = (_solarDiamMm / sensor.WidthMm) * 100.0;
+        var result = ExposureCalculator.Calculate(new EclipseExposureInput(
+            FocalLengthMm: _focal,
+            FNumber: _aperture,
+            Iso: _iso,
+            SensorWidthMm: sensor.WidthMm,
+            SensorHeightMm: sensor.HeightMm));
 
-        // FOV diagonal (grados)
-        double diagMm = Math.Sqrt(sensor.WidthMm * sensor.WidthMm + sensor.HeightMm * sensor.HeightMm);
-        _fovDeg = 2.0 * Math.Atan(diagMm / (2.0 * _focal)) * (180.0 / Math.PI);
+        _solarDiamMm  = result.SolarImageDiameterMm;
+        _solarPercent = result.SensorWidthCoveragePercent;
+        _fovDeg       = result.DiagonalFieldDeg;
 
-        // Calcular t = f² / (ISO · 2^Q)
-        _results = Phases.Select(p =>
-        {
-            double t = (_aperture * _aperture) / (_iso * Math.Pow(2.0, p.Q));
-
-            string exactStr = t >= 1.0
-                ? $"{t:F2} s"
-                : t >= 0.001
-                    ? $"1/{(int)Math.Round(1.0 / t)} s"
-                    : $"1/{(int)Math.Round(1.0 / t)} s";
-
-            // Velocidad estándar más cercana (logarítmica)
-            double suggested = StandardSpeeds.MinBy(s => Math.Abs(Math.Log(s) - Math.Log(t)));
-            string suggestedStr = suggested >= 1.0
-                ? $"{suggested:F0} s"
-                : $"1/{(int)Math.Round(1.0 / suggested)} s";
-
-            return new ResultRow(p.Phase, p.Q, exactStr, suggestedStr,
-                                 p.IsTotality, p.IsPartial, p.Color);
-        }).ToList();
+        _results = result.Rows
+            .Select(r => new ResultRow(PhaseName(r.Phase), r.Q, FormatShutter(r.ExactSeconds, "F2"), FormatShutter(r.SuggestedSeconds, "F0"),
+                                       r.IsTotality, r.IsPartial, PhaseColor(r.Phase)))
+            .ToList();
     }
+
+    private static string FormatShutter(double seconds, string longFormat)
+        => seconds >= 1.0
+            ? $"{seconds.ToString(longFormat)} s"
+            : $"1/{(int)Math.Round(1.0 / seconds)} s";
 }

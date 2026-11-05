@@ -28,7 +28,8 @@ Solo interfaces: `ISettingsService`, `ILocalizationService`, `IGeolocationServic
 - Usar `Microsoft.AspNetCore.Components.ChangeEventArgs` completo (no `ChangeEventArgs` a secas).
 - Páginas privadas: envolver contenido con `<AuthGuard>`.
 - SVG dinámico: generar con `InvariantCulture` y servir como `MarkupString` pregenerado.
-- Cálculo astronómico: instanciar `Observer` con altitud en **km** (no metros).
+- Cálculo astronómico: instanciar `Observer` con altitud en **metros** (`Observer.height` de AstronomyEngine va en metros; no dividir entre 1000). `new AstroTime(y,m,d,h,m,s)` es UTC.
+- Lógica de calculadoras: en servicios de `ObservApp.Shared/Services/Calculadoras/<Nombre>/` (interfaz + implementación, registrados en los tres hosts) con tests en `ObservApp.Shared.Tests`; la página `.razor` solo presenta.
 - Variables de efemerides: prefijo `Eph_` (ej: `Eph_SunAltitude`).
 - Estado local de paneles de detalle: campo `private bool _showDetail` en el componente, nunca en ViewModel.
 
@@ -48,7 +49,7 @@ Solo interfaces: `ISettingsService`, `ILocalizationService`, `IGeolocationServic
 
 ## 5. Convenciones de localización
 
-- Todas las cadenas visibles en `.resx`: `App.es.resx` (base), con copia en los 7 idiomas restantes.
+- Todas las cadenas visibles en `.resx`. Cada clave nueva se añade en el mismo cambio a los 8 idiomas (`App.es/en/fr/de/it/pt/ru/ar.resx`), traducida al término propio de cada idioma, nunca copiando el texto de otro. `LocalizationResourcesTests` falla si los idiomas no tienen las mismas claves.
 - No hardcodear texto en español en componentes. Sin excepciones.
 - Idioma persistido: MAUI → `Preferences`, Web → `localStorage` vía JSInterop.
 
@@ -98,5 +99,5 @@ ObservApp/             → MAUI host (Android, Windows). Services/Maui*.cs
 ObservApp.Shared/      → RCL. Pages/, Components/, Layout/, ViewModels/, Models/, Services/interfaces
 ObservApp.Web/         → SSR host (solo dev). Services/Ssr*.cs. APIs: /api/client-config, /api/rss-proxy, /api/wp-proxy
 ObservApp.Web.Client/  → WASM client. Services/Web*.cs, BrowserAuthSessionStore
-ObservApp.Shared.Tests/→ Tests unitarios (xUnit)
+ObservApp.Shared.Tests/→ Tests unitarios (xUnit v3 sobre Microsoft Testing Platform)
 ```

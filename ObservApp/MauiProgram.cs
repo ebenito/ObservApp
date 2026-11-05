@@ -106,6 +106,9 @@ public static class MauiProgram
         // ── Calculadora de tiempos de eclipses ────────────────────────────────
         builder.Services.AddSingleton<IEclipseCalculatorService, EclipseCalculatorService>();
         builder.Services.AddSingleton<IAumentosCalculatorService, AumentosCalculatorService>();
+        builder.Services.AddSingleton<IFovCalculatorService, FovCalculatorService>();
+        builder.Services.AddSingleton<IEclipseExposureCalculatorService, EclipseExposureCalculatorService>();
+        builder.Services.AddSingleton<ISolLunaCalculatorService, SolLunaCalculatorService>();
         builder.Services.AddSingleton<IHomeAstronomyService, HomeAstronomyService>();
         builder.Services.AddSingleton<IEfemeridesAstronomyService, EfemeridesAstronomyService>();
         builder.Services.AddSingleton<IEclipseAudioService, MauiEclipseAudioService>();

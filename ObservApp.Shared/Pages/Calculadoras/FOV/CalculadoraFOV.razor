@@ -1,5 +1,6 @@
 ﻿@page "/calculadoras/fov"
 @inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+@inject IFovCalculatorService FovCalculator
 
 <PageTitle>@L["FOV_Title"] — ObservApp</PageTitle>
 
@@ -51,7 +52,7 @@
                                               Min="1" Max="20000"
                                               Decimals="0"
                                               Format="N0"
-                                              Placeholder="ej. 900"
+                                              Placeholder="@L["FOV_Placeholder_Example", 900]"
                                               CssClass="fov-numeric" />
                             <span class="fov-unit">mm</span>
                         </div>
@@ -73,7 +74,7 @@
                                               Min="1" Max="2000"
                                               Decimals="0"
                                               Format="N0"
-                                              Placeholder="ej. 130"
+                                              Placeholder="@L["FOV_Placeholder_Example", 130]"
                                               CssClass="fov-numeric" />
                             <span class="fov-unit">mm</span>
                         </div>
@@ -104,7 +105,7 @@
                                               Min="1" Max="100"
                                               Decimals="1"
                                               Format="N1"
-                                              Placeholder="ej. 25"
+                                              Placeholder="@L["FOV_Placeholder_Example", 25]"
                                               CssClass="fov-numeric" />
                             <span class="fov-unit">mm</span>
                         </div>
@@ -124,7 +125,7 @@
                                               Min="20" Max="120"
                                               Decimals="0"
                                               Format="N0"
-                                              Placeholder="ej. 52"
+                                              Placeholder="@L["FOV_Placeholder_Example", 52]"
                                               CssClass="fov-numeric" />
                             <span class="fov-unit">°</span>
                         </div>
@@ -285,7 +286,7 @@
 
                         <!-- Barra de comparación -->
                         <div class="fov-comparison-bar">
-                            <div class="comparison-label">TFOV vs. objetos de referencia</div>
+                            <div class="comparison-label">@L["FOV_Comparison_Label"]</div>
                             <div class="comparison-track">
                                 <div class="comparison-fill" style="width: @Math.Min(100, (TFOV / 4.0) * 100).ToString("F1")%"></div>
                                 <div class="comparison-moon" style="left: @((0.5 / 4.0) * 100).ToString(" F1")%"></div>
@@ -313,7 +314,7 @@
                             <circle cx="60" cy="60" r="3" fill="var(--obs-star)" opacity="0.7" />
                         </svg>
                     </div>
-                    <p class="fov-empty-text">Introduce los datos de tu telescopio y ocular para ver los resultados y la simulación visual</p>
+                    <p class="fov-empty-text">@L["FOV_EmptyState"]</p>
                 </div>
             }
         </div>
@@ -402,42 +403,41 @@
     private double? EyepieceAFOV = 52;
 
     // ── RESULTADOS ──────────────────────────────────────────────────────────
-    private bool HasResults = false;
-    private double Magnification = 0;
-    private double TFOV = 0;
-    private double TFOVMinutes = 0;
-    private double ExitPupil = 0;
-    private double FocalRatio = 0;
+    private FovCalculationResult? _result;
+    private bool HasResults => _result is not null;
+    private double Magnification => _result?.Magnification ?? 0;
+    private double TFOV => _result?.TrueFieldDeg ?? 0;
+    private double TFOVMinutes => _result?.TrueFieldArcmin ?? 0;
+    private double ExitPupil => _result?.ExitPupilMm ?? 0;
+    private double FocalRatio => _result?.FocalRatio ?? 0;
 
     private const double MaxSkyDegrees = 4.0; // escala del simulador
 
-    // ── HELPERS CALCULADOS ──────────────────────────────────────────────────
-    private bool IsNearMaxMagnification =>
-        HasResults && TelescopeAperture.HasValue &&
-        Magnification > (TelescopeAperture.Value * 1.8);
+    // ── HELPERS DE PRESENTACIÓN ─────────────────────────────────────────────
+    private bool IsNearMaxMagnification => _result?.IsNearMaxMagnification ?? false;
 
-    private string TFOVComparison => TFOV switch
+    private string TFOVComparison => _result?.ReferenceSize switch
     {
-        < 0.6 => "< Luna llena",
-        < 1.1 => "~ Luna llena",
-        < 2.5 => "< Pléyades",
-        < 3.0 => "~ Pléyades",
+        FovReferenceSize.SmallerThanFullMoon => L["FOV_Ref_SmallerThanMoon"],
+        FovReferenceSize.AboutFullMoon => L["FOV_Ref_AboutMoon"],
+        FovReferenceSize.SmallerThanPleiades => L["FOV_Ref_SmallerThanPleiades"],
+        FovReferenceSize.AboutPleiades => L["FOV_Ref_AboutPleiades"],
         _ => "> 3°"
     };
 
-    private string ExitPupilClass => ExitPupil switch
+    private string ExitPupilClass => _result?.ExitPupilQuality switch
     {
-        >= 5 and <= 7 => "ep-good",
-        >= 2 and < 5 => "ep-planetary",
-        < 2 => "ep-narrow",
+        FovExitPupilQuality.Good => "ep-good",
+        FovExitPupilQuality.Planetary => "ep-planetary",
+        FovExitPupilQuality.Narrow => "ep-narrow",
         _ => ""
     };
 
-    private string ExitPupilTip => ExitPupil switch
+    private string ExitPupilTip => _result?.ExitPupilQuality switch
     {
-        >= 5 and <= 7 => L["FOV_GoodExitPupil"],
-        >= 2 and < 5 => L["FOV_PlanetaryExitPupil"],
-        < 2 => L["FOV_NarrowExitPupil"],
+        FovExitPupilQuality.Good => L["FOV_GoodExitPupil"],
+        FovExitPupilQuality.Planetary => L["FOV_PlanetaryExitPupil"],
+        FovExitPupilQuality.Narrow => L["FOV_NarrowExitPupil"],
         _ => ""
     };
 
@@ -513,14 +513,18 @@
             !EyepieceFocal.HasValue || !EyepieceAFOV.HasValue)
             return;
 
-        if (EyepieceFocal.Value <= 0 || TelescopeFocal.Value <= 0) return;
-
-        Magnification = TelescopeFocal.Value / EyepieceFocal.Value;
-        TFOV = EyepieceAFOV.Value / Magnification;
-        TFOVMinutes = TFOV * 60;
-        ExitPupil = TelescopeAperture.Value / Magnification;
-        FocalRatio = TelescopeFocal.Value / TelescopeAperture.Value;
-        HasResults = true;
+        try
+        {
+            _result = FovCalculator.Calculate(new FovCalculationInput(
+                TelescopeFocalLengthMm: TelescopeFocal.Value,
+                ApertureMm: TelescopeAperture.Value,
+                EyepieceFocalLengthMm: EyepieceFocal.Value,
+                EyepieceApparentFieldDeg: EyepieceAFOV.Value));
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            // Entrada no válida: se conservan los resultados anteriores
+        }
     }
 
     private void Reset()
@@ -529,7 +533,7 @@
         TelescopeAperture = null;
         EyepieceFocal = null;
         EyepieceAFOV = null;
-        HasResults = false;
+        _result = null;
     }
 
     private void SetAfov(double value) => EyepieceAFOV = value;
