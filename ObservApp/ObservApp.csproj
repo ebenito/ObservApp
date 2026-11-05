@@ -82,14 +82,14 @@
       <PackageReference Include="Plugin.Maui.Audio" Version="4.0.0" />
 
       <!-- Supabase — nombre correcto del paquete desde v1.x -->
-      <PackageReference Include="Supabase" Version="8.6.0" />
+      <PackageReference Include="Supabase" Version="8.9.0" />
 
       <!-- Astronomy Engine — cálculos offline de planetas, luna, eclipses -->
       <PackageReference Include="CosineKitty.AstronomyEngine" Version="2.1.19" />
 
       <!-- Community Toolkit MAUI — permisos, share, toast nativo Android -->
       <PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
-      <PackageReference Include="Syncfusion.Licensing" Version="35.1.42" />
+      <PackageReference Include="Syncfusion.Licensing" Version="35.1.43" />
   </ItemGroup>
 
 	<ItemGroup>
