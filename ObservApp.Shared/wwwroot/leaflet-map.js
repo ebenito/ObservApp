@@ -11,8 +11,13 @@ window.observApp.initMap = function (containerId, lat, lon, zoom, dotNetRef) {
     }
     // Inicializar mapa
     var map = L.map(containerId).setView([lat, lon], zoom);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    // La política de uso de las teselas de OSM exige que las peticiones lleven Referer
+    // (sin él responden 403 "Access blocked"). Azure SWA sirve la página con
+    // Referrer-Policy: same-origin, que lo suprime en peticiones a otros dominios.
+    // Los subdominios a/b/c están obsoletos: OSM pide usar tile.openstreetmap.org.
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        referrerPolicy: 'strict-origin-when-cross-origin'
     }).addTo(map);
     // Crear marcador arrastrable
     var marker = L.marker([lat, lon], { draggable: true }).addTo(map);
