@@ -40,6 +40,7 @@ No inventar rutas, ViewModels ni servicios. Verificar su existencia real con las
 | `ObservApp.Shared/` | **Núcleo.** Pages, Components, Layout, ViewModels, Models, Services (interfaces + impl. compartidas), i18n (8 idiomas). |
 | `ObservApp.Web/` | Host SSR para desarrollo local. Stubs `Ssr*.cs`. APIs proxy en `Program.cs`. |
 | `ObservApp.Web.Client/` | Cliente WASM. Servicios `Web*.cs`. Deploy en Azure Static Web Apps. |
+| `api/` | Azure Functions (Node.js 22) de la web publicada: `/api/rss-proxy` y `/api/wp-proxy`, equivalentes a los de `ObservApp.Web/Program.cs`. Mantener ambos sincronizados. Tests: `npm test` en `api/`. |
 | `ObservApp.Shared.Tests/` | Tests unitarios xUnit v3 (Microsoft Testing Platform, activado en `global.json`). |
 
 ---

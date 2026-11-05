@@ -7,6 +7,12 @@
       "/*.{png,jpg,gif,ico,webp,svg,wasm,js,json}"
     ]
   },
+  "platform": {
+    "apiRuntime": "node:22"
+  },
+  "globalHeaders": {
+    "Referrer-Policy": "strict-origin-when-cross-origin"
+  },
   "mimeTypes": {
     ".wasm": "application/wasm",
     ".dll":  "application/octet-stream"

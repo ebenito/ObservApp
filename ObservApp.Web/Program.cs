@@ -162,7 +162,7 @@ static void MapRssProxyEndpoint(WebApplication app)
         };
 
         if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) ||
-            !allowed.Any(d => uri.Host.EndsWith(d, StringComparison.OrdinalIgnoreCase)))
+            !allowed.Any(d => IsHostAllowed(uri.Host, d)))
             return Results.BadRequest("Dominio no permitido");
 
         try
@@ -211,7 +211,7 @@ static void MapWpProxyEndpoint(WebApplication app)
 static bool TryGetAllowedWpUrl(string url, out Uri? uri)
 {
     if (!Uri.TryCreate(url, UriKind.Absolute, out var parsed) ||
-        !parsed.Host.EndsWith("tubkala.com", StringComparison.OrdinalIgnoreCase) ||
+        !IsHostAllowed(parsed.Host, "tubkala.com") ||
         !parsed.PathAndQuery.Contains("/wp-json/", StringComparison.OrdinalIgnoreCase))
     {
         uri = null;
@@ -220,6 +220,14 @@ static bool TryGetAllowedWpUrl(string url, out Uri? uri)
 
     uri = parsed;
     return true;
+}
+
+// Dominio exacto o subdominio suyo: evita que "evilnasa.gov" pase por "nasa.gov".
+// Misma regla que api/src/shared/proxy.js (proxys de la web publicada en Azure).
+static bool IsHostAllowed(string host, string domain)
+{
+    return host.Equals(domain, StringComparison.OrdinalIgnoreCase) ||
+           host.EndsWith("." + domain, StringComparison.OrdinalIgnoreCase);
 }
 
 static void ConfigureWpRequestHeaders(HttpClient http)
