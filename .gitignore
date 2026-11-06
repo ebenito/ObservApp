@@ -186,6 +186,9 @@ publish/
 # but database connection strings (with potential passwords) will be unencrypted
 *.pubxml
 *.publishproj
+# Excepción: los perfiles MSIX no tienen secretos y llevan el arreglo de RuntimeIdentifierOverride
+!ObservApp/Properties/PublishProfiles/MSIX-win-x64.pubxml
+!ObservApp/Properties/PublishProfiles/MSIX-win-x86.pubxml
 
 # Microsoft Azure Web App publish settings. Comment the next line if you want to
 # checkin your Azure Web App publish settings, but sensitive information contained

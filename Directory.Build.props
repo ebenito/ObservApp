@@ -26,10 +26,10 @@
 		<ApplicationDisplayVersion Condition="'$(ApplicationDisplayVersion)' == '' and '$(GITVERSION_MAJOR)' != '' and '$(GITVERSION_MINOR)' != ''">$(GITVERSION_MAJOR).$(GITVERSION_MINOR).0</ApplicationDisplayVersion>
 
 		<!-- 3) Reserva (solo si no hay CI ni GitVersion.MsBuild). Mantener alineado con el último tag. -->
-		<Version Condition="'$(Version)' == ''">1.4.0</Version>
-		<FileVersion Condition="'$(FileVersion)' == ''">1.4.0.0</FileVersion>
-		<InformationalVersion Condition="'$(InformationalVersion)' == ''">1.4.0</InformationalVersion>
-		<ApplicationDisplayVersion Condition="'$(ApplicationDisplayVersion)' == ''">1.4.0</ApplicationDisplayVersion>
+		<Version Condition="'$(Version)' == ''">1.5.0</Version>
+		<FileVersion Condition="'$(FileVersion)' == ''">1.5.0.0</FileVersion>
+		<InformationalVersion Condition="'$(InformationalVersion)' == ''">1.5.0</InformationalVersion>
+		<ApplicationDisplayVersion Condition="'$(ApplicationDisplayVersion)' == ''">1.5.0</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<!-- 2) Local: GitVersion.MsBuild. Desactivable con -p:DisableGitVersionMsBuild=true -->

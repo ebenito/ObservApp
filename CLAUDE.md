@@ -114,3 +114,4 @@ dotnet build ObservApp.slnx
 - `build.yml` → Android APK + Windows MSIX + Web WASM
 - `azure-static-web-apps-*.yml` → deploy automático en Azure Static Web Apps (plan Free, límite 250 MB)
 - Versiones: GitVersion 6.3 por tags `vX.Y.Z`
+- MSIX local: `dotnet publish ObservApp/ObservApp.csproj -f net10.0-windows10.0.26100.0 -c Release -p:PublishProfile=MSIX-win-x64`. Los perfiles usan `RuntimeIdentifierOverride` (nunca `RuntimeIdentifier`, que contamina el TFM Android: NU1102 o DLL de Shared obsoleta). `Package.appxmanifest` debe mantener `Version="0.0.0.0"` (lo rellena GitVersion); el asistente "Crear paquetes de aplicación" de VS lo sobrescribe, revertirlo
