@@ -164,10 +164,11 @@ builder.Services.AddSingleton<IArticleService>(sp =>
 	// proxyBaseUrl = BaseAddress del propio host WASM (que es el servidor SSR)
 	// → las peticiones /api/wp-proxy las resuelve el servidor SSR
 	var wpProvider = new WpRestArticleProvider(proxyHttp,
-		baseUrl: "https://tubkala.com",
-		sourceName: "Tubkala",
-		languageCode: "es",
-		proxyBaseUrl: builder.HostEnvironment.BaseAddress.TrimEnd('/'));
+		baseUrl: TubkalaSource.BaseUrl,
+		sourceName: TubkalaSource.SourceName,
+		languageCode: TubkalaSource.LanguageCode,
+		proxyBaseUrl: builder.HostEnvironment.BaseAddress.TrimEnd('/'),
+		categorySlugs: TubkalaSource.CategorySlugs);
 
 	var rssProviders = RssCatalog.Sources
 		.Select(entry => new RssFeedArticleProvider(rss, entry.Source, languageCode: entry.LanguageCode))

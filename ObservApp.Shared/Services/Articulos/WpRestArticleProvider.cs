@@ -28,6 +28,13 @@ public sealed class WpRestArticleProvider
     // en lugar de ir directamente a _baseUrl (necesario en WASM).
     private readonly string? _proxyBaseUrl;
 
+    // Slugs de categoría (normalizados) a los que se limita la fuente. Vacío = todas.
+    private readonly IReadOnlyList<string> _categorySlugs;
+
+    // IDs de categoría resueltos a partir de los slugs ("12,34"). Se resuelven
+    // una sola vez por instancia; null mientras no se hayan resuelto.
+    private string? _categoryIds;
+
     private const string BrowserUserAgent =
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
         "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
@@ -42,18 +49,30 @@ public sealed class WpRestArticleProvider
     ///   GET {proxyBaseUrl}/api/wp-proxy?url={encoded_wp_api_url}
     /// Usar en Blazor WASM para evitar bloqueos WAF por User-Agent ausente.
     /// </param>
+    /// <param name="categorySlugs">
+    /// Slugs de las categorías WordPress a las que se limita la fuente (p.ej. "astronomia").
+    /// Se resuelven a IDs con <c>wp/v2/categories</c> en la primera llamada; los slugs
+    /// inexistentes se ignoran. En el respaldo RSS se filtra por el nombre de categoría
+    /// normalizado. Null o vacío = sin filtro.
+    /// </param>
     public WpRestArticleProvider(
         HttpClient http,
         string baseUrl,
         string sourceName,
         string languageCode = "es",
-        string? proxyBaseUrl = null)
+        string? proxyBaseUrl = null,
+        IEnumerable<string>? categorySlugs = null)
     {
         _http = http;
         _baseUrl = baseUrl.TrimEnd('/');
         _sourceName = sourceName;
         _languageCode = languageCode;
         _proxyBaseUrl = proxyBaseUrl?.TrimEnd('/');
+        _categorySlugs = (categorySlugs ?? [])
+            .Select(NormalizeSlug)
+            .Where(s => s.Length > 0)
+            .Distinct(StringComparer.Ordinal)
+            .ToList();
     }
 
     public string? LastError { get; private set; }
@@ -69,8 +88,8 @@ public sealed class WpRestArticleProvider
 
         try
         {
-            var fields = "_fields=id,title,excerpt,content,date,link,yoast_head_json";
-            var wpApiUrl = $"{_baseUrl}/wp-json/wp/v2/posts?page={page}&per_page={pageSize}&{fields}";
+            var categoryIds = await ResolveCategoryIdsAsync(cancellationToken);
+            var wpApiUrl = BuildPostsUrl(_baseUrl, page, pageSize, categoryIds);
 
             // Si hay proxy configurado, enrutar por él (necesario en WASM)
             if (_proxyBaseUrl is not null)
@@ -112,8 +131,7 @@ public sealed class WpRestArticleProvider
     {
         try
         {
-            var proxyUrl = $"{_proxyBaseUrl}/api/wp-proxy?url={Uri.EscapeDataString(wpApiUrl)}";
-            var json = await _http.GetStringAsync(proxyUrl, cancellationToken);
+            var json = await GetWpJsonViaProxyAsync(wpApiUrl, cancellationToken);
 
             // Verificar si la respuesta es HTML (proxy también bloqueado o no disponible)
             if (json.TrimStart().StartsWith('<'))
@@ -141,6 +159,167 @@ public sealed class WpRestArticleProvider
             LastError = $"Proxy WP: {ex.Message}";
             return await GetPageFromRssFallbackAsync(page, pageSize, cancellationToken);
         }
+    }
+
+    /// <summary>
+    /// Pide una URL de la WP API a través de /api/wp-proxy y devuelve el cuerpo.
+    /// Si el proxy responde con error, lanza con el <c>detail</c> del problem+json
+    /// (p.ej. "WP API respondió 403") en lugar del texto genérico de HttpClient.
+    /// </summary>
+    private async Task<string> GetWpJsonViaProxyAsync(string wpApiUrl, CancellationToken cancellationToken)
+    {
+        var proxyUrl = $"{_proxyBaseUrl}/api/wp-proxy?url={Uri.EscapeDataString(wpApiUrl)}";
+        using var response = await _http.GetAsync(proxyUrl, cancellationToken);
+        var body = await response.Content.ReadAsStringAsync(cancellationToken);
+
+        if (response.IsSuccessStatusCode)
+            return body;
+
+        throw new HttpRequestException(
+            TryGetProblemDetail(body, out var detail)
+                ? detail
+                : $"el proxy respondió {(int)response.StatusCode}",
+            inner: null,
+            response.StatusCode);
+    }
+
+    private static bool TryGetProblemDetail(string body, out string detail)
+    {
+        detail = string.Empty;
+        if (string.IsNullOrWhiteSpace(body) || !body.TrimStart().StartsWith('{'))
+            return false;
+
+        try
+        {
+            using var doc = JsonDocument.Parse(body);
+            if (doc.RootElement.ValueKind == JsonValueKind.Object &&
+                doc.RootElement.TryGetProperty("detail", out var detailElement) &&
+                detailElement.ValueKind == JsonValueKind.String)
+            {
+                detail = detailElement.GetString() ?? string.Empty;
+            }
+        }
+        catch (JsonException) { }
+
+        return !string.IsNullOrWhiteSpace(detail);
+    }
+
+    // ── Categorías ───────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Construye la URL de wp/v2/posts con paginación, campos y, si procede, categorías.
+    /// </summary>
+    internal static string BuildPostsUrl(string baseUrl, int page, int pageSize, string? categoryIds)
+    {
+        const string fields = "_fields=id,title,excerpt,content,date,link,yoast_head_json";
+        var url = $"{baseUrl.TrimEnd('/')}/wp-json/wp/v2/posts?page={page}&per_page={pageSize}&{fields}";
+        return string.IsNullOrEmpty(categoryIds) ? url : $"{url}&categories={categoryIds}";
+    }
+
+    internal static string BuildCategoriesUrl(string baseUrl, IEnumerable<string> slugs)
+        => $"{baseUrl.TrimEnd('/')}/wp-json/wp/v2/categories?slug={Uri.EscapeDataString(string.Join(',', slugs))}&_fields=id,slug&per_page=100";
+
+    /// <summary>
+    /// Resuelve los slugs configurados a IDs de categoría ("12,34"). Null si no hay filtro.
+    /// El resultado se cachea en la instancia; un fallo de red lanza y se reintenta en la
+    /// siguiente llamada. Si ningún slug existe, se anota en LastError y no se filtra.
+    /// </summary>
+    private async Task<string?> ResolveCategoryIdsAsync(CancellationToken cancellationToken)
+    {
+        if (_categorySlugs.Count == 0)
+            return null;
+
+        if (_categoryIds is not null)
+            return _categoryIds.Length == 0 ? null : _categoryIds;
+
+        var url = BuildCategoriesUrl(_baseUrl, _categorySlugs);
+        string json;
+
+        if (_proxyBaseUrl is not null)
+        {
+            json = await GetWpJsonViaProxyAsync(url, cancellationToken);
+        }
+        else
+        {
+            using var request = new HttpRequestMessage(HttpMethod.Get, url);
+            TryAddBrowserHeaders(request);
+            using var response = await _http.SendAsync(request, cancellationToken);
+            if (!response.IsSuccessStatusCode)
+                throw new HttpRequestException(
+                    $"WP API (categorías) respondió {(int)response.StatusCode}: {response.ReasonPhrase}",
+                    inner: null,
+                    response.StatusCode);
+            json = await response.Content.ReadAsStringAsync(cancellationToken);
+        }
+
+        if (json.TrimStart().StartsWith('<'))
+            throw new HttpRequestException("WP API (categorías) devolvió HTML en lugar de JSON.");
+
+        var ids = ParseCategoryIds(json, _categorySlugs);
+        _categoryIds = string.Join(',', ids.Select(id => id.ToString(CultureInfo.InvariantCulture)));
+
+        if (ids.Count == 0)
+        {
+            LastError = $"Ninguna de las categorías configuradas existe en {_sourceName}: {string.Join(", ", _categorySlugs)}. Se muestran todas.";
+            return null;
+        }
+
+        return _categoryIds;
+    }
+
+    /// <summary>
+    /// Extrae los IDs de la respuesta de wp/v2/categories (lista directa o envuelta
+    /// por el proxy en "posts"), limitados a los slugs pedidos y en orden ascendente.
+    /// </summary>
+    internal static IReadOnlyList<int> ParseCategoryIds(string json, IReadOnlyList<string> slugs)
+    {
+        var ids = new SortedSet<int>();
+        try
+        {
+            using var doc = JsonDocument.Parse(json);
+            var root = doc.RootElement;
+            if (root.ValueKind == JsonValueKind.Object && root.TryGetProperty("posts", out var wrapped))
+                root = wrapped;
+            if (root.ValueKind != JsonValueKind.Array)
+                return [];
+
+            foreach (var element in root.EnumerateArray())
+            {
+                if (element.ValueKind != JsonValueKind.Object) continue;
+                if (!element.TryGetProperty("id", out var idElement) || !idElement.TryGetInt32(out var id)) continue;
+                var slug = element.TryGetProperty("slug", out var slugElement) && slugElement.ValueKind == JsonValueKind.String
+                    ? NormalizeSlug(slugElement.GetString() ?? string.Empty)
+                    : string.Empty;
+                if (slugs.Contains(slug, StringComparer.Ordinal))
+                    ids.Add(id);
+            }
+        }
+        catch (JsonException)
+        {
+            return [];
+        }
+
+        return ids.ToList();
+    }
+
+    /// <summary>
+    /// Normaliza un slug o nombre de categoría para compararlos: minúsculas, sin
+    /// acentos y con los espacios como guiones ("Astronomía" → "astronomia").
+    /// </summary>
+    internal static string NormalizeSlug(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return string.Empty;
+
+        var decomposed = System.Net.WebUtility.HtmlDecode(value).Trim().ToLowerInvariant()
+            .Normalize(System.Text.NormalizationForm.FormD);
+        var sb = new System.Text.StringBuilder(decomposed.Length);
+        foreach (var ch in decomposed)
+        {
+            var category = CharUnicodeInfo.GetUnicodeCategory(ch);
+            if (category == UnicodeCategory.NonSpacingMark) continue;
+            sb.Append(char.IsWhiteSpace(ch) ? '-' : ch);
+        }
+        return Regex.Replace(sb.ToString(), "-+", "-").Trim('-');
     }
 
     // ── Ruta directa ─────────────────────────────────────────────────────────
@@ -372,7 +551,9 @@ public sealed class WpRestArticleProvider
             var allItems = ParseRssToArticles(xml);
             if (allItems.Count == 0)
             {
-                LastError = $"{LastError} | El feed RSS no devolvió artículos.";
+                LastError = _categorySlugs.Count > 0
+                    ? $"{LastError} | El feed RSS no contiene artículos de las categorías configuradas."
+                    : $"{LastError} | El feed RSS no devolvió artículos.";
                 return (new(), false, 0);
             }
 
@@ -406,6 +587,12 @@ public sealed class WpRestArticleProvider
 
         foreach (var item in channel.Elements("item"))
         {
+            // Con filtro de categorías, el feed global se filtra por el nombre de
+            // categoría normalizado (el feed no expone slugs).
+            if (_categorySlugs.Count > 0 &&
+                !item.Elements("category").Any(c => _categorySlugs.Contains(NormalizeSlug(c.Value), StringComparer.Ordinal)))
+                continue;
+
             var title = DecodeHtml(item.Element("title")?.Value ?? string.Empty);
             var link = item.Element("link")?.Value?.Trim() ?? string.Empty;
             var guid = item.Element("guid")?.Value?.Trim();

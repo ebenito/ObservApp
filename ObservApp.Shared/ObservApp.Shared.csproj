@@ -49,4 +49,9 @@
     <PackageReference Update="GitVersion.MsBuild" Version="6.8.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Helpers internos (p. ej. parseo de la WP API) accesibles desde los tests -->
+    <InternalsVisibleTo Include="ObservApp.Shared.Tests" />
+  </ItemGroup>
+
 </Project>

@@ -140,9 +140,10 @@ public static class MauiProgram
 			var rss  = (RssFeedService)sp.GetRequiredService<IRssFeedService>();
 
 			var wpProvider = new WpRestArticleProvider(http,
-				baseUrl: "https://tubkala.com",
-				sourceName: "Tubkala",
-				languageCode: "es");
+				baseUrl: TubkalaSource.BaseUrl,
+				sourceName: TubkalaSource.SourceName,
+				languageCode: TubkalaSource.LanguageCode,
+				categorySlugs: TubkalaSource.CategorySlugs);
 
 			var rssProviders = RssCatalog.Sources
 				.Select(entry => new RssFeedArticleProvider(rss, entry.Source, languageCode: entry.LanguageCode))
