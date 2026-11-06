@@ -16,7 +16,7 @@ public sealed class EfemeridesAstronomyService : IEfemeridesAstronomyService
 
 	public EphComputationResult Compute(DateTime date, double latitude, double longitude, double altitudeMeters)
 	{
-		var observer = new Observer(latitude, longitude, altitudeMeters / 1000.0);
+		var observer = new Observer(latitude, longitude, altitudeMeters);
 		var dayTime = new AstroTime(date.Year, date.Month, date.Day, 12, 0, 0);
 
 		return new EphComputationResult
@@ -63,7 +63,7 @@ public sealed class EfemeridesAstronomyService : IEfemeridesAstronomyService
 		IEnumerable<EphDsoCoordinate> dsos,
 		CancellationToken cancellationToken = default)
 	{
-		var observer = new Observer(latitude, longitude, altitudeMeters / 1000.0);
+		var observer = new Observer(latitude, longitude, altitudeMeters);
 		var window = TryGetAstronomicalNightWindow(date, observer);
 		if (window is null)
 		{

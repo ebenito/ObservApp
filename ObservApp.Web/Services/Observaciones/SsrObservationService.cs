@@ -1,5 +1,6 @@
 namespace ObservApp.Web.Services;
 
+using Microsoft.Extensions.Localization;
 using ObservApp.Shared.Models;
 using ObservApp.Shared.Services;
 
@@ -9,7 +10,13 @@ using ObservApp.Shared.Services;
 /// </summary>
 public class SsrObservationService : IObservationService
 {
+	private readonly IStringLocalizer<ObservApp.Resources.Strings.App> _l;
 	private string? _lastError;
+
+	public SsrObservationService(IStringLocalizer<ObservApp.Resources.Strings.App> localizer)
+	{
+		_l = localizer;
+	}
 
 	public string? LastError => _lastError;
 
@@ -25,13 +32,13 @@ public class SsrObservationService : IObservationService
 
 	public Task<bool> SaveAsync(ObservationSession session)
 	{
-		_lastError = "SSR: Operación de guardado no disponible";
+		_lastError = _l["Error_SsrUnavailable"];
 		return Task.FromResult(false);
 	}
 
 	public Task<bool> DeleteAsync(Guid id)
 	{
-		_lastError = "SSR: Operación de eliminación no disponible";
+		_lastError = _l["Error_SsrUnavailable"];
 		return Task.FromResult(false);
 	}
 }

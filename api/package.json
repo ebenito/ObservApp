@@ -1,0 +1,16 @@
+{
+  "name": "observapp-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Proxys RSS y WordPress para ObservApp Web publicada en Azure Static Web Apps (equivalentes a /api/rss-proxy y /api/wp-proxy de ObservApp.Web/Program.cs)",
+  "main": "src/functions/*.js",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.7.0"
+  }
+}

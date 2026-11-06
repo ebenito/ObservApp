@@ -28,6 +28,9 @@ public partial class AuthViewModel : ObservableObject
 	private string displayName = string.Empty;
 
 	[ObservableProperty]
+	private bool rememberMe = true;
+
+	[ObservableProperty]
 	private bool isLoading;
 
 	[ObservableProperty]
@@ -53,7 +56,7 @@ public partial class AuthViewModel : ObservableObject
 			IsLoading = true;
 			ErrorMessage = null;
 
-			var ok = await _authService.LoginAsync(Email, Password);
+			var ok = await _authService.LoginAsync(Email, Password, RememberMe);
 			if (!ok)
 			{
 				ErrorMessage = _authService.LastError ?? _l["Auth_SignIn_Error"];

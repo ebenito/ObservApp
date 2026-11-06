@@ -198,6 +198,19 @@
     margin-bottom: 14px;
 }
 
+.login-remember {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--obs-comet);
+    font-size: .9rem;
+    margin: 0 0 6px;
+}
+
+.login-remember input {
+    accent-color: var(--obs-aurora);
+}
+
 .login-primary,
 .login-secondary {
     border-radius: var(--radius-md);
@@ -249,6 +262,30 @@
     color: var(--obs-comet);
     text-align: center;
     font-size: .9rem;
+}
+
+/* Enlace "¿Olvidaste tu contraseña?": mismo aspecto que .login-forgot pero clicable */
+.login-link {
+    display: block;
+    width: 100%;
+    margin: 14px 0 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: var(--obs-comet);
+    text-align: center;
+    font-size: .9rem;
+    cursor: pointer;
+}
+
+.login-link:hover:not(:disabled) {
+    color: var(--obs-moon);
+    text-decoration: underline;
+}
+
+.login-link:disabled {
+    opacity: .55;
+    cursor: not-allowed;
 }
 
 .login-toggle {

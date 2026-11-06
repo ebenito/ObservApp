@@ -1,4 +1,5 @@
 ﻿// ObservApp.Web.Client/Services/WebRssFeedService.cs
+using Microsoft.Extensions.Localization;
 using ObservApp.Shared.Services;
 
 namespace ObservApp.Web.Client.Services;
@@ -10,7 +11,8 @@ namespace ObservApp.Web.Client.Services;
 /// </summary>
 public sealed class WebRssFeedService : RssFeedService
 {
-    public WebRssFeedService(HttpClient http) : base(http) { }
+    public WebRssFeedService(HttpClient http, IStringLocalizer<ObservApp.Resources.Strings.App> localizer)
+        : base(http, localizer) { }
 
     protected override string ResolveUrl(string feedUrl)
         => $"/api/rss-proxy?url={Uri.EscapeDataString(feedUrl)}";

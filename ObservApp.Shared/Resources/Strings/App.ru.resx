@@ -204,6 +204,9 @@
   <data name="Auth_ReconnectSession" xml:space="preserve">
     <value>Подключить сессию</value>
   </data>
+  <data name="Auth_RememberMe" xml:space="preserve">
+    <value>Запомнить меня на этом устройстве</value>
+  </data>
   <data name="Auth_PasswordMismatch" xml:space="preserve">
     <value>Пароли не совпадают</value>
   </data>
@@ -1755,5 +1758,302 @@
   </data>
   <data name="Auth_Otp_EmailMissing" xml:space="preserve">
     <value>Не передан email для проверки. Вернитесь к регистрации.</value>
+  </data>
+  <data name="FOV_Placeholder_Example" xml:space="preserve">
+    <value>напр. {0}</value>
+  </data>
+  <data name="FOV_Comparison_Label" xml:space="preserve">
+    <value>TFOV в сравнении с эталонными объектами</value>
+  </data>
+  <data name="FOV_Ref_SmallerThanMoon" xml:space="preserve">
+    <value>&lt; полной Луны</value>
+  </data>
+  <data name="FOV_Ref_AboutMoon" xml:space="preserve">
+    <value>~ полная Луна</value>
+  </data>
+  <data name="FOV_Ref_SmallerThanPleiades" xml:space="preserve">
+    <value>&lt; Плеяд</value>
+  </data>
+  <data name="FOV_Ref_AboutPleiades" xml:space="preserve">
+    <value>~ Плеяды</value>
+  </data>
+  <data name="FOV_EmptyState" xml:space="preserve">
+    <value>Введите данные телескопа и окуляра, чтобы увидеть результаты и визуальную симуляцию</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_PartialOd50" xml:space="preserve">
+    <value>OD 5.0 (частная)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_PartialOd40" xml:space="preserve">
+    <value>OD 4.0 (частная)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_BailysBeads" xml:space="preserve">
+    <value>Чётки Бейли</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Chromosphere" xml:space="preserve">
+    <value>Хромосфера</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Prominences" xml:space="preserve">
+    <value>Протуберанцы</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Corona" xml:space="preserve">
+    <value>Корона ({0}R☉)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Earthshine" xml:space="preserve">
+    <value>Пепельный свет</value>
+  </data>
+  <data name="SolLuna_Unit_AU" xml:space="preserve">
+    <value>а. е.</value>
+  </data>
+  <data name="About_Title" xml:space="preserve">
+    <value>О приложении</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>Версия:</value>
+  </data>
+  <data name="About_Developer" xml:space="preserve">
+    <value>Разработчик:</value>
+  </data>
+  <data name="About_Email" xml:space="preserve">
+    <value>Эл. почта:</value>
+  </data>
+  <data name="About_Technologies" xml:space="preserve">
+    <value>Используемые технологии:</value>
+  </data>
+  <data name="About_ViewOnGitHub" xml:space="preserve">
+    <value>СМОТРЕТЬ НА GITHUB</value>
+  </data>
+  <data name="About_DownloadTitle" xml:space="preserve">
+    <value>Скачать и оценить</value>
+  </data>
+  <data name="About_DownloadDescription" xml:space="preserve">
+    <value>Скачайте приложение бесплатно в любимом магазине и, если оно окажется полезным, оставьте нам оценку!</value>
+  </data>
+  <data name="About_AvailableOn" xml:space="preserve">
+    <value>ДОСТУПНО В</value>
+  </data>
+  <data name="About_ComingSoonOn" xml:space="preserve">
+    <value>СКОРО В</value>
+  </data>
+  <data name="FavLoc_Gps_Error" xml:space="preserve">
+    <value>Не удалось получить местоположение GPS.</value>
+  </data>
+  <data name="Eclipse_Region_NorthAmerica" xml:space="preserve">
+    <value>Северная Америка</value>
+  </data>
+  <data name="Eclipse_Region_SouthPacificSouthAmerica" xml:space="preserve">
+    <value>Южная часть Тихого океана / Южная Америка</value>
+  </data>
+  <data name="Eclipse_Region_Antarctica" xml:space="preserve">
+    <value>Антарктида</value>
+  </data>
+  <data name="Eclipse_Region_ArcticEuropeAfrica" xml:space="preserve">
+    <value>Арктика / Европа / Африка</value>
+  </data>
+  <data name="Eclipse_Region_SouthAmericaAtlantic" xml:space="preserve">
+    <value>Южная Америка / Атлантика</value>
+  </data>
+  <data name="Eclipse_Region_AfricaEuropeAsia" xml:space="preserve">
+    <value>Африка / Европа / Азия</value>
+  </data>
+  <data name="Eclipse_Region_SouthAmerica" xml:space="preserve">
+    <value>Южная Америка</value>
+  </data>
+  <data name="Eclipse_Region_AustraliaAsia" xml:space="preserve">
+    <value>Австралия / Азия</value>
+  </data>
+  <data name="Eclipse_Region_EuropeAsia" xml:space="preserve">
+    <value>Европа / Азия</value>
+  </data>
+  <data name="Eclipse_Region_SouthAfricaOceania" xml:space="preserve">
+    <value>Южная Африка / Океания</value>
+  </data>
+  <data name="Auth_Reset_Title" xml:space="preserve">
+    <value>Восстановление пароля</value>
+  </data>
+  <data name="Auth_Reset_Subtitle_Email" xml:space="preserve">
+    <value>Введите свой e-mail</value>
+  </data>
+  <data name="Auth_Reset_Description" xml:space="preserve">
+    <value>Мы отправим вам код для сброса пароля.</value>
+  </data>
+  <data name="Auth_Reset_PasswordDescription" xml:space="preserve">
+    <value>Код подтверждён. Выберите новый пароль.</value>
+  </data>
+  <data name="Auth_Reset_NewPassword" xml:space="preserve">
+    <value>Новый пароль</value>
+  </data>
+  <data name="Auth_Reset_Sending" xml:space="preserve">
+    <value>Отправка кода…</value>
+  </data>
+  <data name="Auth_Reset_Updating" xml:space="preserve">
+    <value>Сохранение пароля…</value>
+  </data>
+  <data name="Auth_Reset_SendCode" xml:space="preserve">
+    <value>Отправить код</value>
+  </data>
+  <data name="Auth_Reset_VerifyCode" xml:space="preserve">
+    <value>Проверить код</value>
+  </data>
+  <data name="Auth_Reset_ChangePassword" xml:space="preserve">
+    <value>Изменить пароль</value>
+  </data>
+  <data name="Auth_Reset_ResendCode" xml:space="preserve">
+    <value>Отправить код ещё раз</value>
+  </data>
+  <data name="Auth_Reset_BackToLogin" xml:space="preserve">
+    <value>Вернуться ко входу</value>
+  </data>
+  <data name="Auth_Reset_Error" xml:space="preserve">
+    <value>Не удалось сбросить пароль.</value>
+  </data>
+  <data name="Auth_PasswordTooShort" xml:space="preserve">
+    <value>Пароль должен содержать не менее {0} символов</value>
+  </data>
+  <data name="Auth_Error_Generic" xml:space="preserve">
+    <value>Не удалось завершить аутентификацию.</value>
+  </data>
+  <data name="Auth_Error_InvalidCredentials" xml:space="preserve">
+    <value>Неверные учётные данные.</value>
+  </data>
+  <data name="Auth_Error_EmailNotConfirmed" xml:space="preserve">
+    <value>Перед входом необходимо подтвердить адрес электронной почты.</value>
+  </data>
+  <data name="Auth_Error_AlreadyRegistered" xml:space="preserve">
+    <value>Пользователь уже зарегистрирован.</value>
+  </data>
+  <data name="Auth_Error_WeakPassword" xml:space="preserve">
+    <value>Пароль слишком короткий или слишком простой.</value>
+  </data>
+  <data name="Auth_Error_SamePassword" xml:space="preserve">
+    <value>Новый пароль должен отличаться от старого.</value>
+  </data>
+  <data name="Auth_Error_RateLimited" xml:space="preserve">
+    <value>Слишком много попыток. Подождите немного и попробуйте снова.</value>
+  </data>
+  <data name="Auth_Error_CodeExpired" xml:space="preserve">
+    <value>Срок действия кода истёк. Запросите новый.</value>
+  </data>
+  <data name="Auth_Error_CodeInvalid" xml:space="preserve">
+    <value>Введённый код недействителен.</value>
+  </data>
+  <data name="Auth_Error_SignUpFailed" xml:space="preserve">
+    <value>Не удалось создать учётную запись.</value>
+  </data>
+  <data name="Auth_Error_SignInFailed" xml:space="preserve">
+    <value>Не удалось войти.</value>
+  </data>
+  <data name="Auth_Error_VerifyCodeFailed" xml:space="preserve">
+    <value>Не удалось проверить код.</value>
+  </data>
+  <data name="Auth_Error_SendRecoveryFailed" xml:space="preserve">
+    <value>Не удалось отправить код восстановления.</value>
+  </data>
+  <data name="Auth_Error_NoRecoverySession" xml:space="preserve">
+    <value>Нет активной сессии восстановления. Запросите новый код.</value>
+  </data>
+  <data name="Auth_Error_ChangePasswordFailed" xml:space="preserve">
+    <value>Не удалось изменить пароль.</value>
+  </data>
+  <data name="Auth_Error_RestoreTimeout" xml:space="preserve">
+    <value>Не удалось восстановить сессию за разумное время.</value>
+  </data>
+  <data name="Obs_Error_NotAuthenticated" xml:space="preserve">
+    <value>Пользователь не вошёл в систему.</value>
+  </data>
+  <data name="Gps_Error_PermissionDenied" xml:space="preserve">
+    <value>Доступ к геолокации запрещён.</value>
+  </data>
+  <data name="Gps_Error_Unavailable" xml:space="preserve">
+    <value>Не удалось определить местоположение.</value>
+  </data>
+  <data name="Gps_Error_NotSupported" xml:space="preserve">
+    <value>GPS недоступен на этом устройстве.</value>
+  </data>
+  <data name="Gps_Error_Disabled" xml:space="preserve">
+    <value>Геолокация отключена на устройстве. Включите её в настройках.</value>
+  </data>
+  <data name="Gps_Error_Cancelled" xml:space="preserve">
+    <value>Запрос местоположения отменён.</value>
+  </data>
+  <data name="Gps_Error_Timeout" xml:space="preserve">
+    <value>Время ожидания определения местоположения истекло.</value>
+  </data>
+  <data name="Gps_Error_Generic" xml:space="preserve">
+    <value>Ошибка при определении местоположения: {0}</value>
+  </data>
+  <data name="Gps_Error_BrowserUnsupported" xml:space="preserve">
+    <value>Геолокация недоступна в этом браузере.</value>
+  </data>
+  <data name="Gps_Error_Browser" xml:space="preserve">
+    <value>Ошибка браузера: {0}</value>
+  </data>
+  <data name="Gps_Error_ServerUnavailable" xml:space="preserve">
+    <value>Геолокация недоступна на сервере.</value>
+  </data>
+  <data name="Gps_Source_Browser" xml:space="preserve">
+    <value>Браузер</value>
+  </data>
+  <data name="Gps_Source_Network" xml:space="preserve">
+    <value>Сеть/Wi-Fi</value>
+  </data>
+  <data name="Gps_Source_Mock" xml:space="preserve">
+    <value>Имитация</value>
+  </data>
+  <data name="Articles_Error_WpStatus" xml:space="preserve">
+    <value>API WordPress ответил {0}.</value>
+  </data>
+  <data name="Articles_Error_WpHtml" xml:space="preserve">
+    <value>API WordPress вернул HTML. Используется RSS в качестве резерва.</value>
+  </data>
+  <data name="Articles_Error_WpInvalidJson" xml:space="preserve">
+    <value>API WordPress вернул недопустимый ответ.</value>
+  </data>
+  <data name="Articles_Error_WpMessage" xml:space="preserve">
+    <value>API WordPress ответил: {0}</value>
+  </data>
+  <data name="Articles_Error_Proxy" xml:space="preserve">
+    <value>Прокси WP: {0}</value>
+  </data>
+  <data name="Articles_Error_ProxyStatus" xml:space="preserve">
+    <value>прокси ответил {0}</value>
+  </data>
+  <data name="Articles_Error_ProxyInvalidJson" xml:space="preserve">
+    <value>Прокси WP вернул недопустимый ответ.</value>
+  </data>
+  <data name="Articles_Error_CategoriesHtml" xml:space="preserve">
+    <value>API WordPress вернул HTML при запросе категорий.</value>
+  </data>
+  <data name="Articles_Error_UnknownCategories" xml:space="preserve">
+    <value>Ни одна из настроенных категорий не существует на {0}: {1}. Показаны все.</value>
+  </data>
+  <data name="Articles_Error_RssStatus" xml:space="preserve">
+    <value>RSS-лента тоже недоступна: {0}</value>
+  </data>
+  <data name="Articles_Error_RssHtml" xml:space="preserve">
+    <value>RSS-лента вернула HTML.</value>
+  </data>
+  <data name="Articles_Error_RssNoItems" xml:space="preserve">
+    <value>RSS-лента не вернула статей.</value>
+  </data>
+  <data name="Articles_Error_RssNoCategoryItems" xml:space="preserve">
+    <value>В RSS-ленте нет статей из настроенных категорий.</value>
+  </data>
+  <data name="Articles_Error_RssFallback" xml:space="preserve">
+    <value>Резерв RSS: {0}</value>
+  </data>
+  <data name="Rss_Error_HtmlInsteadOfXml" xml:space="preserve">
+    <value>Сервер вернул HTML вместо XML. Возможно, лента защищена системой проверки.</value>
+  </data>
+  <data name="Rss_Error_XmlParse" xml:space="preserve">
+    <value>Ошибка чтения XML: {0}</value>
+  </data>
+  <data name="Rss_Error_NoRoot" xml:space="preserve">
+    <value>В XML-документе нет корневого элемента.</value>
+  </data>
+  <data name="Rss_Error_Download" xml:space="preserve">
+    <value>Не удалось загрузить ленту: {0}</value>
+  </data>
+  <data name="Error_SsrUnavailable" xml:space="preserve">
+    <value>Функция недоступна на сервере разработки (SSR).</value>
   </data>
 </root>

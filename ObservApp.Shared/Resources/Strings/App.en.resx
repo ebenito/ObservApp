@@ -204,6 +204,9 @@
   <data name="Auth_ReconnectSession" xml:space="preserve">
     <value>Reconnect session</value>
   </data>
+  <data name="Auth_RememberMe" xml:space="preserve">
+    <value>Remember me on this device</value>
+  </data>
   <data name="Auth_PasswordMismatch" xml:space="preserve">
     <value>Passwords do not match</value>
   </data>
@@ -1755,5 +1758,302 @@
   </data>
   <data name="Auth_Otp_EmailMissing" xml:space="preserve">
     <value>No email was provided for verification. Return to sign up.</value>
+  </data>
+  <data name="FOV_Placeholder_Example" xml:space="preserve">
+    <value>e.g. {0}</value>
+  </data>
+  <data name="FOV_Comparison_Label" xml:space="preserve">
+    <value>TFOV vs. reference objects</value>
+  </data>
+  <data name="FOV_Ref_SmallerThanMoon" xml:space="preserve">
+    <value>&lt; Full Moon</value>
+  </data>
+  <data name="FOV_Ref_AboutMoon" xml:space="preserve">
+    <value>~ Full Moon</value>
+  </data>
+  <data name="FOV_Ref_SmallerThanPleiades" xml:space="preserve">
+    <value>&lt; Pleiades</value>
+  </data>
+  <data name="FOV_Ref_AboutPleiades" xml:space="preserve">
+    <value>~ Pleiades</value>
+  </data>
+  <data name="FOV_EmptyState" xml:space="preserve">
+    <value>Enter your telescope and eyepiece data to see the results and the visual simulation</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_PartialOd50" xml:space="preserve">
+    <value>OD 5.0 (partial)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_PartialOd40" xml:space="preserve">
+    <value>OD 4.0 (partial)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_BailysBeads" xml:space="preserve">
+    <value>Baily's Beads</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Chromosphere" xml:space="preserve">
+    <value>Chromosphere</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Prominences" xml:space="preserve">
+    <value>Prominences</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Corona" xml:space="preserve">
+    <value>Corona ({0}R☉)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Earthshine" xml:space="preserve">
+    <value>Earthshine</value>
+  </data>
+  <data name="SolLuna_Unit_AU" xml:space="preserve">
+    <value>AU</value>
+  </data>
+  <data name="About_Title" xml:space="preserve">
+    <value>About this app</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>Version:</value>
+  </data>
+  <data name="About_Developer" xml:space="preserve">
+    <value>Developer:</value>
+  </data>
+  <data name="About_Email" xml:space="preserve">
+    <value>Email:</value>
+  </data>
+  <data name="About_Technologies" xml:space="preserve">
+    <value>Technologies used:</value>
+  </data>
+  <data name="About_ViewOnGitHub" xml:space="preserve">
+    <value>VIEW ON GITHUB</value>
+  </data>
+  <data name="About_DownloadTitle" xml:space="preserve">
+    <value>Download and rate</value>
+  </data>
+  <data name="About_DownloadDescription" xml:space="preserve">
+    <value>Download the app for free from your favourite store and, if you find it useful, leave us a rating!</value>
+  </data>
+  <data name="About_AvailableOn" xml:space="preserve">
+    <value>AVAILABLE ON</value>
+  </data>
+  <data name="About_ComingSoonOn" xml:space="preserve">
+    <value>COMING SOON TO</value>
+  </data>
+  <data name="FavLoc_Gps_Error" xml:space="preserve">
+    <value>Could not get the GPS location.</value>
+  </data>
+  <data name="Eclipse_Region_NorthAmerica" xml:space="preserve">
+    <value>North America</value>
+  </data>
+  <data name="Eclipse_Region_SouthPacificSouthAmerica" xml:space="preserve">
+    <value>South Pacific / South America</value>
+  </data>
+  <data name="Eclipse_Region_Antarctica" xml:space="preserve">
+    <value>Antarctica</value>
+  </data>
+  <data name="Eclipse_Region_ArcticEuropeAfrica" xml:space="preserve">
+    <value>Arctic / Europe / Africa</value>
+  </data>
+  <data name="Eclipse_Region_SouthAmericaAtlantic" xml:space="preserve">
+    <value>South America / Atlantic</value>
+  </data>
+  <data name="Eclipse_Region_AfricaEuropeAsia" xml:space="preserve">
+    <value>Africa / Europe / Asia</value>
+  </data>
+  <data name="Eclipse_Region_SouthAmerica" xml:space="preserve">
+    <value>South America</value>
+  </data>
+  <data name="Eclipse_Region_AustraliaAsia" xml:space="preserve">
+    <value>Australia / Asia</value>
+  </data>
+  <data name="Eclipse_Region_EuropeAsia" xml:space="preserve">
+    <value>Europe / Asia</value>
+  </data>
+  <data name="Eclipse_Region_SouthAfricaOceania" xml:space="preserve">
+    <value>Southern Africa / Oceania</value>
+  </data>
+  <data name="Auth_Reset_Title" xml:space="preserve">
+    <value>Reset password</value>
+  </data>
+  <data name="Auth_Reset_Subtitle_Email" xml:space="preserve">
+    <value>Enter your email</value>
+  </data>
+  <data name="Auth_Reset_Description" xml:space="preserve">
+    <value>We will send you a code to reset your password.</value>
+  </data>
+  <data name="Auth_Reset_PasswordDescription" xml:space="preserve">
+    <value>Code verified. Choose your new password.</value>
+  </data>
+  <data name="Auth_Reset_NewPassword" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="Auth_Reset_Sending" xml:space="preserve">
+    <value>Sending code…</value>
+  </data>
+  <data name="Auth_Reset_Updating" xml:space="preserve">
+    <value>Saving password…</value>
+  </data>
+  <data name="Auth_Reset_SendCode" xml:space="preserve">
+    <value>Send code</value>
+  </data>
+  <data name="Auth_Reset_VerifyCode" xml:space="preserve">
+    <value>Verify code</value>
+  </data>
+  <data name="Auth_Reset_ChangePassword" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="Auth_Reset_ResendCode" xml:space="preserve">
+    <value>Resend code</value>
+  </data>
+  <data name="Auth_Reset_BackToLogin" xml:space="preserve">
+    <value>Back to sign in</value>
+  </data>
+  <data name="Auth_Reset_Error" xml:space="preserve">
+    <value>The password could not be reset.</value>
+  </data>
+  <data name="Auth_PasswordTooShort" xml:space="preserve">
+    <value>The password must be at least {0} characters long</value>
+  </data>
+  <data name="Auth_Error_Generic" xml:space="preserve">
+    <value>Authentication could not be completed.</value>
+  </data>
+  <data name="Auth_Error_InvalidCredentials" xml:space="preserve">
+    <value>Invalid credentials.</value>
+  </data>
+  <data name="Auth_Error_EmailNotConfirmed" xml:space="preserve">
+    <value>You must confirm your email before signing in.</value>
+  </data>
+  <data name="Auth_Error_AlreadyRegistered" xml:space="preserve">
+    <value>This user is already registered.</value>
+  </data>
+  <data name="Auth_Error_WeakPassword" xml:space="preserve">
+    <value>The password is too short or too weak.</value>
+  </data>
+  <data name="Auth_Error_SamePassword" xml:space="preserve">
+    <value>The new password must be different from the old one.</value>
+  </data>
+  <data name="Auth_Error_RateLimited" xml:space="preserve">
+    <value>Too many attempts. Wait a moment and try again.</value>
+  </data>
+  <data name="Auth_Error_CodeExpired" xml:space="preserve">
+    <value>The code has expired. Request a new one.</value>
+  </data>
+  <data name="Auth_Error_CodeInvalid" xml:space="preserve">
+    <value>The code you entered is not valid.</value>
+  </data>
+  <data name="Auth_Error_SignUpFailed" xml:space="preserve">
+    <value>The account could not be created.</value>
+  </data>
+  <data name="Auth_Error_SignInFailed" xml:space="preserve">
+    <value>Sign-in failed.</value>
+  </data>
+  <data name="Auth_Error_VerifyCodeFailed" xml:space="preserve">
+    <value>The code could not be verified.</value>
+  </data>
+  <data name="Auth_Error_SendRecoveryFailed" xml:space="preserve">
+    <value>The recovery code could not be sent.</value>
+  </data>
+  <data name="Auth_Error_NoRecoverySession" xml:space="preserve">
+    <value>There is no active recovery session. Request a new code.</value>
+  </data>
+  <data name="Auth_Error_ChangePasswordFailed" xml:space="preserve">
+    <value>The password could not be changed.</value>
+  </data>
+  <data name="Auth_Error_RestoreTimeout" xml:space="preserve">
+    <value>The session could not be restored in a reasonable time.</value>
+  </data>
+  <data name="Obs_Error_NotAuthenticated" xml:space="preserve">
+    <value>User not signed in.</value>
+  </data>
+  <data name="Gps_Error_PermissionDenied" xml:space="preserve">
+    <value>Location permission denied.</value>
+  </data>
+  <data name="Gps_Error_Unavailable" xml:space="preserve">
+    <value>The location could not be obtained.</value>
+  </data>
+  <data name="Gps_Error_NotSupported" xml:space="preserve">
+    <value>GPS is not available on this device.</value>
+  </data>
+  <data name="Gps_Error_Disabled" xml:space="preserve">
+    <value>Location is turned off on this device. Enable it in Settings.</value>
+  </data>
+  <data name="Gps_Error_Cancelled" xml:space="preserve">
+    <value>Location request cancelled.</value>
+  </data>
+  <data name="Gps_Error_Timeout" xml:space="preserve">
+    <value>Timed out while getting the location.</value>
+  </data>
+  <data name="Gps_Error_Generic" xml:space="preserve">
+    <value>Error getting the location: {0}</value>
+  </data>
+  <data name="Gps_Error_BrowserUnsupported" xml:space="preserve">
+    <value>Geolocation is not available in this browser.</value>
+  </data>
+  <data name="Gps_Error_Browser" xml:space="preserve">
+    <value>Browser error: {0}</value>
+  </data>
+  <data name="Gps_Error_ServerUnavailable" xml:space="preserve">
+    <value>Geolocation is not available on the server.</value>
+  </data>
+  <data name="Gps_Source_Browser" xml:space="preserve">
+    <value>Browser</value>
+  </data>
+  <data name="Gps_Source_Network" xml:space="preserve">
+    <value>Network/Wi-Fi</value>
+  </data>
+  <data name="Gps_Source_Mock" xml:space="preserve">
+    <value>Simulated</value>
+  </data>
+  <data name="Articles_Error_WpStatus" xml:space="preserve">
+    <value>The WordPress API responded {0}.</value>
+  </data>
+  <data name="Articles_Error_WpHtml" xml:space="preserve">
+    <value>The WordPress API returned HTML. Using RSS as a fallback.</value>
+  </data>
+  <data name="Articles_Error_WpInvalidJson" xml:space="preserve">
+    <value>The WordPress API returned an invalid response.</value>
+  </data>
+  <data name="Articles_Error_WpMessage" xml:space="preserve">
+    <value>The WordPress API responded: {0}</value>
+  </data>
+  <data name="Articles_Error_Proxy" xml:space="preserve">
+    <value>WP proxy: {0}</value>
+  </data>
+  <data name="Articles_Error_ProxyStatus" xml:space="preserve">
+    <value>the proxy responded {0}</value>
+  </data>
+  <data name="Articles_Error_ProxyInvalidJson" xml:space="preserve">
+    <value>The WP proxy returned an invalid response.</value>
+  </data>
+  <data name="Articles_Error_CategoriesHtml" xml:space="preserve">
+    <value>The WordPress API returned HTML when querying the categories.</value>
+  </data>
+  <data name="Articles_Error_UnknownCategories" xml:space="preserve">
+    <value>None of the configured categories exists on {0}: {1}. Showing all of them.</value>
+  </data>
+  <data name="Articles_Error_RssStatus" xml:space="preserve">
+    <value>The RSS feed also failed: {0}</value>
+  </data>
+  <data name="Articles_Error_RssHtml" xml:space="preserve">
+    <value>The RSS feed returned HTML.</value>
+  </data>
+  <data name="Articles_Error_RssNoItems" xml:space="preserve">
+    <value>The RSS feed returned no articles.</value>
+  </data>
+  <data name="Articles_Error_RssNoCategoryItems" xml:space="preserve">
+    <value>The RSS feed has no articles in the configured categories.</value>
+  </data>
+  <data name="Articles_Error_RssFallback" xml:space="preserve">
+    <value>RSS fallback: {0}</value>
+  </data>
+  <data name="Rss_Error_HtmlInsteadOfXml" xml:space="preserve">
+    <value>The server returned HTML instead of XML. The feed may be protected by a verification system.</value>
+  </data>
+  <data name="Rss_Error_XmlParse" xml:space="preserve">
+    <value>Error reading the XML: {0}</value>
+  </data>
+  <data name="Rss_Error_NoRoot" xml:space="preserve">
+    <value>The XML document has no root element.</value>
+  </data>
+  <data name="Rss_Error_Download" xml:space="preserve">
+    <value>The feed could not be downloaded: {0}</value>
+  </data>
+  <data name="Error_SsrUnavailable" xml:space="preserve">
+    <value>Feature not available on the development server (SSR).</value>
   </data>
 </root>

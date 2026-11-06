@@ -2,6 +2,8 @@
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using Microsoft.Extensions.Localization;
+using AppStrings = ObservApp.Resources.Strings.App;
 
 namespace ObservApp.Shared.Services;
 
@@ -13,6 +15,7 @@ namespace ObservApp.Shared.Services;
 public partial class RssFeedService : IRssFeedService
 {
     private readonly HttpClient _http;
+    private readonly IStringLocalizer<AppStrings> _l;
     private readonly Dictionary<string, string?> _lastErrors = new();
 
     // ── Namespaces XML habituales en feeds RSS/Atom ─────────────────────────
@@ -21,9 +24,10 @@ public partial class RssFeedService : IRssFeedService
     private static readonly XNamespace AtomNs = "http://www.w3.org/2005/Atom";
     private static readonly XNamespace MediaNs = "http://search.yahoo.com/mrss/";
 
-    public RssFeedService(HttpClient http)
+    public RssFeedService(HttpClient http, IStringLocalizer<AppStrings> localizer)
     {
         _http = http;
+        _l = localizer;
     }
 
     public string? GetLastError(string sourceId)
@@ -82,9 +86,7 @@ public partial class RssFeedService : IRssFeedService
             // Si después de reintentos aún no es XML válido, lanzar excepción
             if (!IsValidXml(xml))
             {
-                throw new InvalidOperationException(
-                    $"OPEN_BROWSER:{resolvedUrl}|El servidor devolvió HTML en lugar de XML. " +
-                    "La URL puede estar protegida por Inmunify 360 u otro sistema de verificación.");
+                throw new InvalidOperationException(_l["Rss_Error_HtmlInsteadOfXml"]);
             }
 
             XDocument? doc = null;
@@ -94,12 +96,12 @@ public partial class RssFeedService : IRssFeedService
             }
             catch (Exception parseEx)
             {
-                throw new InvalidOperationException($"Error al parsear XML: {parseEx.Message}", parseEx);
+                throw new InvalidOperationException(_l["Rss_Error_XmlParse", parseEx.Message], parseEx);
             }
 
             var root = doc.Root;
             if (root is null)
-                throw new InvalidOperationException("El documento XML no tiene elemento raíz.");
+                throw new InvalidOperationException(_l["Rss_Error_NoRoot"]);
 
             // ── Atom: <feed><entry>... ───────────────────────────────────────
             if (root.Name == AtomNs + "feed")
@@ -111,8 +113,12 @@ public partial class RssFeedService : IRssFeedService
         }
         catch (Exception ex)
         {
-            var errorMsg = ex.InnerException?.Message ?? ex.Message;
-            _lastErrors[source.Id] = $"{ex.GetType().Name}: {errorMsg}";
+            // Las InvalidOperationException las lanza este servicio ya traducidas;
+            // el resto (red, HTTP, cancelación) se envuelve en un mensaje traducido.
+            var errorMsg = ex is InvalidOperationException
+                ? ex.Message
+                : _l["Rss_Error_Download", ex.InnerException?.Message ?? ex.Message].Value;
+            _lastErrors[source.Id] = errorMsg;
 
             System.Diagnostics.Debug.WriteLine(
                 $"[RSS] {source.Name} ERROR: {ex.GetType().Name}: {ex.Message}" +

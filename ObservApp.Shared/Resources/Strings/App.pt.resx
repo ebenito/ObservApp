@@ -204,6 +204,9 @@
   <data name="Auth_ReconnectSession" xml:space="preserve">
     <value>Reconectar sessão</value>
   </data>
+  <data name="Auth_RememberMe" xml:space="preserve">
+    <value>Lembrar-me neste dispositivo</value>
+  </data>
   <data name="Auth_PasswordMismatch" xml:space="preserve">
     <value>As senhas não coincidem</value>
   </data>
@@ -1755,5 +1758,302 @@
   </data>
   <data name="Auth_Otp_EmailMissing" xml:space="preserve">
     <value>Nenhum e-mail foi informado para verificação. Volte ao cadastro.</value>
+  </data>
+  <data name="FOV_Placeholder_Example" xml:space="preserve">
+    <value>ex. {0}</value>
+  </data>
+  <data name="FOV_Comparison_Label" xml:space="preserve">
+    <value>TFOV vs. objetos de referência</value>
+  </data>
+  <data name="FOV_Ref_SmallerThanMoon" xml:space="preserve">
+    <value>&lt; Lua cheia</value>
+  </data>
+  <data name="FOV_Ref_AboutMoon" xml:space="preserve">
+    <value>~ Lua cheia</value>
+  </data>
+  <data name="FOV_Ref_SmallerThanPleiades" xml:space="preserve">
+    <value>&lt; Plêiades</value>
+  </data>
+  <data name="FOV_Ref_AboutPleiades" xml:space="preserve">
+    <value>~ Plêiades</value>
+  </data>
+  <data name="FOV_EmptyState" xml:space="preserve">
+    <value>Insira os dados do seu telescópio e da ocular para ver os resultados e a simulação visual</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_PartialOd50" xml:space="preserve">
+    <value>OD 5.0 (parcial)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_PartialOd40" xml:space="preserve">
+    <value>OD 4.0 (parcial)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_BailysBeads" xml:space="preserve">
+    <value>Grânulos de Baily</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Chromosphere" xml:space="preserve">
+    <value>Cromosfera</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Prominences" xml:space="preserve">
+    <value>Proeminências</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Corona" xml:space="preserve">
+    <value>Coroa ({0}R☉)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Earthshine" xml:space="preserve">
+    <value>Luz cinérea</value>
+  </data>
+  <data name="SolLuna_Unit_AU" xml:space="preserve">
+    <value>UA</value>
+  </data>
+  <data name="About_Title" xml:space="preserve">
+    <value>Sobre este aplicativo</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>Versão:</value>
+  </data>
+  <data name="About_Developer" xml:space="preserve">
+    <value>Desenvolvedor:</value>
+  </data>
+  <data name="About_Email" xml:space="preserve">
+    <value>E-mail:</value>
+  </data>
+  <data name="About_Technologies" xml:space="preserve">
+    <value>Tecnologias utilizadas:</value>
+  </data>
+  <data name="About_ViewOnGitHub" xml:space="preserve">
+    <value>VER NO GITHUB</value>
+  </data>
+  <data name="About_DownloadTitle" xml:space="preserve">
+    <value>Baixar e avaliar</value>
+  </data>
+  <data name="About_DownloadDescription" xml:space="preserve">
+    <value>Baixe o aplicativo gratuitamente na sua loja preferida e, se ele for útil, deixe-nos uma avaliação!</value>
+  </data>
+  <data name="About_AvailableOn" xml:space="preserve">
+    <value>DISPONÍVEL NA</value>
+  </data>
+  <data name="About_ComingSoonOn" xml:space="preserve">
+    <value>EM BREVE NA</value>
+  </data>
+  <data name="FavLoc_Gps_Error" xml:space="preserve">
+    <value>Não foi possível obter a localização GPS.</value>
+  </data>
+  <data name="Eclipse_Region_NorthAmerica" xml:space="preserve">
+    <value>América do Norte</value>
+  </data>
+  <data name="Eclipse_Region_SouthPacificSouthAmerica" xml:space="preserve">
+    <value>Pacífico Sul / América do Sul</value>
+  </data>
+  <data name="Eclipse_Region_Antarctica" xml:space="preserve">
+    <value>Antártida</value>
+  </data>
+  <data name="Eclipse_Region_ArcticEuropeAfrica" xml:space="preserve">
+    <value>Ártico / Europa / África</value>
+  </data>
+  <data name="Eclipse_Region_SouthAmericaAtlantic" xml:space="preserve">
+    <value>América do Sul / Atlântico</value>
+  </data>
+  <data name="Eclipse_Region_AfricaEuropeAsia" xml:space="preserve">
+    <value>África / Europa / Ásia</value>
+  </data>
+  <data name="Eclipse_Region_SouthAmerica" xml:space="preserve">
+    <value>América do Sul</value>
+  </data>
+  <data name="Eclipse_Region_AustraliaAsia" xml:space="preserve">
+    <value>Austrália / Ásia</value>
+  </data>
+  <data name="Eclipse_Region_EuropeAsia" xml:space="preserve">
+    <value>Europa / Ásia</value>
+  </data>
+  <data name="Eclipse_Region_SouthAfricaOceania" xml:space="preserve">
+    <value>África Austral / Oceania</value>
+  </data>
+  <data name="Auth_Reset_Title" xml:space="preserve">
+    <value>Recuperar palavra-passe</value>
+  </data>
+  <data name="Auth_Reset_Subtitle_Email" xml:space="preserve">
+    <value>Introduz o teu e-mail</value>
+  </data>
+  <data name="Auth_Reset_Description" xml:space="preserve">
+    <value>Vamos enviar-te um código para repor a palavra-passe.</value>
+  </data>
+  <data name="Auth_Reset_PasswordDescription" xml:space="preserve">
+    <value>Código verificado. Escolhe a nova palavra-passe.</value>
+  </data>
+  <data name="Auth_Reset_NewPassword" xml:space="preserve">
+    <value>Nova palavra-passe</value>
+  </data>
+  <data name="Auth_Reset_Sending" xml:space="preserve">
+    <value>A enviar código…</value>
+  </data>
+  <data name="Auth_Reset_Updating" xml:space="preserve">
+    <value>A guardar palavra-passe…</value>
+  </data>
+  <data name="Auth_Reset_SendCode" xml:space="preserve">
+    <value>Enviar código</value>
+  </data>
+  <data name="Auth_Reset_VerifyCode" xml:space="preserve">
+    <value>Verificar código</value>
+  </data>
+  <data name="Auth_Reset_ChangePassword" xml:space="preserve">
+    <value>Alterar palavra-passe</value>
+  </data>
+  <data name="Auth_Reset_ResendCode" xml:space="preserve">
+    <value>Reenviar código</value>
+  </data>
+  <data name="Auth_Reset_BackToLogin" xml:space="preserve">
+    <value>Voltar ao início de sessão</value>
+  </data>
+  <data name="Auth_Reset_Error" xml:space="preserve">
+    <value>Não foi possível repor a palavra-passe.</value>
+  </data>
+  <data name="Auth_PasswordTooShort" xml:space="preserve">
+    <value>A palavra-passe deve ter pelo menos {0} caracteres</value>
+  </data>
+  <data name="Auth_Error_Generic" xml:space="preserve">
+    <value>Não foi possível concluir a autenticação.</value>
+  </data>
+  <data name="Auth_Error_InvalidCredentials" xml:space="preserve">
+    <value>Credenciais inválidas.</value>
+  </data>
+  <data name="Auth_Error_EmailNotConfirmed" xml:space="preserve">
+    <value>Tens de confirmar o teu e-mail antes de iniciar sessão.</value>
+  </data>
+  <data name="Auth_Error_AlreadyRegistered" xml:space="preserve">
+    <value>O utilizador já está registado.</value>
+  </data>
+  <data name="Auth_Error_WeakPassword" xml:space="preserve">
+    <value>A palavra-passe é demasiado curta ou fraca.</value>
+  </data>
+  <data name="Auth_Error_SamePassword" xml:space="preserve">
+    <value>A nova palavra-passe tem de ser diferente da anterior.</value>
+  </data>
+  <data name="Auth_Error_RateLimited" xml:space="preserve">
+    <value>Demasiadas tentativas. Aguarda um momento e tenta de novo.</value>
+  </data>
+  <data name="Auth_Error_CodeExpired" xml:space="preserve">
+    <value>O código expirou. Pede um novo.</value>
+  </data>
+  <data name="Auth_Error_CodeInvalid" xml:space="preserve">
+    <value>O código introduzido não é válido.</value>
+  </data>
+  <data name="Auth_Error_SignUpFailed" xml:space="preserve">
+    <value>Não foi possível criar a conta.</value>
+  </data>
+  <data name="Auth_Error_SignInFailed" xml:space="preserve">
+    <value>Não foi possível iniciar sessão.</value>
+  </data>
+  <data name="Auth_Error_VerifyCodeFailed" xml:space="preserve">
+    <value>Não foi possível verificar o código.</value>
+  </data>
+  <data name="Auth_Error_SendRecoveryFailed" xml:space="preserve">
+    <value>Não foi possível enviar o código de recuperação.</value>
+  </data>
+  <data name="Auth_Error_NoRecoverySession" xml:space="preserve">
+    <value>Não há uma sessão de recuperação ativa. Pede um código novo.</value>
+  </data>
+  <data name="Auth_Error_ChangePasswordFailed" xml:space="preserve">
+    <value>Não foi possível alterar a palavra-passe.</value>
+  </data>
+  <data name="Auth_Error_RestoreTimeout" xml:space="preserve">
+    <value>Não foi possível restaurar a sessão num tempo razoável.</value>
+  </data>
+  <data name="Obs_Error_NotAuthenticated" xml:space="preserve">
+    <value>Utilizador não autenticado.</value>
+  </data>
+  <data name="Gps_Error_PermissionDenied" xml:space="preserve">
+    <value>Permissão de localização negada.</value>
+  </data>
+  <data name="Gps_Error_Unavailable" xml:space="preserve">
+    <value>Não foi possível obter a localização.</value>
+  </data>
+  <data name="Gps_Error_NotSupported" xml:space="preserve">
+    <value>O GPS não está disponível neste dispositivo.</value>
+  </data>
+  <data name="Gps_Error_Disabled" xml:space="preserve">
+    <value>A localização está desativada no dispositivo. Ativa-a nas Definições.</value>
+  </data>
+  <data name="Gps_Error_Cancelled" xml:space="preserve">
+    <value>Pedido de localização cancelado.</value>
+  </data>
+  <data name="Gps_Error_Timeout" xml:space="preserve">
+    <value>Tempo esgotado ao obter a localização.</value>
+  </data>
+  <data name="Gps_Error_Generic" xml:space="preserve">
+    <value>Erro ao obter a localização: {0}</value>
+  </data>
+  <data name="Gps_Error_BrowserUnsupported" xml:space="preserve">
+    <value>A geolocalização não está disponível neste navegador.</value>
+  </data>
+  <data name="Gps_Error_Browser" xml:space="preserve">
+    <value>Erro do navegador: {0}</value>
+  </data>
+  <data name="Gps_Error_ServerUnavailable" xml:space="preserve">
+    <value>A geolocalização não está disponível no servidor.</value>
+  </data>
+  <data name="Gps_Source_Browser" xml:space="preserve">
+    <value>Navegador</value>
+  </data>
+  <data name="Gps_Source_Network" xml:space="preserve">
+    <value>Rede/Wi-Fi</value>
+  </data>
+  <data name="Gps_Source_Mock" xml:space="preserve">
+    <value>Simulada</value>
+  </data>
+  <data name="Articles_Error_WpStatus" xml:space="preserve">
+    <value>A API do WordPress respondeu {0}.</value>
+  </data>
+  <data name="Articles_Error_WpHtml" xml:space="preserve">
+    <value>A API do WordPress devolveu HTML. A usar o RSS como alternativa.</value>
+  </data>
+  <data name="Articles_Error_WpInvalidJson" xml:space="preserve">
+    <value>A API do WordPress devolveu uma resposta inválida.</value>
+  </data>
+  <data name="Articles_Error_WpMessage" xml:space="preserve">
+    <value>A API do WordPress respondeu: {0}</value>
+  </data>
+  <data name="Articles_Error_Proxy" xml:space="preserve">
+    <value>Proxy WP: {0}</value>
+  </data>
+  <data name="Articles_Error_ProxyStatus" xml:space="preserve">
+    <value>o proxy respondeu {0}</value>
+  </data>
+  <data name="Articles_Error_ProxyInvalidJson" xml:space="preserve">
+    <value>O proxy WP devolveu uma resposta inválida.</value>
+  </data>
+  <data name="Articles_Error_CategoriesHtml" xml:space="preserve">
+    <value>A API do WordPress devolveu HTML ao consultar as categorias.</value>
+  </data>
+  <data name="Articles_Error_UnknownCategories" xml:space="preserve">
+    <value>Nenhuma das categorias configuradas existe em {0}: {1}. Mostram-se todas.</value>
+  </data>
+  <data name="Articles_Error_RssStatus" xml:space="preserve">
+    <value>O feed RSS também falhou: {0}</value>
+  </data>
+  <data name="Articles_Error_RssHtml" xml:space="preserve">
+    <value>O feed RSS devolveu HTML.</value>
+  </data>
+  <data name="Articles_Error_RssNoItems" xml:space="preserve">
+    <value>O feed RSS não devolveu artigos.</value>
+  </data>
+  <data name="Articles_Error_RssNoCategoryItems" xml:space="preserve">
+    <value>O feed RSS não contém artigos das categorias configuradas.</value>
+  </data>
+  <data name="Articles_Error_RssFallback" xml:space="preserve">
+    <value>Alternativa RSS: {0}</value>
+  </data>
+  <data name="Rss_Error_HtmlInsteadOfXml" xml:space="preserve">
+    <value>O servidor devolveu HTML em vez de XML. O feed pode estar protegido por um sistema de verificação.</value>
+  </data>
+  <data name="Rss_Error_XmlParse" xml:space="preserve">
+    <value>Erro ao ler o XML: {0}</value>
+  </data>
+  <data name="Rss_Error_NoRoot" xml:space="preserve">
+    <value>O documento XML não tem elemento raiz.</value>
+  </data>
+  <data name="Rss_Error_Download" xml:space="preserve">
+    <value>Não foi possível transferir o feed: {0}</value>
+  </data>
+  <data name="Error_SsrUnavailable" xml:space="preserve">
+    <value>Função não disponível no servidor de desenvolvimento (SSR).</value>
   </data>
 </root>

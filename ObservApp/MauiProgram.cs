@@ -6,6 +6,7 @@ using ObservApp.Services;
 using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
 using ObservApp.Shared.ViewModels;
+using Microsoft.Extensions.Localization;
 using Supabase;
 using Syncfusion.Blazor;
 
@@ -82,6 +83,7 @@ public static class MauiProgram
         });
 
         builder.Services.AddSingleton<IAuthSessionStore, MauiAuthSessionStore>();
+        builder.Services.AddSingleton<IAuthCredentialStore, MauiAuthCredentialStore>();
         builder.Services.AddSingleton<IAuthService, AuthService>();
         builder.Services.AddSingleton<SupabaseService>();
         builder.Services.AddSingleton<IObservationService>(sp => sp.GetRequiredService<SupabaseService>());
@@ -105,6 +107,9 @@ public static class MauiProgram
         // ── Calculadora de tiempos de eclipses ────────────────────────────────
         builder.Services.AddSingleton<IEclipseCalculatorService, EclipseCalculatorService>();
         builder.Services.AddSingleton<IAumentosCalculatorService, AumentosCalculatorService>();
+        builder.Services.AddSingleton<IFovCalculatorService, FovCalculatorService>();
+        builder.Services.AddSingleton<IEclipseExposureCalculatorService, EclipseExposureCalculatorService>();
+        builder.Services.AddSingleton<ISolLunaCalculatorService, SolLunaCalculatorService>();
         builder.Services.AddSingleton<IHomeAstronomyService, HomeAstronomyService>();
         builder.Services.AddSingleton<IEfemeridesAstronomyService, EfemeridesAstronomyService>();
         builder.Services.AddSingleton<IEclipseAudioService, MauiEclipseAudioService>();
@@ -136,9 +141,11 @@ public static class MauiProgram
 			var rss  = (RssFeedService)sp.GetRequiredService<IRssFeedService>();
 
 			var wpProvider = new WpRestArticleProvider(http,
-				baseUrl: "https://tubkala.com",
-				sourceName: "Tubkala",
-				languageCode: "es");
+				sp.GetRequiredService<IStringLocalizer<ObservApp.Resources.Strings.App>>(),
+				baseUrl: TubkalaSource.BaseUrl,
+				sourceName: TubkalaSource.SourceName,
+				languageCode: TubkalaSource.LanguageCode,
+				categorySlugs: TubkalaSource.CategorySlugs);
 
 			var rssProviders = RssCatalog.Sources
 				.Select(entry => new RssFeedArticleProvider(rss, entry.Source, languageCode: entry.LanguageCode))

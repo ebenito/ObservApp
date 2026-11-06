@@ -7,6 +7,7 @@ using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
 using ObservApp.Shared.ViewModels;
 using ObservApp.Web.Client.Services;
+using Microsoft.Extensions.Localization;
 using Supabase;
 using Syncfusion.Blazor;
 
@@ -78,6 +79,9 @@ builder.Services.AddSingleton<IExternalLinkService, WebExternalLinkService>();
 builder.Services.AddSingleton<ITextToSpeechService, WebTextToSpeechService>();
 builder.Services.AddSingleton<IEclipseCalculatorService, EclipseCalculatorService>();
 builder.Services.AddSingleton<IAumentosCalculatorService, AumentosCalculatorService>();
+builder.Services.AddSingleton<IFovCalculatorService, FovCalculatorService>();
+builder.Services.AddSingleton<IEclipseExposureCalculatorService, EclipseExposureCalculatorService>();
+builder.Services.AddSingleton<ISolLunaCalculatorService, SolLunaCalculatorService>();
 builder.Services.AddSingleton<IHomeAstronomyService, HomeAstronomyService>();
 builder.Services.AddSingleton<IEfemeridesAstronomyService, EfemeridesAstronomyService>();
 builder.Services.AddSingleton<IEclipseAudioService, WebEclipseAudioService>();
@@ -126,6 +130,7 @@ builder.Services.AddSingleton(sp =>
 
 
 builder.Services.AddSingleton<IAuthSessionStore, BrowserAuthSessionStore>();
+builder.Services.AddSingleton<IAuthCredentialStore, BrowserAuthCredentialStore>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<SupabaseService>();
 builder.Services.AddSingleton<IObservationService>(
@@ -160,10 +165,12 @@ builder.Services.AddSingleton<IArticleService>(sp =>
 	// proxyBaseUrl = BaseAddress del propio host WASM (que es el servidor SSR)
 	// → las peticiones /api/wp-proxy las resuelve el servidor SSR
 	var wpProvider = new WpRestArticleProvider(proxyHttp,
-		baseUrl: "https://tubkala.com",
-		sourceName: "Tubkala",
-		languageCode: "es",
-		proxyBaseUrl: builder.HostEnvironment.BaseAddress.TrimEnd('/'));
+		sp.GetRequiredService<IStringLocalizer<ObservApp.Resources.Strings.App>>(),
+		baseUrl: TubkalaSource.BaseUrl,
+		sourceName: TubkalaSource.SourceName,
+		languageCode: TubkalaSource.LanguageCode,
+		proxyBaseUrl: builder.HostEnvironment.BaseAddress.TrimEnd('/'),
+		categorySlugs: TubkalaSource.CategorySlugs);
 
 	var rssProviders = RssCatalog.Sources
 		.Select(entry => new RssFeedArticleProvider(rss, entry.Source, languageCode: entry.LanguageCode))

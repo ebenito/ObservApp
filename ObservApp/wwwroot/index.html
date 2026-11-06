@@ -66,6 +66,114 @@
         })();
     </script>
 
+    <script>
+        window.ObservApp = window.ObservApp || {};
+        window.ObservApp.authCredentials = (function () {
+            var STORAGE_KEY = "auth.supabase.credentials.enc";
+            var DB_NAME = "observapp-auth";
+            var STORE_NAME = "keys";
+            var ENTRY_KEY = "credentials-aes-key";
+
+            function toBase64(bytes) {
+                var binary = "";
+                for (var i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+                return btoa(binary);
+            }
+
+            function fromBase64(base64) {
+                var binary = atob(base64);
+                var bytes = new Uint8Array(binary.length);
+                for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+                return bytes;
+            }
+
+            function openDb() {
+                return new Promise(function (resolve, reject) {
+                    var request = indexedDB.open(DB_NAME, 1);
+                    request.onupgradeneeded = function () {
+                        var db = request.result;
+                        if (!db.objectStoreNames.contains(STORE_NAME)) db.createObjectStore(STORE_NAME);
+                    };
+                    request.onsuccess = function () { resolve(request.result); };
+                    request.onerror = function () { reject(request.error); };
+                });
+            }
+
+            async function getOrCreateKey() {
+                if (!window.crypto || !window.crypto.subtle) return null;
+
+                var db = await openDb();
+                var key = await new Promise(function (resolve, reject) {
+                    var tx = db.transaction(STORE_NAME, "readonly");
+                    var store = tx.objectStore(STORE_NAME);
+                    var req = store.get(ENTRY_KEY);
+                    req.onsuccess = function () { resolve(req.result || null); };
+                    req.onerror = function () { reject(req.error); };
+                });
+
+                if (key) return key;
+
+                key = await window.crypto.subtle.generateKey(
+                    { name: "AES-GCM", length: 256 },
+                    false,
+                    ["encrypt", "decrypt"]);
+
+                await new Promise(function (resolve, reject) {
+                    var tx = db.transaction(STORE_NAME, "readwrite");
+                    var store = tx.objectStore(STORE_NAME);
+                    var req = store.put(key, ENTRY_KEY);
+                    req.onsuccess = function () { resolve(); };
+                    req.onerror = function () { reject(req.error); };
+                });
+
+                return key;
+            }
+
+            async function save(email, password) {
+                var key = await getOrCreateKey();
+                if (!key) return;
+
+                var payload = JSON.stringify({ email: email, password: password });
+                var iv = window.crypto.getRandomValues(new Uint8Array(12));
+                var encoded = new TextEncoder().encode(payload);
+                var encrypted = await window.crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, key, encoded);
+                var result = {
+                    iv: toBase64(iv),
+                    data: toBase64(new Uint8Array(encrypted))
+                };
+
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(result));
+            }
+
+            async function load() {
+                var serialized = localStorage.getItem(STORAGE_KEY);
+                if (!serialized) return null;
+
+                var key = await getOrCreateKey();
+                if (!key) return null;
+
+                var parsed = JSON.parse(serialized);
+                var iv = fromBase64(parsed.iv);
+                var data = fromBase64(parsed.data);
+                var decrypted = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, data);
+                var json = new TextDecoder().decode(decrypted);
+                var credentials = JSON.parse(json);
+
+                return { email: credentials.email || null, password: credentials.password || null };
+            }
+
+            async function clear() {
+                localStorage.removeItem(STORAGE_KEY);
+            }
+
+            return {
+                save: save,
+                load: load,
+                clear: clear
+            };
+        })();
+    </script>
+
     <script src="_framework/blazor.webview.js" autostart="false"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script src="_content/ObservApp.Shared/geolocation.js"></script>

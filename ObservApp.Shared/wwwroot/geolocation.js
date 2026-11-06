@@ -1,11 +1,12 @@
 // Geolocalización del navegador — expuesto como observApp.getCurrentPosition
-// para ser invocado desde Blazor vía IJSRuntime.InvokeAsync
+// para ser invocado desde Blazor vía IJSRuntime.InvokeAsync.
+// Devuelve códigos de error (no textos): los traduce WebGeolocationService.
 window.observApp = window.observApp || {};
 
 window.observApp.getCurrentPosition = function (highAccuracy) {
     return new Promise(function (resolve) {
         if (!navigator.geolocation) {
-            resolve({ error: 'La geolocalización no está disponible en este navegador.' });
+            resolve({ latitude: 0, longitude: 0, altitude: null, accuracy: null, error: 'unsupported' });
             return;
         }
 
@@ -26,14 +27,14 @@ window.observApp.getCurrentPosition = function (highAccuracy) {
                 });
             },
             function (err) {
-                var msg;
+                var code;
                 switch (err.code) {
-                    case 1: msg = 'Permiso de ubicación denegado.'; break;
-                    case 2: msg = 'Posición no disponible en este momento.'; break;
-                    case 3: msg = 'Tiempo de espera agotado al obtener la ubicación.'; break;
-                    default: msg = 'Error desconocido al obtener la ubicación.';
+                    case 1: code = 'permission_denied'; break;
+                    case 2: code = 'position_unavailable'; break;
+                    case 3: code = 'timeout'; break;
+                    default: code = 'unknown';
                 }
-                resolve({ latitude: 0, longitude: 0, altitude: null, accuracy: null, error: msg });
+                resolve({ latitude: 0, longitude: 0, altitude: null, accuracy: null, error: code });
             },
             options
         );

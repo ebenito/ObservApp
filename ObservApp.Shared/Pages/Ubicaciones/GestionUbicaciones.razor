@@ -293,7 +293,7 @@
             }
             else
             {
-                _gpsError = GeoService.LastError ?? "Error al obtener ubicación GPS.";
+                _gpsError = GeoService.LastError ?? L["FavLoc_Gps_Error"];
             }
         }
         catch (Exception ex)

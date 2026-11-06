@@ -1,0 +1,31 @@
+# ObservApp Web (Blazor WebAssembly standalone) se compila en GitHub Actions
+# (job build-web de .github/workflows/build.yml), que publica el artefacto
+# "ObservApp-Web" y lo despliega en Netlify con la CLI (job deploy-netlify).
+#
+# Netlify no puede compilar .NET 10: el comando de build descarga el último
+# artefacto ObservApp-Web ya compilado y lo deja en publish/web/wwwroot.
+#
+# Las builds que Netlify lanza por su cuenta al hacer push se cancelan
+# (ignore): el artefacto de ese commit aún no existiría y se publicaría el
+# anterior, pisando el despliegue hecho desde GitHub.
+[build]
+  command = "bash scripts/netlify-fetch-web-artifact.sh"
+  publish = "publish/web/wwwroot"
+  ignore = "exit 0"
+
+# Fallback de SPA: las rutas del router de Blazor sirven index.html.
+# Al no ser "force", solo aplica cuando no existe un fichero real en esa ruta.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/*.wasm"
+  [headers.values]
+    Content-Type = "application/wasm"

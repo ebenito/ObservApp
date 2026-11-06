@@ -3,6 +3,7 @@
     <File Path=".gitignore" />
     <File Path="Documentacion/DSO-Catalog.md" />
     <File Path="Documentacion/implementation_plan.md" />
+    <File Path="netlify.toml" />
     <File Path="README.md" />
   </Folder>
   <Folder Name="/Elementos de la solución/changelog/">
@@ -26,14 +27,17 @@
     <File Path="gitversion.yml" />
     <File Path="global.json" />
   </Folder>
+  <Folder Name="/Elementos de la solución/scripts/">
+    <File Path="netlify-fetch-web-artifact.sh" />
+  </Folder>
   <Folder Name="/Elementos de la solución/Supabase/">
     <File Path="Documentacion/Supabase/DOCUMENTACION_COMPLETADA.md" />
     <File Path="Documentacion/Supabase/Localization_Summary.md" />
     <File Path="Documentacion/Supabase/QUICK_START.md" />
     <File Path="Documentacion/Supabase/Supabase_SQL_Schema.sql" />
   </Folder>
-  <Project Path="ObservApp.Shared/ObservApp.Shared.csproj" />
   <Project Path="ObservApp.Shared.Tests/ObservApp.Shared.Tests.csproj" />
+  <Project Path="ObservApp.Shared/ObservApp.Shared.csproj" />
   <Project Path="ObservApp.Web.Client/ObservApp.Web.Client.csproj" />
   <Project Path="ObservApp.Web/ObservApp.Web.csproj" />
   <Project Path="ObservApp/ObservApp.csproj">

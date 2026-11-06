@@ -204,6 +204,9 @@
   <data name="Auth_ReconnectSession" xml:space="preserve">
     <value>إعادة ربط الجلسة</value>
   </data>
+  <data name="Auth_RememberMe" xml:space="preserve">
+    <value>تذكرني على هذا الجهاز</value>
+  </data>
   <data name="Auth_PasswordMismatch" xml:space="preserve">
     <value>كلمتا المرور غير متطابقتين</value>
   </data>
@@ -1755,5 +1758,302 @@
   </data>
   <data name="Eph_DSO_Filter_ResultCount" xml:space="preserve">
     <value>أجرام</value>
+  </data>
+  <data name="FOV_Placeholder_Example" xml:space="preserve">
+    <value>مثال: {0}</value>
+  </data>
+  <data name="FOV_Comparison_Label" xml:space="preserve">
+    <value>مجال الرؤية الحقيقي مقارنةً بأجسام مرجعية</value>
+  </data>
+  <data name="FOV_Ref_SmallerThanMoon" xml:space="preserve">
+    <value>&lt; البدر</value>
+  </data>
+  <data name="FOV_Ref_AboutMoon" xml:space="preserve">
+    <value>~ البدر</value>
+  </data>
+  <data name="FOV_Ref_SmallerThanPleiades" xml:space="preserve">
+    <value>&lt; الثريا</value>
+  </data>
+  <data name="FOV_Ref_AboutPleiades" xml:space="preserve">
+    <value>~ الثريا</value>
+  </data>
+  <data name="FOV_EmptyState" xml:space="preserve">
+    <value>أدخل بيانات التلسكوب والعدسة العينية لرؤية النتائج والمحاكاة المرئية</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_PartialOd50" xml:space="preserve">
+    <value>OD 5.0 (جزئي)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_PartialOd40" xml:space="preserve">
+    <value>OD 4.0 (جزئي)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_BailysBeads" xml:space="preserve">
+    <value>خرز بايلي</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Chromosphere" xml:space="preserve">
+    <value>الكروموسفير</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Prominences" xml:space="preserve">
+    <value>الشواظ الشمسية</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Corona" xml:space="preserve">
+    <value>الهالة ({0}R☉)</value>
+  </data>
+  <data name="Calc_Eclipse_Phase_Earthshine" xml:space="preserve">
+    <value>ضوء الأرض</value>
+  </data>
+  <data name="SolLuna_Unit_AU" xml:space="preserve">
+    <value>و.ف.</value>
+  </data>
+  <data name="About_Title" xml:space="preserve">
+    <value>حول هذا التطبيق</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>الإصدار:</value>
+  </data>
+  <data name="About_Developer" xml:space="preserve">
+    <value>المطوّر:</value>
+  </data>
+  <data name="About_Email" xml:space="preserve">
+    <value>البريد الإلكتروني:</value>
+  </data>
+  <data name="About_Technologies" xml:space="preserve">
+    <value>التقنيات المستخدمة:</value>
+  </data>
+  <data name="About_ViewOnGitHub" xml:space="preserve">
+    <value>عرض على GitHub</value>
+  </data>
+  <data name="About_DownloadTitle" xml:space="preserve">
+    <value>التنزيل والتقييم</value>
+  </data>
+  <data name="About_DownloadDescription" xml:space="preserve">
+    <value>نزّل التطبيق مجانًا من متجرك المفضل، وإن وجدته مفيدًا فاترك لنا تقييمًا!</value>
+  </data>
+  <data name="About_AvailableOn" xml:space="preserve">
+    <value>متوفر على</value>
+  </data>
+  <data name="About_ComingSoonOn" xml:space="preserve">
+    <value>قريبًا على</value>
+  </data>
+  <data name="FavLoc_Gps_Error" xml:space="preserve">
+    <value>تعذّر الحصول على موقع GPS.</value>
+  </data>
+  <data name="Eclipse_Region_NorthAmerica" xml:space="preserve">
+    <value>أمريكا الشمالية</value>
+  </data>
+  <data name="Eclipse_Region_SouthPacificSouthAmerica" xml:space="preserve">
+    <value>جنوب المحيط الهادئ / أمريكا الجنوبية</value>
+  </data>
+  <data name="Eclipse_Region_Antarctica" xml:space="preserve">
+    <value>القارة القطبية الجنوبية</value>
+  </data>
+  <data name="Eclipse_Region_ArcticEuropeAfrica" xml:space="preserve">
+    <value>القطب الشمالي / أوروبا / أفريقيا</value>
+  </data>
+  <data name="Eclipse_Region_SouthAmericaAtlantic" xml:space="preserve">
+    <value>أمريكا الجنوبية / الأطلسي</value>
+  </data>
+  <data name="Eclipse_Region_AfricaEuropeAsia" xml:space="preserve">
+    <value>أفريقيا / أوروبا / آسيا</value>
+  </data>
+  <data name="Eclipse_Region_SouthAmerica" xml:space="preserve">
+    <value>أمريكا الجنوبية</value>
+  </data>
+  <data name="Eclipse_Region_AustraliaAsia" xml:space="preserve">
+    <value>أستراليا / آسيا</value>
+  </data>
+  <data name="Eclipse_Region_EuropeAsia" xml:space="preserve">
+    <value>أوروبا / آسيا</value>
+  </data>
+  <data name="Eclipse_Region_SouthAfricaOceania" xml:space="preserve">
+    <value>جنوب أفريقيا / أوقيانوسيا</value>
+  </data>
+  <data name="Auth_Reset_Title" xml:space="preserve">
+    <value>استعادة كلمة المرور</value>
+  </data>
+  <data name="Auth_Reset_Subtitle_Email" xml:space="preserve">
+    <value>أدخل بريدك الإلكتروني</value>
+  </data>
+  <data name="Auth_Reset_Description" xml:space="preserve">
+    <value>سنرسل إليك رمزًا لإعادة تعيين كلمة المرور.</value>
+  </data>
+  <data name="Auth_Reset_PasswordDescription" xml:space="preserve">
+    <value>تم التحقق من الرمز. اختر كلمة المرور الجديدة.</value>
+  </data>
+  <data name="Auth_Reset_NewPassword" xml:space="preserve">
+    <value>كلمة المرور الجديدة</value>
+  </data>
+  <data name="Auth_Reset_Sending" xml:space="preserve">
+    <value>جارٍ إرسال الرمز…</value>
+  </data>
+  <data name="Auth_Reset_Updating" xml:space="preserve">
+    <value>جارٍ حفظ كلمة المرور…</value>
+  </data>
+  <data name="Auth_Reset_SendCode" xml:space="preserve">
+    <value>إرسال الرمز</value>
+  </data>
+  <data name="Auth_Reset_VerifyCode" xml:space="preserve">
+    <value>التحقق من الرمز</value>
+  </data>
+  <data name="Auth_Reset_ChangePassword" xml:space="preserve">
+    <value>تغيير كلمة المرور</value>
+  </data>
+  <data name="Auth_Reset_ResendCode" xml:space="preserve">
+    <value>إعادة إرسال الرمز</value>
+  </data>
+  <data name="Auth_Reset_BackToLogin" xml:space="preserve">
+    <value>العودة إلى تسجيل الدخول</value>
+  </data>
+  <data name="Auth_Reset_Error" xml:space="preserve">
+    <value>تعذّر إعادة تعيين كلمة المرور.</value>
+  </data>
+  <data name="Auth_PasswordTooShort" xml:space="preserve">
+    <value>يجب أن تتكون كلمة المرور من {0} أحرف على الأقل</value>
+  </data>
+  <data name="Auth_Error_Generic" xml:space="preserve">
+    <value>تعذّر إكمال المصادقة.</value>
+  </data>
+  <data name="Auth_Error_InvalidCredentials" xml:space="preserve">
+    <value>بيانات الاعتماد غير صحيحة.</value>
+  </data>
+  <data name="Auth_Error_EmailNotConfirmed" xml:space="preserve">
+    <value>يجب تأكيد بريدك الإلكتروني قبل تسجيل الدخول.</value>
+  </data>
+  <data name="Auth_Error_AlreadyRegistered" xml:space="preserve">
+    <value>المستخدم مسجّل بالفعل.</value>
+  </data>
+  <data name="Auth_Error_WeakPassword" xml:space="preserve">
+    <value>كلمة المرور قصيرة جدًا أو ضعيفة.</value>
+  </data>
+  <data name="Auth_Error_SamePassword" xml:space="preserve">
+    <value>يجب أن تختلف كلمة المرور الجديدة عن القديمة.</value>
+  </data>
+  <data name="Auth_Error_RateLimited" xml:space="preserve">
+    <value>محاولات كثيرة جدًا. انتظر قليلًا ثم حاول مرة أخرى.</value>
+  </data>
+  <data name="Auth_Error_CodeExpired" xml:space="preserve">
+    <value>انتهت صلاحية الرمز. اطلب رمزًا جديدًا.</value>
+  </data>
+  <data name="Auth_Error_CodeInvalid" xml:space="preserve">
+    <value>الرمز المُدخل غير صالح.</value>
+  </data>
+  <data name="Auth_Error_SignUpFailed" xml:space="preserve">
+    <value>تعذّر إنشاء الحساب.</value>
+  </data>
+  <data name="Auth_Error_SignInFailed" xml:space="preserve">
+    <value>تعذّر تسجيل الدخول.</value>
+  </data>
+  <data name="Auth_Error_VerifyCodeFailed" xml:space="preserve">
+    <value>تعذّر التحقق من الرمز.</value>
+  </data>
+  <data name="Auth_Error_SendRecoveryFailed" xml:space="preserve">
+    <value>تعذّر إرسال رمز الاستعادة.</value>
+  </data>
+  <data name="Auth_Error_NoRecoverySession" xml:space="preserve">
+    <value>لا توجد جلسة استعادة نشطة. اطلب رمزًا جديدًا.</value>
+  </data>
+  <data name="Auth_Error_ChangePasswordFailed" xml:space="preserve">
+    <value>تعذّر تغيير كلمة المرور.</value>
+  </data>
+  <data name="Auth_Error_RestoreTimeout" xml:space="preserve">
+    <value>تعذّر استعادة الجلسة في وقت معقول.</value>
+  </data>
+  <data name="Obs_Error_NotAuthenticated" xml:space="preserve">
+    <value>المستخدم غير مسجّل الدخول.</value>
+  </data>
+  <data name="Gps_Error_PermissionDenied" xml:space="preserve">
+    <value>تم رفض إذن الموقع.</value>
+  </data>
+  <data name="Gps_Error_Unavailable" xml:space="preserve">
+    <value>تعذّر الحصول على الموقع.</value>
+  </data>
+  <data name="Gps_Error_NotSupported" xml:space="preserve">
+    <value>نظام GPS غير متوفر على هذا الجهاز.</value>
+  </data>
+  <data name="Gps_Error_Disabled" xml:space="preserve">
+    <value>خدمة الموقع معطّلة على الجهاز. فعّلها من الإعدادات.</value>
+  </data>
+  <data name="Gps_Error_Cancelled" xml:space="preserve">
+    <value>تم إلغاء طلب الموقع.</value>
+  </data>
+  <data name="Gps_Error_Timeout" xml:space="preserve">
+    <value>انتهت مهلة الحصول على الموقع.</value>
+  </data>
+  <data name="Gps_Error_Generic" xml:space="preserve">
+    <value>خطأ أثناء الحصول على الموقع: {0}</value>
+  </data>
+  <data name="Gps_Error_BrowserUnsupported" xml:space="preserve">
+    <value>تحديد الموقع الجغرافي غير متوفر في هذا المتصفح.</value>
+  </data>
+  <data name="Gps_Error_Browser" xml:space="preserve">
+    <value>خطأ في المتصفح: {0}</value>
+  </data>
+  <data name="Gps_Error_ServerUnavailable" xml:space="preserve">
+    <value>تحديد الموقع الجغرافي غير متوفر على الخادم.</value>
+  </data>
+  <data name="Gps_Source_Browser" xml:space="preserve">
+    <value>المتصفح</value>
+  </data>
+  <data name="Gps_Source_Network" xml:space="preserve">
+    <value>الشبكة/Wi-Fi</value>
+  </data>
+  <data name="Gps_Source_Mock" xml:space="preserve">
+    <value>محاكاة</value>
+  </data>
+  <data name="Articles_Error_WpStatus" xml:space="preserve">
+    <value>ردّت واجهة WordPress بـ {0}.</value>
+  </data>
+  <data name="Articles_Error_WpHtml" xml:space="preserve">
+    <value>أعادت واجهة WordPress صفحة HTML. يُستخدم RSS كبديل.</value>
+  </data>
+  <data name="Articles_Error_WpInvalidJson" xml:space="preserve">
+    <value>أعادت واجهة WordPress استجابة غير صالحة.</value>
+  </data>
+  <data name="Articles_Error_WpMessage" xml:space="preserve">
+    <value>ردّت واجهة WordPress: {0}</value>
+  </data>
+  <data name="Articles_Error_Proxy" xml:space="preserve">
+    <value>وكيل WP: {0}</value>
+  </data>
+  <data name="Articles_Error_ProxyStatus" xml:space="preserve">
+    <value>ردّ الوكيل بـ {0}</value>
+  </data>
+  <data name="Articles_Error_ProxyInvalidJson" xml:space="preserve">
+    <value>أعاد وكيل WP استجابة غير صالحة.</value>
+  </data>
+  <data name="Articles_Error_CategoriesHtml" xml:space="preserve">
+    <value>أعادت واجهة WordPress صفحة HTML عند الاستعلام عن الفئات.</value>
+  </data>
+  <data name="Articles_Error_UnknownCategories" xml:space="preserve">
+    <value>لا توجد أي من الفئات المحددة في {0}: {1}. تُعرض جميع الفئات.</value>
+  </data>
+  <data name="Articles_Error_RssStatus" xml:space="preserve">
+    <value>فشلت تغذية RSS أيضًا: {0}</value>
+  </data>
+  <data name="Articles_Error_RssHtml" xml:space="preserve">
+    <value>أعادت تغذية RSS صفحة HTML.</value>
+  </data>
+  <data name="Articles_Error_RssNoItems" xml:space="preserve">
+    <value>لم تُعد تغذية RSS أي مقالات.</value>
+  </data>
+  <data name="Articles_Error_RssNoCategoryItems" xml:space="preserve">
+    <value>لا تحتوي تغذية RSS على مقالات من الفئات المحددة.</value>
+  </data>
+  <data name="Articles_Error_RssFallback" xml:space="preserve">
+    <value>بديل RSS: {0}</value>
+  </data>
+  <data name="Rss_Error_HtmlInsteadOfXml" xml:space="preserve">
+    <value>أعاد الخادم HTML بدلًا من XML. قد تكون التغذية محمية بنظام تحقق.</value>
+  </data>
+  <data name="Rss_Error_XmlParse" xml:space="preserve">
+    <value>خطأ في قراءة XML: {0}</value>
+  </data>
+  <data name="Rss_Error_NoRoot" xml:space="preserve">
+    <value>لا يحتوي مستند XML على عنصر جذر.</value>
+  </data>
+  <data name="Rss_Error_Download" xml:space="preserve">
+    <value>تعذّر تنزيل التغذية: {0}</value>
+  </data>
+  <data name="Error_SsrUnavailable" xml:space="preserve">
+    <value>الميزة غير متوفرة على خادم التطوير (SSR).</value>
   </data>
 </root>

@@ -1,5 +1,4 @@
 ﻿using CosineKitty;
-using ObservApp.Shared.Services;
 
 namespace ObservApp.Shared.Services;
 
@@ -11,60 +10,70 @@ public sealed class EclipseCalculatorService : IEclipseCalculatorService
     {
         new("2024-04-08",
             new DateTime(2024, 4,  8, 18,17,0,DateTimeKind.Utc),
-            EclipseType.Total,   "América del Norte",
+            EclipseType.Total,   "Eclipse_Region_NorthAmerica",
             SarosNumber: 139, SarosMember: 31, SarosTotal: 71),
 
         new("2024-10-02",
             new DateTime(2024,10,  2, 18,46,0,DateTimeKind.Utc),
-            EclipseType.Annular, "Pacífico Sur / Sudamérica",
+            EclipseType.Annular, "Eclipse_Region_SouthPacificSouthAmerica",
             SarosNumber: 144, SarosMember: 23, SarosTotal: 70),
 
         new("2026-02-17",
             new DateTime(2026, 2, 17,12, 2,0,DateTimeKind.Utc),
-            EclipseType.Annular, "Antártida",
+            EclipseType.Annular, "Eclipse_Region_Antarctica",
             SarosNumber: 121, SarosMember: 79, SarosTotal: 82),
 
         new("2026-08-12",
             new DateTime(2026, 8, 12,17,47,0,DateTimeKind.Utc),
-            EclipseType.Total,   "Ártico / Europa / África",
+            EclipseType.Total,   "Eclipse_Region_ArcticEuropeAfrica",
             SarosNumber: 126, SarosMember: 48, SarosTotal: 72),
 
         new("2027-02-06",
             new DateTime(2027, 2,  6,16, 0,0,DateTimeKind.Utc),
-            EclipseType.Annular, "Sudamérica / Atlántico",
+            EclipseType.Annular, "Eclipse_Region_SouthAmericaAtlantic",
             SarosNumber: 131, SarosMember: 52, SarosTotal: 70),
 
         new("2027-08-02",
             new DateTime(2027, 8,  2,10, 7,0,DateTimeKind.Utc),
-            EclipseType.Total,   "África / Europa / Asia",
+            EclipseType.Total,   "Eclipse_Region_AfricaEuropeAsia",
             SarosNumber: 136, SarosMember: 38, SarosTotal: 71),
 
         new("2028-01-26",
             new DateTime(2028, 1, 26,15,54,0,DateTimeKind.Utc),
-            EclipseType.Annular, "Sudamérica",
+            EclipseType.Annular, "Eclipse_Region_SouthAmerica",
             SarosNumber: 141, SarosMember: 29, SarosTotal: 70),
 
         new("2028-07-22",
             new DateTime(2028, 7, 22, 2, 56, 0, DateTimeKind.Utc),
-            EclipseType.Total, "Australia / Asia",
+            EclipseType.Total, "Eclipse_Region_AustraliaAsia",
             SarosNumber: 146, SarosMember: 28, SarosTotal: 76),  // era 14, corregido a 28
 
         new("2030-06-01",
             new DateTime(2030, 6,  1, 6,29,0,DateTimeKind.Utc),
-            EclipseType.Annular, "Europa / Asia",
+            EclipseType.Annular, "Eclipse_Region_EuropeAsia",
             SarosNumber: 128, SarosMember: 58, SarosTotal: 73),
 
         new("2030-11-25",
             new DateTime(2030,11, 25, 6,51,0,DateTimeKind.Utc),
-            EclipseType.Total,   "Sudáfrica / Oceanía",
+            EclipseType.Total,   "Eclipse_Region_SouthAfricaOceania",
             SarosNumber: 133, SarosMember: 45, SarosTotal: 72),
     };
 
+    private readonly TimeProvider _timeProvider;
+
+    public EclipseCalculatorService() : this(TimeProvider.System) { }
+
+    public EclipseCalculatorService(TimeProvider timeProvider)
+    {
+        _timeProvider = timeProvider;
+    }
+
     public IReadOnlyList<EclipseDefinition> GetUpcomingEclipses(int years = 6)
     {
-        var cutoff = DateTime.UtcNow.AddYears(years);
+        var nowUtc = _timeProvider.GetUtcNow().UtcDateTime;
+        var cutoff = nowUtc.AddYears(years);
         return _catalog
-            .Where(e => e.Date >= DateTime.UtcNow.AddDays(-1) && e.Date <= cutoff)
+            .Where(e => e.Date >= nowUtc.AddDays(-1) && e.Date <= cutoff)
             .OrderBy(e => e.Date)
             .ToList();
     }
@@ -75,7 +84,7 @@ public sealed class EclipseCalculatorService : IEclipseCalculatorService
         double longitudeDeg,
         double altitudeMeters)
     {
-        var observer = new Observer(latitudeDeg, longitudeDeg, altitudeMeters / 1000.0);
+        var observer = new Observer(latitudeDeg, longitudeDeg, altitudeMeters);
         var startTime = new AstroTime(eclipse.Date.AddHours(-4));
         var endTime = new AstroTime(eclipse.Date.AddHours(4));
 
@@ -252,13 +261,11 @@ public sealed class EclipseCalculatorService : IEclipseCalculatorService
 				sunEqCenter.ra, sunEqCenter.dec,
 				moonEqCenter.ra, moonEqCenter.dec);
 
-			// Distancias y radios angulares (geocéntricos — la diferencia
-			// topocéntrica en distancia es despreciable para el Sol,
-			// y para la Luna el paralaje ya está corregido en Equator)
-			var moonVec = Astronomy.GeoVector(Body.Moon, peakTime, Aberration.Corrected);
-			var sunVec = Astronomy.GeoVector(Body.Sun, peakTime, Aberration.Corrected);
-			double moonDistAU = moonVec.Length();
-			double sunDistAU = sunVec.Length();
+			// Distancias topocéntricas: desde la superficie la Luna está hasta un radio
+			// terrestre más cerca que desde el geocentro, y su radio angular crece ~1,5 %.
+			// Con la distancia geocéntrica la magnitud sale ~0,02 por debajo de la de NASA.
+			double moonDistAU = moonEqCenter.dist;
+			double sunDistAU = sunEqCenter.dist;
 
 			const double moonRadiusKm = 1737.4;
 			const double sunRadiusKm = 695_700.0;
@@ -272,8 +279,12 @@ public sealed class EclipseCalculatorService : IEclipseCalculatorService
 				$"centerLat={globalInfo.latitude:F4} centerLon={globalInfo.longitude:F4} " +
 				$"sepDeg={sepDeg:F8} rSun={rSun:F6} rMoon={rMoon:F6}");
 
-			// Magnitud lineal: (rSun + rMoon − sep) / (2 × rSun)
-			magnitude = (rSun + rMoon - sepDeg) / (2.0 * rSun);
+			// Magnitud (convenio NASA/Meeus): en eclipses centrales (la Luna queda
+			// dentro del disco solar o lo cubre) es el cociente de diámetros rMoon / rSun;
+			// en parciales, la fracción del diámetro cubierta (rSun + rMoon − sep) / (2 × rSun)
+			magnitude = sepDeg <= Math.Abs(rMoon - rSun)
+				? rMoon / rSun
+				: (rSun + rMoon - sepDeg) / (2.0 * rSun);
 			magnitude = Math.Max(0.0, magnitude);
 
 			// Gamma con signo: distancia mínima eje sombra-centro Tierra
