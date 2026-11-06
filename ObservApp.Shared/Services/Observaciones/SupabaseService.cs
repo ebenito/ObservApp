@@ -1,7 +1,9 @@
 namespace ObservApp.Shared.Services;
 
+using Microsoft.Extensions.Localization;
 using ObservApp.Shared.Models;
 using Supabase;
+using AppStrings = ObservApp.Resources.Strings.App;
 
 /// <summary>
 /// Implementación de persistencia de sesiones de observación usando Supabase.
@@ -9,6 +11,7 @@ using Supabase;
 public class SupabaseService : IObservationService
 {
 	private readonly Client _supabase;
+	private readonly IStringLocalizer<AppStrings> _l;
 	private readonly SemaphoreSlim _initializeLock = new(1, 1);
 	private bool _initialized;
 	private string? _lastError;
@@ -19,9 +22,10 @@ public class SupabaseService : IObservationService
 		private set => _lastError = value;
 	}
 
-	public SupabaseService(Client supabase)
+	public SupabaseService(Client supabase, IStringLocalizer<AppStrings> localizer)
 	{
 		_supabase = supabase;
+		_l = localizer;
 	}
 
 	public async Task<List<ObservationSession>> GetAllAsync(CancellationToken cancellationToken = default)
@@ -34,7 +38,7 @@ public class SupabaseService : IObservationService
 			var userId = _supabase.Auth.CurrentUser?.Id;
 			if (string.IsNullOrEmpty(userId))
 			{
-				LastError = "Usuario no autenticado";
+				LastError = _l["Obs_Error_NotAuthenticated"];
 				return new List<ObservationSession>();
 			}
 
@@ -62,7 +66,7 @@ public class SupabaseService : IObservationService
 			var userId = _supabase.Auth.CurrentUser?.Id;
 			if (string.IsNullOrEmpty(userId))
 			{
-				LastError = "Usuario no autenticado";
+				LastError = _l["Obs_Error_NotAuthenticated"];
 				return null;
 			}
 
@@ -90,7 +94,7 @@ public class SupabaseService : IObservationService
 			var userId = _supabase.Auth.CurrentUser?.Id;
 			if (string.IsNullOrEmpty(userId))
 			{
-				LastError = "Usuario no autenticado";
+				LastError = _l["Obs_Error_NotAuthenticated"];
 				return false;
 			}
 
@@ -139,7 +143,7 @@ public class SupabaseService : IObservationService
 			var userId = _supabase.Auth.CurrentUser?.Id;
 			if (string.IsNullOrEmpty(userId))
 			{
-				LastError = "Usuario no autenticado";
+				LastError = _l["Obs_Error_NotAuthenticated"];
 				return false;
 			}
 

@@ -54,4 +54,10 @@
     <InternalsVisibleTo Include="ObservApp.Shared.Tests" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Login.razor.css es CSS aislado; con un ámbito común lo comparten Login, ConfirmOtp y ResetPassword -->
+    <None Update="Pages\Login\Login.razor.css" CssScope="b-login-shared" />
+    <Content Update="Pages\Login\*.razor" CssScope="b-login-shared" />
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text;
+using Microsoft.Extensions.Localization;
 using ObservApp.Shared.Services;
 using Xunit;
 
@@ -161,6 +162,7 @@ public sealed class WpRestArticleProviderTests
 
 		Assert.Single(page.Items);
 		Assert.NotNull(provider.LastError);
+		Assert.Contains("Articles_Error_UnknownCategories", provider.LastError);
 		Assert.Contains("inexistente", provider.LastError);
 		Assert.DoesNotContain(handler.Requests, u => u.Contains("categories="));
 	}
@@ -197,7 +199,7 @@ public sealed class WpRestArticleProviderTests
 		var page = await provider.GetPageAsync(1, 10, TestContext.Current.CancellationToken);
 
 		Assert.Empty(page.Items);
-		Assert.Contains("categorías configuradas", provider.LastError);
+		Assert.Contains("Articles_Error_RssNoCategoryItems", provider.LastError);
 	}
 
 	// ── Ruta por proxy (WASM) ─────────────────────────────────────────────────
@@ -248,10 +250,24 @@ public sealed class WpRestArticleProviderTests
 	// ── Infraestructura ───────────────────────────────────────────────────────
 
 	private static WpRestArticleProvider CreateDirect(FakeHandler handler, IEnumerable<string>? categorySlugs)
-		=> new(new HttpClient(handler), BaseUrl, "Tubkala", "es", proxyBaseUrl: null, categorySlugs: categorySlugs);
+		=> new(new HttpClient(handler), new KeyLocalizer(), BaseUrl, "Tubkala", "es", proxyBaseUrl: null, categorySlugs: categorySlugs);
 
 	private static WpRestArticleProvider CreateProxied(FakeHandler handler, IEnumerable<string>? categorySlugs)
-		=> new(new HttpClient(handler), BaseUrl, "Tubkala", "es", proxyBaseUrl: ProxyUrl, categorySlugs: categorySlugs);
+		=> new(new HttpClient(handler), new KeyLocalizer(), BaseUrl, "Tubkala", "es", proxyBaseUrl: ProxyUrl, categorySlugs: categorySlugs);
+
+	/// <summary>
+	/// Localizador de prueba: devuelve la clave (y los argumentos de formato, si los hay)
+	/// para que los tests comprueben qué recurso se usó sin depender del idioma.
+	/// </summary>
+	private sealed class KeyLocalizer : IStringLocalizer<ObservApp.Resources.Strings.App>
+	{
+		public LocalizedString this[string name] => new(name, name);
+
+		public LocalizedString this[string name, params object[] arguments]
+			=> new(name, $"{name}:{string.Join(",", arguments)}");
+
+		public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures) => [];
+	}
 
 	private static string ProxiedUrl(HttpRequestMessage req) => ProxiedUrl(req.RequestUri!.ToString());
 

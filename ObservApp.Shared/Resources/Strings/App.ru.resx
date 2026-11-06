@@ -1867,4 +1867,193 @@
   <data name="Eclipse_Region_SouthAfricaOceania" xml:space="preserve">
     <value>Южная Африка / Океания</value>
   </data>
+  <data name="Auth_Reset_Title" xml:space="preserve">
+    <value>Восстановление пароля</value>
+  </data>
+  <data name="Auth_Reset_Subtitle_Email" xml:space="preserve">
+    <value>Введите свой e-mail</value>
+  </data>
+  <data name="Auth_Reset_Description" xml:space="preserve">
+    <value>Мы отправим вам код для сброса пароля.</value>
+  </data>
+  <data name="Auth_Reset_PasswordDescription" xml:space="preserve">
+    <value>Код подтверждён. Выберите новый пароль.</value>
+  </data>
+  <data name="Auth_Reset_NewPassword" xml:space="preserve">
+    <value>Новый пароль</value>
+  </data>
+  <data name="Auth_Reset_Sending" xml:space="preserve">
+    <value>Отправка кода…</value>
+  </data>
+  <data name="Auth_Reset_Updating" xml:space="preserve">
+    <value>Сохранение пароля…</value>
+  </data>
+  <data name="Auth_Reset_SendCode" xml:space="preserve">
+    <value>Отправить код</value>
+  </data>
+  <data name="Auth_Reset_VerifyCode" xml:space="preserve">
+    <value>Проверить код</value>
+  </data>
+  <data name="Auth_Reset_ChangePassword" xml:space="preserve">
+    <value>Изменить пароль</value>
+  </data>
+  <data name="Auth_Reset_ResendCode" xml:space="preserve">
+    <value>Отправить код ещё раз</value>
+  </data>
+  <data name="Auth_Reset_BackToLogin" xml:space="preserve">
+    <value>Вернуться ко входу</value>
+  </data>
+  <data name="Auth_Reset_Error" xml:space="preserve">
+    <value>Не удалось сбросить пароль.</value>
+  </data>
+  <data name="Auth_PasswordTooShort" xml:space="preserve">
+    <value>Пароль должен содержать не менее {0} символов</value>
+  </data>
+  <data name="Auth_Error_Generic" xml:space="preserve">
+    <value>Не удалось завершить аутентификацию.</value>
+  </data>
+  <data name="Auth_Error_InvalidCredentials" xml:space="preserve">
+    <value>Неверные учётные данные.</value>
+  </data>
+  <data name="Auth_Error_EmailNotConfirmed" xml:space="preserve">
+    <value>Перед входом необходимо подтвердить адрес электронной почты.</value>
+  </data>
+  <data name="Auth_Error_AlreadyRegistered" xml:space="preserve">
+    <value>Пользователь уже зарегистрирован.</value>
+  </data>
+  <data name="Auth_Error_WeakPassword" xml:space="preserve">
+    <value>Пароль слишком короткий или слишком простой.</value>
+  </data>
+  <data name="Auth_Error_SamePassword" xml:space="preserve">
+    <value>Новый пароль должен отличаться от старого.</value>
+  </data>
+  <data name="Auth_Error_RateLimited" xml:space="preserve">
+    <value>Слишком много попыток. Подождите немного и попробуйте снова.</value>
+  </data>
+  <data name="Auth_Error_CodeExpired" xml:space="preserve">
+    <value>Срок действия кода истёк. Запросите новый.</value>
+  </data>
+  <data name="Auth_Error_CodeInvalid" xml:space="preserve">
+    <value>Введённый код недействителен.</value>
+  </data>
+  <data name="Auth_Error_SignUpFailed" xml:space="preserve">
+    <value>Не удалось создать учётную запись.</value>
+  </data>
+  <data name="Auth_Error_SignInFailed" xml:space="preserve">
+    <value>Не удалось войти.</value>
+  </data>
+  <data name="Auth_Error_VerifyCodeFailed" xml:space="preserve">
+    <value>Не удалось проверить код.</value>
+  </data>
+  <data name="Auth_Error_SendRecoveryFailed" xml:space="preserve">
+    <value>Не удалось отправить код восстановления.</value>
+  </data>
+  <data name="Auth_Error_NoRecoverySession" xml:space="preserve">
+    <value>Нет активной сессии восстановления. Запросите новый код.</value>
+  </data>
+  <data name="Auth_Error_ChangePasswordFailed" xml:space="preserve">
+    <value>Не удалось изменить пароль.</value>
+  </data>
+  <data name="Auth_Error_RestoreTimeout" xml:space="preserve">
+    <value>Не удалось восстановить сессию за разумное время.</value>
+  </data>
+  <data name="Obs_Error_NotAuthenticated" xml:space="preserve">
+    <value>Пользователь не вошёл в систему.</value>
+  </data>
+  <data name="Gps_Error_PermissionDenied" xml:space="preserve">
+    <value>Доступ к геолокации запрещён.</value>
+  </data>
+  <data name="Gps_Error_Unavailable" xml:space="preserve">
+    <value>Не удалось определить местоположение.</value>
+  </data>
+  <data name="Gps_Error_NotSupported" xml:space="preserve">
+    <value>GPS недоступен на этом устройстве.</value>
+  </data>
+  <data name="Gps_Error_Disabled" xml:space="preserve">
+    <value>Геолокация отключена на устройстве. Включите её в настройках.</value>
+  </data>
+  <data name="Gps_Error_Cancelled" xml:space="preserve">
+    <value>Запрос местоположения отменён.</value>
+  </data>
+  <data name="Gps_Error_Timeout" xml:space="preserve">
+    <value>Время ожидания определения местоположения истекло.</value>
+  </data>
+  <data name="Gps_Error_Generic" xml:space="preserve">
+    <value>Ошибка при определении местоположения: {0}</value>
+  </data>
+  <data name="Gps_Error_BrowserUnsupported" xml:space="preserve">
+    <value>Геолокация недоступна в этом браузере.</value>
+  </data>
+  <data name="Gps_Error_Browser" xml:space="preserve">
+    <value>Ошибка браузера: {0}</value>
+  </data>
+  <data name="Gps_Error_ServerUnavailable" xml:space="preserve">
+    <value>Геолокация недоступна на сервере.</value>
+  </data>
+  <data name="Gps_Source_Browser" xml:space="preserve">
+    <value>Браузер</value>
+  </data>
+  <data name="Gps_Source_Network" xml:space="preserve">
+    <value>Сеть/Wi-Fi</value>
+  </data>
+  <data name="Gps_Source_Mock" xml:space="preserve">
+    <value>Имитация</value>
+  </data>
+  <data name="Articles_Error_WpStatus" xml:space="preserve">
+    <value>API WordPress ответил {0}.</value>
+  </data>
+  <data name="Articles_Error_WpHtml" xml:space="preserve">
+    <value>API WordPress вернул HTML. Используется RSS в качестве резерва.</value>
+  </data>
+  <data name="Articles_Error_WpInvalidJson" xml:space="preserve">
+    <value>API WordPress вернул недопустимый ответ.</value>
+  </data>
+  <data name="Articles_Error_WpMessage" xml:space="preserve">
+    <value>API WordPress ответил: {0}</value>
+  </data>
+  <data name="Articles_Error_Proxy" xml:space="preserve">
+    <value>Прокси WP: {0}</value>
+  </data>
+  <data name="Articles_Error_ProxyStatus" xml:space="preserve">
+    <value>прокси ответил {0}</value>
+  </data>
+  <data name="Articles_Error_ProxyInvalidJson" xml:space="preserve">
+    <value>Прокси WP вернул недопустимый ответ.</value>
+  </data>
+  <data name="Articles_Error_CategoriesHtml" xml:space="preserve">
+    <value>API WordPress вернул HTML при запросе категорий.</value>
+  </data>
+  <data name="Articles_Error_UnknownCategories" xml:space="preserve">
+    <value>Ни одна из настроенных категорий не существует на {0}: {1}. Показаны все.</value>
+  </data>
+  <data name="Articles_Error_RssStatus" xml:space="preserve">
+    <value>RSS-лента тоже недоступна: {0}</value>
+  </data>
+  <data name="Articles_Error_RssHtml" xml:space="preserve">
+    <value>RSS-лента вернула HTML.</value>
+  </data>
+  <data name="Articles_Error_RssNoItems" xml:space="preserve">
+    <value>RSS-лента не вернула статей.</value>
+  </data>
+  <data name="Articles_Error_RssNoCategoryItems" xml:space="preserve">
+    <value>В RSS-ленте нет статей из настроенных категорий.</value>
+  </data>
+  <data name="Articles_Error_RssFallback" xml:space="preserve">
+    <value>Резерв RSS: {0}</value>
+  </data>
+  <data name="Rss_Error_HtmlInsteadOfXml" xml:space="preserve">
+    <value>Сервер вернул HTML вместо XML. Возможно, лента защищена системой проверки.</value>
+  </data>
+  <data name="Rss_Error_XmlParse" xml:space="preserve">
+    <value>Ошибка чтения XML: {0}</value>
+  </data>
+  <data name="Rss_Error_NoRoot" xml:space="preserve">
+    <value>В XML-документе нет корневого элемента.</value>
+  </data>
+  <data name="Rss_Error_Download" xml:space="preserve">
+    <value>Не удалось загрузить ленту: {0}</value>
+  </data>
+  <data name="Error_SsrUnavailable" xml:space="preserve">
+    <value>Функция недоступна на сервере разработки (SSR).</value>
+  </data>
 </root>

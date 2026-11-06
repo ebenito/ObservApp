@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Localization;
 using ObservApp.Shared.Services;
 
 namespace ObservApp.Web.Services;
@@ -8,7 +9,14 @@ namespace ObservApp.Web.Services;
 /// </summary>
 public sealed class SsrGeolocationService : IGeolocationService
 {
-    public string? LastError => "La geolocalización no está disponible en el servidor.";
+    private readonly IStringLocalizer<ObservApp.Resources.Strings.App> _l;
+
+    public SsrGeolocationService(IStringLocalizer<ObservApp.Resources.Strings.App> localizer)
+    {
+        _l = localizer;
+    }
+
+    public string? LastError => _l["Gps_Error_ServerUnavailable"];
 
     public Task<LocationData?> GetCurrentLocationAsync(
         bool highAccuracy = true,

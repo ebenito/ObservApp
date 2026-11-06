@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using ObservApp.Shared.Services;
 
@@ -6,16 +7,20 @@ namespace ObservApp.Web.Client.Services;
 /// <summary>
 /// Implementación de <see cref="IGeolocationService"/> para WebAssembly.
 /// Usa la API <c>navigator.geolocation</c> del navegador a través de JSInterop.
+/// El JS (<c>geolocation.js</c>) devuelve códigos de error, no textos; aquí se
+/// traducen con las claves <c>Gps_Error_*</c>.
 /// </summary>
 public sealed class WebGeolocationService : IGeolocationService
 {
     private readonly IJSRuntime _js;
+    private readonly IStringLocalizer<ObservApp.Resources.Strings.App> _l;
 
     public string? LastError { get; private set; }
 
-    public WebGeolocationService(IJSRuntime js)
+    public WebGeolocationService(IJSRuntime js, IStringLocalizer<ObservApp.Resources.Strings.App> localizer)
     {
         _js = js;
+        _l = localizer;
     }
 
     public async Task<LocationData?> GetCurrentLocationAsync(
@@ -32,13 +37,13 @@ public sealed class WebGeolocationService : IGeolocationService
 
             if (result is null)
             {
-                LastError = "No se pudo obtener la ubicación del navegador.";
+                LastError = _l["Gps_Error_Unavailable"];
                 return null;
             }
 
             if (!string.IsNullOrEmpty(result.Error))
             {
-                LastError = result.Error;
+                LastError = _l[MapBrowserErrorKey(result.Error)];
                 return null;
             }
 
@@ -47,24 +52,34 @@ public sealed class WebGeolocationService : IGeolocationService
                 Longitude: result.Longitude,
                 AltitudeMeters: result.Altitude,
                 AccuracyMeters: result.Accuracy,
-                SourceLabel: "Navegador");
+                SourceLabel: _l["Gps_Source_Browser"].Value);
         }
         catch (JSException ex)
         {
-            LastError = $"Error del navegador: {ex.Message}";
+            LastError = _l["Gps_Error_Browser", ex.Message];
             return null;
         }
         catch (OperationCanceledException)
         {
-            LastError = "Solicitud de ubicación cancelada.";
+            LastError = _l["Gps_Error_Cancelled"];
             return null;
         }
         catch (Exception ex)
         {
-            LastError = $"Error inesperado: {ex.Message}";
+            LastError = _l["Error_Unexpected", ex.Message];
             return null;
         }
     }
+
+    /// <summary>Códigos devueltos por geolocation.js → clave de recurso.</summary>
+    private static string MapBrowserErrorKey(string code) => code switch
+    {
+        "unsupported" => "Gps_Error_BrowserUnsupported",
+        "permission_denied" => "Gps_Error_PermissionDenied",
+        "position_unavailable" => "Gps_Error_Unavailable",
+        "timeout" => "Gps_Error_Timeout",
+        _ => "Gps_Error_Unavailable",
+    };
 
     // Modelo interno que mapea el objeto JS devuelto
     private sealed class BrowserLocation

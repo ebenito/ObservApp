@@ -50,6 +50,7 @@ No inventar rutas, ViewModels ni servicios. Verificar su existencia real con las
 | Qué | Cómo |
 |---|---|
 | Texto en componentes | `@L["Clave"]` con `@inject IStringLocalizer<App> L`; clave nueva siempre en los 8 `.resx` a la vez |
+| Mensajes de error en servicios | Inyectar `IStringLocalizer<App>` y usar claves `Auth_Error_*`, `Gps_Error_*`, `Articles_Error_*`, `Rss_Error_*`, `Obs_Error_*`; con parámetros `_l["Clave", arg]`. Nunca texto literal en `LastError` |
 | Formularios | `<div>` + `@onclick`, **nunca** `<form>` |
 | Nuevo servicio multiplataforma | Interfaz en `Shared/Services/`, implementaciones `Maui*`, `Web*`, `Ssr*` |
 | Cálculo astronómico | En servicios (`Services/Astronomia/`, `Services/Calculadoras/<Nombre>/`) con tests; `Observer` con altitud en **metros** |
@@ -76,6 +77,7 @@ No inventar rutas, ViewModels ni servicios. Verificar su existencia real con las
 | `/historial` | `Historial.razor` — **privada** (AuthGuard) |
 | `/mapa`, `/configuracion/ubicaciones` | `GestionUbicaciones.razor` |
 | `/login`, `/confirm-otp` | `Login.razor`, `ConfirmOtp.razor` |
+| `/reset-password` | `ResetPassword.razor` — recuperación por código OTP (plantilla "Reset Password" de Supabase con `{{ .Token }}`) |
 | `/configuracion` | `Configuracion.razor` |
 | `/about` | `AboutPage.razor` |
 

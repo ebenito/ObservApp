@@ -1867,4 +1867,193 @@
   <data name="Eclipse_Region_SouthAfricaOceania" xml:space="preserve">
     <value>Africa meridionale / Oceania</value>
   </data>
+  <data name="Auth_Reset_Title" xml:space="preserve">
+    <value>Recupera password</value>
+  </data>
+  <data name="Auth_Reset_Subtitle_Email" xml:space="preserve">
+    <value>Inserisci la tua email</value>
+  </data>
+  <data name="Auth_Reset_Description" xml:space="preserve">
+    <value>Ti invieremo un codice per reimpostare la password.</value>
+  </data>
+  <data name="Auth_Reset_PasswordDescription" xml:space="preserve">
+    <value>Codice verificato. Scegli la nuova password.</value>
+  </data>
+  <data name="Auth_Reset_NewPassword" xml:space="preserve">
+    <value>Nuova password</value>
+  </data>
+  <data name="Auth_Reset_Sending" xml:space="preserve">
+    <value>Invio del codice…</value>
+  </data>
+  <data name="Auth_Reset_Updating" xml:space="preserve">
+    <value>Salvataggio della password…</value>
+  </data>
+  <data name="Auth_Reset_SendCode" xml:space="preserve">
+    <value>Invia codice</value>
+  </data>
+  <data name="Auth_Reset_VerifyCode" xml:space="preserve">
+    <value>Verifica codice</value>
+  </data>
+  <data name="Auth_Reset_ChangePassword" xml:space="preserve">
+    <value>Cambia password</value>
+  </data>
+  <data name="Auth_Reset_ResendCode" xml:space="preserve">
+    <value>Invia di nuovo il codice</value>
+  </data>
+  <data name="Auth_Reset_BackToLogin" xml:space="preserve">
+    <value>Torna all'accesso</value>
+  </data>
+  <data name="Auth_Reset_Error" xml:space="preserve">
+    <value>Non è stato possibile reimpostare la password.</value>
+  </data>
+  <data name="Auth_PasswordTooShort" xml:space="preserve">
+    <value>La password deve contenere almeno {0} caratteri</value>
+  </data>
+  <data name="Auth_Error_Generic" xml:space="preserve">
+    <value>Non è stato possibile completare l'autenticazione.</value>
+  </data>
+  <data name="Auth_Error_InvalidCredentials" xml:space="preserve">
+    <value>Credenziali non valide.</value>
+  </data>
+  <data name="Auth_Error_EmailNotConfirmed" xml:space="preserve">
+    <value>Devi confermare la tua email prima di accedere.</value>
+  </data>
+  <data name="Auth_Error_AlreadyRegistered" xml:space="preserve">
+    <value>L'utente è già registrato.</value>
+  </data>
+  <data name="Auth_Error_WeakPassword" xml:space="preserve">
+    <value>La password è troppo corta o troppo debole.</value>
+  </data>
+  <data name="Auth_Error_SamePassword" xml:space="preserve">
+    <value>La nuova password deve essere diversa da quella precedente.</value>
+  </data>
+  <data name="Auth_Error_RateLimited" xml:space="preserve">
+    <value>Troppi tentativi. Attendi un momento e riprova.</value>
+  </data>
+  <data name="Auth_Error_CodeExpired" xml:space="preserve">
+    <value>Il codice è scaduto. Richiedine uno nuovo.</value>
+  </data>
+  <data name="Auth_Error_CodeInvalid" xml:space="preserve">
+    <value>Il codice inserito non è valido.</value>
+  </data>
+  <data name="Auth_Error_SignUpFailed" xml:space="preserve">
+    <value>Non è stato possibile creare l'account.</value>
+  </data>
+  <data name="Auth_Error_SignInFailed" xml:space="preserve">
+    <value>Accesso non riuscito.</value>
+  </data>
+  <data name="Auth_Error_VerifyCodeFailed" xml:space="preserve">
+    <value>Non è stato possibile verificare il codice.</value>
+  </data>
+  <data name="Auth_Error_SendRecoveryFailed" xml:space="preserve">
+    <value>Non è stato possibile inviare il codice di recupero.</value>
+  </data>
+  <data name="Auth_Error_NoRecoverySession" xml:space="preserve">
+    <value>Nessuna sessione di recupero attiva. Richiedi un nuovo codice.</value>
+  </data>
+  <data name="Auth_Error_ChangePasswordFailed" xml:space="preserve">
+    <value>Non è stato possibile cambiare la password.</value>
+  </data>
+  <data name="Auth_Error_RestoreTimeout" xml:space="preserve">
+    <value>Non è stato possibile ripristinare la sessione in un tempo ragionevole.</value>
+  </data>
+  <data name="Obs_Error_NotAuthenticated" xml:space="preserve">
+    <value>Utente non autenticato.</value>
+  </data>
+  <data name="Gps_Error_PermissionDenied" xml:space="preserve">
+    <value>Permesso di localizzazione negato.</value>
+  </data>
+  <data name="Gps_Error_Unavailable" xml:space="preserve">
+    <value>Non è stato possibile ottenere la posizione.</value>
+  </data>
+  <data name="Gps_Error_NotSupported" xml:space="preserve">
+    <value>Il GPS non è disponibile su questo dispositivo.</value>
+  </data>
+  <data name="Gps_Error_Disabled" xml:space="preserve">
+    <value>La localizzazione è disattivata sul dispositivo. Attivala nelle Impostazioni.</value>
+  </data>
+  <data name="Gps_Error_Cancelled" xml:space="preserve">
+    <value>Richiesta di posizione annullata.</value>
+  </data>
+  <data name="Gps_Error_Timeout" xml:space="preserve">
+    <value>Tempo scaduto durante il rilevamento della posizione.</value>
+  </data>
+  <data name="Gps_Error_Generic" xml:space="preserve">
+    <value>Errore nel rilevamento della posizione: {0}</value>
+  </data>
+  <data name="Gps_Error_BrowserUnsupported" xml:space="preserve">
+    <value>La geolocalizzazione non è disponibile in questo browser.</value>
+  </data>
+  <data name="Gps_Error_Browser" xml:space="preserve">
+    <value>Errore del browser: {0}</value>
+  </data>
+  <data name="Gps_Error_ServerUnavailable" xml:space="preserve">
+    <value>La geolocalizzazione non è disponibile sul server.</value>
+  </data>
+  <data name="Gps_Source_Browser" xml:space="preserve">
+    <value>Browser</value>
+  </data>
+  <data name="Gps_Source_Network" xml:space="preserve">
+    <value>Rete/Wi-Fi</value>
+  </data>
+  <data name="Gps_Source_Mock" xml:space="preserve">
+    <value>Simulata</value>
+  </data>
+  <data name="Articles_Error_WpStatus" xml:space="preserve">
+    <value>L'API di WordPress ha risposto {0}.</value>
+  </data>
+  <data name="Articles_Error_WpHtml" xml:space="preserve">
+    <value>L'API di WordPress ha restituito HTML. Si usa l'RSS come riserva.</value>
+  </data>
+  <data name="Articles_Error_WpInvalidJson" xml:space="preserve">
+    <value>L'API di WordPress ha restituito una risposta non valida.</value>
+  </data>
+  <data name="Articles_Error_WpMessage" xml:space="preserve">
+    <value>L'API di WordPress ha risposto: {0}</value>
+  </data>
+  <data name="Articles_Error_Proxy" xml:space="preserve">
+    <value>Proxy WP: {0}</value>
+  </data>
+  <data name="Articles_Error_ProxyStatus" xml:space="preserve">
+    <value>il proxy ha risposto {0}</value>
+  </data>
+  <data name="Articles_Error_ProxyInvalidJson" xml:space="preserve">
+    <value>Il proxy WP ha restituito una risposta non valida.</value>
+  </data>
+  <data name="Articles_Error_CategoriesHtml" xml:space="preserve">
+    <value>L'API di WordPress ha restituito HTML interrogando le categorie.</value>
+  </data>
+  <data name="Articles_Error_UnknownCategories" xml:space="preserve">
+    <value>Nessuna delle categorie configurate esiste su {0}: {1}. Vengono mostrate tutte.</value>
+  </data>
+  <data name="Articles_Error_RssStatus" xml:space="preserve">
+    <value>Anche il feed RSS ha fallito: {0}</value>
+  </data>
+  <data name="Articles_Error_RssHtml" xml:space="preserve">
+    <value>Il feed RSS ha restituito HTML.</value>
+  </data>
+  <data name="Articles_Error_RssNoItems" xml:space="preserve">
+    <value>Il feed RSS non ha restituito articoli.</value>
+  </data>
+  <data name="Articles_Error_RssNoCategoryItems" xml:space="preserve">
+    <value>Il feed RSS non contiene articoli delle categorie configurate.</value>
+  </data>
+  <data name="Articles_Error_RssFallback" xml:space="preserve">
+    <value>Riserva RSS: {0}</value>
+  </data>
+  <data name="Rss_Error_HtmlInsteadOfXml" xml:space="preserve">
+    <value>Il server ha restituito HTML invece di XML. Il feed potrebbe essere protetto da un sistema di verifica.</value>
+  </data>
+  <data name="Rss_Error_XmlParse" xml:space="preserve">
+    <value>Errore nella lettura dell'XML: {0}</value>
+  </data>
+  <data name="Rss_Error_NoRoot" xml:space="preserve">
+    <value>Il documento XML non ha un elemento radice.</value>
+  </data>
+  <data name="Rss_Error_Download" xml:space="preserve">
+    <value>Non è stato possibile scaricare il feed: {0}</value>
+  </data>
+  <data name="Error_SsrUnavailable" xml:space="preserve">
+    <value>Funzione non disponibile sul server di sviluppo (SSR).</value>
+  </data>
 </root>

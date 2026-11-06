@@ -6,6 +6,7 @@ using ObservApp.Services;
 using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
 using ObservApp.Shared.ViewModels;
+using Microsoft.Extensions.Localization;
 using Supabase;
 using Syncfusion.Blazor;
 
@@ -140,6 +141,7 @@ public static class MauiProgram
 			var rss  = (RssFeedService)sp.GetRequiredService<IRssFeedService>();
 
 			var wpProvider = new WpRestArticleProvider(http,
+				sp.GetRequiredService<IStringLocalizer<ObservApp.Resources.Strings.App>>(),
 				baseUrl: TubkalaSource.BaseUrl,
 				sourceName: TubkalaSource.SourceName,
 				languageCode: TubkalaSource.LanguageCode,

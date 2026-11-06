@@ -38,6 +38,23 @@ public interface IAuthService
 	Task<bool> VerifyOtpAsync(string email, string code);
 
 	/// <summary>
+	/// Envía al email un código de recuperación de contraseña (plantilla
+	/// "Reset Password" de Supabase con <c>{{ .Token }}</c>).
+	/// </summary>
+	Task<bool> RequestPasswordResetAsync(string email);
+
+	/// <summary>
+	/// Verifica el código de recuperación y abre una sesión temporal con la
+	/// que se puede cambiar la contraseña.
+	/// </summary>
+	Task<bool> VerifyRecoveryOtpAsync(string email, string code);
+
+	/// <summary>
+	/// Cambia la contraseña del usuario de la sesión actual.
+	/// </summary>
+	Task<bool> UpdatePasswordAsync(string newPassword);
+
+	/// <summary>
 	/// Cierra sesión y limpia almacenamiento local.
 	/// </summary>
 	Task LogoutAsync();

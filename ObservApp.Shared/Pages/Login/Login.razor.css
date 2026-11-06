@@ -264,6 +264,30 @@
     font-size: .9rem;
 }
 
+/* Enlace "¿Olvidaste tu contraseña?": mismo aspecto que .login-forgot pero clicable */
+.login-link {
+    display: block;
+    width: 100%;
+    margin: 14px 0 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: var(--obs-comet);
+    text-align: center;
+    font-size: .9rem;
+    cursor: pointer;
+}
+
+.login-link:hover:not(:disabled) {
+    color: var(--obs-moon);
+    text-decoration: underline;
+}
+
+.login-link:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
 .login-toggle {
     display: inline-flex;
     justify-content: center;

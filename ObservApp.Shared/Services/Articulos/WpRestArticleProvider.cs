@@ -3,7 +3,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using Microsoft.Extensions.Localization;
 using ObservApp.Shared.Models;
+using AppStrings = ObservApp.Resources.Strings.App;
 
 namespace ObservApp.Shared.Services;
 
@@ -23,6 +25,7 @@ public sealed class WpRestArticleProvider
     private readonly string _baseUrl;
     private readonly string _sourceName;
     private readonly string _languageCode;
+    private readonly IStringLocalizer<AppStrings> _l;
 
     // Si está configurado, las peticiones WP pasan por este proxy SSR
     // en lugar de ir directamente a _baseUrl (necesario en WASM).
@@ -40,6 +43,7 @@ public sealed class WpRestArticleProvider
         "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
 
     /// <param name="http">HttpClient configurado.</param>
+    /// <param name="localizer">Traducciones de los mensajes de error (claves <c>Articles_Error_*</c>).</param>
     /// <param name="baseUrl">URL base de la web WordPress, p.ej. "https://tubkala.com".</param>
     /// <param name="sourceName">Nombre de la fuente para mostrar en la UI.</param>
     /// <param name="languageCode">Código ISO del idioma principal del blog.</param>
@@ -57,6 +61,7 @@ public sealed class WpRestArticleProvider
     /// </param>
     public WpRestArticleProvider(
         HttpClient http,
+        IStringLocalizer<AppStrings> localizer,
         string baseUrl,
         string sourceName,
         string languageCode = "es",
@@ -64,6 +69,7 @@ public sealed class WpRestArticleProvider
         IEnumerable<string>? categorySlugs = null)
     {
         _http = http;
+        _l = localizer;
         _baseUrl = baseUrl.TrimEnd('/');
         _sourceName = sourceName;
         _languageCode = languageCode;
@@ -103,7 +109,7 @@ public sealed class WpRestArticleProvider
 
             if (!response.IsSuccessStatusCode)
             {
-                LastError = $"WP API respondió {(int)response.StatusCode}: {response.ReasonPhrase}";
+                LastError = _l["Articles_Error_WpStatus", $"{(int)response.StatusCode} {response.ReasonPhrase}".Trim()];
                 return await GetPageFromRssFallbackAsync(page, pageSize, cancellationToken);
             }
 
@@ -136,13 +142,13 @@ public sealed class WpRestArticleProvider
             // Verificar si la respuesta es HTML (proxy también bloqueado o no disponible)
             if (json.TrimStart().StartsWith('<'))
             {
-                LastError = "El proxy WP devolvió HTML. Usando RSS como respaldo.";
+                LastError = _l["Articles_Error_WpHtml"];
                 return await GetPageFromRssFallbackAsync(page, pageSize, cancellationToken);
             }
 
             if (!TryParseProxyResponse(json, out var posts, out var total, out var totalPages, out var parseError))
             {
-                LastError = parseError;
+                LastError = Localize(parseError);
                 return await GetPageFromRssFallbackAsync(page, pageSize, cancellationToken);
             }
 
@@ -156,7 +162,7 @@ public sealed class WpRestArticleProvider
         }
         catch (Exception ex)
         {
-            LastError = $"Proxy WP: {ex.Message}";
+            LastError = _l["Articles_Error_Proxy", ex.Message];
             return await GetPageFromRssFallbackAsync(page, pageSize, cancellationToken);
         }
     }
@@ -178,7 +184,7 @@ public sealed class WpRestArticleProvider
         throw new HttpRequestException(
             TryGetProblemDetail(body, out var detail)
                 ? detail
-                : $"el proxy respondió {(int)response.StatusCode}",
+                : _l["Articles_Error_ProxyStatus", (int)response.StatusCode],
             inner: null,
             response.StatusCode);
     }
@@ -253,14 +259,14 @@ public sealed class WpRestArticleProvider
         }
 
         if (json.TrimStart().StartsWith('<'))
-            throw new HttpRequestException("WP API (categorías) devolvió HTML en lugar de JSON.");
+            throw new HttpRequestException(_l["Articles_Error_CategoriesHtml"]);
 
         var ids = ParseCategoryIds(json, _categorySlugs);
         _categoryIds = string.Join(',', ids.Select(id => id.ToString(CultureInfo.InvariantCulture)));
 
         if (ids.Count == 0)
         {
-            LastError = $"Ninguna de las categorías configuradas existe en {_sourceName}: {string.Join(", ", _categorySlugs)}. Se muestran todas.";
+            LastError = _l["Articles_Error_UnknownCategories", _sourceName, string.Join(", ", _categorySlugs)];
             return null;
         }
 
@@ -344,13 +350,13 @@ public sealed class WpRestArticleProvider
         // Detectar HTML en lugar de JSON (WAF bloqueó aunque respondió 200)
         if (json.TrimStart().StartsWith('<'))
         {
-            LastError = "WP API devolvió HTML. Usando RSS como respaldo.";
+            LastError = _l["Articles_Error_WpHtml"];
             return await GetPageFromRssFallbackAsync(page, pageSize, cancellationToken);
         }
 
         if (!TryParsePostsPayload(json, out var posts, out var parseError))
         {
-            LastError = parseError;
+            LastError = Localize(parseError);
             return await GetPageFromRssFallbackAsync(page, pageSize, cancellationToken);
         }
 
@@ -361,24 +367,30 @@ public sealed class WpRestArticleProvider
         return (articles, page < totalPages, totalCount);
     }
 
+    /// <summary>Error de parseo como clave de recurso + detalle opcional para string.Format.</summary>
+    private readonly record struct ParseError(string Key, string? Detail = null);
+
+    private string Localize(ParseError error)
+        => error.Detail is null ? _l[error.Key] : _l[error.Key, error.Detail];
+
     private static bool TryParseProxyResponse(
         string json,
         out List<WpPost> posts,
         out int total,
         out int totalPages,
-        out string? error)
+        out ParseError error)
     {
         posts = new();
         total = 0;
         totalPages = 1;
-        error = null;
+        error = default;
 
         try
         {
             using var doc = JsonDocument.Parse(json);
             if (doc.RootElement.ValueKind != JsonValueKind.Object)
             {
-                error = "Proxy WP: respuesta JSON con formato no válido.";
+                error = new("Articles_Error_ProxyInvalidJson");
                 return false;
             }
 
@@ -392,7 +404,7 @@ public sealed class WpRestArticleProvider
 
             if (!root.TryGetProperty("posts", out var postsElement))
             {
-                error = "Proxy WP: respuesta sin el campo 'posts'.";
+                error = new("Articles_Error_ProxyInvalidJson");
                 return false;
             }
 
@@ -400,7 +412,7 @@ public sealed class WpRestArticleProvider
         }
         catch (JsonException)
         {
-            error = "Proxy WP: respuesta JSON inválida.";
+            error = new("Articles_Error_ProxyInvalidJson");
             return false;
         }
     }
@@ -408,10 +420,10 @@ public sealed class WpRestArticleProvider
     private static bool TryParsePostsPayload(
         string json,
         out List<WpPost> posts,
-        out string? error)
+        out ParseError error)
     {
         posts = new();
-        error = null;
+        error = default;
 
         try
         {
@@ -431,17 +443,17 @@ public sealed class WpRestArticleProvider
 
                 if (TryGetWpApiMessage(root, out var apiMessage))
                 {
-                    error = $"WP API: {apiMessage}";
+                    error = new("Articles_Error_WpMessage", apiMessage);
                     return false;
                 }
             }
 
-            error = "WP API devolvió un formato JSON no compatible.";
+            error = new("Articles_Error_WpInvalidJson");
             return false;
         }
         catch (JsonException)
         {
-            error = "WP API devolvió JSON inválido.";
+            error = new("Articles_Error_WpInvalidJson");
             return false;
         }
     }
@@ -449,10 +461,10 @@ public sealed class WpRestArticleProvider
     private static bool TryParsePostsElement(
         JsonElement postsElement,
         out List<WpPost> posts,
-        out string? error)
+        out ParseError error)
     {
         posts = new();
-        error = null;
+        error = default;
 
         if (postsElement.ValueKind == JsonValueKind.Array)
         {
@@ -466,19 +478,19 @@ public sealed class WpRestArticleProvider
         if (postsElement.ValueKind == JsonValueKind.String)
         {
             var text = postsElement.GetString() ?? string.Empty;
-            error = text.TrimStart().StartsWith('<')
-                ? "WP API devolvió HTML. Usando RSS como respaldo."
-                : "WP API devolvió texto en 'posts' en lugar de una lista.";
+            error = new(text.TrimStart().StartsWith('<')
+                ? "Articles_Error_WpHtml"
+                : "Articles_Error_WpInvalidJson");
             return false;
         }
 
         if (postsElement.ValueKind == JsonValueKind.Object && TryGetWpApiMessage(postsElement, out var apiMessage))
         {
-            error = $"WP API: {apiMessage}";
+            error = new("Articles_Error_WpMessage", apiMessage);
             return false;
         }
 
-        error = "WP API devolvió un objeto 'posts' con formato no compatible.";
+        error = new("Articles_Error_WpInvalidJson");
         return false;
     }
 
@@ -534,7 +546,7 @@ public sealed class WpRestArticleProvider
                 using var response = await _http.SendAsync(request, cancellationToken);
                 if (!response.IsSuccessStatusCode)
                 {
-                    LastError = $"{LastError} | RSS también falló: {(int)response.StatusCode}";
+                    LastError = $"{LastError} | {_l["Articles_Error_RssStatus", (int)response.StatusCode]}";
                     return (new(), false, 0);
                 }
                 xml = await response.Content.ReadAsStringAsync(cancellationToken);
@@ -544,16 +556,14 @@ public sealed class WpRestArticleProvider
             if (xml.TrimStart().StartsWith('<') &&
                 xml.TrimStart().StartsWith("<!") || xml.TrimStart().StartsWith("<html"))
             {
-                LastError = $"{LastError} | El feed RSS devolvió HTML.";
+                LastError = $"{LastError} | {_l["Articles_Error_RssHtml"]}";
                 return (new(), false, 0);
             }
 
             var allItems = ParseRssToArticles(xml);
             if (allItems.Count == 0)
             {
-                LastError = _categorySlugs.Count > 0
-                    ? $"{LastError} | El feed RSS no contiene artículos de las categorías configuradas."
-                    : $"{LastError} | El feed RSS no devolvió artículos.";
+                LastError = $"{LastError} | {_l[_categorySlugs.Count > 0 ? "Articles_Error_RssNoCategoryItems" : "Articles_Error_RssNoItems"]}";
                 return (new(), false, 0);
             }
 
@@ -567,7 +577,7 @@ public sealed class WpRestArticleProvider
         }
         catch (Exception ex)
         {
-            LastError = $"{LastError} | RSS fallback: {ex.Message}";
+            LastError = $"{LastError} | {_l["Articles_Error_RssFallback", ex.Message]}";
             return (new(), false, 0);
         }
     }

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Localization;
 using Microsoft.Maui.Devices.Sensors;
 using ObservApp.Shared.Services;
 
@@ -6,17 +7,20 @@ namespace ObservApp.Services;
 /// <summary>
 /// Implementación de <see cref="IGeolocationService"/> para .NET MAUI.
 /// Usa <see cref="IGeolocation"/> del framework y gestiona el ciclo de
-/// permisos en tiempo de ejecución.
+/// permisos en tiempo de ejecución. Los mensajes de error salen de las
+/// claves <c>Gps_Error_*</c> del sistema de traducciones.
 /// </summary>
 public sealed class MauiGeolocationService : IGeolocationService
 {
     private readonly IGeolocation _geolocation;
+    private readonly IStringLocalizer<ObservApp.Resources.Strings.App> _l;
 
     public string? LastError { get; private set; }
 
-    public MauiGeolocationService(IGeolocation geolocation)
+    public MauiGeolocationService(IGeolocation geolocation, IStringLocalizer<ObservApp.Resources.Strings.App> localizer)
     {
         _geolocation = geolocation;
+        _l = localizer;
     }
 
     public async Task<LocationData?> GetCurrentLocationAsync(
@@ -33,7 +37,7 @@ public sealed class MauiGeolocationService : IGeolocationService
 
             if (status != PermissionStatus.Granted)
             {
-                LastError = "Permiso de ubicación denegado.";
+                LastError = _l["Gps_Error_PermissionDenied"];
                 return null;
             }
 
@@ -46,12 +50,12 @@ public sealed class MauiGeolocationService : IGeolocationService
 
             if (location is null)
             {
-                LastError = "No se pudo obtener la ubicación del dispositivo.";
+                LastError = _l["Gps_Error_Unavailable"];
                 return null;
             }
 
-            var source = location.IsFromMockProvider ? "Mock" :
-                         highAccuracy ? "GPS" : "Red/WiFi";
+            var source = location.IsFromMockProvider ? _l["Gps_Source_Mock"].Value :
+                         highAccuracy ? "GPS" : _l["Gps_Source_Network"].Value;
 
             return new LocationData(
                 Latitude: location.Latitude,
@@ -62,27 +66,27 @@ public sealed class MauiGeolocationService : IGeolocationService
         }
         catch (FeatureNotSupportedException)
         {
-            LastError = "El GPS no está disponible en este dispositivo.";
+            LastError = _l["Gps_Error_NotSupported"];
             return null;
         }
         catch (FeatureNotEnabledException)
         {
-            LastError = "La ubicación está desactivada en el dispositivo. Actívala en Ajustes.";
+            LastError = _l["Gps_Error_Disabled"];
             return null;
         }
         catch (PermissionException)
         {
-            LastError = "Permiso de ubicación denegado.";
+            LastError = _l["Gps_Error_PermissionDenied"];
             return null;
         }
         catch (OperationCanceledException)
         {
-            LastError = "Solicitud de ubicación cancelada.";
+            LastError = _l["Gps_Error_Cancelled"];
             return null;
         }
         catch (Exception ex)
         {
-            LastError = $"Error al obtener la ubicación: {ex.Message}";
+            LastError = _l["Gps_Error_Generic", ex.Message];
             return null;
         }
     }

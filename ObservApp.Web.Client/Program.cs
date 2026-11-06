@@ -7,6 +7,7 @@ using ObservApp.Shared.Services;
 using ObservApp.Shared.State;
 using ObservApp.Shared.ViewModels;
 using ObservApp.Web.Client.Services;
+using Microsoft.Extensions.Localization;
 using Supabase;
 using Syncfusion.Blazor;
 
@@ -164,6 +165,7 @@ builder.Services.AddSingleton<IArticleService>(sp =>
 	// proxyBaseUrl = BaseAddress del propio host WASM (que es el servidor SSR)
 	// → las peticiones /api/wp-proxy las resuelve el servidor SSR
 	var wpProvider = new WpRestArticleProvider(proxyHttp,
+		sp.GetRequiredService<IStringLocalizer<ObservApp.Resources.Strings.App>>(),
 		baseUrl: TubkalaSource.BaseUrl,
 		sourceName: TubkalaSource.SourceName,
 		languageCode: TubkalaSource.LanguageCode,

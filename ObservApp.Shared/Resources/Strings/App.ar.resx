@@ -1867,4 +1867,193 @@
   <data name="Eclipse_Region_SouthAfricaOceania" xml:space="preserve">
     <value>جنوب أفريقيا / أوقيانوسيا</value>
   </data>
+  <data name="Auth_Reset_Title" xml:space="preserve">
+    <value>استعادة كلمة المرور</value>
+  </data>
+  <data name="Auth_Reset_Subtitle_Email" xml:space="preserve">
+    <value>أدخل بريدك الإلكتروني</value>
+  </data>
+  <data name="Auth_Reset_Description" xml:space="preserve">
+    <value>سنرسل إليك رمزًا لإعادة تعيين كلمة المرور.</value>
+  </data>
+  <data name="Auth_Reset_PasswordDescription" xml:space="preserve">
+    <value>تم التحقق من الرمز. اختر كلمة المرور الجديدة.</value>
+  </data>
+  <data name="Auth_Reset_NewPassword" xml:space="preserve">
+    <value>كلمة المرور الجديدة</value>
+  </data>
+  <data name="Auth_Reset_Sending" xml:space="preserve">
+    <value>جارٍ إرسال الرمز…</value>
+  </data>
+  <data name="Auth_Reset_Updating" xml:space="preserve">
+    <value>جارٍ حفظ كلمة المرور…</value>
+  </data>
+  <data name="Auth_Reset_SendCode" xml:space="preserve">
+    <value>إرسال الرمز</value>
+  </data>
+  <data name="Auth_Reset_VerifyCode" xml:space="preserve">
+    <value>التحقق من الرمز</value>
+  </data>
+  <data name="Auth_Reset_ChangePassword" xml:space="preserve">
+    <value>تغيير كلمة المرور</value>
+  </data>
+  <data name="Auth_Reset_ResendCode" xml:space="preserve">
+    <value>إعادة إرسال الرمز</value>
+  </data>
+  <data name="Auth_Reset_BackToLogin" xml:space="preserve">
+    <value>العودة إلى تسجيل الدخول</value>
+  </data>
+  <data name="Auth_Reset_Error" xml:space="preserve">
+    <value>تعذّر إعادة تعيين كلمة المرور.</value>
+  </data>
+  <data name="Auth_PasswordTooShort" xml:space="preserve">
+    <value>يجب أن تتكون كلمة المرور من {0} أحرف على الأقل</value>
+  </data>
+  <data name="Auth_Error_Generic" xml:space="preserve">
+    <value>تعذّر إكمال المصادقة.</value>
+  </data>
+  <data name="Auth_Error_InvalidCredentials" xml:space="preserve">
+    <value>بيانات الاعتماد غير صحيحة.</value>
+  </data>
+  <data name="Auth_Error_EmailNotConfirmed" xml:space="preserve">
+    <value>يجب تأكيد بريدك الإلكتروني قبل تسجيل الدخول.</value>
+  </data>
+  <data name="Auth_Error_AlreadyRegistered" xml:space="preserve">
+    <value>المستخدم مسجّل بالفعل.</value>
+  </data>
+  <data name="Auth_Error_WeakPassword" xml:space="preserve">
+    <value>كلمة المرور قصيرة جدًا أو ضعيفة.</value>
+  </data>
+  <data name="Auth_Error_SamePassword" xml:space="preserve">
+    <value>يجب أن تختلف كلمة المرور الجديدة عن القديمة.</value>
+  </data>
+  <data name="Auth_Error_RateLimited" xml:space="preserve">
+    <value>محاولات كثيرة جدًا. انتظر قليلًا ثم حاول مرة أخرى.</value>
+  </data>
+  <data name="Auth_Error_CodeExpired" xml:space="preserve">
+    <value>انتهت صلاحية الرمز. اطلب رمزًا جديدًا.</value>
+  </data>
+  <data name="Auth_Error_CodeInvalid" xml:space="preserve">
+    <value>الرمز المُدخل غير صالح.</value>
+  </data>
+  <data name="Auth_Error_SignUpFailed" xml:space="preserve">
+    <value>تعذّر إنشاء الحساب.</value>
+  </data>
+  <data name="Auth_Error_SignInFailed" xml:space="preserve">
+    <value>تعذّر تسجيل الدخول.</value>
+  </data>
+  <data name="Auth_Error_VerifyCodeFailed" xml:space="preserve">
+    <value>تعذّر التحقق من الرمز.</value>
+  </data>
+  <data name="Auth_Error_SendRecoveryFailed" xml:space="preserve">
+    <value>تعذّر إرسال رمز الاستعادة.</value>
+  </data>
+  <data name="Auth_Error_NoRecoverySession" xml:space="preserve">
+    <value>لا توجد جلسة استعادة نشطة. اطلب رمزًا جديدًا.</value>
+  </data>
+  <data name="Auth_Error_ChangePasswordFailed" xml:space="preserve">
+    <value>تعذّر تغيير كلمة المرور.</value>
+  </data>
+  <data name="Auth_Error_RestoreTimeout" xml:space="preserve">
+    <value>تعذّر استعادة الجلسة في وقت معقول.</value>
+  </data>
+  <data name="Obs_Error_NotAuthenticated" xml:space="preserve">
+    <value>المستخدم غير مسجّل الدخول.</value>
+  </data>
+  <data name="Gps_Error_PermissionDenied" xml:space="preserve">
+    <value>تم رفض إذن الموقع.</value>
+  </data>
+  <data name="Gps_Error_Unavailable" xml:space="preserve">
+    <value>تعذّر الحصول على الموقع.</value>
+  </data>
+  <data name="Gps_Error_NotSupported" xml:space="preserve">
+    <value>نظام GPS غير متوفر على هذا الجهاز.</value>
+  </data>
+  <data name="Gps_Error_Disabled" xml:space="preserve">
+    <value>خدمة الموقع معطّلة على الجهاز. فعّلها من الإعدادات.</value>
+  </data>
+  <data name="Gps_Error_Cancelled" xml:space="preserve">
+    <value>تم إلغاء طلب الموقع.</value>
+  </data>
+  <data name="Gps_Error_Timeout" xml:space="preserve">
+    <value>انتهت مهلة الحصول على الموقع.</value>
+  </data>
+  <data name="Gps_Error_Generic" xml:space="preserve">
+    <value>خطأ أثناء الحصول على الموقع: {0}</value>
+  </data>
+  <data name="Gps_Error_BrowserUnsupported" xml:space="preserve">
+    <value>تحديد الموقع الجغرافي غير متوفر في هذا المتصفح.</value>
+  </data>
+  <data name="Gps_Error_Browser" xml:space="preserve">
+    <value>خطأ في المتصفح: {0}</value>
+  </data>
+  <data name="Gps_Error_ServerUnavailable" xml:space="preserve">
+    <value>تحديد الموقع الجغرافي غير متوفر على الخادم.</value>
+  </data>
+  <data name="Gps_Source_Browser" xml:space="preserve">
+    <value>المتصفح</value>
+  </data>
+  <data name="Gps_Source_Network" xml:space="preserve">
+    <value>الشبكة/Wi-Fi</value>
+  </data>
+  <data name="Gps_Source_Mock" xml:space="preserve">
+    <value>محاكاة</value>
+  </data>
+  <data name="Articles_Error_WpStatus" xml:space="preserve">
+    <value>ردّت واجهة WordPress بـ {0}.</value>
+  </data>
+  <data name="Articles_Error_WpHtml" xml:space="preserve">
+    <value>أعادت واجهة WordPress صفحة HTML. يُستخدم RSS كبديل.</value>
+  </data>
+  <data name="Articles_Error_WpInvalidJson" xml:space="preserve">
+    <value>أعادت واجهة WordPress استجابة غير صالحة.</value>
+  </data>
+  <data name="Articles_Error_WpMessage" xml:space="preserve">
+    <value>ردّت واجهة WordPress: {0}</value>
+  </data>
+  <data name="Articles_Error_Proxy" xml:space="preserve">
+    <value>وكيل WP: {0}</value>
+  </data>
+  <data name="Articles_Error_ProxyStatus" xml:space="preserve">
+    <value>ردّ الوكيل بـ {0}</value>
+  </data>
+  <data name="Articles_Error_ProxyInvalidJson" xml:space="preserve">
+    <value>أعاد وكيل WP استجابة غير صالحة.</value>
+  </data>
+  <data name="Articles_Error_CategoriesHtml" xml:space="preserve">
+    <value>أعادت واجهة WordPress صفحة HTML عند الاستعلام عن الفئات.</value>
+  </data>
+  <data name="Articles_Error_UnknownCategories" xml:space="preserve">
+    <value>لا توجد أي من الفئات المحددة في {0}: {1}. تُعرض جميع الفئات.</value>
+  </data>
+  <data name="Articles_Error_RssStatus" xml:space="preserve">
+    <value>فشلت تغذية RSS أيضًا: {0}</value>
+  </data>
+  <data name="Articles_Error_RssHtml" xml:space="preserve">
+    <value>أعادت تغذية RSS صفحة HTML.</value>
+  </data>
+  <data name="Articles_Error_RssNoItems" xml:space="preserve">
+    <value>لم تُعد تغذية RSS أي مقالات.</value>
+  </data>
+  <data name="Articles_Error_RssNoCategoryItems" xml:space="preserve">
+    <value>لا تحتوي تغذية RSS على مقالات من الفئات المحددة.</value>
+  </data>
+  <data name="Articles_Error_RssFallback" xml:space="preserve">
+    <value>بديل RSS: {0}</value>
+  </data>
+  <data name="Rss_Error_HtmlInsteadOfXml" xml:space="preserve">
+    <value>أعاد الخادم HTML بدلًا من XML. قد تكون التغذية محمية بنظام تحقق.</value>
+  </data>
+  <data name="Rss_Error_XmlParse" xml:space="preserve">
+    <value>خطأ في قراءة XML: {0}</value>
+  </data>
+  <data name="Rss_Error_NoRoot" xml:space="preserve">
+    <value>لا يحتوي مستند XML على عنصر جذر.</value>
+  </data>
+  <data name="Rss_Error_Download" xml:space="preserve">
+    <value>تعذّر تنزيل التغذية: {0}</value>
+  </data>
+  <data name="Error_SsrUnavailable" xml:space="preserve">
+    <value>الميزة غير متوفرة على خادم التطوير (SSR).</value>
+  </data>
 </root>

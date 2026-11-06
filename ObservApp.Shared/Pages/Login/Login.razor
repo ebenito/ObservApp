@@ -137,7 +137,9 @@
 
             @if (_isSignInMode)
             {
-                <p class="login-forgot">@L["Auth_ForgotPassword"]</p>
+                <button type="button" class="login-link" @onclick="GoToResetPassword" disabled="@AuthViewModel.IsLoading">
+                    @L["Auth_ForgotPassword"]
+                </button>
             }
 
             <button type="button" class="login-toggle" @onclick="ToggleMode">
@@ -188,6 +190,14 @@
         _confirmPassword = string.Empty;
         // Si venimos de un error previo, asegurarnos de eliminarlo al cambiar de modo
         AuthViewModel.ErrorMessage = null;
+    }
+
+    private void GoToResetPassword()
+    {
+        var email = AuthViewModel.Email?.Trim();
+        NavManager.NavigateTo(string.IsNullOrWhiteSpace(email)
+            ? "/reset-password"
+            : $"/reset-password?email={Uri.EscapeDataString(email)}");
     }
 
     private void TogglePassword() => _showPassword = !_showPassword;
