@@ -27,7 +27,7 @@
         <DefaultLanguage>es-ES</DefaultLanguage>
         <AppxPackageSigningEnabled>False</AppxPackageSigningEnabled>
         <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-        <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+        <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
         <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
         <GenerateTestArtifacts>True</GenerateTestArtifacts>
       <UserSecretsId>64ae768e-41f7-46bd-98b9-e21a8e9dae93</UserSecretsId>
