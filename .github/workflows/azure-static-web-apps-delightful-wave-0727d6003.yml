@@ -15,6 +15,9 @@ permissions:
   contents: read
   actions: read
   id-token: write
+  # La acción de SWA comenta en la PR la URL del entorno de previsualización;
+  # sin este permiso termina con "Unexpectedly failed to add GitHub comment".
+  pull-requests: write
 
 jobs:
   build_and_deploy_job:
