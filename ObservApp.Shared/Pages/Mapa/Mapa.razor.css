@@ -1,0 +1,365 @@
+/* ============================================================
+   OBSERVAPP — Página de mapa (/mapa)
+   ============================================================ */
+.map-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+    animation: mapFadeIn 300ms ease-out;
+}
+
+@keyframes mapFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.map-header-back {
+    margin-bottom: 15px;
+}
+
+::deep .map-back {
+    color: var(--obs-comet);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+    ::deep .map-back:hover {
+        color: var(--obs-star);
+    }
+
+.map-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--obs-border);
+    padding-bottom: 15px;
+}
+
+.map-header-copy {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.map-header-icon {
+    font-size: 2.2rem;
+}
+
+.map-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--obs-moon);
+}
+
+.map-subtitle {
+    margin: 2px 0 0;
+    color: var(--obs-comet);
+    font-size: 0.9rem;
+}
+
+/* Leyenda bajo el mapa */
+.map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 18px;
+    margin: 10px 2px 18px;
+    font-size: 0.85rem;
+    color: var(--obs-comet);
+}
+
+.map-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--obs-moon);
+}
+
+.map-legend-hint {
+    font-size: 0.78rem;
+}
+
+.map-dot {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--obs-midnight);
+}
+
+.map-dot--favorite {
+    background: #f4c430;
+}
+
+.map-dot--entry {
+    background: #2ec4b6;
+}
+
+/* Avisos */
+.map-toast {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: rgba(46, 196, 182, 0.15);
+    border: 1px solid var(--obs-aurora);
+    color: var(--obs-aurora);
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    margin-bottom: 18px;
+}
+
+.map-toast--error {
+    background: rgba(231, 111, 81, 0.12);
+    border-color: var(--obs-mars);
+    color: var(--obs-mars);
+}
+
+.map-toast-close {
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+/* Tarjetas */
+.map-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+@media (min-width: 800px) {
+    .map-layout {
+        grid-template-columns: 2fr 3fr;
+    }
+}
+
+.map-card {
+    background-color: rgba(27, 42, 59, 0.65);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    min-width: 0;
+}
+
+.map-card-header {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--obs-star);
+    border-bottom: 1px solid var(--obs-border);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.map-card-desc {
+    margin: 0 0 12px;
+    font-size: 0.85rem;
+    color: var(--obs-comet);
+}
+
+.map-link {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--obs-aurora);
+    text-decoration: none;
+}
+
+    .map-link:hover {
+        text-decoration: underline;
+    }
+
+.map-empty {
+    text-align: center;
+    padding: 20px 10px;
+    color: var(--obs-comet);
+    font-style: italic;
+}
+
+    .map-empty p {
+        margin: 0 0 12px;
+    }
+
+/* Botones */
+.map-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.map-btn {
+    background: var(--obs-deep);
+    border: 1px solid var(--obs-border);
+    color: var(--obs-moon);
+    padding: 9px 16px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-style: normal;
+}
+
+    .map-btn:hover:not(:disabled):not(.disabled) {
+        background: var(--obs-border);
+        border-color: var(--obs-star-dim);
+    }
+
+    .map-btn:disabled,
+    .map-btn.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+.map-btn--accent {
+    background: var(--obs-aurora);
+    border-color: var(--obs-aurora);
+    color: var(--obs-midnight);
+}
+
+    .map-btn--accent:hover:not(:disabled):not(.disabled) {
+        background: #25a195;
+        border-color: #25a195;
+    }
+
+/* El input real queda oculto; se activa desde su <label>. */
+::deep .map-file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Listas */
+.map-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.map-list--scroll {
+    max-height: 420px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.map-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(36, 52, 71, 0.5);
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+    .map-item:hover {
+        border-color: var(--obs-star-dim);
+        background: rgba(36, 52, 71, 0.8);
+    }
+
+.map-item--nocoords {
+    opacity: 0.65;
+}
+
+    .map-item--nocoords .map-dot {
+        background: var(--obs-comet);
+    }
+
+.map-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.map-item-name {
+    font-weight: 600;
+    color: var(--obs-moon);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.map-item-meta {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--obs-comet);
+}
+
+.map-item-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.map-icon-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--obs-moon);
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 5px 8px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+    .map-icon-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+.map-icon-btn--danger {
+    border-color: var(--obs-mars);
+    color: var(--obs-mars);
+}
+
+    .map-icon-btn--danger:hover {
+        background: rgba(231, 111, 81, 0.15);
+    }
+
+.map-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: mapSpin 800ms linear infinite;
+}
+
+@keyframes mapSpin {
+    to { transform: rotate(360deg); }
+}

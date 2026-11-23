@@ -200,3 +200,66 @@ html, body {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+/* ── Mapa multi-chincheta (Components/ObsMap.razor) ─────────────────────────
+   Global porque Leaflet crea su DOM fuera del CSS aislado de los componentes. */
+.obs-map {
+    width: 100%;
+    border: 1px solid var(--obs-border);
+    border-radius: var(--radius-md);
+    background: var(--obs-midnight);
+    overflow: hidden;
+    /* Por debajo de la barra lateral (z-index 1200) y del menú superior. */
+    z-index: 0;
+    position: relative;
+}
+
+.obs-map .leaflet-control-layers,
+.obs-map .leaflet-popup-content-wrapper,
+.obs-map .leaflet-popup-tip {
+    background: rgba(13, 27, 42, 0.95);
+    color: var(--obs-moon);
+    border: 1px solid var(--obs-border);
+}
+
+.obs-map .leaflet-control-layers-expanded {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+}
+
+.obs-map .leaflet-control-layers-separator {
+    border-top-color: var(--obs-border);
+}
+
+.obs-map .leaflet-popup-close-button {
+    color: var(--obs-comet) !important;
+}
+
+.obs-map-popup {
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.obs-map-popup strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--obs-star);
+}
+
+.obs-map-popup-line {
+    color: var(--obs-comet);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+}
+
+.obs-map-popup-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    margin-top: 8px;
+}
+
+.obs-map-popup-links a {
+    color: var(--obs-aurora);
+    font-weight: 600;
+}

@@ -2056,4 +2056,118 @@
   <data name="Error_SsrUnavailable" xml:space="preserve">
     <value>الميزة غير متوفرة على خادم التطوير (SSR).</value>
   </data>
+  <data name="Map_Subtitle" xml:space="preserve">
+    <value>{0} مفضلة · {1} سجلات</value>
+  </data>
+  <data name="Map_FitAll" xml:space="preserve">
+    <value>عرض الكل</value>
+  </data>
+  <data name="Map_LayersHint" xml:space="preserve">
+    <value>غيّر نوع الخريطة (OpenStreetMap وGoogle…) من زر الطبقات في الخريطة.</value>
+  </data>
+  <data name="Map_Layer_Osm" xml:space="preserve">
+    <value>OpenStreetMap</value>
+  </data>
+  <data name="Map_Layer_GoogleRoad" xml:space="preserve">
+    <value>خرائط Google</value>
+  </data>
+  <data name="Map_Layer_GoogleSatellite" xml:space="preserve">
+    <value>Google قمر صناعي</value>
+  </data>
+  <data name="Map_Layer_GoogleHybrid" xml:space="preserve">
+    <value>Google هجين</value>
+  </data>
+  <data name="Map_Layer_GoogleTerrain" xml:space="preserve">
+    <value>Google تضاريس</value>
+  </data>
+  <data name="Map_Layer_Topo" xml:space="preserve">
+    <value>OpenTopoMap (طبوغرافية)</value>
+  </data>
+  <data name="Map_Layer_Dark" xml:space="preserve">
+    <value>داكنة (CARTO)</value>
+  </data>
+  <data name="Map_Overlay_Favorites" xml:space="preserve">
+    <value>المفضلة</value>
+  </data>
+  <data name="Map_Overlay_Entries" xml:space="preserve">
+    <value>السجلات</value>
+  </data>
+  <data name="Map_OpenGoogle" xml:space="preserve">
+    <value>فتح في خرائط Google</value>
+  </data>
+  <data name="Map_OpenOsm" xml:space="preserve">
+    <value>فتح في OpenStreetMap</value>
+  </data>
+  <data name="Map_Favorites_Manage" xml:space="preserve">
+    <value>إدارة</value>
+  </data>
+  <data name="Map_Altitude" xml:space="preserve">
+    <value>الارتفاع: {0} م</value>
+  </data>
+  <data name="MapLoc_Title" xml:space="preserve">
+    <value>سجلات TiempoUbicacionApp</value>
+  </data>
+  <data name="MapLoc_Desc" xml:space="preserve">
+    <value>استورد أو صدّر قاعدة البيانات Ubicaciones.db من TiempoUbicacionApp. تُحفظ السجلات في حسابك.</value>
+  </data>
+  <data name="MapLoc_LoginRequired" xml:space="preserve">
+    <value>سجّل الدخول لحفظ سجلات المواقع واستيرادها وتصديرها.</value>
+  </data>
+  <data name="MapLoc_Import" xml:space="preserve">
+    <value>استيراد ‎.db</value>
+  </data>
+  <data name="MapLoc_Export" xml:space="preserve">
+    <value>تصدير ‎.db</value>
+  </data>
+  <data name="MapLoc_Empty" xml:space="preserve">
+    <value>لا توجد سجلات بعد. استورد الملف Ubicaciones.db من TiempoUbicacionApp.</value>
+  </data>
+  <data name="MapLoc_NoCoords" xml:space="preserve">
+    <value>لا توجد إحداثيات صالحة</value>
+  </data>
+  <data name="MapLoc_Unnamed" xml:space="preserve">
+    <value>بلا اسم</value>
+  </data>
+  <data name="MapLoc_Utc" xml:space="preserve">
+    <value>UTC {0} ({1})</value>
+  </data>
+  <data name="MapLoc_Import_Result" xml:space="preserve">
+    <value>تم استيراد {0} سجلات جديدة؛ {1} كانت موجودة مسبقًا.</value>
+  </data>
+  <data name="MapLoc_Import_NoCoords" xml:space="preserve">
+    <value>{0} بلا إحداثيات صالحة ولا تظهر على الخريطة.</value>
+  </data>
+  <data name="MapLoc_Import_Empty" xml:space="preserve">
+    <value>لا يحتوي الملف على أي سجلات.</value>
+  </data>
+  <data name="MapLoc_Export_Done" xml:space="preserve">
+    <value>تم تصدير {0} سجلات.</value>
+  </data>
+  <data name="MapLoc_Error_NotSqlite" xml:space="preserve">
+    <value>الملف ليس قاعدة بيانات SQLite صالحة.</value>
+  </data>
+  <data name="MapLoc_Error_MissingTable" xml:space="preserve">
+    <value>لا تحتوي قاعدة البيانات على جدول LocationEntry الخاص بـ TiempoUbicacionApp.</value>
+  </data>
+  <data name="MapLoc_Error_TooLarge" xml:space="preserve">
+    <value>يتجاوز الملف الحجم الأقصى ({0} ميغابايت).</value>
+  </data>
+  <data name="MapLoc_Error_Read" xml:space="preserve">
+    <value>تعذّرت قراءة الملف: {0}</value>
+  </data>
+  <data name="MapLoc_Error_Export" xml:space="preserve">
+    <value>تعذّر التصدير: {0}</value>
+  </data>
+  <data name="MapLoc_Error_Load" xml:space="preserve">
+    <value>تعذّر تحميل السجلات: {0}</value>
+  </data>
+  <data name="MapLoc_Error_Import" xml:space="preserve">
+    <value>تعذّر استيراد السجلات: {0}</value>
+  </data>
+  <data name="MapLoc_Error_Delete" xml:space="preserve">
+    <value>تعذّر حذف السجل: {0}</value>
+  </data>
+  <data name="Files_Error_Save" xml:space="preserve">
+    <value>تعذّر حفظ الملف: {0}</value>
+  </data>
 </root>

@@ -1,0 +1,434 @@
+@page "/mapa"
+@using System.Globalization
+@using ObservApp.Shared.Models
+@inject IFavoriteLocationsService FavLocationsService
+@inject ILocationEntriesService EntriesService
+@inject ILocationDbFileCodec DbCodec
+@inject IFileSaveService FileSaver
+@inject IAuthService AuthService
+@inject AppState AppState
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+@implements IDisposable
+
+<PageTitle>@L["Nav_Map"] — ObservApp</PageTitle>
+
+<div class="map-page">
+    <div class="map-header-back">
+        <BackButton Text="Action_Back" CssClass="map-back" DefaultUrl="/" />
+    </div>
+
+    <div class="map-header">
+        <div class="map-header-copy">
+            <span class="map-header-icon">🗺️</span>
+            <div>
+                <h1 class="map-title">@L["Nav_Map"]</h1>
+                <p class="map-subtitle">@L["Map_Subtitle", _favorites?.Count ?? 0, _entries?.Count ?? 0]</p>
+            </div>
+        </div>
+        <button class="map-btn" @onclick="FitAllAsync" disabled="@(_markers.Count == 0)">🔍 @L["Map_FitAll"]</button>
+    </div>
+
+    <ObsMap @ref="_map" Markers="_markers" Height="min(60vh, 560px)" />
+
+    <div class="map-legend">
+        <span class="map-legend-item"><span class="map-dot map-dot--favorite"></span>@L["Map_Overlay_Favorites"]</span>
+        <span class="map-legend-item"><span class="map-dot map-dot--entry"></span>@L["Map_Overlay_Entries"]</span>
+        <span class="map-legend-hint">@L["Map_LayersHint"]</span>
+    </div>
+
+    @if (_message is not null)
+    {
+        <div class="map-toast @(_messageIsError ? "map-toast--error" : "")" role="status">
+            <span>@(_messageIsError ? "⚠️" : "✓") @_message</span>
+            <button class="map-toast-close" @onclick="ClearMessage" aria-label="@L["Action_Close"]">✕</button>
+        </div>
+    }
+
+    <div class="map-layout">
+        <!-- Favoritas -->
+        <section class="map-card">
+            <div class="map-card-header">
+                <span>⭐ @L["Map_Overlay_Favorites"]</span>
+                <a class="map-link" href="/configuracion/ubicaciones">@L["Map_Favorites_Manage"]</a>
+            </div>
+            @if (_favorites is null)
+            {
+                <div class="map-empty"><span class="map-spinner"></span> @L["Status_Loading"]</div>
+            }
+            else if (_favorites.Count == 0)
+            {
+                <div class="map-empty">@L["FavLoc_NoLocations"]</div>
+            }
+            else
+            {
+                <ul class="map-list">
+                    @foreach (var fav in _favorites)
+                    {
+                        <li class="map-item" @onclick="() => FocusAsync(MapMarkerKind.Favorite, fav.Id.ToString())">
+                            <span class="map-dot map-dot--favorite"></span>
+                            <div class="map-item-info">
+                                <span class="map-item-name">@fav.Name</span>
+                                <span class="map-item-meta">@FormatCoords(fav.Latitude, fav.Longitude)</span>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+        </section>
+
+        <!-- Registros compatibles con TiempoUbicacionApp -->
+        <section class="map-card">
+            <div class="map-card-header">
+                <span>📍 @L["MapLoc_Title"]</span>
+            </div>
+            <p class="map-card-desc">@L["MapLoc_Desc"]</p>
+
+            @if (!AppState.IsAuthenticated)
+            {
+                <div class="map-empty">
+                    <p>@L["MapLoc_LoginRequired"]</p>
+                    <a class="map-btn map-btn--accent" href="/login">@L["Auth_SignIn"]</a>
+                </div>
+            }
+            else
+            {
+                <div class="map-actions">
+                    <label class="map-btn map-btn--accent @(_busy ? "disabled" : "")" for="map-import-input">
+                        @if (_busy)
+                        {
+                            <span class="map-spinner"></span>
+                        }
+                        else
+                        {
+                            <span>📥</span>
+                        }
+                        @L["MapLoc_Import"]
+                    </label>
+                    <InputFile id="map-import-input" class="map-file-input" OnChange="ImportAsync" disabled="@_busy"
+                               accept=".db,.sqlite,.sqlite3,application/octet-stream,application/x-sqlite3,application/vnd.sqlite3" />
+                    <button class="map-btn" @onclick="ExportAsync" disabled="@(_busy || _entries is not { Count: > 0 })">
+                        📤 @L["MapLoc_Export"]
+                    </button>
+                </div>
+
+                @if (_entries is null)
+                {
+                    <div class="map-empty"><span class="map-spinner"></span> @L["Status_Loading"]</div>
+                }
+                else if (_entries.Count == 0)
+                {
+                    <div class="map-empty">@L["MapLoc_Empty"]</div>
+                }
+                else
+                {
+                    <ul class="map-list map-list--scroll">
+                        @foreach (var entry in _entries)
+                        {
+                            var pendingDelete = _pendingDeleteId == entry.Id;
+                            <li class="map-item @(entry.HasCoordinates() ? "" : "map-item--nocoords")">
+                                <span class="map-dot map-dot--entry"></span>
+                                <div class="map-item-info" @onclick="() => FocusEntryAsync(entry)">
+                                    <span class="map-item-name">@EntryTitle(entry)</span>
+                                    <span class="map-item-meta">@FormatEntryDate(entry)</span>
+                                    <span class="map-item-meta">
+                                        @if (entry.HasCoordinates())
+                                        {
+                                            @($"{entry.Latitude}  {entry.Longitude}")
+                                        }
+                                        else
+                                        {
+                                            @L["MapLoc_NoCoords"]
+                                        }
+                                    </span>
+                                </div>
+                                <div class="map-item-actions">
+                                    @if (pendingDelete)
+                                    {
+                                        <button class="map-icon-btn map-icon-btn--danger" @onclick="() => DeleteEntryAsync(entry)" disabled="@_busy">
+                                            @L["Action_Delete"]
+                                        </button>
+                                        <button class="map-icon-btn" @onclick="() => _pendingDeleteId = null">@L["Action_Cancel"]</button>
+                                    }
+                                    else
+                                    {
+                                        <button class="map-icon-btn" @onclick="() => _pendingDeleteId = entry.Id"
+                                                title="@L["Action_Delete"]" aria-label="@L["Action_Delete"]">🗑️</button>
+                                    }
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+            }
+        </section>
+    </div>
+</div>
+
+@code {
+    private const long MaxImportBytes = 50L * 1024 * 1024;
+    private const string ExportFileName = "Ubicaciones.db";
+
+    private ObsMap? _map;
+    private List<FavoriteLocation>? _favorites;
+    private List<LocationEntry>? _entries;
+    private IReadOnlyList<MapMarker> _markers = Array.Empty<MapMarker>();
+    private Guid? _pendingDeleteId;
+    private bool _busy;
+    private string? _message;
+    private bool _messageIsError;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!AppState.IsAuthenticated)
+        {
+            try
+            {
+                if (await AuthService.TryRestoreSessionAsync())
+                {
+                    AppState.CurrentUser = AuthService.CurrentUser;
+                }
+            }
+            catch
+            {
+                // Sin sesión: se muestran solo las favoritas locales.
+            }
+        }
+
+        // Suscribirse después de restaurar la sesión para no cargar dos veces. Cubre el
+        // inicio o cierre de sesión mientras la página está abierta.
+        AppState.OnAuthChanged += OnAuthChanged;
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        _favorites = await FavLocationsService.GetFavoriteLocationsAsync();
+
+        if (AppState.IsAuthenticated)
+        {
+            _entries = await EntriesService.GetAllAsync();
+            if (EntriesService.LastError is { } error)
+            {
+                ShowMessage(error, isError: true);
+            }
+        }
+        else
+        {
+            _entries = new List<LocationEntry>();
+        }
+
+        RebuildMarkers();
+    }
+
+    private void OnAuthChanged()
+    {
+        _ = InvokeAsync(async () =>
+        {
+            await LoadAsync();
+            StateHasChanged();
+        });
+    }
+
+    private void RebuildMarkers()
+    {
+        var markers = new List<MapMarker>();
+
+        foreach (var fav in _favorites ?? new List<FavoriteLocation>())
+        {
+            markers.Add(new MapMarker(
+                fav.Id.ToString(),
+                MapMarkerKind.Favorite,
+                fav.Latitude,
+                fav.Longitude,
+                fav.Name,
+                new[]
+                {
+                    FormatCoords(fav.Latitude, fav.Longitude),
+                    L["Map_Altitude", fav.AltitudeMeters.ToString("F0", CultureInfo.CurrentCulture)].Value
+                }));
+        }
+
+        foreach (var entry in (_entries ?? new List<LocationEntry>()).Where(e => e.HasCoordinates()))
+        {
+            var lines = new List<string> { FormatEntryDate(entry) };
+            if (!string.IsNullOrWhiteSpace(entry.HoraUtc))
+            {
+                lines.Add(L["MapLoc_Utc", entry.HoraUtc, entry.Desfase].Value);
+            }
+            lines.Add($"{entry.Latitude}  {entry.Longitude}");
+
+            markers.Add(new MapMarker(
+                entry.Id.ToString(),
+                MapMarkerKind.Entry,
+                entry.LatitudeDeg!.Value,
+                entry.LongitudeDeg!.Value,
+                EntryTitle(entry),
+                lines));
+        }
+
+        _markers = markers;
+    }
+
+    private async Task ImportAsync(InputFileChangeEventArgs e)
+    {
+        if (_busy)
+        {
+            return;
+        }
+
+        ClearMessage();
+        var file = e.File;
+        if (file.Size > MaxImportBytes)
+        {
+            ShowMessage(L["MapLoc_Error_TooLarge", MaxImportBytes / (1024 * 1024)], isError: true);
+            return;
+        }
+
+        _busy = true;
+        StateHasChanged();
+        try
+        {
+            byte[] bytes;
+            await using (var stream = file.OpenReadStream(MaxImportBytes))
+            using (var buffer = new MemoryStream())
+            {
+                await stream.CopyToAsync(buffer);
+                bytes = buffer.ToArray();
+            }
+
+            var read = await DbCodec.ReadAsync(bytes);
+            switch (read.Status)
+            {
+                case LocationDbReadStatus.NotSqlite:
+                    ShowMessage(L["MapLoc_Error_NotSqlite"], isError: true);
+                    return;
+                case LocationDbReadStatus.MissingTable:
+                    ShowMessage(L["MapLoc_Error_MissingTable"], isError: true);
+                    return;
+            }
+
+            if (read.Rows.Count == 0)
+            {
+                ShowMessage(L["MapLoc_Import_Empty"], isError: false);
+                return;
+            }
+
+            var plan = await EntriesService.ImportAsync(read.Rows);
+            if (plan is null)
+            {
+                ShowMessage(EntriesService.LastError ?? L["Status_Error"], isError: true);
+                return;
+            }
+
+            var summary = L["MapLoc_Import_Result", plan.ToInsert.Count, plan.Duplicates].Value;
+            if (plan.WithoutCoordinates > 0)
+            {
+                summary += " " + L["MapLoc_Import_NoCoords", plan.WithoutCoordinates].Value;
+            }
+
+            await LoadAsync();
+            ShowMessage(summary, isError: false);
+        }
+        catch (Exception ex)
+        {
+            ShowMessage(L["MapLoc_Error_Read", ex.Message], isError: true);
+        }
+        finally
+        {
+            _busy = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task ExportAsync()
+    {
+        if (_busy || _entries is not { Count: > 0 })
+        {
+            return;
+        }
+
+        ClearMessage();
+        _busy = true;
+        try
+        {
+            var rows = LocationEntryMapper.ToLegacyExport(_entries);
+            var bytes = await DbCodec.WriteAsync(rows);
+
+            if (await FileSaver.SaveAsync(ExportFileName, bytes, "application/vnd.sqlite3"))
+            {
+                ShowMessage(L["MapLoc_Export_Done", rows.Count], isError: false);
+            }
+            else if (FileSaver.LastError is { } error)
+            {
+                ShowMessage(error, isError: true);
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowMessage(L["MapLoc_Error_Export", ex.Message], isError: true);
+        }
+        finally
+        {
+            _busy = false;
+        }
+    }
+
+    private async Task DeleteEntryAsync(LocationEntry entry)
+    {
+        _busy = true;
+        try
+        {
+            if (await EntriesService.DeleteAsync(entry.Id))
+            {
+                _entries?.Remove(entry);
+                RebuildMarkers();
+            }
+            else if (EntriesService.LastError is { } error)
+            {
+                ShowMessage(error, isError: true);
+            }
+        }
+        finally
+        {
+            _pendingDeleteId = null;
+            _busy = false;
+        }
+    }
+
+    private Task FocusAsync(MapMarkerKind kind, string id) =>
+        _map?.FocusAsync(kind, id) ?? Task.CompletedTask;
+
+    private Task FocusEntryAsync(LocationEntry entry) =>
+        entry.HasCoordinates() ? FocusAsync(MapMarkerKind.Entry, entry.Id.ToString()) : Task.CompletedTask;
+
+    private Task FitAllAsync() => _map?.FitAllAsync() ?? Task.CompletedTask;
+
+    private string EntryTitle(LocationEntry entry) =>
+        string.IsNullOrWhiteSpace(entry.Location) ? L["MapLoc_Unnamed"] : entry.Location;
+
+    private static string FormatEntryDate(LocationEntry entry)
+    {
+        if (entry.GetDate() > DateTime.MinValue)
+        {
+            return entry.GetDate().ToString("g", CultureInfo.CurrentCulture);
+        }
+
+        return string.Join(' ', new[] { entry.FechaActual, entry.HoraLocal }.Where(s => !string.IsNullOrWhiteSpace(s)));
+    }
+
+    private static string FormatCoords(double lat, double lon) =>
+        string.Create(CultureInfo.InvariantCulture, $"{lat:F4}°, {lon:F4}°");
+
+    private void ShowMessage(string message, bool isError)
+    {
+        _message = message;
+        _messageIsError = isError;
+    }
+
+    private void ClearMessage() => _message = null;
+
+    public void Dispose()
+    {
+        AppState.OnAuthChanged -= OnAuthChanged;
+    }
+}

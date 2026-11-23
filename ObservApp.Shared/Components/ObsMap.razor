@@ -1,0 +1,148 @@
+@using System.Globalization
+@using ObservApp.Shared.Models
+@inject IJSRuntime JS
+@inject IExternalLinkService ExternalLinks
+@inject IStringLocalizer<ObservApp.Resources.Strings.App> L
+@implements IAsyncDisposable
+
+@* Mapa Leaflet con varias chinchetas y selector de capas (OSM, Google sin API key,
+   OpenTopoMap, CARTO oscuro). Encapsula todo el interop: la página solo pasa Markers. *@
+<div id="@_containerId" class="obs-map @CssClass" style="height:@Height"></div>
+
+@code {
+    /// <summary>Chinchetas a pintar. Se repintan cuando cambia la referencia de la lista.</summary>
+    [Parameter, EditorRequired]
+    public IReadOnlyList<MapMarker> Markers { get; set; } = Array.Empty<MapMarker>();
+
+    /// <summary>Altura CSS del mapa (Leaflet necesita una altura explícita).</summary>
+    [Parameter]
+    public string Height { get; set; } = "420px";
+
+    [Parameter]
+    public string? CssClass { get; set; }
+
+    private readonly string _containerId = "obs-map-" + Guid.NewGuid().ToString("N");
+    private DotNetObjectReference<ObsMap>? _dotNetRef;
+    private IReadOnlyList<MapMarker>? _renderedMarkers;
+    private int _renderedCount;
+    private bool _ready;
+    private bool _disposed;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        if (!_ready)
+        {
+            _dotNetRef ??= DotNetObjectReference.Create(this);
+            try
+            {
+                _ready = await JS.InvokeAsync<bool>("observApp.multiMap.create", _containerId, BuildOptions(), _dotNetRef);
+            }
+            catch (JSException ex)
+            {
+                // Leaflet aún no cargado: se reintenta en el siguiente render.
+                Console.WriteLine($"[ObsMap] {ex.Message}");
+            }
+        }
+
+        if (_ready && !ReferenceEquals(_renderedMarkers, Markers))
+        {
+            // Encuadrar la primera vez y cuando aparecen chinchetas nuevas (p. ej. tras importar).
+            var fit = Markers.Count > _renderedCount;
+            _renderedMarkers = Markers;
+            _renderedCount = Markers.Count;
+            await JS.InvokeVoidAsync("observApp.multiMap.setMarkers", _containerId, Markers.Select(ToJs).ToArray(), fit);
+        }
+    }
+
+    /// <summary>Centra el mapa en una chincheta y abre su popup.</summary>
+    public async Task FocusAsync(MapMarkerKind kind, string id)
+    {
+        if (_ready)
+        {
+            await JS.InvokeVoidAsync("observApp.multiMap.focus", _containerId, KindKey(kind), id, 14);
+        }
+    }
+
+    /// <summary>Encuadra todas las chinchetas visibles.</summary>
+    public async Task FitAllAsync()
+    {
+        if (_ready)
+        {
+            await JS.InvokeVoidAsync("observApp.multiMap.fitAll", _containerId);
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnExternalLinkRequested(string url)
+    {
+        // Solo los enlaces que genera MapLinkBuilder.
+        if (Uri.TryCreate(url, UriKind.Absolute, out var uri) &&
+            uri.Scheme == Uri.UriSchemeHttps &&
+            (uri.Host == "www.google.com" || uri.Host == "www.openstreetmap.org"))
+        {
+            await ExternalLinks.OpenAsync(url);
+        }
+    }
+
+    private object BuildOptions() => new
+    {
+        lang = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
+        labels = new
+        {
+            osm = L["Map_Layer_Osm"].Value,
+            googleRoad = L["Map_Layer_GoogleRoad"].Value,
+            googleSatellite = L["Map_Layer_GoogleSatellite"].Value,
+            googleHybrid = L["Map_Layer_GoogleHybrid"].Value,
+            googleTerrain = L["Map_Layer_GoogleTerrain"].Value,
+            topo = L["Map_Layer_Topo"].Value,
+            dark = L["Map_Layer_Dark"].Value,
+            favorites = L["Map_Overlay_Favorites"].Value,
+            entries = L["Map_Overlay_Entries"].Value
+        },
+        texts = new
+        {
+            openGoogle = L["Map_OpenGoogle"].Value,
+            openOsm = L["Map_OpenOsm"].Value
+        }
+    };
+
+    private static object ToJs(MapMarker m) => new
+    {
+        id = m.Id,
+        kind = KindKey(m.Kind),
+        lat = m.Latitude,
+        lon = m.Longitude,
+        title = m.Title,
+        subtitle = m.Subtitle,
+        googleUrl = MapLinkBuilder.GoogleMaps(m.Latitude, m.Longitude),
+        osmUrl = MapLinkBuilder.OpenStreetMap(m.Latitude, m.Longitude)
+    };
+
+    private static string KindKey(MapMarkerKind kind) => kind == MapMarkerKind.Favorite ? "favorite" : "entry";
+
+    public async ValueTask DisposeAsync()
+    {
+        _disposed = true;
+        try
+        {
+            if (_ready)
+            {
+                await JS.InvokeVoidAsync("observApp.multiMap.dispose", _containerId);
+            }
+        }
+        catch (JSDisconnectedException)
+        {
+            // El circuito o el WebView ya se cerró.
+        }
+        catch (JSException)
+        {
+        }
+
+        _dotNetRef?.Dispose();
+    }
+}

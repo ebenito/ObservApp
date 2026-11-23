@@ -72,6 +72,9 @@ builder.Services.AddSingleton<INavigationHistoryService, NavigationHistoryServic
 builder.Services.AddSingleton<IAppLifecycleService, WebClientAppLifecycleService>();
 builder.Services.AddSingleton<IGeolocationService, WebGeolocationService>();
 builder.Services.AddSingleton<IFavoriteLocationsService, WebFavoriteLocationsService>();
+builder.Services.AddSingleton<ILocationEntriesService, SupabaseLocationEntriesService>();
+builder.Services.AddScoped<ILocationDbFileCodec, SqlJsLocationDbFileCodec>();
+builder.Services.AddScoped<IFileSaveService, WebFileSaveService>();
 builder.Services.AddSingleton<IDsoCatalogProvider, DsoCatalogProvider>();
 builder.Services.AddSingleton<IFilterSvgIconProvider, FilterSvgIconProvider>();
 builder.Services.AddSingleton<ILocationStateService, LocationStateService>();

@@ -2056,4 +2056,118 @@
   <data name="Error_SsrUnavailable" xml:space="preserve">
     <value>Funktion auf dem Entwicklungsserver (SSR) nicht verfügbar.</value>
   </data>
+  <data name="Map_Subtitle" xml:space="preserve">
+    <value>{0} Favoriten · {1} Einträge</value>
+  </data>
+  <data name="Map_FitAll" xml:space="preserve">
+    <value>Alle anzeigen</value>
+  </data>
+  <data name="Map_LayersHint" xml:space="preserve">
+    <value>Kartentyp (OpenStreetMap, Google…) über die Ebenen-Schaltfläche der Karte ändern.</value>
+  </data>
+  <data name="Map_Layer_Osm" xml:space="preserve">
+    <value>OpenStreetMap</value>
+  </data>
+  <data name="Map_Layer_GoogleRoad" xml:space="preserve">
+    <value>Google Maps</value>
+  </data>
+  <data name="Map_Layer_GoogleSatellite" xml:space="preserve">
+    <value>Google Satellit</value>
+  </data>
+  <data name="Map_Layer_GoogleHybrid" xml:space="preserve">
+    <value>Google Hybrid</value>
+  </data>
+  <data name="Map_Layer_GoogleTerrain" xml:space="preserve">
+    <value>Google Gelände</value>
+  </data>
+  <data name="Map_Layer_Topo" xml:space="preserve">
+    <value>OpenTopoMap (topografisch)</value>
+  </data>
+  <data name="Map_Layer_Dark" xml:space="preserve">
+    <value>Dunkel (CARTO)</value>
+  </data>
+  <data name="Map_Overlay_Favorites" xml:space="preserve">
+    <value>Favoriten</value>
+  </data>
+  <data name="Map_Overlay_Entries" xml:space="preserve">
+    <value>Einträge</value>
+  </data>
+  <data name="Map_OpenGoogle" xml:space="preserve">
+    <value>In Google Maps öffnen</value>
+  </data>
+  <data name="Map_OpenOsm" xml:space="preserve">
+    <value>In OpenStreetMap öffnen</value>
+  </data>
+  <data name="Map_Favorites_Manage" xml:space="preserve">
+    <value>Verwalten</value>
+  </data>
+  <data name="Map_Altitude" xml:space="preserve">
+    <value>Höhe: {0} m</value>
+  </data>
+  <data name="MapLoc_Title" xml:space="preserve">
+    <value>Einträge aus TiempoUbicacionApp</value>
+  </data>
+  <data name="MapLoc_Desc" xml:space="preserve">
+    <value>Importiere oder exportiere die Datenbank Ubicaciones.db aus TiempoUbicacionApp. Die Einträge werden in deinem Konto gespeichert.</value>
+  </data>
+  <data name="MapLoc_LoginRequired" xml:space="preserve">
+    <value>Melde dich an, um Standorteinträge zu speichern, zu importieren und zu exportieren.</value>
+  </data>
+  <data name="MapLoc_Import" xml:space="preserve">
+    <value>.db importieren</value>
+  </data>
+  <data name="MapLoc_Export" xml:space="preserve">
+    <value>.db exportieren</value>
+  </data>
+  <data name="MapLoc_Empty" xml:space="preserve">
+    <value>Noch keine Einträge. Importiere die Datei Ubicaciones.db aus TiempoUbicacionApp.</value>
+  </data>
+  <data name="MapLoc_NoCoords" xml:space="preserve">
+    <value>Keine gültigen Koordinaten</value>
+  </data>
+  <data name="MapLoc_Unnamed" xml:space="preserve">
+    <value>Ohne Namen</value>
+  </data>
+  <data name="MapLoc_Utc" xml:space="preserve">
+    <value>UTC {0} ({1})</value>
+  </data>
+  <data name="MapLoc_Import_Result" xml:space="preserve">
+    <value>{0} neue Einträge importiert; {1} waren bereits vorhanden.</value>
+  </data>
+  <data name="MapLoc_Import_NoCoords" xml:space="preserve">
+    <value>{0} haben keine gültigen Koordinaten und erscheinen nicht auf der Karte.</value>
+  </data>
+  <data name="MapLoc_Import_Empty" xml:space="preserve">
+    <value>Die Datei enthält keine Einträge.</value>
+  </data>
+  <data name="MapLoc_Export_Done" xml:space="preserve">
+    <value>{0} Einträge exportiert.</value>
+  </data>
+  <data name="MapLoc_Error_NotSqlite" xml:space="preserve">
+    <value>Die Datei ist keine gültige SQLite-Datenbank.</value>
+  </data>
+  <data name="MapLoc_Error_MissingTable" xml:space="preserve">
+    <value>Die Datenbank enthält nicht die Tabelle LocationEntry von TiempoUbicacionApp.</value>
+  </data>
+  <data name="MapLoc_Error_TooLarge" xml:space="preserve">
+    <value>Die Datei überschreitet die Maximalgröße ({0} MB).</value>
+  </data>
+  <data name="MapLoc_Error_Read" xml:space="preserve">
+    <value>Die Datei konnte nicht gelesen werden: {0}</value>
+  </data>
+  <data name="MapLoc_Error_Export" xml:space="preserve">
+    <value>Export fehlgeschlagen: {0}</value>
+  </data>
+  <data name="MapLoc_Error_Load" xml:space="preserve">
+    <value>Einträge konnten nicht geladen werden: {0}</value>
+  </data>
+  <data name="MapLoc_Error_Import" xml:space="preserve">
+    <value>Einträge konnten nicht importiert werden: {0}</value>
+  </data>
+  <data name="MapLoc_Error_Delete" xml:space="preserve">
+    <value>Der Eintrag konnte nicht gelöscht werden: {0}</value>
+  </data>
+  <data name="Files_Error_Save" xml:space="preserve">
+    <value>Die Datei konnte nicht gespeichert werden: {0}</value>
+  </data>
 </root>

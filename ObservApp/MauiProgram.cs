@@ -1,5 +1,6 @@
 using System.Reflection;
 using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ObservApp.Services;
@@ -98,6 +99,12 @@ public static class MauiProgram
 
         // ── Ubicaciones Favoritas ─────────────────────────────────────────────
         builder.Services.AddSingleton<IFavoriteLocationsService, MauiFavoriteLocationsService>();
+
+        // ── Registros de ubicación (TiempoUbicacionApp) e importación/exportación ─
+        builder.Services.AddSingleton<ILocationEntriesService, SupabaseLocationEntriesService>();
+        builder.Services.AddScoped<ILocationDbFileCodec, SqlJsLocationDbFileCodec>();
+        builder.Services.AddSingleton<IFileSaver>(FileSaver.Default);
+        builder.Services.AddSingleton<IFileSaveService, MauiFileSaveService>();
         builder.Services.AddSingleton<IDsoCatalogProvider, DsoCatalogProvider>();
         builder.Services.AddSingleton<IFilterSvgIconProvider, FilterSvgIconProvider>();
 

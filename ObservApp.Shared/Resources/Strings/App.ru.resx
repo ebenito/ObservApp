@@ -2056,4 +2056,118 @@
   <data name="Error_SsrUnavailable" xml:space="preserve">
     <value>Функция недоступна на сервере разработки (SSR).</value>
   </data>
+  <data name="Map_Subtitle" xml:space="preserve">
+    <value>Избранное: {0} · записей: {1}</value>
+  </data>
+  <data name="Map_FitAll" xml:space="preserve">
+    <value>Показать все</value>
+  </data>
+  <data name="Map_LayersHint" xml:space="preserve">
+    <value>Тип карты (OpenStreetMap, Google…) меняется кнопкой слоёв на карте.</value>
+  </data>
+  <data name="Map_Layer_Osm" xml:space="preserve">
+    <value>OpenStreetMap</value>
+  </data>
+  <data name="Map_Layer_GoogleRoad" xml:space="preserve">
+    <value>Google Карты</value>
+  </data>
+  <data name="Map_Layer_GoogleSatellite" xml:space="preserve">
+    <value>Google Спутник</value>
+  </data>
+  <data name="Map_Layer_GoogleHybrid" xml:space="preserve">
+    <value>Google Гибрид</value>
+  </data>
+  <data name="Map_Layer_GoogleTerrain" xml:space="preserve">
+    <value>Google Рельеф</value>
+  </data>
+  <data name="Map_Layer_Topo" xml:space="preserve">
+    <value>OpenTopoMap (топографическая)</value>
+  </data>
+  <data name="Map_Layer_Dark" xml:space="preserve">
+    <value>Тёмная (CARTO)</value>
+  </data>
+  <data name="Map_Overlay_Favorites" xml:space="preserve">
+    <value>Избранное</value>
+  </data>
+  <data name="Map_Overlay_Entries" xml:space="preserve">
+    <value>Записи</value>
+  </data>
+  <data name="Map_OpenGoogle" xml:space="preserve">
+    <value>Открыть в Google Картах</value>
+  </data>
+  <data name="Map_OpenOsm" xml:space="preserve">
+    <value>Открыть в OpenStreetMap</value>
+  </data>
+  <data name="Map_Favorites_Manage" xml:space="preserve">
+    <value>Управлять</value>
+  </data>
+  <data name="Map_Altitude" xml:space="preserve">
+    <value>Высота: {0} м</value>
+  </data>
+  <data name="MapLoc_Title" xml:space="preserve">
+    <value>Записи TiempoUbicacionApp</value>
+  </data>
+  <data name="MapLoc_Desc" xml:space="preserve">
+    <value>Импортируйте или экспортируйте базу Ubicaciones.db из TiempoUbicacionApp. Записи сохраняются в вашей учётной записи.</value>
+  </data>
+  <data name="MapLoc_LoginRequired" xml:space="preserve">
+    <value>Войдите, чтобы сохранять, импортировать и экспортировать записи местоположений.</value>
+  </data>
+  <data name="MapLoc_Import" xml:space="preserve">
+    <value>Импорт .db</value>
+  </data>
+  <data name="MapLoc_Export" xml:space="preserve">
+    <value>Экспорт .db</value>
+  </data>
+  <data name="MapLoc_Empty" xml:space="preserve">
+    <value>Записей пока нет. Импортируйте файл Ubicaciones.db из TiempoUbicacionApp.</value>
+  </data>
+  <data name="MapLoc_NoCoords" xml:space="preserve">
+    <value>Нет корректных координат</value>
+  </data>
+  <data name="MapLoc_Unnamed" xml:space="preserve">
+    <value>Без названия</value>
+  </data>
+  <data name="MapLoc_Utc" xml:space="preserve">
+    <value>UTC {0} ({1})</value>
+  </data>
+  <data name="MapLoc_Import_Result" xml:space="preserve">
+    <value>Импортировано новых записей: {0}; уже существовало: {1}.</value>
+  </data>
+  <data name="MapLoc_Import_NoCoords" xml:space="preserve">
+    <value>У {0} нет корректных координат, они не показаны на карте.</value>
+  </data>
+  <data name="MapLoc_Import_Empty" xml:space="preserve">
+    <value>В файле нет записей.</value>
+  </data>
+  <data name="MapLoc_Export_Done" xml:space="preserve">
+    <value>Экспортировано записей: {0}.</value>
+  </data>
+  <data name="MapLoc_Error_NotSqlite" xml:space="preserve">
+    <value>Файл не является корректной базой данных SQLite.</value>
+  </data>
+  <data name="MapLoc_Error_MissingTable" xml:space="preserve">
+    <value>В базе нет таблицы LocationEntry из TiempoUbicacionApp.</value>
+  </data>
+  <data name="MapLoc_Error_TooLarge" xml:space="preserve">
+    <value>Файл превышает максимальный размер ({0} МБ).</value>
+  </data>
+  <data name="MapLoc_Error_Read" xml:space="preserve">
+    <value>Не удалось прочитать файл: {0}</value>
+  </data>
+  <data name="MapLoc_Error_Export" xml:space="preserve">
+    <value>Не удалось экспортировать: {0}</value>
+  </data>
+  <data name="MapLoc_Error_Load" xml:space="preserve">
+    <value>Не удалось загрузить записи: {0}</value>
+  </data>
+  <data name="MapLoc_Error_Import" xml:space="preserve">
+    <value>Не удалось импортировать записи: {0}</value>
+  </data>
+  <data name="MapLoc_Error_Delete" xml:space="preserve">
+    <value>Не удалось удалить запись: {0}</value>
+  </data>
+  <data name="Files_Error_Save" xml:space="preserve">
+    <value>Не удалось сохранить файл: {0}</value>
+  </data>
 </root>

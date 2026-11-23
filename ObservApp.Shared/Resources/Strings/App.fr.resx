@@ -2056,4 +2056,118 @@
   <data name="Error_SsrUnavailable" xml:space="preserve">
     <value>Fonction non disponible sur le serveur de développement (SSR).</value>
   </data>
+  <data name="Map_Subtitle" xml:space="preserve">
+    <value>{0} favoris · {1} relevés</value>
+  </data>
+  <data name="Map_FitAll" xml:space="preserve">
+    <value>Tout afficher</value>
+  </data>
+  <data name="Map_LayersHint" xml:space="preserve">
+    <value>Changez le type de carte (OpenStreetMap, Google…) avec le bouton des calques.</value>
+  </data>
+  <data name="Map_Layer_Osm" xml:space="preserve">
+    <value>OpenStreetMap</value>
+  </data>
+  <data name="Map_Layer_GoogleRoad" xml:space="preserve">
+    <value>Google Maps</value>
+  </data>
+  <data name="Map_Layer_GoogleSatellite" xml:space="preserve">
+    <value>Google Satellite</value>
+  </data>
+  <data name="Map_Layer_GoogleHybrid" xml:space="preserve">
+    <value>Google Hybride</value>
+  </data>
+  <data name="Map_Layer_GoogleTerrain" xml:space="preserve">
+    <value>Google Relief</value>
+  </data>
+  <data name="Map_Layer_Topo" xml:space="preserve">
+    <value>OpenTopoMap (topographique)</value>
+  </data>
+  <data name="Map_Layer_Dark" xml:space="preserve">
+    <value>Sombre (CARTO)</value>
+  </data>
+  <data name="Map_Overlay_Favorites" xml:space="preserve">
+    <value>Favoris</value>
+  </data>
+  <data name="Map_Overlay_Entries" xml:space="preserve">
+    <value>Relevés</value>
+  </data>
+  <data name="Map_OpenGoogle" xml:space="preserve">
+    <value>Ouvrir dans Google Maps</value>
+  </data>
+  <data name="Map_OpenOsm" xml:space="preserve">
+    <value>Ouvrir dans OpenStreetMap</value>
+  </data>
+  <data name="Map_Favorites_Manage" xml:space="preserve">
+    <value>Gérer</value>
+  </data>
+  <data name="Map_Altitude" xml:space="preserve">
+    <value>Altitude : {0} m</value>
+  </data>
+  <data name="MapLoc_Title" xml:space="preserve">
+    <value>Relevés de TiempoUbicacionApp</value>
+  </data>
+  <data name="MapLoc_Desc" xml:space="preserve">
+    <value>Importez ou exportez la base de données Ubicaciones.db de TiempoUbicacionApp. Les relevés sont enregistrés dans votre compte.</value>
+  </data>
+  <data name="MapLoc_LoginRequired" xml:space="preserve">
+    <value>Connectez-vous pour enregistrer, importer et exporter des relevés de position.</value>
+  </data>
+  <data name="MapLoc_Import" xml:space="preserve">
+    <value>Importer .db</value>
+  </data>
+  <data name="MapLoc_Export" xml:space="preserve">
+    <value>Exporter .db</value>
+  </data>
+  <data name="MapLoc_Empty" xml:space="preserve">
+    <value>Aucun relevé pour l'instant. Importez le fichier Ubicaciones.db de TiempoUbicacionApp.</value>
+  </data>
+  <data name="MapLoc_NoCoords" xml:space="preserve">
+    <value>Coordonnées non valides</value>
+  </data>
+  <data name="MapLoc_Unnamed" xml:space="preserve">
+    <value>Sans nom</value>
+  </data>
+  <data name="MapLoc_Utc" xml:space="preserve">
+    <value>UTC {0} ({1})</value>
+  </data>
+  <data name="MapLoc_Import_Result" xml:space="preserve">
+    <value>{0} nouveaux relevés importés ; {1} existaient déjà.</value>
+  </data>
+  <data name="MapLoc_Import_NoCoords" xml:space="preserve">
+    <value>{0} n'ont pas de coordonnées valides et n'apparaissent pas sur la carte.</value>
+  </data>
+  <data name="MapLoc_Import_Empty" xml:space="preserve">
+    <value>Le fichier ne contient aucun relevé.</value>
+  </data>
+  <data name="MapLoc_Export_Done" xml:space="preserve">
+    <value>{0} relevés exportés.</value>
+  </data>
+  <data name="MapLoc_Error_NotSqlite" xml:space="preserve">
+    <value>Le fichier n'est pas une base de données SQLite valide.</value>
+  </data>
+  <data name="MapLoc_Error_MissingTable" xml:space="preserve">
+    <value>La base de données ne contient pas la table LocationEntry de TiempoUbicacionApp.</value>
+  </data>
+  <data name="MapLoc_Error_TooLarge" xml:space="preserve">
+    <value>Le fichier dépasse la taille maximale ({0} Mo).</value>
+  </data>
+  <data name="MapLoc_Error_Read" xml:space="preserve">
+    <value>Impossible de lire le fichier : {0}</value>
+  </data>
+  <data name="MapLoc_Error_Export" xml:space="preserve">
+    <value>Échec de l'export : {0}</value>
+  </data>
+  <data name="MapLoc_Error_Load" xml:space="preserve">
+    <value>Impossible de charger les relevés : {0}</value>
+  </data>
+  <data name="MapLoc_Error_Import" xml:space="preserve">
+    <value>Impossible d'importer les relevés : {0}</value>
+  </data>
+  <data name="MapLoc_Error_Delete" xml:space="preserve">
+    <value>Impossible de supprimer le relevé : {0}</value>
+  </data>
+  <data name="Files_Error_Save" xml:space="preserve">
+    <value>Impossible d'enregistrer le fichier : {0}</value>
+  </data>
 </root>
