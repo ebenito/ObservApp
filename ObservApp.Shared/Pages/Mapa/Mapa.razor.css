@@ -131,19 +131,7 @@
     font-size: 0.9rem;
 }
 
-/* Tarjetas */
-.map-layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-}
-
-@media (min-width: 800px) {
-    .map-layout {
-        grid-template-columns: 2fr 3fr;
-    }
-}
-
+/* Tarjeta del listado */
 .map-card {
     background-color: rgba(27, 42, 59, 0.65);
     backdrop-filter: blur(10px);
@@ -363,3 +351,146 @@
 @keyframes mapSpin {
     to { transform: rotate(360deg); }
 }
+
+/* Panel de exportación */
+.map-export-panel {
+    border: 1px solid var(--obs-star-dim);
+    background: rgba(13, 27, 42, 0.7);
+    border-radius: var(--radius-md);
+    padding: 14px 16px 4px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.map-export-title {
+    font-weight: 600;
+    color: var(--obs-star);
+}
+
+.map-radio {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--obs-moon);
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+    .map-radio.disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+    }
+
+    .map-radio input {
+        accent-color: var(--obs-aurora);
+    }
+
+.map-export-hint {
+    margin: 4px 0 6px;
+    font-size: 0.78rem;
+    color: var(--obs-comet);
+}
+
+/* Filtros */
+.map-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--obs-border);
+}
+
+.map-input {
+    background: rgba(13, 27, 42, 0.8);
+    border: 1px solid var(--obs-border);
+    color: var(--obs-moon);
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+    .map-input:focus {
+        outline: none;
+        border-color: var(--obs-star);
+        box-shadow: 0 0 0 2px rgba(244, 196, 48, 0.2);
+    }
+
+.map-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.map-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: 1px solid var(--obs-border);
+    color: var(--obs-comet);
+    border-radius: 999px;
+    padding: 5px 12px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+    .map-chip:hover {
+        border-color: var(--obs-star-dim);
+        color: var(--obs-moon);
+    }
+
+    .map-chip.active {
+        border-color: var(--obs-aurora);
+        background: rgba(46, 196, 182, 0.15);
+        color: var(--obs-moon);
+    }
+
+.map-filter-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+@media (min-width: 640px) {
+    .map-filter-row {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+.map-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.78rem;
+    color: var(--obs-comet);
+    font-weight: 600;
+}
+
+.map-list-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: var(--obs-comet);
+}
+
+.map-link-btn {
+    background: transparent;
+    border: none;
+    color: var(--obs-aurora);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 2px 4px;
+}
+
+    .map-link-btn:hover {
+        text-decoration: underline;
+    }

@@ -82,12 +82,9 @@ window.observApp.multiMap = (function () {
             topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
                 maxZoom: 17,
                 attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)'
-            }),
-            dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                subdomains: 'abcd',
-                maxZoom: 20,
-                attribution: '&copy; OpenStreetMap contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
             })
+            // CARTO (dark_all) descartada: sus teselas muestran un aviso pidiendo API key.
+            // Si alguien la tenía guardada en localStorage, create() vuelve a 'osm'.
         };
     }
 

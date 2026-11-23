@@ -129,7 +129,7 @@ public sealed class LocationEntryMapperTests
 		var incoming = new[]
 		{
 			Row(location: "A"),                                       // ya existe
-			Row(ticks: SampleTicks + 999, location: " a "),           // mismo segundo y lugar (sin distinguir mayúsculas/espacios)
+			Row(ticks: SampleTicks + 999, location: " a "),           // mismo segundo y misma ubicación
 			Row(ticks: SampleTicks + TimeSpan.TicksPerHour, location: "B"),
 			Row(ticks: SampleTicks + TimeSpan.TicksPerHour, location: "B"), // repetida en el archivo
 			Row(ticks: SampleTicks + 2 * TimeSpan.TicksPerHour, location: "C", lat: "x")
@@ -140,6 +140,50 @@ public sealed class LocationEntryMapperTests
 		Assert.Equal(new[] { "B", "C" }, plan.ToInsert.Select(e => e.Location));
 		Assert.Equal(3, plan.Duplicates);
 		Assert.Equal(1, plan.WithoutCoordinates);
+	}
+
+	[Fact]
+	public void PlanImport_ReimportMonthsLater_OnlyAddsNewEntries()
+	{
+		// Primera importación: dos registros. Meses después el mismo archivo trae uno más,
+		// y uno de los antiguos se ha renombrado en TiempoUbicacionApp.
+		var firstImport = LocationEntryMapper.PlanImport(
+			Array.Empty<LocationEntry>(),
+			new[] { Row(location: "A"), Row(ticks: SampleTicks + TimeSpan.TicksPerDay, location: "B") });
+
+		var secondImport = LocationEntryMapper.PlanImport(
+			firstImport.ToInsert,
+			new[]
+			{
+				Row(location: "A renombrado"),
+				Row(ticks: SampleTicks + TimeSpan.TicksPerDay, location: "B"),
+				Row(ticks: SampleTicks + 90 * TimeSpan.TicksPerDay, location: "Nueva")
+			});
+
+		Assert.Equal(new[] { "Nueva" }, secondImport.ToInsert.Select(e => e.Location));
+		Assert.Equal(2, secondImport.Duplicates);
+	}
+
+	[Fact]
+	public void PlanImport_SameCoordinatesWrittenDifferently_IsDuplicate()
+	{
+		var existing = new List<LocationEntry> { LocationEntryMapper.FromLegacy(Row(lat: "41°5'35\" N", lon: "3°27'55\" O")) };
+
+		var plan = LocationEntryMapper.PlanImport(existing, new[] { Row(lat: "41º 5' 35'' N", lon: "3º 27' 55'' W") });
+
+		Assert.Empty(plan.ToInsert);
+		Assert.Equal(1, plan.Duplicates);
+	}
+
+	[Fact]
+	public void PlanImport_SamePlaceDifferentSecond_IsNotDuplicate()
+	{
+		var plan = LocationEntryMapper.PlanImport(
+			Array.Empty<LocationEntry>(),
+			new[] { Row(), Row(ticks: SampleTicks + TimeSpan.TicksPerSecond) });
+
+		Assert.Equal(2, plan.ToInsert.Count);
+		Assert.Equal(0, plan.Duplicates);
 	}
 
 	[Fact]

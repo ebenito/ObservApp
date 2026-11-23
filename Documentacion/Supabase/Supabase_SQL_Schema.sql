@@ -166,6 +166,21 @@ CREATE TABLE IF NOT EXISTS public.location_entries (
 CREATE INDEX IF NOT EXISTS idx_location_entries_user_date
   ON public.location_entries(user_id, date_ticks DESC);
 
+-- Fecha legible/consultable calculada por Postgres a partir de date_ticks
+-- (migración 20261123160000_location_entries_date_local.sql). La app no la escribe.
+ALTER TABLE public.location_entries
+  ADD COLUMN IF NOT EXISTS date_local TIMESTAMP
+  GENERATED ALWAYS AS (
+    CASE WHEN date_ticks > 0 THEN
+      TIMESTAMP '0001-01-01 00:00:00'
+        + (date_ticks / 864000000000) * INTERVAL '1 day'
+        + ((date_ticks % 864000000000) / 10) * INTERVAL '1 microsecond'
+    END
+  ) STORED;
+
+CREATE INDEX IF NOT EXISTS idx_location_entries_user_date_local
+  ON public.location_entries(user_id, date_local DESC);
+
 ALTER TABLE public.location_entries ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "Users see own location entries" ON public.location_entries;

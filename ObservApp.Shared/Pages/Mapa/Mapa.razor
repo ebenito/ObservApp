@@ -28,7 +28,7 @@
         <button class="map-btn" @onclick="FitAllAsync" disabled="@(_markers.Count == 0)">🔍 @L["Map_FitAll"]</button>
     </div>
 
-    <ObsMap @ref="_map" Markers="_markers" Height="min(60vh, 560px)" />
+    <ObsMap @ref="_map" Markers="_markers" FitOnChange="true" Height="min(60vh, 560px)" />
 
     <div class="map-legend">
         <span class="map-legend-item"><span class="map-dot map-dot--favorite"></span>@L["Map_Overlay_Favorites"]</span>
@@ -44,124 +44,187 @@
         </div>
     }
 
-    <div class="map-layout">
-        <!-- Favoritas -->
-        <section class="map-card">
-            <div class="map-card-header">
-                <span>⭐ @L["Map_Overlay_Favorites"]</span>
-                <a class="map-link" href="/configuracion/ubicaciones">@L["Map_Favorites_Manage"]</a>
-            </div>
-            @if (_favorites is null)
+    <section class="map-card">
+        <div class="map-card-header">
+            <span>📍 @L["Map_List_Title"]</span>
+            <a class="map-link" href="/configuracion/ubicaciones">⭐ @L["Map_Favorites_Manage"]</a>
+        </div>
+
+        <!-- Importar / exportar (formato Ubicaciones.db de TiempoUbicacionApp) -->
+        <div class="map-actions">
+            @if (AppState.IsAuthenticated)
             {
-                <div class="map-empty"><span class="map-spinner"></span> @L["Status_Loading"]</div>
-            }
-            else if (_favorites.Count == 0)
-            {
-                <div class="map-empty">@L["FavLoc_NoLocations"]</div>
-            }
-            else
-            {
-                <ul class="map-list">
-                    @foreach (var fav in _favorites)
+                <label class="map-btn map-btn--accent @(_busy ? "disabled" : "")" for="map-import-input">
+                    @if (_busy)
                     {
-                        <li class="map-item" @onclick="() => FocusAsync(MapMarkerKind.Favorite, fav.Id.ToString())">
-                            <span class="map-dot map-dot--favorite"></span>
-                            <div class="map-item-info">
-                                <span class="map-item-name">@fav.Name</span>
-                                <span class="map-item-meta">@FormatCoords(fav.Latitude, fav.Longitude)</span>
-                            </div>
-                        </li>
+                        <span class="map-spinner"></span>
                     }
-                </ul>
+                    else
+                    {
+                        <span>📥</span>
+                    }
+                    @L["MapLoc_Import"]
+                </label>
+                <InputFile id="map-import-input" class="map-file-input" OnChange="ImportAsync" disabled="@_busy"
+                           accept=".db,.sqlite,.sqlite3,application/octet-stream,application/x-sqlite3,application/vnd.sqlite3" />
             }
-        </section>
-
-        <!-- Registros compatibles con TiempoUbicacionApp -->
-        <section class="map-card">
-            <div class="map-card-header">
-                <span>📍 @L["MapLoc_Title"]</span>
-            </div>
-            <p class="map-card-desc">@L["MapLoc_Desc"]</p>
-
+            <button class="map-btn" @onclick="OpenExportPanel" disabled="@(_busy || _allItems.Count == 0)">
+                📤 @L["MapLoc_Export"]
+            </button>
+        </div>
+        <p class="map-card-desc">
+            @L["MapLoc_Desc"]
             @if (!AppState.IsAuthenticated)
             {
-                <div class="map-empty">
-                    <p>@L["MapLoc_LoginRequired"]</p>
-                    <a class="map-btn map-btn--accent" href="/login">@L["Auth_SignIn"]</a>
-                </div>
+                <br />
+                <span>@L["MapLoc_LoginRequired"]</span>
+                <a class="map-link" href="/login">@L["Auth_SignIn"]</a>
             }
-            else
-            {
-                <div class="map-actions">
-                    <label class="map-btn map-btn--accent @(_busy ? "disabled" : "")" for="map-import-input">
-                        @if (_busy)
-                        {
-                            <span class="map-spinner"></span>
-                        }
-                        else
-                        {
-                            <span>📥</span>
-                        }
-                        @L["MapLoc_Import"]
-                    </label>
-                    <InputFile id="map-import-input" class="map-file-input" OnChange="ImportAsync" disabled="@_busy"
-                               accept=".db,.sqlite,.sqlite3,application/octet-stream,application/x-sqlite3,application/vnd.sqlite3" />
-                    <button class="map-btn" @onclick="ExportAsync" disabled="@(_busy || _entries is not { Count: > 0 })">
-                        📤 @L["MapLoc_Export"]
-                    </button>
-                </div>
+        </p>
 
-                @if (_entries is null)
-                {
-                    <div class="map-empty"><span class="map-spinner"></span> @L["Status_Loading"]</div>
-                }
-                else if (_entries.Count == 0)
-                {
-                    <div class="map-empty">@L["MapLoc_Empty"]</div>
-                }
-                else
-                {
-                    <ul class="map-list map-list--scroll">
-                        @foreach (var entry in _entries)
+        @if (_showExportPanel)
+        {
+            <div class="map-export-panel" role="dialog" aria-label="@L["MapLoc_Export_Title"]">
+                <div class="map-export-title">@L["MapLoc_Export_Title"]</div>
+                <label class="map-radio @(_allItems.Count == 0 ? "disabled" : "")">
+                    <input type="radio" name="map-export" checked="@(_exportSource == MapLocationSource.All)"
+                           disabled="@(_allItems.Count == 0)" @onchange="() => _exportSource = MapLocationSource.All" />
+                    @L["MapLoc_Export_All", _allItems.Count]
+                </label>
+                <label class="map-radio @(EntryCount == 0 ? "disabled" : "")">
+                    <input type="radio" name="map-export" checked="@(_exportSource == MapLocationSource.Entries)"
+                           disabled="@(EntryCount == 0)" @onchange="() => _exportSource = MapLocationSource.Entries" />
+                    <span class="map-dot map-dot--entry"></span> @L["MapLoc_Export_Entries", EntryCount]
+                </label>
+                <label class="map-radio @(FavoriteCount == 0 ? "disabled" : "")">
+                    <input type="radio" name="map-export" checked="@(_exportSource == MapLocationSource.Favorites)"
+                           disabled="@(FavoriteCount == 0)" @onchange="() => _exportSource = MapLocationSource.Favorites" />
+                    <span class="map-dot map-dot--favorite"></span> @L["MapLoc_Export_Favorites", FavoriteCount]
+                </label>
+                <p class="map-export-hint">@L["MapLoc_Export_Hint"]</p>
+                <div class="map-actions">
+                    <button class="map-btn map-btn--accent" @onclick="ExportAsync" disabled="@_busy">📤 @L["MapLoc_Export"]</button>
+                    <button class="map-btn" @onclick="() => _showExportPanel = false">@L["Action_Cancel"]</button>
+                </div>
+            </div>
+        }
+
+        <!-- Filtros -->
+        <div class="map-filters">
+            <input class="map-input map-search" type="search" placeholder="@L["Map_Search_Placeholder"]"
+                   aria-label="@L["Map_Search_Placeholder"]"
+                   @bind="_search" @bind:event="oninput" @bind:after="ApplyFilters" />
+
+            <div class="map-chips" role="group">
+                <button class="map-chip @(_source == MapLocationSource.All ? "active" : "")" @onclick="() => SetSource(MapLocationSource.All)">
+                    @L["Map_Filter_All"] (@_allItems.Count)
+                </button>
+                <button class="map-chip @(_source == MapLocationSource.Favorites ? "active" : "")" @onclick="() => SetSource(MapLocationSource.Favorites)">
+                    <span class="map-dot map-dot--favorite"></span> @L["Map_Overlay_Favorites"] (@FavoriteCount)
+                </button>
+                <button class="map-chip @(_source == MapLocationSource.Entries ? "active" : "")" @onclick="() => SetSource(MapLocationSource.Entries)">
+                    <span class="map-dot map-dot--entry"></span> @L["Map_Overlay_Entries"] (@EntryCount)
+                </button>
+            </div>
+
+            <div class="map-filter-row">
+                <label class="map-field">
+                    <span>@L["Map_Filter_Year"]</span>
+                    <select class="map-input" @bind="_year" @bind:after="ApplyFilters">
+                        <option value="">@L["Map_Filter_Any"]</option>
+                        @foreach (var y in _years)
                         {
-                            var pendingDelete = _pendingDeleteId == entry.Id;
-                            <li class="map-item @(entry.HasCoordinates() ? "" : "map-item--nocoords")">
-                                <span class="map-dot map-dot--entry"></span>
-                                <div class="map-item-info" @onclick="() => FocusEntryAsync(entry)">
-                                    <span class="map-item-name">@EntryTitle(entry)</span>
-                                    <span class="map-item-meta">@FormatEntryDate(entry)</span>
-                                    <span class="map-item-meta">
-                                        @if (entry.HasCoordinates())
-                                        {
-                                            @($"{entry.Latitude}  {entry.Longitude}")
-                                        }
-                                        else
-                                        {
-                                            @L["MapLoc_NoCoords"]
-                                        }
-                                    </span>
-                                </div>
-                                <div class="map-item-actions">
-                                    @if (pendingDelete)
-                                    {
-                                        <button class="map-icon-btn map-icon-btn--danger" @onclick="() => DeleteEntryAsync(entry)" disabled="@_busy">
-                                            @L["Action_Delete"]
-                                        </button>
-                                        <button class="map-icon-btn" @onclick="() => _pendingDeleteId = null">@L["Action_Cancel"]</button>
-                                    }
-                                    else
-                                    {
-                                        <button class="map-icon-btn" @onclick="() => _pendingDeleteId = entry.Id"
-                                                title="@L["Action_Delete"]" aria-label="@L["Action_Delete"]">🗑️</button>
-                                    }
-                                </div>
-                            </li>
+                            <option value="@y">@y</option>
                         }
-                    </ul>
+                    </select>
+                </label>
+                <label class="map-field">
+                    <span>@L["Map_Filter_Month"]</span>
+                    <select class="map-input" @bind="_month" @bind:after="ApplyFilters">
+                        <option value="">@L["Map_Filter_Any"]</option>
+                        @for (var m = 1; m <= 12; m++)
+                        {
+                            <option value="@m">@MonthName(m)</option>
+                        }
+                    </select>
+                </label>
+                <label class="map-field">
+                    <span>@L["Map_Filter_Day"]</span>
+                    <select class="map-input" @bind="_day" @bind:after="ApplyFilters">
+                        <option value="">@L["Map_Filter_Any"]</option>
+                        @for (var d = 1; d <= 31; d++)
+                        {
+                            <option value="@d">@d</option>
+                        }
+                    </select>
+                </label>
+                <label class="map-field">
+                    <span>@L["Map_Sort"]</span>
+                    <select class="map-input" @bind="_sort" @bind:after="ApplyFilters">
+                        <option value="@MapLocationSort.DateDesc">@L["Map_Sort_DateDesc"]</option>
+                        <option value="@MapLocationSort.DateAsc">@L["Map_Sort_DateAsc"]</option>
+                        <option value="@MapLocationSort.NameAsc">@L["Map_Sort_NameAsc"]</option>
+                        <option value="@MapLocationSort.NameDesc">@L["Map_Sort_NameDesc"]</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="map-list-status">
+                <span>@L["Map_List_Count", _visibleItems.Count, _allItems.Count]</span>
+                @if (!CurrentQuery.IsDefault)
+                {
+                    <button class="map-link-btn" @onclick="ClearFilters">✕ @L["Map_Filter_Clear"]</button>
                 }
-            }
-        </section>
-    </div>
+            </div>
+        </div>
+
+        <!-- Listado unificado -->
+        @if (_favorites is null || _entries is null)
+        {
+            <div class="map-empty"><span class="map-spinner"></span> @L["Status_Loading"]</div>
+        }
+        else if (_allItems.Count == 0)
+        {
+            <div class="map-empty">@L["Map_List_Empty"]</div>
+        }
+        else if (_visibleItems.Count == 0)
+        {
+            <div class="map-empty">@L["Map_List_NoResults"]</div>
+        }
+        else
+        {
+            <ul class="map-list map-list--scroll">
+                @foreach (var item in _visibleItems)
+                {
+                    var pendingDelete = _pendingDeleteId == item.Id;
+                    var kindLabel = item.Kind == MapMarkerKind.Favorite ? L["Map_Kind_Favorite"] : L["Map_Kind_Entry"];
+                    <li class="map-item @(item.HasCoordinates ? "" : "map-item--nocoords")" @key="item.Id">
+                        <span class="map-dot @(item.Kind == MapMarkerKind.Favorite ? "map-dot--favorite" : "map-dot--entry")"
+                              title="@kindLabel" aria-label="@kindLabel"></span>
+                        <div class="map-item-info" @onclick="() => FocusAsync(item)">
+                            <span class="map-item-name">@ItemName(item)</span>
+                            <span class="map-item-meta">@FormatDate(item.Date)</span>
+                            <span class="map-item-meta">@(item.HasCoordinates ? item.CoordinatesText : L["MapLoc_NoCoords"])</span>
+                        </div>
+                        <div class="map-item-actions">
+                            @if (pendingDelete)
+                            {
+                                <button class="map-icon-btn map-icon-btn--danger" @onclick="() => DeleteAsync(item)" disabled="@_busy">
+                                    @L["Action_Delete"]
+                                </button>
+                                <button class="map-icon-btn" @onclick="() => _pendingDeleteId = null">@L["Action_Cancel"]</button>
+                            }
+                            else
+                            {
+                                <button class="map-icon-btn" @onclick="() => _pendingDeleteId = item.Id"
+                                        title="@L["Action_Delete"]" aria-label="@L["Action_Delete"]">🗑️</button>
+                            }
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+    </section>
 </div>
 
 @code {
@@ -171,11 +234,36 @@
     private ObsMap? _map;
     private List<FavoriteLocation>? _favorites;
     private List<LocationEntry>? _entries;
+    private List<MapLocationItem> _allItems = new();
+    private List<MapLocationItem> _visibleItems = new();
+    private List<int> _years = new();
     private IReadOnlyList<MapMarker> _markers = Array.Empty<MapMarker>();
+
+    // Filtros (los selects enlazan cadenas: "" = cualquiera)
+    private string _search = string.Empty;
+    private MapLocationSource _source = MapLocationSource.All;
+    private string _year = string.Empty;
+    private string _month = string.Empty;
+    private string _day = string.Empty;
+    private MapLocationSort _sort = MapLocationSort.DateDesc;
+
     private Guid? _pendingDeleteId;
     private bool _busy;
+    private bool _showExportPanel;
+    private MapLocationSource _exportSource = MapLocationSource.All;
     private string? _message;
     private bool _messageIsError;
+
+    private int FavoriteCount => _favorites?.Count ?? 0;
+    private int EntryCount => _entries?.Count ?? 0;
+
+    private MapLocationQuery CurrentQuery => new(
+        _search,
+        _source,
+        ParseInt(_year),
+        ParseInt(_month),
+        ParseInt(_day),
+        _sort);
 
     protected override async Task OnInitializedAsync()
     {
@@ -217,7 +305,7 @@
             _entries = new List<LocationEntry>();
         }
 
-        RebuildMarkers();
+        RebuildItems();
     }
 
     private void OnAuthChanged()
@@ -229,45 +317,89 @@
         });
     }
 
-    private void RebuildMarkers()
+    // ── Listado y mapa ────────────────────────────────────────────────────
+
+    private void RebuildItems()
     {
-        var markers = new List<MapMarker>();
+        var items = new List<MapLocationItem>();
 
         foreach (var fav in _favorites ?? new List<FavoriteLocation>())
         {
-            markers.Add(new MapMarker(
-                fav.Id.ToString(),
+            items.Add(new MapLocationItem(
+                fav.Id,
                 MapMarkerKind.Favorite,
+                fav.Name,
+                LocationEntryMapper.FavoriteLocalDate(fav, TimeZoneInfo.Local),
                 fav.Latitude,
                 fav.Longitude,
-                fav.Name,
-                new[]
-                {
-                    FormatCoords(fav.Latitude, fav.Longitude),
-                    L["Map_Altitude", fav.AltitudeMeters.ToString("F0", CultureInfo.CurrentCulture)].Value
-                }));
+                string.Create(CultureInfo.InvariantCulture, $"{fav.Latitude:F4}°, {fav.Longitude:F4}° · {fav.AltitudeMeters:F0} m")));
         }
 
-        foreach (var entry in (_entries ?? new List<LocationEntry>()).Where(e => e.HasCoordinates()))
+        foreach (var entry in _entries ?? new List<LocationEntry>())
         {
-            var lines = new List<string> { FormatEntryDate(entry) };
-            if (!string.IsNullOrWhiteSpace(entry.HoraUtc))
-            {
-                lines.Add(L["MapLoc_Utc", entry.HoraUtc, entry.Desfase].Value);
-            }
-            lines.Add($"{entry.Latitude}  {entry.Longitude}");
-
-            markers.Add(new MapMarker(
-                entry.Id.ToString(),
+            var date = entry.GetDate();
+            items.Add(new MapLocationItem(
+                entry.Id,
                 MapMarkerKind.Entry,
-                entry.LatitudeDeg!.Value,
-                entry.LongitudeDeg!.Value,
-                EntryTitle(entry),
-                lines));
+                entry.Location,
+                date > DateTime.MinValue ? date : null,
+                entry.LatitudeDeg,
+                entry.LongitudeDeg,
+                $"{entry.Latitude}  {entry.Longitude}"));
         }
 
-        _markers = markers;
+        _allItems = items;
+        _years = MapLocationListFilter.AvailableYears(items);
+        ApplyFilters();
     }
+
+    private void ApplyFilters()
+    {
+        _visibleItems = MapLocationListFilter.Apply(_allItems, CurrentQuery);
+
+        // El mapa muestra lo mismo que el listado filtrado.
+        _markers = _visibleItems
+            .Where(i => i.HasCoordinates)
+            .Select(i => new MapMarker(
+                i.Id.ToString(),
+                i.Kind,
+                i.Latitude!.Value,
+                i.Longitude!.Value,
+                ItemName(i),
+                PopupLines(i)))
+            .ToList();
+    }
+
+    private IReadOnlyList<string> PopupLines(MapLocationItem item)
+    {
+        var lines = new List<string> { FormatDate(item.Date) };
+
+        if (item.Kind == MapMarkerKind.Entry &&
+            _entries?.FirstOrDefault(e => e.Id == item.Id) is { } entry &&
+            !string.IsNullOrWhiteSpace(entry.HoraUtc))
+        {
+            lines.Add(L["MapLoc_Utc", entry.HoraUtc, entry.Desfase].Value);
+        }
+
+        lines.Add(item.CoordinatesText);
+        return lines;
+    }
+
+    private void SetSource(MapLocationSource source)
+    {
+        _source = source;
+        ApplyFilters();
+    }
+
+    private void ClearFilters()
+    {
+        _search = string.Empty;
+        _source = MapLocationSource.All;
+        _year = _month = _day = string.Empty;
+        ApplyFilters();
+    }
+
+    // ── Importar ──────────────────────────────────────────────────────────
 
     private async Task ImportAsync(InputFileChangeEventArgs e)
     {
@@ -340,22 +472,41 @@
         }
     }
 
+    // ── Exportar ──────────────────────────────────────────────────────────
+
+    private void OpenExportPanel()
+    {
+        ClearMessage();
+        _exportSource = FavoriteCount > 0 && EntryCount > 0 ? MapLocationSource.All
+            : EntryCount > 0 ? MapLocationSource.Entries
+            : MapLocationSource.Favorites;
+        _showExportPanel = true;
+    }
+
     private async Task ExportAsync()
     {
-        if (_busy || _entries is not { Count: > 0 })
+        if (_busy)
         {
             return;
         }
 
-        ClearMessage();
+        var entries = _exportSource == MapLocationSource.Favorites ? Enumerable.Empty<LocationEntry>() : _entries ?? new();
+        var favorites = _exportSource == MapLocationSource.Entries ? Enumerable.Empty<FavoriteLocation>() : _favorites ?? new();
+
         _busy = true;
         try
         {
-            var rows = LocationEntryMapper.ToLegacyExport(_entries);
+            var rows = LocationEntryMapper.BuildExport(entries, favorites, TimeZoneInfo.Local);
+            if (rows.Count == 0)
+            {
+                return;
+            }
+
             var bytes = await DbCodec.WriteAsync(rows);
 
             if (await FileSaver.SaveAsync(ExportFileName, bytes, "application/vnd.sqlite3"))
             {
+                _showExportPanel = false;
                 ShowMessage(L["MapLoc_Export_Done", rows.Count], isError: false);
             }
             else if (FileSaver.LastError is { } error)
@@ -373,20 +524,28 @@
         }
     }
 
-    private async Task DeleteEntryAsync(LocationEntry entry)
+    // ── Borrar ────────────────────────────────────────────────────────────
+
+    private async Task DeleteAsync(MapLocationItem item)
     {
         _busy = true;
         try
         {
-            if (await EntriesService.DeleteAsync(entry.Id))
+            if (item.Kind == MapMarkerKind.Favorite)
             {
-                _entries?.Remove(entry);
-                RebuildMarkers();
+                await FavLocationsService.DeleteFavoriteLocationAsync(item.Id);
+                _favorites?.RemoveAll(f => f.Id == item.Id);
+            }
+            else if (await EntriesService.DeleteAsync(item.Id))
+            {
+                _entries?.RemoveAll(e => e.Id == item.Id);
             }
             else if (EntriesService.LastError is { } error)
             {
                 ShowMessage(error, isError: true);
             }
+
+            RebuildItems();
         }
         finally
         {
@@ -395,29 +554,30 @@
         }
     }
 
-    private Task FocusAsync(MapMarkerKind kind, string id) =>
-        _map?.FocusAsync(kind, id) ?? Task.CompletedTask;
+    // ── Utilidades ────────────────────────────────────────────────────────
 
-    private Task FocusEntryAsync(LocationEntry entry) =>
-        entry.HasCoordinates() ? FocusAsync(MapMarkerKind.Entry, entry.Id.ToString()) : Task.CompletedTask;
+    private Task FocusAsync(MapLocationItem item) =>
+        item.HasCoordinates && _map is not null
+            ? _map.FocusAsync(item.Kind, item.Id.ToString())
+            : Task.CompletedTask;
 
     private Task FitAllAsync() => _map?.FitAllAsync() ?? Task.CompletedTask;
 
-    private string EntryTitle(LocationEntry entry) =>
-        string.IsNullOrWhiteSpace(entry.Location) ? L["MapLoc_Unnamed"] : entry.Location;
+    private string ItemName(MapLocationItem item) =>
+        string.IsNullOrWhiteSpace(item.Name) ? L["MapLoc_Unnamed"] : item.Name;
 
-    private static string FormatEntryDate(LocationEntry entry)
+    private static string FormatDate(DateTime? date) =>
+        date?.ToString("g", CultureInfo.CurrentCulture) ?? "—";
+
+    private static string MonthName(int month)
     {
-        if (entry.GetDate() > DateTime.MinValue)
-        {
-            return entry.GetDate().ToString("g", CultureInfo.CurrentCulture);
-        }
-
-        return string.Join(' ', new[] { entry.FechaActual, entry.HoraLocal }.Where(s => !string.IsNullOrWhiteSpace(s)));
+        var name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
+        return string.IsNullOrEmpty(name) ? month.ToString(CultureInfo.InvariantCulture)
+            : char.ToUpper(name[0], CultureInfo.CurrentCulture) + name[1..];
     }
 
-    private static string FormatCoords(double lat, double lon) =>
-        string.Create(CultureInfo.InvariantCulture, $"{lat:F4}°, {lon:F4}°");
+    private static int? ParseInt(string value) =>
+        int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var n) ? n : null;
 
     private void ShowMessage(string message, bool isError)
     {

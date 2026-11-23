@@ -53,11 +53,82 @@ public static class LocationEntryMapper
 	/// (de más antigua a más reciente), con identificadores 1..n.
 	/// </summary>
 	public static List<LegacyLocationEntry> ToLegacyExport(IEnumerable<LocationEntry> entries) =>
-		entries
-			.OrderBy(e => e.DateTicks)
-			.ThenBy(e => e.CreatedAt)
-			.Select((e, i) => ToLegacy(e, i + 1))
+		BuildExport(entries, Array.Empty<FavoriteLocation>(), TimeZoneInfo.Local);
+
+	/// <summary>
+	/// Exportación combinada de registros y favoritas, ordenada por fecha y numerada 1..n.
+	/// Las favoritas se convierten con <see cref="FavoriteToLegacy"/>.
+	/// </summary>
+	public static List<LegacyLocationEntry> BuildExport(
+		IEnumerable<LocationEntry> entries,
+		IEnumerable<FavoriteLocation> favorites,
+		TimeZoneInfo timeZone)
+	{
+		var rows = entries
+			.OrderBy(e => e.CreatedAt)
+			.Select(e => (Ticks: e.DateTicks, Row: ToLegacy(e, 0)))
+			.Concat(favorites
+				.OrderBy(f => f.CreatedAt)
+				.Select(f =>
+				{
+					var row = FavoriteToLegacy(f, 0, timeZone);
+					return (Ticks: long.Parse(row.DateValue!, CultureInfo.InvariantCulture), Row: row);
+				}))
+			.OrderBy(x => x.Ticks)
+			.Select(x => x.Row)
 			.ToList();
+
+		for (var i = 0; i < rows.Count; i++)
+		{
+			rows[i].Id = i + 1;
+		}
+
+		return rows;
+	}
+
+	/// <summary>
+	/// Convierte una favorita en una fila de TiempoUbicacionApp con los mismos formatos que
+	/// genera esa app (fecha en español, horas HH:mm:ss, desfase ±hh:mm, coordenadas DMS).
+	/// La fecha es la de creación de la favorita en la zona horaria indicada. La altitud se pierde:
+	/// TiempoUbicacionApp no la guarda.
+	/// </summary>
+	public static LegacyLocationEntry FavoriteToLegacy(FavoriteLocation favorite, long id, TimeZoneInfo timeZone)
+	{
+		var utc = ToUtc(favorite.CreatedAt);
+		var local = TimeZoneInfo.ConvertTimeFromUtc(utc, timeZone);
+		var offset = timeZone.GetUtcOffset(utc);
+		var spanish = CultureInfo.GetCultureInfo("es-ES");
+
+		return new LegacyLocationEntry
+		{
+			Id = id,
+			DateValue = local.Ticks.ToString(CultureInfo.InvariantCulture),
+			DateType = "integer",
+			FechaActual = local.ToString("dddd, dd MMMM yyyy", spanish),
+			HoraLocal = local.ToString("HH:mm:ss", CultureInfo.InvariantCulture),
+			HoraUtc = utc.ToString("HH:mm:ss", CultureInfo.InvariantCulture),
+			Desfase = (offset < TimeSpan.Zero ? "-" : "+") + offset.ToString(@"hh\:mm", CultureInfo.InvariantCulture),
+			TipoHorario = timeZone.IsDaylightSavingTime(local)
+				? "Horario de ahorro de luz (verano)"
+				: "Horario estándar (invierno)",
+			Location = favorite.Name,
+			Latitude = CoordinateParser.FormatDms(favorite.Latitude, isLatitude: true),
+			Longitude = CoordinateParser.FormatDms(favorite.Longitude, isLatitude: false),
+			Zona = 0
+		};
+	}
+
+	/// <summary>Fecha local de una favorita (se guarda en UTC) para mostrar y filtrar.</summary>
+	public static DateTime FavoriteLocalDate(FavoriteLocation favorite, TimeZoneInfo timeZone) =>
+		TimeZoneInfo.ConvertTimeFromUtc(ToUtc(favorite.CreatedAt), timeZone);
+
+	// created_at es timestamptz; si llega sin Kind se interpreta como UTC.
+	private static DateTime ToUtc(DateTime value) => value.Kind switch
+	{
+		DateTimeKind.Utc => value,
+		DateTimeKind.Local => value.ToUniversalTime(),
+		_ => DateTime.SpecifyKind(value, DateTimeKind.Utc)
+	};
 
 	/// <summary>Recalcula <see cref="LocationEntry.LatitudeDeg"/> y <see cref="LocationEntry.LongitudeDeg"/>.</summary>
 	public static void UpdateDecimalCoordinates(LocationEntry entry)
@@ -104,9 +175,10 @@ public static class LocationEntryMapper
 	}
 
 	/// <summary>
-	/// Separa las filas importadas en nuevas y duplicadas. Una fila es duplicada si ya existe
-	/// (o aparece antes en el mismo archivo) otra con la misma fecha al segundo, el mismo
-	/// lugar y las mismas coordenadas en texto.
+	/// Separa las filas importadas en nuevas y duplicadas. Una fila es duplicada si ya está
+	/// guardada (o aparece antes en el mismo archivo) otra con la misma fecha y hora al segundo
+	/// y la misma ubicación (ver <see cref="DuplicateKey"/>). El nombre del lugar no cuenta:
+	/// renombrarlo en TiempoUbicacionApp no debe provocar un duplicado al reimportar.
 	/// </summary>
 	public static LocationImportPlan PlanImport(IEnumerable<LocationEntry> existing, IEnumerable<LegacyLocationEntry> incoming)
 	{
@@ -129,15 +201,20 @@ public static class LocationEntryMapper
 		return new LocationImportPlan(toInsert, duplicates, toInsert.Count(e => !e.HasCoordinates()));
 	}
 
-	/// <summary>Clave de deduplicación de un registro.</summary>
+	/// <summary>
+	/// Clave de deduplicación: fecha y hora truncadas al segundo + ubicación. La ubicación se
+	/// compara en grados decimales redondeados a 5 decimales (~1 m; TiempoUbicacionApp guarda
+	/// segundos de arco enteros, ~30 m), así <c>41°5'35" N</c> y <c>41º 5' 35'' N</c> son la misma.
+	/// Si las coordenadas no se pueden interpretar se compara el texto normalizado.
+	/// </summary>
 	public static string DuplicateKey(LocationEntry entry)
 	{
 		var secondTicks = entry.DateTicks - entry.DateTicks % TimeSpan.TicksPerSecond;
-		return string.Join('\u001F',
-			secondTicks.ToString(CultureInfo.InvariantCulture),
-			Normalize(entry.Location),
-			Normalize(entry.Latitude),
-			Normalize(entry.Longitude));
+		var location = entry.HasCoordinates()
+			? string.Create(CultureInfo.InvariantCulture, $"{Math.Round(entry.LatitudeDeg!.Value, 5):F5},{Math.Round(entry.LongitudeDeg!.Value, 5):F5}")
+			: "txt:" + Normalize(entry.Latitude) + "|" + Normalize(entry.Longitude);
+
+		return secondTicks.ToString(CultureInfo.InvariantCulture) + "\u001F" + location;
 	}
 
 	private static string Normalize(string? text) =>

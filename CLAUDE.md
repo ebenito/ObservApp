@@ -75,7 +75,7 @@ No inventar rutas, ViewModels ni servicios. Verificar su existencia real con las
 | `/senales` | `Senales.razor` — noticias WP + RSS + TTS |
 | `/planificacion` | `Planificacion.razor` — **privada** (AuthGuard) |
 | `/historial` | `Historial.razor` — **privada** (AuthGuard) |
-| `/mapa` | `Mapa.razor` — favoritas + registros de TiempoUbicacionApp (`location_entries`, importar/exportar `Ubicaciones.db` con sql.js) en `<ObsMap>` (Leaflet local; capas OSM, Google sin API key, OpenTopoMap, CARTO) |
+| `/mapa` | `Mapa.razor` — favoritas + registros de TiempoUbicacionApp (`location_entries`, importar/exportar `Ubicaciones.db` con sql.js) en `<ObsMap>` (Leaflet local; capas OSM, Google sin API key, OpenTopoMap; CARTO descartada porque pide API key) |
 | `/configuracion/ubicaciones` | `GestionUbicaciones.razor` |
 | `/login`, `/confirm-otp` | `Login.razor`, `ConfirmOtp.razor` |
 | `/reset-password` | `ResetPassword.razor` — recuperación por código OTP (plantilla "Reset Password" de Supabase con `{{ .Token }}`) |

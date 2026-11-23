@@ -2083,9 +2083,6 @@
   <data name="Map_Layer_Topo" xml:space="preserve">
     <value>OpenTopoMap (طبوغرافية)</value>
   </data>
-  <data name="Map_Layer_Dark" xml:space="preserve">
-    <value>داكنة (CARTO)</value>
-  </data>
   <data name="Map_Overlay_Favorites" xml:space="preserve">
     <value>المفضلة</value>
   </data>
@@ -2099,13 +2096,10 @@
     <value>فتح في OpenStreetMap</value>
   </data>
   <data name="Map_Favorites_Manage" xml:space="preserve">
-    <value>إدارة</value>
+    <value>إدارة المفضلة</value>
   </data>
   <data name="Map_Altitude" xml:space="preserve">
     <value>الارتفاع: {0} م</value>
-  </data>
-  <data name="MapLoc_Title" xml:space="preserve">
-    <value>سجلات TiempoUbicacionApp</value>
   </data>
   <data name="MapLoc_Desc" xml:space="preserve">
     <value>استورد أو صدّر قاعدة البيانات Ubicaciones.db من TiempoUbicacionApp. تُحفظ السجلات في حسابك.</value>
@@ -2118,9 +2112,6 @@
   </data>
   <data name="MapLoc_Export" xml:space="preserve">
     <value>تصدير ‎.db</value>
-  </data>
-  <data name="MapLoc_Empty" xml:space="preserve">
-    <value>لا توجد سجلات بعد. استورد الملف Ubicaciones.db من TiempoUbicacionApp.</value>
   </data>
   <data name="MapLoc_NoCoords" xml:space="preserve">
     <value>لا توجد إحداثيات صالحة</value>
@@ -2169,5 +2160,74 @@
   </data>
   <data name="Files_Error_Save" xml:space="preserve">
     <value>تعذّر حفظ الملف: {0}</value>
+  </data>
+  <data name="Map_List_Title" xml:space="preserve">
+    <value>المواقع المحفوظة</value>
+  </data>
+  <data name="Map_List_Empty" xml:space="preserve">
+    <value>لا توجد مواقع بعد. أضف مفضلة أو استورد الملف Ubicaciones.db من TiempoUbicacionApp.</value>
+  </data>
+  <data name="Map_List_NoResults" xml:space="preserve">
+    <value>لا يوجد موقع يطابق عوامل التصفية.</value>
+  </data>
+  <data name="Map_List_Count" xml:space="preserve">
+    <value>عرض {0} من {1}</value>
+  </data>
+  <data name="Map_Search_Placeholder" xml:space="preserve">
+    <value>ابحث بالاسم…</value>
+  </data>
+  <data name="Map_Filter_All" xml:space="preserve">
+    <value>الكل</value>
+  </data>
+  <data name="Map_Filter_Year" xml:space="preserve">
+    <value>السنة</value>
+  </data>
+  <data name="Map_Filter_Month" xml:space="preserve">
+    <value>الشهر</value>
+  </data>
+  <data name="Map_Filter_Day" xml:space="preserve">
+    <value>اليوم</value>
+  </data>
+  <data name="Map_Filter_Any" xml:space="preserve">
+    <value>أي</value>
+  </data>
+  <data name="Map_Filter_Clear" xml:space="preserve">
+    <value>مسح عوامل التصفية</value>
+  </data>
+  <data name="Map_Sort" xml:space="preserve">
+    <value>ترتيب</value>
+  </data>
+  <data name="Map_Sort_DateDesc" xml:space="preserve">
+    <value>الأحدث أولًا</value>
+  </data>
+  <data name="Map_Sort_DateAsc" xml:space="preserve">
+    <value>الأقدم أولًا</value>
+  </data>
+  <data name="Map_Sort_NameAsc" xml:space="preserve">
+    <value>الاسم (أ-ي)</value>
+  </data>
+  <data name="Map_Sort_NameDesc" xml:space="preserve">
+    <value>الاسم (ي-أ)</value>
+  </data>
+  <data name="Map_Kind_Favorite" xml:space="preserve">
+    <value>مفضلة</value>
+  </data>
+  <data name="Map_Kind_Entry" xml:space="preserve">
+    <value>سجل</value>
+  </data>
+  <data name="MapLoc_Export_Title" xml:space="preserve">
+    <value>ماذا تريد أن تصدّر؟</value>
+  </data>
+  <data name="MapLoc_Export_All" xml:space="preserve">
+    <value>القائمة كاملة ({0})</value>
+  </data>
+  <data name="MapLoc_Export_Entries" xml:space="preserve">
+    <value>السجلات فقط ({0})</value>
+  </data>
+  <data name="MapLoc_Export_Favorites" xml:space="preserve">
+    <value>المفضلة فقط ({0})</value>
+  </data>
+  <data name="MapLoc_Export_Hint" xml:space="preserve">
+    <value>يُنشأ ملف Ubicaciones.db متوافق مع TiempoUbicacionApp. تُصدَّر المفضلة بتاريخ إنشائها ومن دون الارتفاع.</value>
   </data>
 </root>

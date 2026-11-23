@@ -99,6 +99,24 @@ public static partial class CoordinateParser
 		return true;
 	}
 
+	/// <summary>
+	/// Formatea en DMS como TiempoUbicacionApp: <c>40°51'33" N</c>, <c>2°11'48" O</c> (Oeste con O).
+	/// Los segundos se redondean (TiempoUbicacionApp los trunca; redondear reduce el error).
+	/// </summary>
+	public static string FormatDms(double value, bool isLatitude)
+	{
+		var totalSeconds = (long)Math.Round(Math.Abs(value) * 3600, MidpointRounding.AwayFromZero);
+		var degrees = totalSeconds / 3600;
+		var minutes = totalSeconds % 3600 / 60;
+		var seconds = totalSeconds % 60;
+
+		var direction = isLatitude
+			? (value >= 0 ? "N" : "S")
+			: (value >= 0 ? "E" : "O");
+
+		return string.Create(CultureInfo.InvariantCulture, $"{degrees}°{minutes}'{seconds}\" {direction}");
+	}
+
 	[GeneratedRegex(@"^\s*-?\d+,\d+\s*$")]
 	private static partial Regex DecimalCommaRegex();
 

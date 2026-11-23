@@ -2083,9 +2083,6 @@
   <data name="Map_Layer_Topo" xml:space="preserve">
     <value>OpenTopoMap (topografica)</value>
   </data>
-  <data name="Map_Layer_Dark" xml:space="preserve">
-    <value>Scuro (CARTO)</value>
-  </data>
   <data name="Map_Overlay_Favorites" xml:space="preserve">
     <value>Preferiti</value>
   </data>
@@ -2099,13 +2096,10 @@
     <value>Apri in OpenStreetMap</value>
   </data>
   <data name="Map_Favorites_Manage" xml:space="preserve">
-    <value>Gestisci</value>
+    <value>Gestisci preferiti</value>
   </data>
   <data name="Map_Altitude" xml:space="preserve">
     <value>Altitudine: {0} m</value>
-  </data>
-  <data name="MapLoc_Title" xml:space="preserve">
-    <value>Registrazioni di TiempoUbicacionApp</value>
   </data>
   <data name="MapLoc_Desc" xml:space="preserve">
     <value>Importa o esporta il database Ubicaciones.db di TiempoUbicacionApp. Le registrazioni vengono salvate nel tuo account.</value>
@@ -2118,9 +2112,6 @@
   </data>
   <data name="MapLoc_Export" xml:space="preserve">
     <value>Esporta .db</value>
-  </data>
-  <data name="MapLoc_Empty" xml:space="preserve">
-    <value>Ancora nessuna registrazione. Importa il file Ubicaciones.db di TiempoUbicacionApp.</value>
   </data>
   <data name="MapLoc_NoCoords" xml:space="preserve">
     <value>Coordinate non valide</value>
@@ -2169,5 +2160,74 @@
   </data>
   <data name="Files_Error_Save" xml:space="preserve">
     <value>Impossibile salvare il file: {0}</value>
+  </data>
+  <data name="Map_List_Title" xml:space="preserve">
+    <value>Luoghi salvati</value>
+  </data>
+  <data name="Map_List_Empty" xml:space="preserve">
+    <value>Ancora nessun luogo. Aggiungi preferiti o importa il file Ubicaciones.db di TiempoUbicacionApp.</value>
+  </data>
+  <data name="Map_List_NoResults" xml:space="preserve">
+    <value>Nessun luogo corrisponde ai filtri.</value>
+  </data>
+  <data name="Map_List_Count" xml:space="preserve">
+    <value>Visualizzati {0} di {1}</value>
+  </data>
+  <data name="Map_Search_Placeholder" xml:space="preserve">
+    <value>Cerca per nome…</value>
+  </data>
+  <data name="Map_Filter_All" xml:space="preserve">
+    <value>Tutti</value>
+  </data>
+  <data name="Map_Filter_Year" xml:space="preserve">
+    <value>Anno</value>
+  </data>
+  <data name="Map_Filter_Month" xml:space="preserve">
+    <value>Mese</value>
+  </data>
+  <data name="Map_Filter_Day" xml:space="preserve">
+    <value>Giorno</value>
+  </data>
+  <data name="Map_Filter_Any" xml:space="preserve">
+    <value>Qualsiasi</value>
+  </data>
+  <data name="Map_Filter_Clear" xml:space="preserve">
+    <value>Cancella filtri</value>
+  </data>
+  <data name="Map_Sort" xml:space="preserve">
+    <value>Ordina</value>
+  </data>
+  <data name="Map_Sort_DateDesc" xml:space="preserve">
+    <value>Più recenti</value>
+  </data>
+  <data name="Map_Sort_DateAsc" xml:space="preserve">
+    <value>Più vecchi</value>
+  </data>
+  <data name="Map_Sort_NameAsc" xml:space="preserve">
+    <value>Nome (A-Z)</value>
+  </data>
+  <data name="Map_Sort_NameDesc" xml:space="preserve">
+    <value>Nome (Z-A)</value>
+  </data>
+  <data name="Map_Kind_Favorite" xml:space="preserve">
+    <value>Preferito</value>
+  </data>
+  <data name="Map_Kind_Entry" xml:space="preserve">
+    <value>Registrazione</value>
+  </data>
+  <data name="MapLoc_Export_Title" xml:space="preserve">
+    <value>Cosa vuoi esportare?</value>
+  </data>
+  <data name="MapLoc_Export_All" xml:space="preserve">
+    <value>Tutto l'elenco ({0})</value>
+  </data>
+  <data name="MapLoc_Export_Entries" xml:space="preserve">
+    <value>Solo registrazioni ({0})</value>
+  </data>
+  <data name="MapLoc_Export_Favorites" xml:space="preserve">
+    <value>Solo preferiti ({0})</value>
+  </data>
+  <data name="MapLoc_Export_Hint" xml:space="preserve">
+    <value>Viene generato un Ubicaciones.db compatibile con TiempoUbicacionApp. I preferiti vengono esportati con la data di creazione e senza altitudine.</value>
   </data>
 </root>

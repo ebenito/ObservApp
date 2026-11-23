@@ -6,7 +6,7 @@
 @implements IAsyncDisposable
 
 @* Mapa Leaflet con varias chinchetas y selector de capas (OSM, Google sin API key,
-   OpenTopoMap, CARTO oscuro). Encapsula todo el interop: la página solo pasa Markers. *@
+   OpenTopoMap). Encapsula todo el interop: la página solo pasa Markers. *@
 <div id="@_containerId" class="obs-map @CssClass" style="height:@Height"></div>
 
 @code {
@@ -20,6 +20,13 @@
 
     [Parameter]
     public string? CssClass { get; set; }
+
+    /// <summary>
+    /// Si es true, encuadra las chinchetas cada vez que cambia la lista (útil cuando la lista es
+    /// el resultado de un filtro). Si es false, solo cuando aparecen chinchetas nuevas.
+    /// </summary>
+    [Parameter]
+    public bool FitOnChange { get; set; }
 
     private readonly string _containerId = "obs-map-" + Guid.NewGuid().ToString("N");
     private DotNetObjectReference<ObsMap>? _dotNetRef;
@@ -52,7 +59,7 @@
         if (_ready && !ReferenceEquals(_renderedMarkers, Markers))
         {
             // Encuadrar la primera vez y cuando aparecen chinchetas nuevas (p. ej. tras importar).
-            var fit = Markers.Count > _renderedCount;
+            var fit = Markers.Count > 0 && (FitOnChange || Markers.Count > _renderedCount);
             _renderedMarkers = Markers;
             _renderedCount = Markers.Count;
             await JS.InvokeVoidAsync("observApp.multiMap.setMarkers", _containerId, Markers.Select(ToJs).ToArray(), fit);
@@ -100,7 +107,6 @@
             googleHybrid = L["Map_Layer_GoogleHybrid"].Value,
             googleTerrain = L["Map_Layer_GoogleTerrain"].Value,
             topo = L["Map_Layer_Topo"].Value,
-            dark = L["Map_Layer_Dark"].Value,
             favorites = L["Map_Overlay_Favorites"].Value,
             entries = L["Map_Overlay_Entries"].Value
         },

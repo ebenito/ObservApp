@@ -27,6 +27,26 @@ public sealed class LocationEntrySerializationTests
 		Assert.Contains("\"date_ticks\":\"638899171523191677\"", payload);
 	}
 
+	[Fact]
+	public void Read_IgnoresGeneratedDateLocalColumn()
+	{
+		// date_local es una columna generada (migración 20261123160000) que el modelo no mapea.
+		var json = "{\"date_ticks\":638899171523191677,\"date_local\":\"2025-08-04T15:12:32.319167\",\"location\":\"X\"}";
+
+		var entry = JsonSerializer.Deserialize<LocationEntry>(json, PostgrestOptions);
+
+		Assert.Equal(Ticks, entry!.DateTicks);
+		Assert.Equal("X", entry.Location);
+	}
+
+	[Fact]
+	public void InsertPayload_DoesNotSendDateLocal()
+	{
+		var json = JsonSerializer.Serialize(new LocationEntry { DateTicks = Ticks }, PostgrestOptions);
+
+		Assert.DoesNotContain("date_local", json);
+	}
+
 	[Theory]
 	[InlineData("{\"date_ticks\":638899171523191677}")]   // lo que devuelve PostgREST (bigint)
 	[InlineData("{\"date_ticks\":\"638899171523191677\"}")]

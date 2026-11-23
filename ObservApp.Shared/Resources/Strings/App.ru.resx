@@ -2083,9 +2083,6 @@
   <data name="Map_Layer_Topo" xml:space="preserve">
     <value>OpenTopoMap (топографическая)</value>
   </data>
-  <data name="Map_Layer_Dark" xml:space="preserve">
-    <value>Тёмная (CARTO)</value>
-  </data>
   <data name="Map_Overlay_Favorites" xml:space="preserve">
     <value>Избранное</value>
   </data>
@@ -2099,13 +2096,10 @@
     <value>Открыть в OpenStreetMap</value>
   </data>
   <data name="Map_Favorites_Manage" xml:space="preserve">
-    <value>Управлять</value>
+    <value>Управлять избранным</value>
   </data>
   <data name="Map_Altitude" xml:space="preserve">
     <value>Высота: {0} м</value>
-  </data>
-  <data name="MapLoc_Title" xml:space="preserve">
-    <value>Записи TiempoUbicacionApp</value>
   </data>
   <data name="MapLoc_Desc" xml:space="preserve">
     <value>Импортируйте или экспортируйте базу Ubicaciones.db из TiempoUbicacionApp. Записи сохраняются в вашей учётной записи.</value>
@@ -2118,9 +2112,6 @@
   </data>
   <data name="MapLoc_Export" xml:space="preserve">
     <value>Экспорт .db</value>
-  </data>
-  <data name="MapLoc_Empty" xml:space="preserve">
-    <value>Записей пока нет. Импортируйте файл Ubicaciones.db из TiempoUbicacionApp.</value>
   </data>
   <data name="MapLoc_NoCoords" xml:space="preserve">
     <value>Нет корректных координат</value>
@@ -2169,5 +2160,74 @@
   </data>
   <data name="Files_Error_Save" xml:space="preserve">
     <value>Не удалось сохранить файл: {0}</value>
+  </data>
+  <data name="Map_List_Title" xml:space="preserve">
+    <value>Сохранённые места</value>
+  </data>
+  <data name="Map_List_Empty" xml:space="preserve">
+    <value>Мест пока нет. Добавьте избранное или импортируйте файл Ubicaciones.db из TiempoUbicacionApp.</value>
+  </data>
+  <data name="Map_List_NoResults" xml:space="preserve">
+    <value>Нет мест, подходящих под фильтры.</value>
+  </data>
+  <data name="Map_List_Count" xml:space="preserve">
+    <value>Показано {0} из {1}</value>
+  </data>
+  <data name="Map_Search_Placeholder" xml:space="preserve">
+    <value>Поиск по названию…</value>
+  </data>
+  <data name="Map_Filter_All" xml:space="preserve">
+    <value>Все</value>
+  </data>
+  <data name="Map_Filter_Year" xml:space="preserve">
+    <value>Год</value>
+  </data>
+  <data name="Map_Filter_Month" xml:space="preserve">
+    <value>Месяц</value>
+  </data>
+  <data name="Map_Filter_Day" xml:space="preserve">
+    <value>День</value>
+  </data>
+  <data name="Map_Filter_Any" xml:space="preserve">
+    <value>Любой</value>
+  </data>
+  <data name="Map_Filter_Clear" xml:space="preserve">
+    <value>Сбросить фильтры</value>
+  </data>
+  <data name="Map_Sort" xml:space="preserve">
+    <value>Сортировка</value>
+  </data>
+  <data name="Map_Sort_DateDesc" xml:space="preserve">
+    <value>Сначала новые</value>
+  </data>
+  <data name="Map_Sort_DateAsc" xml:space="preserve">
+    <value>Сначала старые</value>
+  </data>
+  <data name="Map_Sort_NameAsc" xml:space="preserve">
+    <value>Название (А-Я)</value>
+  </data>
+  <data name="Map_Sort_NameDesc" xml:space="preserve">
+    <value>Название (Я-А)</value>
+  </data>
+  <data name="Map_Kind_Favorite" xml:space="preserve">
+    <value>Избранное</value>
+  </data>
+  <data name="Map_Kind_Entry" xml:space="preserve">
+    <value>Запись</value>
+  </data>
+  <data name="MapLoc_Export_Title" xml:space="preserve">
+    <value>Что экспортировать?</value>
+  </data>
+  <data name="MapLoc_Export_All" xml:space="preserve">
+    <value>Весь список ({0})</value>
+  </data>
+  <data name="MapLoc_Export_Entries" xml:space="preserve">
+    <value>Только записи ({0})</value>
+  </data>
+  <data name="MapLoc_Export_Favorites" xml:space="preserve">
+    <value>Только избранное ({0})</value>
+  </data>
+  <data name="MapLoc_Export_Hint" xml:space="preserve">
+    <value>Создаётся файл Ubicaciones.db, совместимый с TiempoUbicacionApp. Избранное экспортируется с датой создания и без высоты.</value>
   </data>
 </root>
