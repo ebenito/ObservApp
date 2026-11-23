@@ -57,7 +57,8 @@ window.observApp.isMapInitialized = function (containerId) {
 // ─────────────────────────────────────────────────────────────────────────────
 window.observApp.multiMap = (function () {
     var STORAGE_KEY = 'observapp.map.baseLayer';
-    var COLORS = { favorite: '#f4c430', entry: '#2ec4b6' };
+    var COLORS = { favorite: '#f4c430', entry: '#2ec4b6', planner: '#ff6b6b' };
+    var KINDS = ['favorite', 'entry', 'planner'];
 
     function googleLayer(lyrs, lang) {
         return L.tileLayer('https://mt{s}.google.com/vt/lyrs=' + lyrs + '&hl=' + lang + '&x={x}&y={y}&z={z}', {
@@ -111,7 +112,7 @@ window.observApp.multiMap = (function () {
         return el && el._obsMulti ? el._obsMulti : null;
     }
 
-    // options: { lang, labels: { osm, googleRoad, ..., favorites, entries }, texts: { openGoogle, openOsm } }
+    // options: { lang, labels: { osm, googleRoad, ..., favorites, entries, planner }, texts: { openGoogle, openOsm } }
     function create(containerId, options, dotNetRef) {
         var el = document.getElementById(containerId);
         if (!el || typeof L === 'undefined') return false;
@@ -128,7 +129,8 @@ window.observApp.multiMap = (function () {
 
         var groups = {
             favorite: L.featureGroup().addTo(map),
-            entry: L.featureGroup().addTo(map)
+            entry: L.featureGroup().addTo(map),
+            planner: L.featureGroup().addTo(map)
         };
 
         var baseByLabel = {};
@@ -141,6 +143,7 @@ window.observApp.multiMap = (function () {
         var overlays = {};
         overlays['<span style="color:' + COLORS.favorite + '">&#9679;</span> ' + escapeHtml(labels.favorites)] = groups.favorite;
         overlays['<span style="color:' + COLORS.entry + '">&#9679;</span> ' + escapeHtml(labels.entries)] = groups.entry;
+        overlays['<span style="color:' + COLORS.planner + '">&#9679;</span> ' + escapeHtml(labels.planner)] = groups.planner;
         L.control.layers(baseByLabel, overlays, { collapsed: true }).addTo(map);
         L.control.scale({ imperial: false }).addTo(map);
 
@@ -165,12 +168,11 @@ window.observApp.multiMap = (function () {
         return true;
     }
 
-    // markers: [{ id, kind: 'favorite'|'entry', lat, lon, title, subtitle: [], googleUrl, osmUrl }]
+    // markers: [{ id, kind: 'favorite'|'entry'|'planner', lat, lon, title, subtitle: [], googleUrl, osmUrl }]
     function setMarkers(containerId, markers, fit) {
         var state = get(containerId);
         if (!state) return;
-        state.groups.favorite.clearLayers();
-        state.groups.entry.clearLayers();
+        KINDS.forEach(function (k) { state.groups[k].clearLayers(); });
         state.markers = {};
 
         (markers || []).forEach(function (m) {
@@ -193,7 +195,7 @@ window.observApp.multiMap = (function () {
         var state = get(containerId);
         if (!state) return;
         var bounds = L.latLngBounds([]);
-        [state.groups.favorite, state.groups.entry].forEach(function (g) {
+        KINDS.map(function (k) { return state.groups[k]; }).forEach(function (g) {
             if (state.map.hasLayer(g) && g.getLayers().length) bounds.extend(g.getBounds());
         });
         if (bounds.isValid()) {

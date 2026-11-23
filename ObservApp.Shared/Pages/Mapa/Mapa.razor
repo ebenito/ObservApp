@@ -33,6 +33,7 @@
     <div class="map-legend">
         <span class="map-legend-item"><span class="map-dot map-dot--favorite"></span>@L["Map_Overlay_Favorites"]</span>
         <span class="map-legend-item"><span class="map-dot map-dot--entry"></span>@L["Map_Overlay_Entries"]</span>
+        <span class="map-legend-item"><span class="map-dot map-dot--planner"></span>@L["Map_Overlay_Planner"]</span>
         <span class="map-legend-hint">@L["Map_LayersHint"]</span>
     </div>
 
@@ -101,6 +102,11 @@
                            disabled="@(FavoriteCount == 0)" @onchange="() => _exportSource = MapLocationSource.Favorites" />
                     <span class="map-dot map-dot--favorite"></span> @L["MapLoc_Export_Favorites", FavoriteCount]
                 </label>
+                <label class="map-radio @(PlannerCount == 0 ? "disabled" : "")">
+                    <input type="radio" name="map-export" checked="@(_exportSource == MapLocationSource.Planner)"
+                           disabled="@(PlannerCount == 0)" @onchange="() => _exportSource = MapLocationSource.Planner" />
+                    <span class="map-dot map-dot--planner"></span> @L["MapLoc_Export_Planner", PlannerCount]
+                </label>
                 <p class="map-export-hint">@L["MapLoc_Export_Hint"]</p>
                 <div class="map-actions">
                     <button class="map-btn map-btn--accent" @onclick="ExportAsync" disabled="@_busy">📤 @L["MapLoc_Export"]</button>
@@ -124,6 +130,9 @@
                 </button>
                 <button class="map-chip @(_source == MapLocationSource.Entries ? "active" : "")" @onclick="() => SetSource(MapLocationSource.Entries)">
                     <span class="map-dot map-dot--entry"></span> @L["Map_Overlay_Entries"] (@EntryCount)
+                </button>
+                <button class="map-chip @(_source == MapLocationSource.Planner ? "active" : "")" @onclick="() => SetSource(MapLocationSource.Planner)">
+                    <span class="map-dot map-dot--planner"></span> @L["Map_Overlay_Planner"] (@PlannerCount)
                 </button>
             </div>
 
@@ -197,9 +206,9 @@
                 @foreach (var item in _visibleItems)
                 {
                     var pendingDelete = _pendingDeleteId == item.Id;
-                    var kindLabel = item.Kind == MapMarkerKind.Favorite ? L["Map_Kind_Favorite"] : L["Map_Kind_Entry"];
+                    var kindLabel = KindLabel(item.Kind);
                     <li class="map-item @(item.HasCoordinates ? "" : "map-item--nocoords")" @key="item.Id">
-                        <span class="map-dot @(item.Kind == MapMarkerKind.Favorite ? "map-dot--favorite" : "map-dot--entry")"
+                        <span class="map-dot @KindDotClass(item.Kind)"
                               title="@kindLabel" aria-label="@kindLabel"></span>
                         <div class="map-item-info" @onclick="() => FocusAsync(item)">
                             <span class="map-item-name">@ItemName(item)</span>
@@ -255,7 +264,8 @@
     private bool _messageIsError;
 
     private int FavoriteCount => _favorites?.Count ?? 0;
-    private int EntryCount => _entries?.Count ?? 0;
+    private int EntryCount => _entries?.Count(e => !IsPlanner(e)) ?? 0;
+    private int PlannerCount => _entries?.Count(IsPlanner) ?? 0;
 
     private MapLocationQuery CurrentQuery => new(
         _search,
@@ -294,7 +304,17 @@
 
         if (AppState.IsAuthenticated)
         {
-            _entries = await EntriesService.GetAllAsync();
+            // Las favoritas guardadas con versiones anteriores (o sin sesión) aún no tienen fila
+            // en location_entries: se crean ahora. Un fallo aquí no impide mostrar el mapa.
+            if (await EntriesService.SyncFavoritesAsync(_favorites) is null &&
+                EntriesService.LastError is { } syncError)
+            {
+                ShowMessage(syncError, isError: true);
+            }
+
+            // Las filas propias de las favoritas no se listan: la favorita ya sale con su chincheta.
+            var all = await EntriesService.GetAllAsync();
+            _entries = all.Where(e => e.Source != LocationEntrySources.Favorite).ToList();
             if (EntriesService.LastError is { } error)
             {
                 ShowMessage(error, isError: true);
@@ -340,7 +360,7 @@
             var date = entry.GetDate();
             items.Add(new MapLocationItem(
                 entry.Id,
-                MapMarkerKind.Entry,
+                IsPlanner(entry) ? MapMarkerKind.Planner : MapMarkerKind.Entry,
                 entry.Location,
                 date > DateTime.MinValue ? date : null,
                 entry.LatitudeDeg,
@@ -374,7 +394,7 @@
     {
         var lines = new List<string> { FormatDate(item.Date) };
 
-        if (item.Kind == MapMarkerKind.Entry &&
+        if (item.Kind != MapMarkerKind.Favorite &&
             _entries?.FirstOrDefault(e => e.Id == item.Id) is { } entry &&
             !string.IsNullOrWhiteSpace(entry.HoraUtc))
         {
@@ -477,9 +497,13 @@
     private void OpenExportPanel()
     {
         ClearMessage();
-        _exportSource = FavoriteCount > 0 && EntryCount > 0 ? MapLocationSource.All
-            : EntryCount > 0 ? MapLocationSource.Entries
-            : MapLocationSource.Favorites;
+        var nonEmpty = new[]
+        {
+            (Source: MapLocationSource.Entries, Count: EntryCount),
+            (Source: MapLocationSource.Favorites, Count: FavoriteCount),
+            (Source: MapLocationSource.Planner, Count: PlannerCount)
+        }.Where(x => x.Count > 0).ToList();
+        _exportSource = nonEmpty.Count == 1 ? nonEmpty[0].Source : MapLocationSource.All;
         _showExportPanel = true;
     }
 
@@ -490,8 +514,17 @@
             return;
         }
 
-        var entries = _exportSource == MapLocationSource.Favorites ? Enumerable.Empty<LocationEntry>() : _entries ?? new();
-        var favorites = _exportSource == MapLocationSource.Entries ? Enumerable.Empty<FavoriteLocation>() : _favorites ?? new();
+        var allEntries = _entries ?? new List<LocationEntry>();
+        var entries = _exportSource switch
+        {
+            MapLocationSource.Favorites => Enumerable.Empty<LocationEntry>(),
+            MapLocationSource.Entries => allEntries.Where(e => !IsPlanner(e)),
+            MapLocationSource.Planner => allEntries.Where(IsPlanner),
+            _ => allEntries
+        };
+        var favorites = _exportSource is MapLocationSource.All or MapLocationSource.Favorites
+            ? _favorites ?? new List<FavoriteLocation>()
+            : Enumerable.Empty<FavoriteLocation>();
 
         _busy = true;
         try
@@ -535,6 +568,13 @@
             {
                 await FavLocationsService.DeleteFavoriteLocationAsync(item.Id);
                 _favorites?.RemoveAll(f => f.Id == item.Id);
+
+                if (AppState.IsAuthenticated &&
+                    !await EntriesService.RemoveFavoriteAsync(item.Id) &&
+                    EntriesService.LastError is { } syncError)
+                {
+                    ShowMessage(syncError, isError: true);
+                }
             }
             else if (await EntriesService.DeleteAsync(item.Id))
             {
@@ -562,6 +602,22 @@
             : Task.CompletedTask;
 
     private Task FitAllAsync() => _map?.FitAllAsync() ?? Task.CompletedTask;
+
+    private static bool IsPlanner(LocationEntry entry) => entry.Source == LocationEntrySources.Planner;
+
+    private string KindLabel(MapMarkerKind kind) => kind switch
+    {
+        MapMarkerKind.Favorite => L["Map_Kind_Favorite"],
+        MapMarkerKind.Planner => L["Map_Kind_Planner"],
+        _ => L["Map_Kind_Entry"]
+    };
+
+    private static string KindDotClass(MapMarkerKind kind) => kind switch
+    {
+        MapMarkerKind.Favorite => "map-dot--favorite",
+        MapMarkerKind.Planner => "map-dot--planner",
+        _ => "map-dot--entry"
+    };
 
     private string ItemName(MapLocationItem item) =>
         string.IsNullOrWhiteSpace(item.Name) ? L["MapLoc_Unnamed"] : item.Name;

@@ -7,6 +7,7 @@
 @inject IObservationService ObservationService
 @inject IGeolocationService GeoService
 @inject IFavoriteLocationsService FavLocationsService
+@inject ILocationEntriesService EntriesService
 @inject NavigationManager NavManager
 
 <PageTitle>@(IsEditMode ? L["Plan_Title_Edit"] : L["Plan_Title_New"])</PageTitle>
@@ -82,9 +83,23 @@
                     <select class="plan-input" @onchange="OnLocationSelectorChanged">
                         <option value="manual">📍 @L["FavLoc_Select_Manual"]</option>
                         <option value="gps">📡 @L["FavLoc_Select_GPS"]</option>
-                        @foreach (var location in _favoriteLocations)
+                        @if (_locationOptions.Any(o => o.IsFavorite))
                         {
-                            <option value="@location.Id">⭐ @location.Name</option>
+                            <optgroup label="@L["Plan_Location_Group_Favorites"]">
+                                @foreach (var location in _locationOptions.Where(o => o.IsFavorite))
+                                {
+                                    <option value="@location.Id">⭐ @OptionName(location)</option>
+                                }
+                            </optgroup>
+                        }
+                        @if (_locationOptions.Any(o => !o.IsFavorite))
+                        {
+                            <optgroup label="@L["Plan_Location_Group_Saved"]">
+                                @foreach (var location in _locationOptions.Where(o => !o.IsFavorite))
+                                {
+                                    <option value="@location.Id">📍 @OptionName(location)</option>
+                                }
+                            </optgroup>
                         }
                     </select>
                 </div>
@@ -245,7 +260,7 @@
     public string? SessionIdQuery { get; set; }
 
     private readonly ObservationSession _session = new();
-    private readonly List<FavoriteLocation> _favoriteLocations = new();
+    private List<SavedLocationOption> _locationOptions = new();
     private bool _loading;
     private bool _saving;
     private bool _gpsLoading;
@@ -268,10 +283,18 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var favoriteLocations = await FavLocationsService.GetFavoriteLocationsAsync();
-        _favoriteLocations.Clear();
-        _favoriteLocations.AddRange(favoriteLocations);
+        var favorites = await FavLocationsService.GetFavoriteLocationsAsync();
+
+        // Las opciones salen de location_entries; antes se suben las favoritas que aún no estén.
+        await EntriesService.SyncFavoritesAsync(favorites);
+        var entries = await EntriesService.GetAllAsync();
+
+        // Si Supabase no responde, las favoritas locales siguen apareciendo.
+        _locationOptions = LocationEntrySync.BuildPickerOptions(entries, favorites);
     }
+
+    private string OptionName(SavedLocationOption option) =>
+        string.IsNullOrWhiteSpace(option.Name) ? L["MapLoc_Unnamed"] : option.Name;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -408,18 +431,18 @@
             return;
         }
 
-        var favorite = _favoriteLocations.FirstOrDefault(x => x.Id == locationId);
-        if (favorite is null)
+        var option = _locationOptions.FirstOrDefault(x => x.Id == locationId);
+        if (option is null)
         {
             return;
         }
 
-        _latitude = favorite.Latitude;
-        _longitude = favorite.Longitude;
-        _altitude = favorite.AltitudeMeters;
-        _session.LocationName = favorite.Name;
-        _session.Latitude = favorite.Latitude;
-        _session.Longitude = favorite.Longitude;
+        _latitude = option.Latitude;
+        _longitude = option.Longitude;
+        _altitude = option.AltitudeMeters;
+        _session.LocationName = option.Name;
+        _session.Latitude = option.Latitude;
+        _session.Longitude = option.Longitude;
     }
 
     private async Task OnUseGpsAsync()
@@ -558,6 +581,14 @@
         var saved = await ObservationService.SaveAsync(_session);
         if (saved)
         {
+            // La ubicación de la sesión pasa a location_entries salvo que ya haya otra a pocos
+            // metros. Si falla no se bloquea: la sesión ya está guardada.
+            if (_latitude is { } lat && _longitude is { } lon)
+            {
+                var name = string.IsNullOrWhiteSpace(_session.LocationName) ? _session.Title : _session.LocationName;
+                await EntriesService.AddPlannerLocationAsync(name ?? string.Empty, lat, lon, _altitude);
+            }
+
             NavManager.NavigateTo("/historial");
             return;
         }

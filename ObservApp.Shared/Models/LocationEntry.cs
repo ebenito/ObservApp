@@ -68,6 +68,22 @@ public class LocationEntry : BaseModel
 	[Column("longitude_deg")]
 	public double? LongitudeDeg { get; set; }
 
+	/// <summary>True si la ubicación está marcada como favorita.</summary>
+	[Column("is_favorite")]
+	public bool IsFavorite { get; set; }
+
+	/// <summary>Origen de la fila; valores en <see cref="LocationEntrySources"/>.</summary>
+	[Column("source")]
+	public string Source { get; set; } = LocationEntrySources.Import;
+
+	/// <summary>Favorita enlazada (<see cref="FavoriteLocation.Id"/>); nula si no hay.</summary>
+	[Column("favorite_id")]
+	public Guid? FavoriteId { get; set; }
+
+	/// <summary>Altitud en metros; nula en los registros de TiempoUbicacionApp.</summary>
+	[Column("altitude_m")]
+	public double? AltitudeMeters { get; set; }
+
 	[Column("created_at")]
 	public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
@@ -82,6 +98,19 @@ public class LocationEntry : BaseModel
 
 	/// <summary>True si el registro tiene coordenadas utilizables en el mapa.</summary>
 	public bool HasCoordinates() => LatitudeDeg.HasValue && LongitudeDeg.HasValue;
+}
+
+/// <summary>Valores de la columna <c>source</c> de <c>location_entries</c>.</summary>
+public static class LocationEntrySources
+{
+	/// <summary>Importado de TiempoUbicacionApp (y filas anteriores a la columna).</summary>
+	public const string Import = "import";
+
+	/// <summary>Creado al guardar una ubicación favorita.</summary>
+	public const string Favorite = "favorite";
+
+	/// <summary>Creado desde el planificador.</summary>
+	public const string Planner = "planner";
 }
 
 /// <summary>

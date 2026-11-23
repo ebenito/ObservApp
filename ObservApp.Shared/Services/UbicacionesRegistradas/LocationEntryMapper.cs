@@ -92,9 +92,49 @@ public static class LocationEntryMapper
 	/// La fecha es la de creación de la favorita en la zona horaria indicada. La altitud se pierde:
 	/// TiempoUbicacionApp no la guarda.
 	/// </summary>
-	public static LegacyLocationEntry FavoriteToLegacy(FavoriteLocation favorite, long id, TimeZoneInfo timeZone)
+	public static LegacyLocationEntry FavoriteToLegacy(FavoriteLocation favorite, long id, TimeZoneInfo timeZone) =>
+		BuildLegacy(favorite.Name, favorite.Latitude, favorite.Longitude, favorite.CreatedAt, id, timeZone);
+
+	/// <summary>
+	/// Crea un registro nuevo (favorita o planificador) con los textos en el formato de
+	/// TiempoUbicacionApp, para que se exporte igual que un registro importado. Las coordenadas
+	/// decimales se guardan exactas, no las del texto DMS redondeado al segundo de arco.
+	/// </summary>
+	public static LocationEntry CreateEntry(
+		string name,
+		double latitude,
+		double longitude,
+		double? altitudeMeters,
+		DateTime createdUtc,
+		TimeZoneInfo timeZone,
+		string source)
 	{
-		var utc = ToUtc(favorite.CreatedAt);
+		var entry = FromLegacy(BuildLegacy(name, latitude, longitude, createdUtc, 0, timeZone));
+		entry.LatitudeDeg = latitude;
+		entry.LongitudeDeg = longitude;
+		entry.AltitudeMeters = altitudeMeters;
+		entry.Source = source;
+		entry.CreatedAt = ToUtc(createdUtc);
+		return entry;
+	}
+
+	/// <summary>
+	/// Cambia nombre, coordenadas (texto DMS y decimales) y altitud de un registro. La fecha y
+	/// las horas no se tocan: siguen siendo las de su creación.
+	/// </summary>
+	public static void ApplyLocation(LocationEntry entry, string name, double latitude, double longitude, double? altitudeMeters)
+	{
+		entry.Location = name;
+		entry.Latitude = CoordinateParser.FormatDms(latitude, isLatitude: true);
+		entry.Longitude = CoordinateParser.FormatDms(longitude, isLatitude: false);
+		entry.LatitudeDeg = latitude;
+		entry.LongitudeDeg = longitude;
+		entry.AltitudeMeters = altitudeMeters;
+	}
+
+	private static LegacyLocationEntry BuildLegacy(string name, double latitude, double longitude, DateTime created, long id, TimeZoneInfo timeZone)
+	{
+		var utc = ToUtc(created);
 		var local = TimeZoneInfo.ConvertTimeFromUtc(utc, timeZone);
 		var offset = timeZone.GetUtcOffset(utc);
 		var spanish = CultureInfo.GetCultureInfo("es-ES");
@@ -111,9 +151,9 @@ public static class LocationEntryMapper
 			TipoHorario = timeZone.IsDaylightSavingTime(local)
 				? "Horario de ahorro de luz (verano)"
 				: "Horario estándar (invierno)",
-			Location = favorite.Name,
-			Latitude = CoordinateParser.FormatDms(favorite.Latitude, isLatitude: true),
-			Longitude = CoordinateParser.FormatDms(favorite.Longitude, isLatitude: false),
+			Location = name,
+			Latitude = CoordinateParser.FormatDms(latitude, isLatitude: true),
+			Longitude = CoordinateParser.FormatDms(longitude, isLatitude: false),
 			Zona = 0
 		};
 	}

@@ -181,6 +181,22 @@ ALTER TABLE public.location_entries
 CREATE INDEX IF NOT EXISTS idx_location_entries_user_date_local
   ON public.location_entries(user_id, date_local DESC);
 
+-- Favoritas y ubicaciones del planificador (migración 20261124120000_location_entries_favorites.sql).
+-- source: 'import' (TiempoUbicacionApp) | 'favorite' | 'planner'; favorite_id enlaza con la favorita.
+ALTER TABLE public.location_entries
+  ADD COLUMN IF NOT EXISTS is_favorite BOOLEAN NOT NULL DEFAULT false,
+  ADD COLUMN IF NOT EXISTS source TEXT NOT NULL DEFAULT 'import',
+  ADD COLUMN IF NOT EXISTS favorite_id UUID,
+  ADD COLUMN IF NOT EXISTS altitude_m DOUBLE PRECISION;
+
+ALTER TABLE public.location_entries DROP CONSTRAINT IF EXISTS location_entries_source_check;
+ALTER TABLE public.location_entries
+  ADD CONSTRAINT location_entries_source_check CHECK (source IN ('import', 'favorite', 'planner'));
+
+CREATE INDEX IF NOT EXISTS idx_location_entries_user_favorite
+  ON public.location_entries(user_id, favorite_id)
+  WHERE favorite_id IS NOT NULL;
+
 ALTER TABLE public.location_entries ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "Users see own location entries" ON public.location_entries;

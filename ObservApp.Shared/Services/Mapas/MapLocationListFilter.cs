@@ -40,6 +40,7 @@ public static class MapLocationListFilter
 	{
 		MapLocationSource.Favorites => item.Kind == MapMarkerKind.Favorite,
 		MapLocationSource.Entries => item.Kind == MapMarkerKind.Entry,
+		MapLocationSource.Planner => item.Kind == MapMarkerKind.Planner,
 		_ => true
 	};
 

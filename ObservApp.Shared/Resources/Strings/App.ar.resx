@@ -2230,4 +2230,22 @@
   <data name="MapLoc_Export_Hint" xml:space="preserve">
     <value>يُنشأ ملف Ubicaciones.db متوافق مع TiempoUbicacionApp. تُصدَّر المفضلة بتاريخ إنشائها ومن دون الارتفاع.</value>
   </data>
+  <data name="Map_Overlay_Planner" xml:space="preserve">
+    <value>المخطط</value>
+  </data>
+  <data name="Map_Kind_Planner" xml:space="preserve">
+    <value>موقع من المخطط</value>
+  </data>
+  <data name="MapLoc_Export_Planner" xml:space="preserve">
+    <value>المخطط فقط ({0})</value>
+  </data>
+  <data name="Plan_Location_Group_Favorites" xml:space="preserve">
+    <value>المفضلة</value>
+  </data>
+  <data name="Plan_Location_Group_Saved" xml:space="preserve">
+    <value>المواقع المحفوظة</value>
+  </data>
+  <data name="MapLoc_Error_Sync" xml:space="preserve">
+    <value>تعذّرت مزامنة المواقع: {0}</value>
+  </data>
 </root>

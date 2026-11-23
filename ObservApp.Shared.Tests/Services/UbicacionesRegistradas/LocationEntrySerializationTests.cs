@@ -47,6 +47,38 @@ public sealed class LocationEntrySerializationTests
 		Assert.DoesNotContain("date_local", json);
 	}
 
+	[Fact]
+	public void InsertPayload_IncludesFavoriteColumns()
+	{
+		var favoriteId = Guid.Parse("5b1f0c2e-8f0a-4a57-9a43-2f1d5c3b7e10");
+		var entry = new LocationEntry
+		{
+			IsFavorite = true,
+			Source = LocationEntrySources.Favorite,
+			FavoriteId = favoriteId,
+			AltitudeMeters = 2150
+		};
+
+		var json = JsonSerializer.Serialize(entry, PostgrestOptions);
+
+		Assert.Contains("\"is_favorite\":true", json);
+		Assert.Contains("\"source\":\"favorite\"", json);
+		Assert.Contains($"\"favorite_id\":\"{favoriteId}\"", json);
+		Assert.Contains("\"altitude_m\":2150", json);
+	}
+
+	[Fact]
+	public void Read_RowWithoutNewColumns_IsUnflaggedImport()
+	{
+		// Fila anterior a la migración 20261124120000 (o leída antes de aplicarla).
+		var entry = JsonSerializer.Deserialize<LocationEntry>("{\"location\":\"X\"}", PostgrestOptions);
+
+		Assert.False(entry!.IsFavorite);
+		Assert.Equal(LocationEntrySources.Import, entry.Source);
+		Assert.Null(entry.FavoriteId);
+		Assert.Null(entry.AltitudeMeters);
+	}
+
 	[Theory]
 	[InlineData("{\"date_ticks\":638899171523191677}")]   // lo que devuelve PostgREST (bigint)
 	[InlineData("{\"date_ticks\":\"638899171523191677\"}")]

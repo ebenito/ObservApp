@@ -73,10 +73,10 @@ No inventar rutas, ViewModels ni servicios. Verificar su existencia real con las
 | `/calculadoras/eclipse` | `CalculadoraEclipse.razor` |
 | `/calculadoras/fov` | `CalculadoraFOV.razor` |
 | `/senales` | `Senales.razor` — noticias WP + RSS + TTS |
-| `/planificacion` | `Planificacion.razor` — **privada** (AuthGuard) |
+| `/planificacion` | `Planificacion.razor` — **privada** (AuthGuard). Combo de ubicación desde `location_entries` (favoritas primero); al guardar añade la ubicación (`source='planner'`) salvo que haya otra a < 30 m (`LocationEntrySync`) |
 | `/historial` | `Historial.razor` — **privada** (AuthGuard) |
 | `/mapa` | `Mapa.razor` — favoritas + registros de TiempoUbicacionApp (`location_entries`, importar/exportar `Ubicaciones.db` con sql.js) en `<ObsMap>` (Leaflet local; capas OSM, Google sin API key, OpenTopoMap; CARTO descartada porque pide API key) |
-| `/configuracion/ubicaciones` | `GestionUbicaciones.razor` |
+| `/configuracion/ubicaciones` | `GestionUbicaciones.razor` — favoritas en local + `favorite_locations` + fila en `location_entries` (`is_favorite`, `favorite_id`); el Mapa sube las que falten |
 | `/login`, `/confirm-otp` | `Login.razor`, `ConfirmOtp.razor` |
 | `/reset-password` | `ResetPassword.razor` — recuperación por código OTP (plantilla "Reset Password" de Supabase con `{{ .Token }}`) |
 | `/configuracion` | `Configuracion.razor` |

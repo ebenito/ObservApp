@@ -1,8 +1,8 @@
 namespace ObservApp.Shared.Models;
 
 /// <summary>
-/// Elemento del listado unificado de la página de mapa: una ubicación favorita o un registro
-/// de TiempoUbicacionApp.
+/// Elemento del listado unificado de la página de mapa: una ubicación favorita, un registro
+/// de TiempoUbicacionApp o una ubicación guardada desde el planificador.
 /// </summary>
 /// <param name="Id">Identificador del favorito o del registro.</param>
 /// <param name="Kind">Origen; determina el color de la chincheta.</param>
@@ -28,7 +28,8 @@ public enum MapLocationSource
 {
 	All,
 	Favorites,
-	Entries
+	Entries,
+	Planner
 }
 
 /// <summary>Orden del listado.</summary>

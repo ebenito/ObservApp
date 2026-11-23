@@ -108,7 +108,8 @@
             googleTerrain = L["Map_Layer_GoogleTerrain"].Value,
             topo = L["Map_Layer_Topo"].Value,
             favorites = L["Map_Overlay_Favorites"].Value,
-            entries = L["Map_Overlay_Entries"].Value
+            entries = L["Map_Overlay_Entries"].Value,
+            planner = L["Map_Overlay_Planner"].Value
         },
         texts = new
         {
@@ -129,7 +130,12 @@
         osmUrl = MapLinkBuilder.OpenStreetMap(m.Latitude, m.Longitude)
     };
 
-    private static string KindKey(MapMarkerKind kind) => kind == MapMarkerKind.Favorite ? "favorite" : "entry";
+    private static string KindKey(MapMarkerKind kind) => kind switch
+    {
+        MapMarkerKind.Favorite => "favorite",
+        MapMarkerKind.Planner => "planner",
+        _ => "entry"
+    };
 
     public async ValueTask DisposeAsync()
     {

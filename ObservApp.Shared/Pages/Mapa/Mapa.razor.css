@@ -102,6 +102,10 @@
     background: #2ec4b6;
 }
 
+.map-dot--planner {
+    background: #ff6b6b;
+}
+
 /* Avisos */
 .map-toast {
     display: flex;

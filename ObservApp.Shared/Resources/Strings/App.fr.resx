@@ -2230,4 +2230,22 @@
   <data name="MapLoc_Export_Hint" xml:space="preserve">
     <value>Un fichier Ubicaciones.db compatible avec TiempoUbicacionApp est généré. Les favoris sont exportés avec leur date de création et sans altitude.</value>
   </data>
+  <data name="Map_Overlay_Planner" xml:space="preserve">
+    <value>Planificateur</value>
+  </data>
+  <data name="Map_Kind_Planner" xml:space="preserve">
+    <value>Lieu du planificateur</value>
+  </data>
+  <data name="MapLoc_Export_Planner" xml:space="preserve">
+    <value>Planificateur uniquement ({0})</value>
+  </data>
+  <data name="Plan_Location_Group_Favorites" xml:space="preserve">
+    <value>Favoris</value>
+  </data>
+  <data name="Plan_Location_Group_Saved" xml:space="preserve">
+    <value>Lieux enregistrés</value>
+  </data>
+  <data name="MapLoc_Error_Sync" xml:space="preserve">
+    <value>Impossible de synchroniser les lieux : {0}</value>
+  </data>
 </root>

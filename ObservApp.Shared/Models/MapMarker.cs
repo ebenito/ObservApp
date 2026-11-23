@@ -4,7 +4,8 @@ namespace ObservApp.Shared.Models;
 public enum MapMarkerKind
 {
 	Favorite,
-	Entry
+	Entry,
+	Planner
 }
 
 /// <summary>Chincheta que pinta el componente <c>ObsMap</c>.</summary>

@@ -4,6 +4,8 @@
 @using ObservApp.Shared.Models
 @using ObservApp.Shared.Services
 @inject IFavoriteLocationsService FavLocationsService
+@inject ILocationEntriesService EntriesService
+@inject AppState AppState
 @inject IGeolocationService GeoService
 @inject ILocationStateService LocationState
 @inject IJSRuntime JS
@@ -140,6 +142,10 @@
             {
                 <div class="fav-error">⚠️ @_gpsError</div>
             }
+            @if (_syncError != null)
+            {
+                <div class="fav-error">⚠️ @_syncError</div>
+            }
             @if (_toastMessage != null)
             {
                 <div class="fav-success-toast">✓ @_toastMessage</div>
@@ -207,6 +213,7 @@
     private string? _gpsError;
     private bool _altitudeLoading = false;
     private string? _toastMessage;
+    private string? _syncError;
     protected override async Task OnInitializedAsync()
     {
         _dotNetRef = DotNetObjectReference.Create(this);
@@ -425,6 +432,14 @@
         // Actualizar el servicio centralizado con la nueva ubicación favorita
         LocationState.SetFavoriteLocation(loc);
 
+        // También en location_entries (marcada como favorita). Sin sesión se queda en local y
+        // la página de mapa la sube al iniciar sesión.
+        _syncError = null;
+        if (await EntriesService.SyncFavoritesAsync(new[] { loc }) is null && AppState.IsAuthenticated)
+        {
+            _syncError = EntriesService.LastError;
+        }
+
         _toastMessage = L["Status_Success"];
 
         ResetForm();
@@ -439,6 +454,12 @@
     private async Task DeleteLocation(Guid id)
     {
         await FavLocationsService.DeleteFavoriteLocationAsync(id);
+
+        _syncError = null;
+        if (!await EntriesService.RemoveFavoriteAsync(id) && AppState.IsAuthenticated)
+        {
+            _syncError = EntriesService.LastError;
+        }
 
         if (_isEditing && _formId == id)
         {

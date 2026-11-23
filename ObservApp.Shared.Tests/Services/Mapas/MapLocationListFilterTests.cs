@@ -93,6 +93,18 @@ public sealed class MapLocationListFilterTests
 	{
 		Assert.Equal(new[] { "Teide" }, Names(new MapLocationQuery(Source: MapLocationSource.Favorites)));
 		Assert.Equal(5, Names(new MapLocationQuery(Source: MapLocationSource.Entries)).Count);
+		Assert.Empty(Names(new MapLocationQuery(Source: MapLocationSource.Planner)));
+	}
+
+	[Fact]
+	public void Source_Planner_OnlyPlannerItems()
+	{
+		var items = Items.Append(Item("Observatorio", new DateTime(2026, 11, 1), MapMarkerKind.Planner)).ToList();
+
+		Assert.Equal(new[] { "Observatorio" },
+			MapLocationListFilter.Apply(items, new MapLocationQuery(Source: MapLocationSource.Planner)).Select(i => i.Name));
+		Assert.DoesNotContain("Observatorio",
+			MapLocationListFilter.Apply(items, new MapLocationQuery(Source: MapLocationSource.Entries)).Select(i => i.Name));
 	}
 
 	[Fact]
